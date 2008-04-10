@@ -25,7 +25,7 @@ and this way you can test them either directly by Java calls or via the http ser
 
 Assets - bastardized word, but here it is. You can think of them as ManagedEntities (see OSS/J) or something 
 like stateful beans. Just like services are simple classes (one instance to serve all), the assets are 
-individual objects which you can access remotely. 
+individual objects which you can access remotely. They however have state and could be persisted.
 They are developed much like the services (annotated methods).
 
 There's some very basic multi-threading support (life), which keeps track of the threads and what they're doing.
@@ -44,7 +44,8 @@ of a communications framework.
 
 Roadmap
 -------
-I will only maintain this as I need to. If there's some large user community developing (doubt that, really), we'll see - I could co-op some volunteers.
+I will only maintain this as I need to. If there's some large user community developing (doubt that, really), 
+we'll see - I could co-op some volunteers.
 
 I will add more code as I need it/write it for all kinds of reasons.
 
