@@ -15,11 +15,12 @@ import java.util.Properties;
  * 
  */
 public class RazIconRes {
-    String            curTheme = "";
+    public static String            curTheme = "icons.properties";
+    public static String            getPictureService = "/classpath/public/pics/";
     static Properties props    = new Properties();
 
     public static void init() throws IOException {
-        props.load(RazIconRes.class.getClassLoader().getResource("icons.properties").openStream());
+        props.load(RazIconRes.class.getClassLoader().getResource(curTheme).openStream());
     }
 
     public static String getIconFile(RazIcons icon) {
@@ -31,7 +32,7 @@ public class RazIconRes {
         if (icon == null || icon.length() <= 0)
             icon = RazIcons.UNKNOWN.toString();
         String f = props.getProperty(icon.toLowerCase());
-        return f == null ? icon : "/mutant/pics/" + f;
+        return f == null ? icon : getPictureService + f;
     }
 
     Properties p;

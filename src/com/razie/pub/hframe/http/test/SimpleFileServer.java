@@ -1,6 +1,7 @@
 package com.razie.pub.hframe.http.test;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Properties;
@@ -21,6 +22,7 @@ import com.razie.pub.hframe.http.MyServerSocket;
 import com.razie.pub.hframe.lightsoa.HttpSoaBinding;
 import com.razie.pub.hframe.lightsoa.SoaMethod;
 import com.razie.pub.hframe.lightsoa.SoaStreamable;
+import com.razie.pub.hframe.resources.RazIconRes;
 import com.razie.pub.hframe.resources.RazIcons;
 
 /**
@@ -89,7 +91,8 @@ public class SimpleFileServer {
     static SimpleFileServer singleton;
     static LightCmdGET      cmdGET = new SimpleFileServerCmd();
 
-    public static void main(String[] argv) {
+    public static void main(String[] argv) throws IOException {
+        RazIconRes.init();
         start(TestLightServer.PORT);
     }
 

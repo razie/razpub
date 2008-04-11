@@ -180,7 +180,7 @@ public abstract class Worker implements Runnable {
      * Notification that the thread has stopped (called after 'process' function)
      */
     final private void notifyStopped() {
-        PostOffice.shout(MTEventTypes.EV_THREAD_END, this);
+        PostOffice.shout(LifeEventTypes.EV_THREAD_END, this);
 
         synchronized (allRq) {
             allRq.remove(Thread.currentThread().getName());
@@ -191,7 +191,7 @@ public abstract class Worker implements Runnable {
      * Notification that the thread has stopped (called after 'process' function)
      */
     final private void notifyUpdated() {
-        PostOffice.shout(MTEventTypes.EV_THREAD_UPD, this);
+        PostOffice.shout(LifeEventTypes.EV_THREAD_UPD, this);
     }
 
     /**
