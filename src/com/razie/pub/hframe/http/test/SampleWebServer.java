@@ -7,24 +7,24 @@ import java.util.Properties;
 
 import com.razie.pub.hframe.base.data.HtmlRenderUtils;
 import com.razie.pub.hframe.base.data.HtmlRenderUtils.HtmlTheme;
-import com.razie.pub.hframe.draw.DrawStream;
 import com.razie.pub.hframe.http.AuthException;
 import com.razie.pub.hframe.http.LightCmdGET;
 import com.razie.pub.hframe.http.LightServer;
 import com.razie.pub.hframe.http.MyServerSocket;
 import com.razie.pub.hframe.lightsoa.HttpSoaBinding;
 import com.razie.pub.hframe.lightsoa.SoaMethod;
-import com.razie.pub.hframe.lightsoa.SoaStreamable;
 
 /**
  * a simple no threads web server with a few echo commands and a nice stylesheet, serving fils from
  * classpath only (the stylesheet)
  * 
+ * TODO decouple from lightsoa - the basic server shouldn't know about lightsoa directly
+ * 
  * @author razvanc99
  * 
  */
 public class SampleWebServer {
-    
+
     @SoaMethod(descr = "echo", args = { "msg" })
     public String echo(String msg) {
         return "echo: " + msg;
@@ -41,7 +41,7 @@ public class SampleWebServer {
     static LightCmdGET     cmdGET = new SimpleClasspathServer();
 
     public static void main(String[] argv) {
-        start (TestLightServer.PORT);
+        start(TestLightServer.PORT);
     }
 
     public static void start(int port) {
@@ -68,6 +68,11 @@ public class SampleWebServer {
         @Override
         protected URL findUrlToServe(MyServerSocket socket, String path, Properties parms)
                 throws MalformedURLException, AuthException {
+
+            if (path.equals("/") || path.equals("")) {
+                path = "/classpath/com/razie/pub/hframe/http/test/index.html";
+            }
+
             if (path.startsWith("/classpath") || path.equals("/favicon.ico")) {
                 String filenm = path;
                 if (path.equals("/favicon.ico")) {
@@ -80,7 +85,7 @@ public class SampleWebServer {
                     }
                     return null;
                 } else {
-                    filenm = path.replaceAll("/classpath", "");
+                    filenm = path.replaceFirst("/classpath", "");
                 }
 
                 URL url = null;
@@ -97,7 +102,7 @@ public class SampleWebServer {
     /** a simple, css-based theme to be used by the sample server */
     static class DarkTheme extends HtmlTheme {
         static String[] tags = {
-                                     "<head><link rel=\"stylesheet\" type=\"text/css\" href=\"/classpath/com/razie/pub/http/test/style.css\" /></head><body link=\"yellow\" vlink=\"yellow\">",
+                                     "<head><link rel=\"stylesheet\" type=\"text/css\" href=\"/classpath/com/razie/pub/hframe/http/test/style.css\" /></head><body link=\"yellow\" vlink=\"yellow\">",
                                      "</body>", "<html>", "</html>" };
 
         public String get(int what) {

@@ -1,17 +1,13 @@
 /**
- * Razvan's public code. 
- * Copyright 2008 based on Apache license (share alike) see LICENSE.txt for details.
+ * Razvan's public code. Copyright 2008 based on Apache license (share alike) see LICENSE.txt for
+ * details.
  */
 package com.razie.pubstage.comms;
 
-import java.net.URL;
-
-
 /**
- * siple string buffer
+ * simple string buffer
  * 
  * @author razvanc99
- * 
  */
 public class StrBufferChannel extends StrCommStream {
 
@@ -20,7 +16,7 @@ public class StrBufferChannel extends StrCommStream {
     /** creates a comm channel with the remote URL */
     public StrBufferChannel(String buffer, IStrFilter... f) {
         super();
-        this.buffer=buffer;
+        this.buffer = buffer;
         setFilters(f);
     }
 

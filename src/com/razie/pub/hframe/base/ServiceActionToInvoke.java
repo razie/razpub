@@ -26,8 +26,8 @@ public class ServiceActionToInvoke extends ActionToInvoke {
         this.service = service;
     }
 
-    public Object clone() {
-        return new ServiceActionToInvoke(this.target, this.service, this.actionItem, this);
+    public ServiceActionToInvoke clone() {
+        return new ServiceActionToInvoke(this.target, this.service, this.actionItem.clone(), this.toPairs());
     }
 
     public String makeActionUrl() {
@@ -35,7 +35,7 @@ public class ServiceActionToInvoke extends ActionToInvoke {
         url += service + "/";
         url += actionItem.name;
         url = addToUrl(url);
-        return LightAuth.prepareUrl(url);
+        return LightAuth.wrapUrl(url);
     }
 
     // TODO

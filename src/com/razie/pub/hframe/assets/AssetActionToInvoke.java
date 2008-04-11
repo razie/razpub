@@ -54,8 +54,8 @@ public class AssetActionToInvoke extends ActionToInvoke {
     }
 
     @Override
-    public Object clone() {
-        return new AssetActionToInvoke(this.target, this.key, this.actionItem, this);
+    public AssetActionToInvoke clone() {
+        return new AssetActionToInvoke(this.target, this.key, this.actionItem.clone(), this);
     }
 
     /**
@@ -83,7 +83,7 @@ public class AssetActionToInvoke extends ActionToInvoke {
         url += "asset/" + key.toUrlEncodedString() + "/";
         url += actionItem.name;
         url = addToUrl(url);
-        return LightAuth.prepareUrl(url);
+        return LightAuth.wrapUrl(url);
     }
 
     public static AssetActionToInvoke fromActionUrl(String url) {

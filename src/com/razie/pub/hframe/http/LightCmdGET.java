@@ -1,6 +1,6 @@
 /**
- * Razvan's public code. 
- * Copyright 2008 based on Apache license (share alike) see LICENSE.txt for details.
+ * Razvan's public code. Copyright 2008 based on Apache license (share alike) see LICENSE.txt for
+ * details.
  */
 package com.razie.pub.hframe.http;
 
@@ -23,7 +23,7 @@ import com.razie.pub.hframe.lightsoa.HttpSoaBinding;
 
 /**
  * WARNING this is a no-security whatsoever web server...will serve whatever it finds and it can, so
- * DO NOT enable this towards the internet...it's intended as a sample class
+ * DO NOT enable this towards the internet...it's intended as a sample class...see the SampleWebServer.
  * 
  * very simple http server implementation, with lightsoa hookup. It will:
  * <ul>
@@ -39,9 +39,10 @@ public class LightCmdGET extends SocketCmdListener.Impl {
      * 
      * @param path is the path the user wants: the entire url after GET
      * @return null to disable serving or the path to serve. normally you remove auth tokens
+     * @throws AuthException 
      */
-    protected String shouldServe(MyServerSocket socket, String path) {
-        return path;
+    protected String shouldServe(MyServerSocket socket, String path) throws AuthException {
+        return LightAuth.unwrapUrl(path);
     }
 
     /**
@@ -99,6 +100,7 @@ public class LightCmdGET extends SocketCmdListener.Impl {
                 boolean callThisOne = false;
 
                 if ("asset".equals(svc)) {
+                    // the asset soa binding doesn't have soamethods - must hack here
                     callThisOne = true;
                 } else
                     for (String s : c.getSoaMethods()) {
@@ -124,7 +126,7 @@ public class LightCmdGET extends SocketCmdListener.Impl {
         return reply;
     }
 
-    /** main entry point, called from the Server's Receiver */
+    /** main entry point, called from the Server's Receiver, when cmd is GET */
     public Object executeCmdServer(String cmdName, String protocol, String args, Properties parms,
             MyServerSocket socket) throws AuthException {
         logger.trace(3, "execute cmdName=", cmdName, ", protocol=", protocol, ", args=", args);
@@ -133,7 +135,7 @@ public class LightCmdGET extends SocketCmdListener.Impl {
         String path;
 
         if (args.contains(" ")) {
-            // standard HTTP call
+            // standard HTTP call: "GET PATH HTTP1.1"
             path = args.substring(0, args.indexOf(' '));
             String http = args.substring(args.indexOf(' ') + 1);
             // logger.trace(3, "GET path=", path, ", http=", http);
@@ -165,6 +167,12 @@ public class LightCmdGET extends SocketCmdListener.Impl {
         if (cmd != null) {
             String[] ss = cmd.split("/", 3);
             String svc = ss[0];
+            
+            if (ss.length < 2) {
+                throw new IllegalArgumentException(
+                        "ERR_ Path must be http://host:port/PREFIX/SERVICE/METHOD - you're missing something");
+            }
+
             cmd = ss[1];
             String cmdargs = ss.length > 2 ? ss[2] : "";
 
@@ -181,7 +189,7 @@ public class LightCmdGET extends SocketCmdListener.Impl {
                 return path.startsWith("/mutant/cmd") ? HttpHelper.httpWrap(HttpHelper.OK, reply.toString(),
                         0) : reply;
             }
-            
+
             return HttpHelper.httpWrap(HttpHelper.OK, "<NULL>", 0);
         }
 

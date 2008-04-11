@@ -1,6 +1,6 @@
 /**
- * Razvan's public code. 
- * Copyright 2008 based on Apache license (share alike) see LICENSE.txt for details.
+ * Razvan's public code. Copyright 2008 based on Apache license (share alike) see LICENSE.txt for
+ * details.
  */
 package com.razie.pub.hframe.base;
 
@@ -81,6 +81,15 @@ public class ActionItem {
 
     public URL getHelpUrl() {
         return this.helpUrl;
+    }
+
+    @Override
+    public ActionItem clone() {
+        ActionItem i = new ActionItem(this.name, this.iconProp);
+        i.label = this.label;
+        i.tooltip = this.tooltip;
+        i.helpUrl = this.helpUrl;
+        return i;
     }
 
     public String name;

@@ -14,9 +14,9 @@ import com.razie.pub.hframe.http.LightServer;
  * 
  */
 public class TestLightBase extends TestCase {
-    static LightServer server;
-    static int         PORT   = 4445;
-    static LightCmdGET cmdGET = new LightCmdGET();
+    protected static LightServer server;
+    protected static int         PORT   = 4445;
+    protected static LightCmdGET cmdGET = new LightCmdGET();
 
     public void setUp() {
         if (server == null) {

@@ -15,10 +15,12 @@ import com.razie.pub.hframe.http.LightAuth;
 import com.razie.pub.hframe.lightsoa.SoaBinding;
 import com.razie.pub.hframe.lightsoa.SoaResponse;
 
-public class TestLightSoa extends TestCase {
+/** local junit tests for lightsoa services - for full server tests, see the test in the http server */
+public class TestLocalSoa extends TestCase {
 
     public void setUp() {
-            LightAuth.init(new LightAuth("lightsoa"));
+        // simple AA based on prefix - this also adds a prefix
+        LightAuth.init(new LightAuth("lightsoa"));
     }
 
     public void testSampleService() {
@@ -58,8 +60,8 @@ public class TestLightSoa extends TestCase {
         aa.put("parm1", "a");
         aa.put("parm2", "b");
         DrawStream out = new SimpleDrawStream();
-        new SoaBinding(new SampleService(), "")
-                .invokeStreamable("concatenateStream", out, new AttrAccess.Impl(aa));
+        new SoaBinding(new SampleService(), "").invokeStreamable("concatenateStream", out,
+                new AttrAccess.Impl(aa));
         assertTrue("ab".equals(out.toString()));
     }
 
@@ -68,5 +70,5 @@ public class TestLightSoa extends TestCase {
                 new AttrAccess.Impl("parm1", "a", "parm2", "b"));
     }
 
-    static final Log logger = Log.Factory.create(TestLightSoa.class.getName());
+    static final Log logger = Log.Factory.create(TestLocalSoa.class.getName());
 }

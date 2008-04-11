@@ -16,7 +16,8 @@ import com.razie.pub.hframe.http.LightAuth;
 import com.razie.pub.hframe.lightsoa.SoaBinding;
 import com.razie.pub.hframe.lightsoa.SoaResponse;
 
-public class TestLightSoaAssets extends TestCase {
+/** local junit tests for lightsoa assets - for full server tests, see the test in the http server */
+public class TestLocalSoaAssets extends TestCase {
     public static AssetKey PLAYERKEY = new AssetKey("raz.test.Player", "winfile");
     public static AssetKey MOVIEKEY  = new AssetKey("raz.test.Movie", "300.avi");
 
@@ -86,5 +87,5 @@ public class TestLightSoaAssets extends TestCase {
                 new AttrAccess.Impl("parm1", "a", "parm2", "b"));
     }
 
-    static final Log logger = Log.Factory.create(TestLightSoaAssets.class.getName());
+    static final Log logger = Log.Factory.create(TestLocalSoaAssets.class.getName());
 }

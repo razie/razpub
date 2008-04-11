@@ -1,6 +1,6 @@
 /**
- * Razvan's public code. 
- * Copyright 2008 based on Apache license (share alike) see LICENSE.txt for details.
+ * Razvan's public code. Copyright 2008 based on Apache license (share alike) see LICENSE.txt for
+ * details.
  */
 package com.razie.pub.hframe.draw;
 
@@ -38,7 +38,7 @@ public class DrawTable extends StreamableContainer.Impl implements Drawable, Str
     private int         lastAddRow = -1;
     private int         lastAddCol = -1;
 
-    public HorizAlign   horizAlign = HorizAlign.LEFT;
+    public HorizAlign   horizAlign = HorizAlign.CENTER;
 
     public static enum HorizAlign {
         LEFT, CENTER, RIGHT
@@ -53,10 +53,11 @@ public class DrawTable extends StreamableContainer.Impl implements Drawable, Str
         this.prefRows = prefRows;
     }
 
-        /** shortcut to render self - don't like controllers that much */
-        public Object render(Technology t, DrawStream stream) {
-            return Renderer.Helper.draw(this, t, stream);
-        }
+    /** shortcut to render self - don't like controllers that much */
+    public Object render(Technology t, DrawStream stream) {
+        return Renderer.Helper.draw(this, t, stream);
+    }
+
     public Renderer getRenderer(Technology technology) {
         return new MyRenderer();
     }
@@ -82,7 +83,12 @@ public class DrawTable extends StreamableContainer.Impl implements Drawable, Str
         }
     }
 
-    /** add an object - table is arranged as objects are added based on prefRows/prefCols */
+    /**
+     * add an object - table is arranged as objects are added based on prefRows/prefCols
+     * 
+     * TODO WARNING: the table will actually render when a row is full, not every time you call this -
+     * SCREWY side effects
+     */
     public void write(Object o) {
         DrawList row = null;
 
@@ -123,7 +129,7 @@ public class DrawTable extends StreamableContainer.Impl implements Drawable, Str
                 this.ownerStream.renderElement(this, row);
             }
         }
-        
+
         this.wroteElements = true;
         super.close();
     }
@@ -153,7 +159,8 @@ public class DrawTable extends StreamableContainer.Impl implements Drawable, Str
                     for (Object e : list.getList()) {
                         s += "<td";
                         String width = table.packed ? "" : "width=200";
-                        s += table.prefCols > 0 ? " align=center " + width + ">" : ">";
+                        s += table.prefCols > 0 ? " align=" + table.horizAlign.toString().toLowerCase() + " "
+                                + width + ">" : ">";
                         s += Renderer.Helper.draw(e, Technology.HTML, stream);
                         s += "</td>";
                     }
@@ -163,7 +170,7 @@ public class DrawTable extends StreamableContainer.Impl implements Drawable, Str
                     s += "</td>";
                 }
 
-                s += "</tr>";
+                s += "</tr>\n";
                 return s;
             } else {
                 String s = "";
@@ -182,7 +189,7 @@ public class DrawTable extends StreamableContainer.Impl implements Drawable, Str
 
         public Object renderFooter(Object o, Technology technology, DrawStream stream) {
             if (Technology.HTML.equals(technology)) {
-                return "</table>";
+                return "</table>\n";
             }
 
             return "?";
@@ -191,7 +198,7 @@ public class DrawTable extends StreamableContainer.Impl implements Drawable, Str
         public Object renderHeader(Object o, Technology technology, DrawStream stream) {
             DrawTable table = (DrawTable) o;
             if (Technology.HTML.equals(technology)) {
-                return "<table valign=center" + table.htmlWidth + ">";
+                return "<table valign=center" + table.htmlWidth + ">\n";
             }
 
             return "?";

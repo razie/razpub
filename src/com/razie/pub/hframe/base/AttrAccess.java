@@ -1,6 +1,6 @@
 /**
- * Razvan's public code. 
- * Copyright 2008 based on Apache license (share alike) see LICENSE.txt for details.
+ * Razvan's public code. Copyright 2008 based on Apache license (share alike) see LICENSE.txt for
+ * details.
  */
 package com.razie.pub.hframe.base;
 
@@ -18,9 +18,8 @@ import com.razie.pub.hframe.base.data.HttpUtils;
  * simple attribute access interface and implementation - a bunch of name-value pairs with many
  * different constructors - everything these days has attributes.
  * 
- * it is used throughout to access parms
+ * it is used throughout to access parms $
  * 
- * $
  * @author razvanc99
  * 
  */
@@ -48,6 +47,9 @@ public interface AttrAccess {
 
     /** some random xml format */
     public String toXml();
+
+    /** same pairs format name,value,name,value... */
+    public Object[] toPairs();
 
     public JSONObject toJson(JSONObject obj);
 
@@ -142,6 +144,20 @@ public interface AttrAccess {
                 throw new RuntimeException(e);
             }
             return obj;
+        }
+
+        /** same pairs format name,value,name,value... */
+        public Object[] toPairs() {
+            int size = this.parms == null ? 0 : this.parms.size();
+            Object[] ret = new Object[size * 2];
+
+            int i = 0;
+            for (String name : this.getPopulatedAttr()) {
+                ret[i] = name;
+                ret[i + 1] = getAttr(name);
+                i += 2;
+            }
+            return ret;
         }
 
         /** TODO implement */

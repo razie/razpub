@@ -74,8 +74,8 @@ public class ActionToInvoke extends AttrAccess.Impl implements AttrAccess, Drawa
         return Renderer.Helper.draw(this, t, stream);
     }
 
-    public Object clone() {
-        return new ActionToInvoke(this.target, this.actionItem, this);
+    public ActionToInvoke clone() {
+        return new ActionToInvoke(this.target, this.actionItem.clone(), this.toPairs());
     }
 
     /** should not tie this to actual technology, but URLs are the most common form of invoking actions */
@@ -83,7 +83,7 @@ public class ActionToInvoke extends AttrAccess.Impl implements AttrAccess, Drawa
         String url = target.endsWith("/") ? target : target + "/";
         url += actionItem.name;
         url = addToUrl(url);
-        return LightAuth.prepareUrl(url);
+        return LightAuth.wrapUrl(url);
     }
 
     public static ActionToInvoke fromActionUrl(String url) {

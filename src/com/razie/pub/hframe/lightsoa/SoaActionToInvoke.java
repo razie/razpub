@@ -27,7 +27,7 @@ public class SoaActionToInvoke extends ActionToInvoke {
         this(Agents.agent(Agents.getMyHostName()).url, service, item, pairs);
     }
 
-    public Object clone() {
-        return new SoaActionToInvoke(this.url, this.service, this.actionItem, this);
+    public SoaActionToInvoke clone() {
+        return new SoaActionToInvoke(this.url, this.service, this.actionItem.clone(), this.toPairs());
     }
 }

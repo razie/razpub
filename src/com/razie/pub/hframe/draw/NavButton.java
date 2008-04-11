@@ -17,28 +17,23 @@ import com.razie.pub.hframe.resources.RazIconRes;
  * @version $Id$
  * 
  */
-public class NavButton extends Drawable.Impl implements Drawable {
+public class NavButton extends NavLink implements Drawable {
 
-    ActionItem      action;
-    String          link;
     private boolean tiny = false;
 
     /** display a, execute link */
     public NavButton(ActionItem a, String link) {
-        this.action = a;
-        this.link = link;
+        super(a,link);
     }
 
     /** command is for both display and execution */
     public NavButton(ActionToInvoke a) {
-        this.action = a.actionItem;
-        this.link = a.makeActionUrl();
+        super(a);
     }
 
     /** display item, execute a */
     public NavButton(ActionItem item, ActionToInvoke a) {
-        this.action = item;
-        this.link = a.makeActionUrl();
+        super(item,a);
     }
 
     public Renderer getRenderer(Technology technology) {

@@ -16,9 +16,7 @@ import java.util.List;
  * possible to the user. organizing the code in this manner enforces that performance to the
  * end-user is the most important criteria.
  * 
- * $
  * @author razvanc99
- * 
  */
 public interface ObjectStream {
     public void write(Object o);

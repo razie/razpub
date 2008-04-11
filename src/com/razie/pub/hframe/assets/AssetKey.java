@@ -1,6 +1,6 @@
 /**
- * Razvan's public code. 
- * Copyright 2008 based on Apache license (share alike) see LICENSE.txt for details.
+ * Razvan's public code. Copyright 2008 based on Apache license (share alike) see LICENSE.txt for
+ * details.
  */
 package com.razie.pub.hframe.assets;
 
@@ -163,6 +163,12 @@ public class AssetKey implements Serializable {
 
     public void setEntityBriefDescription(String desc) {
         entityBriefDescription = desc;
+    }
+
+    public AssetKey clone() {
+        AssetKey k = new AssetKey(this.type, this.id, this.location);
+        k.entityBriefDescription = this.entityBriefDescription;
+        return k;
     }
 
     /**

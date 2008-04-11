@@ -1,7 +1,7 @@
-//==========================================================================
+// ==========================================================================
 // $Id: Svc.java,v 1.63 2005/04/01 16:22:12 davidx Exp $
 // (@) Copyright Sigma Systems (Canada) Inc.
-//==========================================================================
+// ==========================================================================
 package com.razie.pub.hframe.http.test;
 
 import java.util.Properties;
@@ -12,9 +12,8 @@ import com.razie.pub.hframe.http.MyServerSocket;
 import com.razie.pub.hframe.http.SocketCmdListener;
 
 /**
- * sample command listener implementing the echo command, as a simple url mapping 
- * 
- * $
+ * sample command listener implementing the echo command, as a simple url mapping
+ *  $
  * @author razvanc99
  * 
  */
