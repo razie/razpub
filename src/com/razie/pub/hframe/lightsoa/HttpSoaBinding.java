@@ -11,6 +11,7 @@ import com.razie.pub.hframe.base.log.Log;
 import com.razie.pub.hframe.draw.DrawStream;
 import com.razie.pub.hframe.draw.HttpDrawStream;
 import com.razie.pub.hframe.draw.JsonDrawStream;
+import com.razie.pub.hframe.draw.MimeDrawStream;
 import com.razie.pub.hframe.draw.SimpleDrawStream;
 import com.razie.pub.hframe.draw.Renderer.Technology;
 import com.razie.pub.hframe.http.MyServerSocket;
@@ -121,7 +122,7 @@ public class HttpSoaBinding extends SoaBinding {
 
             actionName = ss[0];
             cmdargs = ss.length > 1 ? ss[1] : null;
-            
+
             otoi = BaseAssetMgr.getAsset(key);
         }
 
@@ -137,19 +138,23 @@ public class HttpSoaBinding extends SoaBinding {
             DrawStream out = null;
 
             if (mdesc.auth().length() > 0) {
-
+//TODO check auth
             }
 
             if (methods.get(actionName).getAnnotation(SoaStreamable.class) != null) {
-                out = makeDrawStream(protocol, socket);
+                SoaStreamable nh = methods.get(actionName).getAnnotation(SoaStreamable.class);
+                if (nh.streamMimeType().length() > 0) {
+                        out = makeMimeDrawStream(socket, nh.streamMimeType());
+                } else
+                    out = makeDrawStream(socket, protocol);
                 resp = invokeStreamable(otoi, actionName, out, args);
             } else {
                 resp = invoke(otoi, actionName, args);
             }
 
             if (methods.get(actionName).getAnnotation(SoaNotHtml.class) != null) {
-                if (methods.get(actionName).getAnnotation(SoaStreamable.class) == null) {
-                    throw new UnsupportedOperationException("can't have a streamable nothtml");
+                if (methods.get(actionName).getAnnotation(SoaStreamable.class) != null) {
+                    throw new IllegalArgumentException("Cannot have a streamable nothtml");
                 }
                 // no special formatting, probably defaults to toString()
                 return resp;
@@ -158,7 +163,7 @@ public class HttpSoaBinding extends SoaBinding {
             if (resp != null) {
                 // maybe stream already created for a streamable that returned a Drawable?
                 // unbelievable...
-                out = out != null ? out : makeDrawStream(protocol, socket);
+                out = out != null ? out : makeDrawStream(socket, protocol);
                 out.write(resp);
                 out.close();
                 return new StreamConsumedReply();
@@ -174,15 +179,30 @@ public class HttpSoaBinding extends SoaBinding {
         return "HTTP_SOA_UNKNOWNACTION: " + actionName;
     }
 
-    private DrawStream makeDrawStream(String protocol, MyServerSocket socket) {
+    private DrawStream makeDrawStream(MyServerSocket socket, String protocol) {
         DrawStream out;
         try {
             if ("http".equals(protocol))
                 out = new HttpDrawStream(socket);
             else if ("json".equals(protocol))
-                out = new JsonDrawStream(socket.getOutputStream());
+                out = new JsonDrawStream(socket);
             else
                 out = new SimpleDrawStream(Technology.TEXT, socket.getOutputStream());
+        } catch (IOException e2) {
+            throw new RuntimeException(e2);
+        }
+        return out;
+    }
+
+    private DrawStream makeMimeDrawStream(MyServerSocket socket, String mime) {
+        DrawStream out;
+        try {
+            if (HttpDrawStream.MIME_TEXT_HTML.equals(mime))
+                out = new HttpDrawStream(socket);
+            else if (JsonDrawStream.MIME_APPLICATION_JSON.equals(mime))
+                out = new JsonDrawStream(socket);
+            else
+                out = new MimeDrawStream(socket.getOutputStream(), mime);
         } catch (IOException e2) {
             throw new RuntimeException(e2);
         }

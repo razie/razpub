@@ -21,16 +21,12 @@ import com.razie.pub.hframe.http.MyServerSocket;
  * 
  */
 public class HttpDrawStream extends com.razie.pub.hframe.draw.DrawStream.DrawStreamWrapper {
-    private MyServerSocket socket;
     private boolean        wroteHeader = false;
-
-    public MyServerSocket getSocket() {
-        return socket;
-    }
+    public static final String MIME_TEXT_HTML = "text/html";
 
     public HttpDrawStream(MyServerSocket socket) throws IOException {
         super(new SimpleDrawStream(Technology.HTML, socket.getOutputStream()));
-        this.socket = socket;
+        this.setEndPoint(socket);
     }
 
     public HttpDrawStream(OutputStream socket) throws IOException {

@@ -1,6 +1,6 @@
 /**
- * Razvan's public code. 
- * Copyright 2008 based on Apache license (share alike) see LICENSE.txt for details.
+ * Razvan's public code. Copyright 2008 based on Apache license (share alike) see LICENSE.txt for
+ * details.
  */
 package com.razie.pub.hframe.draw;
 
@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.razie.pub.hframe.draw.Renderer.Technology;
+import com.razie.pubstage.comms.CommChannel.ChannelEndPoint;
 
 /**
  * trying to setup a stream drawing framework. this could also be called DrawCanvas or panel in
@@ -29,11 +30,21 @@ import com.razie.pub.hframe.draw.Renderer.Technology;
  * 
  * @author razvanc99
  * @version $Id$
+ * @param <EndPoint>
  * 
  */
 public abstract class DrawStream implements DrawAccumulator {
-    List<Element> elements = new ArrayList<Element>();
-    protected Technology    technology;
+    List<Element>             elements = new ArrayList<Element>();
+    protected Technology      technology;
+    private ChannelEndPoint endPoint;
+
+    public ChannelEndPoint getEndPoint() {
+        return endPoint;
+    }
+
+    protected void setEndPoint(ChannelEndPoint ep) {
+        this.endPoint = ep;
+    }
 
     /**
      * objects are rendered using this technology...you can change the technology, but make sure you
@@ -64,7 +75,7 @@ public abstract class DrawStream implements DrawAccumulator {
      * 
      * @return if it switched
      */
-    public boolean switchTechnology(Technology t) {
+    protected boolean switchTechnology(Technology t) {
         this.technology = t;
         return true;
     }
@@ -214,6 +225,12 @@ public abstract class DrawStream implements DrawAccumulator {
         public DrawStreamWrapper(DrawStream proxied) throws IOException {
             super(proxied.technology);
             this.proxied = proxied;
+            super.setEndPoint(proxied.getEndPoint());
+        }
+
+        protected void setEndPoint(ChannelEndPoint ep) {
+            this.proxied.setEndPoint(ep);
+            super.setEndPoint(ep);
         }
 
         /** add a completed object to the stream */
@@ -262,7 +279,7 @@ public abstract class DrawStream implements DrawAccumulator {
         }
 
         @Override
-        public boolean switchTechnology(Technology t) {
+        protected boolean switchTechnology(Technology t) {
             if (proxied.switchTechnology(t)) {
                 this.technology = t;
                 return true;

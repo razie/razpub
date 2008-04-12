@@ -20,13 +20,21 @@ import com.razie.pub.hframe.lightsoa.HttpSoaBinding;
  */
 public class TestLightServerSoa extends TestLightBase {
 
+    SampleEchoLightSoaService echo;
+
+    public void setUp() {
+        super.setUp();
+
+        if (echo == null) {
+            // that's how you start/mount a service
+            SampleEchoLightSoaService echo = new SampleEchoLightSoaService();
+            HttpSoaBinding soa = new HttpSoaBinding(echo, "echoservice");
+            cmdGET.registerSoa(soa);
+        }
+    }
+
     /** test the SOA simple echo */
     public void testSoaEcho() throws IOException, InterruptedException {
-        // start server with echo impl
-        SampleEchoLightSoaService echo = new SampleEchoLightSoaService();
-        HttpSoaBinding soa = new HttpSoaBinding(echo, "echoservice");
-        cmdGET.registerSoa(soa);
-
         // send echo command
         Socket remote = new Socket("localhost", PORT);
         PrintStream out = new PrintStream(remote.getOutputStream());
@@ -40,7 +48,7 @@ public class TestLightServerSoa extends TestLightBase {
             if (echo.input != null)
                 break;
         }
-        cmdGET.removeSoa(soa);
+
         assertTrue(echo.input.contains("samurai"));
     }
 
@@ -49,18 +57,12 @@ public class TestLightServerSoa extends TestLightBase {
      * server)
      */
     public void testSoaEchoUrl() throws IOException, InterruptedException {
-        // start server with echo impl
-        SampleEchoLightSoaService echo = new SampleEchoLightSoaService();
-        HttpSoaBinding soa = new HttpSoaBinding(echo, "echoservice");
-        cmdGET.registerSoa(soa);
-
         // send echo command
         URL url = new URL("http://localhost:" + PORT + "/lightsoa/echoservice/echo?msg=samurai");
         BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
         String result = in.readLine();
         in.close();
 
-        cmdGET.removeSoa(soa);
         assertTrue(result.contains("samurai"));
     }
 
@@ -68,17 +70,11 @@ public class TestLightServerSoa extends TestLightBase {
      * test the SOA simple echo via the ActionToInvoke
      */
     public void testSoaEchoAction() throws IOException, InterruptedException {
-        // start server with echo impl
-        SampleEchoLightSoaService echo = new SampleEchoLightSoaService();
-        HttpSoaBinding soa = new HttpSoaBinding(echo, "echoservice");
-        cmdGET.registerSoa(soa);
-
         // send echo command
         ActionToInvoke action = new ActionToInvoke("http://localhost:" + PORT + "/", new ActionItem(
                 "echoservice/echo"), "msg", "samurai");
         String result = (String) action.exec(null);
 
-        cmdGET.removeSoa(soa);
         assertTrue(result.contains("samurai"));
     }
 

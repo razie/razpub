@@ -1,6 +1,6 @@
 /**
- * Razvan's public code. 
- * Copyright 2008 based on Apache license (share alike) see LICENSE.txt for details.
+ * Razvan's public code. Copyright 2008 based on Apache license (share alike) see LICENSE.txt for
+ * details.
  */
 package com.razie.pub.hframe.http;
 
@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+
+import com.razie.pubstage.comms.CommChannel.ChannelEndPoint;
 
 /**
  * a wrapper for connections (from/to clients) so i can add functionality as i please and not depend
@@ -17,7 +19,7 @@ import java.net.Socket;
  * @version $Id$
  * 
  */
-public class MyServerSocket {
+public class MyServerSocket extends ChannelEndPoint {
     public Socket server;
 
     public MyServerSocket(Socket s) {
@@ -32,11 +34,16 @@ public class MyServerSocket {
         return server.getOutputStream();
     }
 
-    public String client(){
+    public String client() {
         return server.getInetAddress().getHostAddress();
     }
 
     public void close() throws IOException {
         server.close();
+    }
+
+    @Override
+    public String getIp() {
+        return server.getInetAddress().getHostAddress();
     }
 }

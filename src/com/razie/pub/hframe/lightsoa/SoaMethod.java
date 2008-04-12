@@ -1,10 +1,10 @@
-//==========================================================================
+// ==========================================================================
 // FILE INFO
 // $Id: ScriptCallback.java,v 1.7 2007-09-26 16:14:58 sorinelc Exp $
 //
 // REVISION HISTORY
 // * Based on CVS log
-//==========================================================================
+// ==========================================================================
 package com.razie.pub.hframe.lightsoa;
 
 import java.lang.annotation.Documented;
@@ -37,6 +37,13 @@ import java.lang.annotation.Target;
  * since the method doesn't know which binding will wrap it.
  * 
  * If a protocol (UPNP) supports returning mutliple arguments, please return a SoaResponse
+ * 
+ * <b>Annotate with {@link SoaStreamable} if your method can stream a longer reply back. OR if you
+ * need to change the reply mime-type and processing
+ * 
+ * <b>Annotate with {@link SoaNotHtml} if your method's return value should not be formatted as
+ * html. This should not be used and may in fact be rmeoved, since you can just make the method
+ * SoaStreamable.
  * 
  * @author razvanc99
  */

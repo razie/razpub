@@ -24,7 +24,12 @@ public class CommChannel {
      * abstract logical constructs and have nothing to do with phisical
      * node/hardware/software/services/network deployment.
      */
-    public static class ChannelEndPoint {
+    public static abstract class ChannelEndPoint {
+        /**
+         * today, even local host has an IP address - not enought ouniquely identify it, but it's
+         * gotta have one...
+         */
+        public abstract String getIp();
     }
 
     /**
@@ -43,6 +48,11 @@ public class CommChannel {
             super();
             this.url = url;
         }
+
+        @Override
+        public String getIp() {
+            throw new UnsupportedOperationException();
+        }
     }
 
     /**
@@ -60,6 +70,11 @@ public class CommChannel {
         public MutantChannelEndPoint(URL url) {
             super();
             this.url = url;
+        }
+
+        @Override
+        public String getIp() {
+            throw new UnsupportedOperationException();
         }
     }
 }

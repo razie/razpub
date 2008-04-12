@@ -38,6 +38,8 @@ public class HttpAssetSoaBinding extends HttpSoaBinding {
         AssetKey key = AssetKey.fromEntityUrl(HttpUtils.fromUrlEncodedString(actionName));
 
         HttpSoaBinding binding = bindings.get(key.getType());
+        if (binding == null)
+            throw new IllegalArgumentException("ERR_HTTPSOAASSET type is not bound: " + key.getType());
         return binding.executeCmdServer(actionName, protocol, cmdargs, parms, socket);
     }
 

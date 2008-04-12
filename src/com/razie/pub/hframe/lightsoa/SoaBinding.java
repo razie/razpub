@@ -80,9 +80,13 @@ public class SoaBinding {
         // setup the parms
         List args = new ArrayList();
         SoaMethod mdesc = toinvoke.getAnnotation(SoaMethod.class);
-        for (String arg : mdesc.args()) {
-            args.add(inparms.getAttr(arg));
-        }
+
+        if (toinvoke.getAnnotation(SoaAllparms.class) != null) {
+            args.add(inparms);
+        } else
+            for (String arg : mdesc.args()) {
+                args.add(inparms.getAttr(arg));
+            }
 
         if (toinvoke.getAnnotation(SoaStreamable.class) != null) {
         }
@@ -140,9 +144,12 @@ public class SoaBinding {
         // the first argument is a stream and not in the description
         args.add(stream);
 
-        for (String arg : mdesc.args()) {
-            args.add(inparms.getAttr(arg));
-        }
+        if (toinvoke.getAnnotation(SoaAllparms.class) != null) {
+            args.add(inparms);
+        } else
+            for (String arg : mdesc.args()) {
+                args.add(inparms.getAttr(arg));
+            }
 
         // actual invocation
         Object res = null;
