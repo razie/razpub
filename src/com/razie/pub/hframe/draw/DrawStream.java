@@ -34,8 +34,8 @@ import com.razie.pubstage.comms.CommChannel.ChannelEndPoint;
  * 
  */
 public abstract class DrawStream implements DrawAccumulator {
-    List<Element>             elements = new ArrayList<Element>();
-    protected Technology      technology;
+    List<Element>           elements = new ArrayList<Element>();
+    protected Technology    technology;
     private ChannelEndPoint endPoint;
 
     public ChannelEndPoint getEndPoint() {
@@ -61,8 +61,10 @@ public abstract class DrawStream implements DrawAccumulator {
 
     /** add a completed object to the stream */
     public void write(Object d) {
-        elements.add(new Element(d, Element.State.WAITING));
-        close(d);
+        if (d != null) {
+            elements.add(new Element(d, Element.State.WAITING));
+            close(d);
+        }
     }
 
     public Technology getTechnology() {
@@ -217,7 +219,7 @@ public abstract class DrawStream implements DrawAccumulator {
      * @version $Id$
      * 
      */
-    public static class DrawStreamWrapper extends DrawStream {
+    public abstract static class DrawStreamWrapper extends DrawStream {
 
         /** the actual output socket */
         protected DrawStream proxied;

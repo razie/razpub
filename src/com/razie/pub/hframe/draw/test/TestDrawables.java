@@ -7,8 +7,9 @@ package com.razie.pub.hframe.draw.test;
 import junit.framework.TestCase;
 
 import com.razie.pub.hframe.base.log.Log;
-import com.razie.pub.hframe.draw.Drawable;
 import com.razie.pub.hframe.draw.Renderer;
+import com.razie.pub.hframe.draw.widgets.DrawError;
+import com.razie.pub.hframe.draw.widgets.ToString;
 
 public class TestDrawables extends TestCase {
 
@@ -17,7 +18,7 @@ public class TestDrawables extends TestCase {
 
     public void testToString() {
         // nasty way to get "13"... :))
-        String s = (String) new Drawable.ToString(new Integer(13)).render(Renderer.Technology.ANY, null);
+        String s = (String) new ToString(new Integer(13)).render(Renderer.Technology.ANY, null);
         assertTrue("13".equals(s));
     }
 
@@ -27,7 +28,7 @@ public class TestDrawables extends TestCase {
             if ("gg".equals(s))
                 throw new IllegalArgumentException("you'd wish...");
         } catch (Exception e) {
-            String s = (String) new Drawable.DrawError(e).render(Renderer.Technology.ANY, null);
+            String s = (String) new DrawError(e).render(Renderer.Technology.ANY, null);
             assertTrue(s.contains("IllegalArgumentException"));
             return;
         }

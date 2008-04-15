@@ -17,8 +17,8 @@ import java.util.Properties;
 import com.razie.pub.hframe.base.data.HttpUtils;
 import com.razie.pub.hframe.base.log.CommRtException;
 import com.razie.pub.hframe.base.log.Log;
-import com.razie.pub.hframe.draw.Drawable.DrawError;
 import com.razie.pub.hframe.draw.Renderer.Technology;
+import com.razie.pub.hframe.draw.widgets.DrawError;
 import com.razie.pub.hframe.lightsoa.HttpSoaBinding;
 
 /**

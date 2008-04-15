@@ -1,6 +1,6 @@
 /**
- * Razvan's public code. 
- * Copyright 2008 based on Apache license (share alike) see LICENSE.txt for details.
+ * Razvan's public code. Copyright 2008 based on Apache license (share alike) see LICENSE.txt for
+ * details.
  */
 package com.razie.pub.hframe.base.data;
 
@@ -27,8 +27,15 @@ public class HtmlRenderUtils {
     }
 
     /** wrap contents as an html document */
-    public static String htmlHeader() {
-        return theme.get(HtmlTheme.HEADSTART) + theme.get(HtmlTheme.BODYSTART);
+    public static String htmlHeader(String... metas) {
+        String s = theme.get(HtmlTheme.HEADSTART);
+        if (metas.length > 0) {
+            s += "<head>";
+            for (String m : metas)
+                s += m;
+            s += "</head>";
+        }
+        return s + theme.get(HtmlTheme.BODYSTART);
     }
 
     /** wrap contents as an html document */

@@ -194,4 +194,35 @@ public interface AttrAccess {
         }
     }
 
+    /** hierarchical implementation */
+    public class TreeImpl extends Impl {
+        AttrAccess parent;
+
+        /** dummy */
+        public TreeImpl(AttrAccess parent) {
+            super();
+            this.parent = parent;
+        };
+
+        /**
+         * build from sequence of parm/value pairs or other stuff
+         * 
+         * @parm pairs are pais of name/value, i.e. "car", "lexus" OR a Properties, OR another
+         *       AttrAccess OR a Map<String,String>
+         */
+        public TreeImpl(AttrAccess parent, Object... pairs) {
+            this(parent);
+            this.setAttr(pairs);
+        }
+
+        public Object getAttr(String name) {
+            Object o = this.parms != null ? this.parms.get(name) : null;
+            return o != null ? o : (parent != null ? parent.getAttr(name) : null);
+        }
+
+        public boolean isPopulated(String name) {
+            boolean b = this.parms != null && this.parms.containsKey(name);
+            return b ? true : (parent != null ? parent.isPopulated(name) : false);
+        }
+    }
 }

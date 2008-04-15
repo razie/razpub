@@ -1,11 +1,13 @@
 /**
- * Razvan's public code. 
- * Copyright 2008 based on Apache license (share alike) see LICENSE.txt for details.
+ * Razvan's public code. Copyright 2008 based on Apache license (share alike) see LICENSE.txt for
+ * details.
  */
 package com.razie.pub.hframe.draw;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.razie.pub.hframe.base.data.HtmlRenderUtils;
 import com.razie.pub.hframe.draw.Renderer.Technology;
@@ -21,7 +23,8 @@ import com.razie.pub.hframe.http.MyServerSocket;
  * 
  */
 public class HttpDrawStream extends com.razie.pub.hframe.draw.DrawStream.DrawStreamWrapper {
-    private boolean        wroteHeader = false;
+    private boolean            wroteHeader    = false;
+    private List<String>       metas          = null;
     public static final String MIME_TEXT_HTML = "text/html";
 
     public HttpDrawStream(MyServerSocket socket) throws IOException {
@@ -58,7 +61,11 @@ public class HttpDrawStream extends com.razie.pub.hframe.draw.DrawStream.DrawStr
                         "application/json").getBytes());
             } else if (this.technology.equals(Technology.HTML)) {
                 ((SimpleDrawStream) proxied).writeBytes(HttpHelper.httpHeader(HttpHelper.OK).getBytes());
-                ((SimpleDrawStream) proxied).writeBytes(HtmlRenderUtils.htmlHeader().getBytes());
+                if (this.metas == null)
+                    ((SimpleDrawStream) proxied).writeBytes(HtmlRenderUtils.htmlHeader().getBytes());
+                else
+                    ((SimpleDrawStream) proxied).writeBytes(HtmlRenderUtils.htmlHeader(
+                            this.metas.toArray(new String[0])).getBytes());
             }
         }
     }
@@ -71,5 +78,11 @@ public class HttpDrawStream extends com.razie.pub.hframe.draw.DrawStream.DrawStr
             ((SimpleDrawStream) proxied).writeBytes(HtmlRenderUtils.htmlFooter().getBytes());
         }
         super.close();
+    }
+
+    public void addMeta(String string) {
+        if (this.metas == null)
+            this.metas = new ArrayList<String>();
+        this.metas.add(string);
     }
 }

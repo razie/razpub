@@ -26,7 +26,8 @@ public class Agents {
     public static boolean              testing  = false;
     public static final String         TESTHOST = "TEST-host";
     private static Agents              singleton;
-    public static String homeNetPrefix;
+    public static String               homeNetPrefix;
+    private static AgentHandle         me       = null;
 
     private Agents() {
         byName = new HashMap<String, AgentHandle>();
@@ -36,6 +37,10 @@ public class Agents {
         if (singleton == null)
             singleton = new Agents();
         return singleton;
+    }
+
+    public static AgentHandle me() {
+        return me;
     }
 
     /** @return my host name */
@@ -50,7 +55,8 @@ public class Agents {
 
     /** @return the URL for the mentioned remote agent, in the form "http://IP:PORT" */
     public static AgentHandle agent(String remote) {
-        return instance().agentImpl(remote);
+        AgentHandle ah = instance().agentImpl(remote);
+        return ah;
     }
 
     /** TODO fix this - should not get by IP since there can be many at the same ip */
@@ -61,6 +67,8 @@ public class Agents {
     /** TODO remove - this is temporary */
     public static void add(AgentHandle remote) {
         instance().addImpl(remote);
+        if (remote.name.equals(getMyHostName()))
+            me = remote;
     }
 
     public String getMyHostNameImpl() throws RuntimeException {
@@ -91,7 +99,8 @@ public class Agents {
             }
         }
 
-        Log.logThis("ERR_AGENTBYIP_NOTFOUND - you may get a null pointer about now. ip=" + ip);
+        Log.logThis("ERR_AGENTBYIP_NOTFOUND - you may get a null pointer about now. ip=" + ip
+                + byName.values());
         return null;
     }
 

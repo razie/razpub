@@ -24,4 +24,8 @@ public class AgentHandle {
         this.port = port;
         this.url = url;
     }
+    
+    public String toString () {
+        return name+":"+hostname+":"+ip+":"+port+":"+url;
+    }
 }

@@ -14,7 +14,7 @@ import com.razie.pub.hframe.base.data.HttpUtils;
 import com.razie.pub.hframe.base.data.HtmlRenderUtils.HtmlTheme;
 import com.razie.pub.hframe.draw.DrawStream;
 import com.razie.pub.hframe.draw.DrawTable;
-import com.razie.pub.hframe.draw.NavLink;
+import com.razie.pub.hframe.draw.widgets.NavLink;
 import com.razie.pub.hframe.http.AuthException;
 import com.razie.pub.hframe.http.LightCmdGET;
 import com.razie.pub.hframe.http.LightServer;

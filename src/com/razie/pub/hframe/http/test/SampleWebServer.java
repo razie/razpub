@@ -7,12 +7,16 @@ import java.util.Properties;
 
 import com.razie.pub.hframe.base.data.HtmlRenderUtils;
 import com.razie.pub.hframe.base.data.HtmlRenderUtils.HtmlTheme;
+import com.razie.pub.hframe.draw.DrawStream;
+import com.razie.pub.hframe.draw.test.SampleDrawable;
 import com.razie.pub.hframe.http.AuthException;
 import com.razie.pub.hframe.http.LightCmdGET;
 import com.razie.pub.hframe.http.LightServer;
 import com.razie.pub.hframe.http.MyServerSocket;
 import com.razie.pub.hframe.lightsoa.HttpSoaBinding;
 import com.razie.pub.hframe.lightsoa.SoaMethod;
+import com.razie.pub.hframe.lightsoa.SoaStreamable;
+import com.razie.pub.hframe.resources.RazIconRes;
 
 /**
  * a simple no threads web server with a few echo commands and a nice stylesheet, serving fils from
@@ -30,17 +34,27 @@ public class SampleWebServer {
         return "echo: " + msg;
     }
 
-    @SoaMethod(descr = "die")
+    @SoaMethod(descr = "ask the server to die")
     public String die() {
         server.shutdown();
         return "dying...";
+    }
+
+    @SoaMethod(descr = "demo for drawing models")
+    @SoaStreamable
+    public void sampleDrawable(DrawStream out) {
+        SampleDrawable d = new SampleDrawable();
+        Object ret = d.render(out.getTechnology(), out);
+        if (ret != null)
+            out.write(ret);
     }
 
     static LightServer     server;
     static SampleWebServer singleton;
     static LightCmdGET     cmdGET = new SimpleClasspathServer();
 
-    public static void main(String[] argv) {
+    public static void main(String[] argv) throws IOException {
+        RazIconRes.init();
         start(TestLightServer.PORT);
     }
 

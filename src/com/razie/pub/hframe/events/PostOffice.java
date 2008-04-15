@@ -4,6 +4,8 @@
  */
 package com.razie.pub.hframe.events;
 
+import java.lang.ref.WeakReference;
+import java.util.Iterator;
 import java.util.List;
 
 import com.razie.pub.hframe.base.data.MemDb;
@@ -11,7 +13,8 @@ import com.razie.pub.hframe.base.data.MemDb;
 /**
  * very simple event dispatcher
  * 
- * TODO detailed docs
+ * NOTE that listeners are proxied with WeakReference and will be collected - if you want them to
+ * live, keep them somewhere, they're yours, not mine
  * 
  * TODO make singleton/factory to allow user-filtering in custom implementations
  * 
@@ -19,7 +22,7 @@ import com.razie.pub.hframe.base.data.MemDb;
  * 
  */
 public class PostOffice {
-    static MemDb<String, EvListener> listeners = new MemDb<String, EvListener>();
+    static MemDb<String, WeakReference<EvListener>> listeners = new MemDb<String, WeakReference<EvListener>>();
 
     /**
      * main event notification thing
@@ -30,13 +33,17 @@ public class PostOffice {
     public static void shout(String eventId, Object... args) {
         synchronized (listeners) {
             // TODO dont sync eating events
-            List<EvListener> list = listeners.get(eventId);
+            List<WeakReference<EvListener>> list = listeners.get(eventId);
 
             // TODO this shold be outside the sync but don't want to clone the list (poltergeist)
             // any ideas? Idea1: make a SyncMemDb with read/write lock in separate methods:
             // acquire(x) release(x)
-            for (EvListener l : list) {
-                l.eatThis(eventId, args);
+            for (Iterator<WeakReference<EvListener>> i = list.iterator(); i.hasNext();) {
+                EvListener l = i.next().get();
+                if (l != null)
+                    l.eatThis(eventId, args);
+                else
+                    i.remove();
             }
         }
     }
@@ -49,7 +56,7 @@ public class PostOffice {
      */
     public static void register(String eventId, EvListener l) {
         synchronized (listeners) {
-            listeners.put(eventId, l);
+            listeners.put(eventId, new WeakReference<EvListener>(l));
         }
     }
 }

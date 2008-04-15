@@ -1,10 +1,11 @@
 /**
- * Razvan's public code. 
- * Copyright 2008 based on Apache license (share alike) see LICENSE.txt for details.
+ * Razvan's public code. Copyright 2008 based on Apache license (share alike) see LICENSE.txt for
+ * details.
  */
 package com.razie.pub.hframe.draw;
 
 import com.razie.pub.hframe.base.data.HtmlRenderUtils;
+import com.razie.pub.hframe.base.data.IndexedMemDb;
 
 /**
  * a renderer can render an object on a display...
@@ -12,7 +13,7 @@ import com.razie.pub.hframe.base.data.HtmlRenderUtils;
  * @author razvanc99
  * 
  */
-public interface Renderer {
+public interface Renderer<T> {
 
     /**
      * @label draws
@@ -27,7 +28,7 @@ public interface Renderer {
      * @param technology
      * @return
      */
-    public Object render(Object o, Technology technology, DrawStream stream);
+    public Object render(T o, Technology technology, DrawStream stream);
 
     /**
      * can i render the given object on the given technology?
@@ -36,7 +37,7 @@ public interface Renderer {
      * @param technology
      * @return true if this renderer can render on the given technology
      */
-    public boolean canRender(Object o, Technology technology);
+    public boolean canRender(T o, Technology technology);
 
     /**
      * about technologies...you see a pile of unrelated stuff...
@@ -72,16 +73,29 @@ public interface Renderer {
 
     /** simple renderer utils */
     public static class Helper {
+        private static IndexedMemDb<Class, Technology, Renderer> renderers = new IndexedMemDb<Class, Technology, Renderer>();
+
+        /** overwrite or define a new renderer for a drawable class and technology combination */
+        public void register(Class c, Technology t, Renderer r) {
+            renderers.put(c, t, r);
+        }
+
+        private static Renderer findRenderer(Drawable d, Technology technology) {
+            Renderer r = renderers.get(d.getClass(), technology);
+            return r != null ? r : d.getRenderer(technology);
+        }
+
+        /** draw an object */
         public static Object draw(Object o, Technology t, DrawStream stream) {
             if (o == null) {
                 return "";
             }
 
             if (o instanceof Drawable) {
-                return ((Drawable) o).getRenderer(t).render(o, t, stream);
+                return findRenderer((Drawable) o, t).render(o, t, stream);
             } else if (o instanceof DrawableSource) {
                 Drawable d = ((DrawableSource) o).makeDrawable();
-                return d.getRenderer(t).render(d, t, stream);
+                return findRenderer(d, t).render(d, t, stream);
             } else {
                 if (Technology.HTML.equals(t)) {
                     return HtmlRenderUtils.textToHtml(o.toString());

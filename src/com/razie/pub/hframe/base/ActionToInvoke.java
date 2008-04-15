@@ -10,9 +10,10 @@ import java.net.URL;
 import com.razie.pub.hframe.comms.Comms;
 import com.razie.pub.hframe.draw.DrawStream;
 import com.razie.pub.hframe.draw.Drawable;
-import com.razie.pub.hframe.draw.NavButton;
 import com.razie.pub.hframe.draw.Renderer;
 import com.razie.pub.hframe.draw.Renderer.Technology;
+import com.razie.pub.hframe.draw.widgets.NavButton;
+import com.razie.pub.hframe.draw.widgets.NavLink;
 import com.razie.pub.hframe.http.LightAuth;
 
 /**
@@ -121,10 +122,9 @@ public class ActionToInvoke extends AttrAccess.Impl implements AttrAccess, Drawa
             ActionItem cmd = ati.actionItem;
             String url = ati.makeActionUrl();
 
-            NavButton b1 = new NavButton(cmd, url);
+            NavLink b1 = new NavButton(cmd, url);
             b1.setTiny(ati.drawTiny);
-            NavButton b = b1;
-            return Renderer.Helper.draw(b, technology, stream);
+            return b1.render(technology, stream);
         }
     }
 }

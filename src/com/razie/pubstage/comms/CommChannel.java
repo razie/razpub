@@ -4,6 +4,7 @@
  */
 package com.razie.pubstage.comms;
 
+import java.net.Socket;
 import java.net.URL;
 
 /**
@@ -30,6 +31,20 @@ public class CommChannel {
          * gotta have one...
          */
         public abstract String getIp();
+    }
+
+    /**
+     * this is a client requesting something
+     */
+    public static class SocketEndPoint {
+        private String ip;
+
+        public SocketEndPoint(Socket sock) {
+            super();
+            this.ip = sock.getInetAddress().getHostAddress();
+        }
+
+        public String getIp(){return ip;}
     }
 
     /**

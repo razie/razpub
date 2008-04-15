@@ -1,6 +1,6 @@
 /**
- * Razvan's public code. 
- * Copyright 2008 based on Apache license (share alike) see LICENSE.txt for details.
+ * Razvan's public code. Copyright 2008 based on Apache license (share alike) see LICENSE.txt for
+ * details.
  */
 package com.razie.pub.hframe.assets;
 
@@ -291,7 +291,9 @@ public class AssetLocation implements Serializable {
     }
 
     public static AssetLocation mutantEnv(String dir) {
-        return new AssetLocation(Agents.getMyUrl().replaceFirst("http", "mutant") + "::" + prepLocalDir(dir));
+        AgentHandle me = Agents.agent(Agents.getMyHostName());
+        // NOTE mutant URLs must contain hostname not IP !!!
+        return new AssetLocation("mutant://" + me.hostname + ":" + me.port + "::" + prepLocalDir(dir));
     }
 
     private static String prepLocalDir(String dir) {
