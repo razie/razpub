@@ -25,6 +25,7 @@ import com.razie.pub.hframe.http.MyServerSocket;
 public class HttpDrawStream extends com.razie.pub.hframe.draw.DrawStream.DrawStreamWrapper {
     private boolean            wroteHeader    = false;
     private List<String>       metas          = null;
+    private List<String>       httptags          = null;
     public static final String MIME_TEXT_HTML = "text/html";
 
     public HttpDrawStream(MyServerSocket socket) throws IOException {
@@ -84,5 +85,11 @@ public class HttpDrawStream extends com.razie.pub.hframe.draw.DrawStream.DrawStr
         if (this.metas == null)
             this.metas = new ArrayList<String>();
         this.metas.add(string);
+    }
+    
+    public void addHttpTag(String string) {
+        if (this.httptags == null)
+            this.httptags = new ArrayList<String>();
+        this.httptags.add(string);
     }
 }

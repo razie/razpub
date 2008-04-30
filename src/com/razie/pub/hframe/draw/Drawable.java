@@ -44,6 +44,18 @@ public interface Drawable {
     /** shortcut to render self - don't like controllers that much */
     public Object render(Technology t, DrawStream stream);
 
+    /** model drawables implement this - one more layer of abstraction :) */
+    public interface IDrawableModel extends Drawable {
+        public Drawable view();
+    }
+    
+    public static abstract class DrawableModel implements IDrawableModel {
+        public Drawable view() {
+            // TODO add a view factory to overwrite the default views
+            return this;
+        }
+    }
+    
     public static abstract class DrawWidget implements Drawable {
         public Drawable makeDrawable() {
             return this;

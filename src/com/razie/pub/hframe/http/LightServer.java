@@ -1,6 +1,6 @@
 /**
- * Razvan's public code. 
- * Copyright 2008 based on Apache license (share alike) see LICENSE.txt for details.
+ * Razvan's public code. Copyright 2008 based on Apache license (share alike) see LICENSE.txt for
+ * details.
  */
 package com.razie.pub.hframe.http;
 
@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import com.razie.pub.hframe.base.ActionItem;
 import com.razie.pub.hframe.base.data.HtmlRenderUtils;
 import com.razie.pub.hframe.base.log.Exceptions;
 import com.razie.pub.hframe.base.log.Log;
@@ -23,9 +24,9 @@ import com.razie.pubstage.life.Worker;
  * just for http...just derive and overwrite the makeReceiver() to use a fancier receiver
  * 
  * <p>
- * As is, you can hook it up with the {@link com.razie.pub.hframe.http.LightCmdGET} and implement simple
- * services or lightsoa bindings...that's usually enough. ROADMAP for usage: define your lightsoa
- * classes, and register them with the server and start the server...that's it.
+ * As is, you can hook it up with the {@link com.razie.pub.hframe.http.LightCmdGET} and implement
+ * simple services or lightsoa bindings...that's usually enough. ROADMAP for usage: define your
+ * lightsoa classes, and register them with the server and start the server...that's it.
  * 
  * <p>
  * See self-documented samples in {@link com.razie.pub.hframe.http.test.TestLightServer} which does
@@ -38,12 +39,14 @@ import com.razie.pubstage.life.Worker;
  * @version 1.0
  */
 public class LightServer extends Worker {
-    protected int port;
+    protected int           port;
+    // TODO find an icon for this
+    static final ActionItem ME             = new ActionItem("LightServer");
 
     /** set this to something nonzero to limit the number of connections accepted in parallel */
-    protected int maxConnections = 0;
+    protected int           maxConnections = 0;
 
-    ServerSocket  listener;
+    ServerSocket            listener;
 
     /**
      * construct a server - will open the socket and you'll have to invoke run/process on a thread
@@ -54,7 +57,7 @@ public class LightServer extends Worker {
      *        sure it ends in a space. An example is "GET ", see the test
      */
     public LightServer(int port) {
-        super();
+        super(ME);
         this.port = port;
 
         // not sure why i try 3 times, but...seems sturdier than not ;)
@@ -145,7 +148,7 @@ public class LightServer extends Worker {
                 // TODO don't know why but i can't use this compliant reader...
                 // BufferedReader in = new BufferedReader(new
                 // InputStreamReader(socket.getInputStream()));
-                
+
                 // Get input from the client
                 DataInputStream in = new DataInputStream(socket.getInputStream());
                 PrintStream out = new PrintStream(socket.getOutputStream());

@@ -1,6 +1,6 @@
 /**
- * Razvan's public code. 
- * Copyright 2008 based on Apache license (share alike) see LICENSE.txt for details.
+ * Razvan's public code. Copyright 2008 based on Apache license (share alike) see LICENSE.txt for
+ * details.
  */
 package com.razie.pub.hframe.http;
 
@@ -34,6 +34,10 @@ public interface SocketCmdListener {
     public Object executeCmdServer(String cmdName, String protocol, String args, Properties parms,
             MyServerSocket socket) throws AuthException;
 
+    /**
+     * the convention is that the first word on the socket is the command to execute above. this is
+     * a discovery of what commands are supported by a certain class
+     */
     public String[] getSupportedCommands();
 
     /** simple echo listener */

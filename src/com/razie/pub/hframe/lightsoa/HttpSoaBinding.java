@@ -138,13 +138,13 @@ public class HttpSoaBinding extends SoaBinding {
             DrawStream out = null;
 
             if (mdesc.auth().length() > 0) {
-//TODO check auth
+                // TODO check auth
             }
 
             if (methods.get(actionName).getAnnotation(SoaStreamable.class) != null) {
                 SoaStreamable nh = methods.get(actionName).getAnnotation(SoaStreamable.class);
                 if (nh.streamMimeType().length() > 0) {
-                        out = makeMimeDrawStream(socket, nh.streamMimeType());
+                    out = makeMimeDrawStream(socket, nh.streamMimeType());
                 } else
                     out = makeDrawStream(socket, protocol);
                 resp = invokeStreamable(otoi, actionName, out, args);
@@ -168,7 +168,8 @@ public class HttpSoaBinding extends SoaBinding {
                 out.close();
                 return new StreamConsumedReply();
             } else if (resp == null) {
-                out.close();
+                if (out != null)
+                    out.close();
                 return new StreamConsumedReply();
             }
 
@@ -210,6 +211,7 @@ public class HttpSoaBinding extends SoaBinding {
     }
 
     public String toString() {
-        return this.serviceName + " : " + this.service.getClass().getName();
+        return this.serviceName + " : "
+                + (this.service == null ? "NULL SERVICE" : this.service.getClass().getName());
     }
 }

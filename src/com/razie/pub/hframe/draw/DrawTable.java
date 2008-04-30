@@ -95,7 +95,6 @@ public class DrawTable extends StreamableContainer.Impl implements Drawable, Str
         if (lastAddRow == -1 || (prefCols > 0 && lastAddCol >= prefCols - 1)) {
             // first time
             // close the previous row...
-            // TODO
             if (lastAddRow >= 0) {
                 row = (DrawList) this.rows.get(lastAddRow);
                 row.close();

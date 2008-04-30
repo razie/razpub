@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.razie.pub.hframe.base.log.Log;
+import com.razie.pubstage.agent.AgentGroup;
 
 /**
  * basic proxy to whatever db of hosts you like to use - there's soooo many.
@@ -28,6 +29,17 @@ public class Agents {
     private static Agents              singleton;
     public static String               homeNetPrefix;
     private static AgentHandle         me       = null;
+
+    private static AgentGroup         homeGroup;
+
+    /** TODO encapsulate somehow */
+    public static void setHomeGroup(AgentGroup ag) {
+        homeGroup = ag;
+    }
+
+    public static AgentGroup getHomeGroup() {
+        return homeGroup;
+    }
 
     private Agents() {
         byName = new HashMap<String, AgentHandle>();

@@ -1,20 +1,20 @@
-//============================================================================
-//  FILE INFO
-//    $Id: MTWrkRq.java,v 1.20 2007-10-01 17:00:58 razvanc Exp $
+// ============================================================================
+// FILE INFO
+// $Id: MTWrkRq.java,v 1.20 2007-10-01 17:00:58 razvanc Exp $
 //
-//    Service Broker 2.0
-//    Copyright (c) 1993, 2001 Sigma Systems Group (Canada) Inc.
-//    All rights reserved.
+// Service Broker 2.0
+// Copyright (c) 1993, 2001 Sigma Systems Group (Canada) Inc.
+// All rights reserved.
 //
-//  DESCRIPTION
-//    Framewrk class for Thread Manager.
+// DESCRIPTION
+// Framewrk class for Thread Manager.
 //
-//  REVISION HISTORY
-//  * Sorinel C    2000-12-27
-//    Original version
-//  * Sorinel C    2003-02-07
-//  * Based on CVS log
-//============================================================================
+// REVISION HISTORY
+// * Sorinel C 2000-12-27
+// Original version
+// * Sorinel C 2003-02-07
+// * Based on CVS log
+// ============================================================================
 
 package com.razie.pubstage.life;
 
@@ -27,21 +27,33 @@ import com.razie.pub.hframe.base.log.Log;
 import com.razie.pub.hframe.events.PostOffice;
 
 /**
- * A runnable work request.
+ * You should always check to see if you're dying...shhh, you'll be killed soon if you don't...
  * 
- * <p>
- * Must be used with either MTLaunch or MTPool. If you want as many threads as work requests, use
- * MTLaunch. If you want a queue of work requests processed by a pool of threads, use MTPool.
+ * <code>
+ *   @Override
+ *   public void process() {
+ *       while (!this.dying) {
+ *           ...
+ *           // sleep if you must but you should be a breather instead...
+ *           try {
+ *               sleep(5 * 60 * 1000);
+ *           } catch (InterruptedException e) {
+ *           }
+ *       }
+ *   }
+ * </code>
  * 
- * $
  * @author razvanc99
- * 
  */
-public abstract class Worker implements Runnable {
-
+public abstract class Worker implements Runnable, Being {
 
     private ActionItem progressCode;
-    public Worker() {
+    private ActionItem me;
+
+    private ActionItem SLEEPING = new ActionItem("sleeping...");
+
+    public Worker(ActionItem me) {
+        this.me = me;
     }
 
     /**
@@ -74,7 +86,7 @@ public abstract class Worker implements Runnable {
      */
     public void setProgress(int p, String progressCd) {
         this.progress = p;
-//        this.progressCode = progressCd;
+        // this.progressCode = progressCd;
         this.notifyUpdated();
     }
 
@@ -89,15 +101,24 @@ public abstract class Worker implements Runnable {
      *        getProgressMsg to translate the code
      */
     public static void updateProgress(int newProgress, ActionItem newProgressCode) {
-        Worker w = null;
-        synchronized (allRq) {
-            w = (Worker) allRq.get(Thread.currentThread().getName());
-        }
+        Worker w = findMe();
         if (w != null) {
             synchronized (w) {
                 w.setProgress(newProgress, newProgressCode);
             }
         }
+    }
+
+    /**
+     * find the current Worker
+     */
+    public static Worker findMe() {
+        Worker w = null;
+        synchronized (allRq) {
+            w = (Worker) allRq.get(Thread.currentThread().getName());
+        }
+
+        return w;
     }
 
     /**
@@ -111,10 +132,7 @@ public abstract class Worker implements Runnable {
      *        getProgressMsg to translate the code
      */
     public static void updateProgress(int newProgress, String newProgressCode) {
-        Worker w = null;
-        synchronized (allRq) {
-            w = (Worker) allRq.get(Thread.currentThread().getName());
-        }
+        Worker w = findMe();
         if (w != null) {
             synchronized (w) {
                 w.setProgress(newProgress, newProgressCode);
@@ -207,10 +225,7 @@ public abstract class Worker implements Runnable {
      * @return true if the thread should stop...
      */
     public static boolean die() {
-        Worker w = null;
-        synchronized (allRq) {
-            w = (Worker) allRq.get(Thread.currentThread().getName());
-        }
+        Worker w = findMe();
         if (w != null) {
             synchronized (w) {
                 return w.dying;
@@ -247,24 +262,61 @@ public abstract class Worker implements Runnable {
     /**
      * the count of the thread
      */
-    public long       _index            = 0;
+    public long       _index   = 0;
 
-    protected int     progress          = 0;
+    protected int     progress = 0;
 
     /** this is set to true 5 sec before thread is killed. Client code should check this and stop. */
-    protected boolean dying = false;
+    protected boolean dying    = false;
 
     /** started=1, stoped=0 */
     static enum IntState {
         STOPPED, STARTED
     }
 
-    private IntState                    intState  = IntState.STOPPED;
+    private IntState   intState = IntState.STOPPED;
+    private ActionItem progressWhileSleeping;
+
+    /** beings should be nice and answer what they're doing right now (status in nerdsspeak) */
+    public ActionItem whatAreYouDoing() {
+        return this.progressCode;
+    }
+
+    /** beings should be nice and tell who they are */
+    public ActionItem whoAreYou() {
+        return this.me;
+    }
+
+    /** use instead of Thread.sleep() */
+    public static void sleep(long millis) throws InterruptedException {
+        Worker w = findMe();
+        if (w != null) {
+            w.gotosleep(millis);
+        } else {
+            // arsch
+            Thread.sleep(millis);
+        }
+    }
+
+    /** not sure why you'd overload this, but hey...go thrill yourself */
+    protected void gotosleep(long millis) throws InterruptedException {
+        this.progressWhileSleeping = this.progressCode;
+        this.progressCode = SLEEPING;
+
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException e) {
+            throw e;
+        } finally {
+            this.progressCode = this.progressWhileSleeping;
+            this.progressWhileSleeping = null;
+        }
+    }
 
     /*
      * Thread listeners list; listener that get the notifications when the thread starts/stops
      */
     /** Map<String taskname, MTWrkRq> all wrk rq in progress */
-    private static Map<String, Worker> allRq     = new HashMap<String, Worker>();
-    private static final Log logger = Log.Factory.create("", Worker.class.getName());
+    private static Map<String, Worker> allRq  = new HashMap<String, Worker>();
+    private static final Log           logger = Log.Factory.create("", Worker.class.getName());
 }

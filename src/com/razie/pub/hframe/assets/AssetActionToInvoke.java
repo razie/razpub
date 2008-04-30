@@ -39,9 +39,7 @@ public class AssetActionToInvoke extends ActionToInvoke {
      */
     public AssetActionToInvoke(String target, AssetKey key, ActionItem item, Object... pairs) {
         super(target, item, pairs);
-        this.target = target;
         this.key = key;
-        this.actionItem = item;
     }
 
     /**

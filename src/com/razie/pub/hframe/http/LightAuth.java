@@ -92,7 +92,7 @@ public class LightAuth {
                 return url;
             }
 
-            return "/" + (prefix.length() > 0 ? (prefix + "/") : "")
+            return "/" + (prefix.length() > 0 ? (prefix) : "")
                     + (url.startsWith("/") ? url : ("/" + url));
         }
 

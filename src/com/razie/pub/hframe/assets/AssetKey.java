@@ -92,6 +92,15 @@ public class AssetKey implements Serializable {
         return cachedUrlForm;
     }
 
+    /** short descriptive string */
+    public String toSimpleString() {
+        String s = getType() + ":" + (getId() == null ? "" : HttpUtils.toUrlEncodedString(getId()));
+        if (getLocation() != null) {
+            s += "@" + getLocation().toString();
+        }
+        return s;
+    }
+
     /**
      * Use this method to get a string that is safe to use in a URL. Note that whenever the string
      * is encoded when you want to use it it must be decoded with fromUrlEncodedString(String).
@@ -195,7 +204,11 @@ public class AssetKey implements Serializable {
         }
 
         String[] map1 = url.split("://", 2);
-        if (map1.length > 1 && map1[1] != null) {
+        
+        // with the following, i support also a missing PREFIX, i.e. a simplified KEY with just type:key@loc
+        String news = (map1.length > 1 ? map1[1] : (map1.length==1?map1[0]:null));
+
+        if (news != null) {
             // i have a class nm
             String[] map2 = map1[1].split(":", 2);
             if (map2[1] != null) {

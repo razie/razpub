@@ -9,7 +9,6 @@ import com.razie.pub.hframe.base.ActionToInvoke;
 import com.razie.pub.hframe.draw.DrawStream;
 import com.razie.pub.hframe.draw.Renderer;
 import com.razie.pub.hframe.draw.Renderer.Technology;
-import com.razie.pub.hframe.resources.RazIconRes;
 
 /**
  * a button with an action and image that just does it's action and no change on the screen (POST in
@@ -32,10 +31,12 @@ public class SimpleButton extends NavButton {
 
     public Renderer getRenderer(Technology technology) {
         // TODO too stupid - register renderers...
-        return new MyRender();
+        return MyRender.singleton;
     }
 
-    public class MyRender extends NavButton.MyRender {
+    public static class MyRender extends NavButton.MyRender {
+        static MyRender singleton=new MyRender();
+        
         @Override
         public Object render(Object o, Technology technology, DrawStream stream) {
             return irender("<a type=\"POST\" ", o, technology, stream);

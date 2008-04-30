@@ -19,10 +19,17 @@ public class HttpHelper {
         return r;
     }
 
-    public static String httpHeader(String code, String... contentType) {
-        String ctype = contentType.length > 0 ? contentType[0] : "text/html";
+    public static String httpHeader(String code){
+        String ctype = "text/html";
         String r = "HTTP/1.1 " + code + "\r\nContent-Type: " + ctype + "\r\n\r\n";
         return r;
+    }
+
+    public static String httpHeader(String code, String contentType, String...tags) {
+        String r = "HTTP/1.1 " + code + "\r\nContent-Type: " + contentType;
+        for (String s : tags)
+        r += "\r\n" + s;
+        return r + "\r\n\r\n";
     }
 
     public static String httpWrapPic(String fname, long len) {
@@ -35,7 +42,7 @@ public class HttpHelper {
         } else if (ext.endsWith(".JPG")) {
             type = "image/jpeg";
         }
-        return httpWrapMimeType (type, len);
+        return httpWrapMimeType (type, len, "Expires: Thu, 15 Apr 2010 20:00:00 GMT");
     }
 
     public static String httpWrapOtherFile(String fname, long len) {
@@ -54,8 +61,9 @@ public class HttpHelper {
         return httpWrapMimeType (type, len);
     }
 
-    public static String httpWrapMimeType(String type, long len) {
-        return "HTTP/1.1 200 OK\r\nContent-Type: " + type + "\r\n\r\n";
+    public static String httpWrapMimeType(String type, long len, String...fields) {
+//        return "HTTP/1.1 200 OK\r\nContent-Type: " + type + "\r\n\r\n";
+        return httpHeader(OK, type, fields);
     }
 
     public static boolean isOtherFile(String fname) {

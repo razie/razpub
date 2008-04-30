@@ -53,11 +53,6 @@ public class NavLink extends DrawWidget {
         this.link = a.makeActionUrl();
     }
 
-    public Renderer getRenderer(Technology technology) {
-        // TODO too stupid - register renderers...
-        return new MyRender();
-    }
-
     public NavLink style(Style st, Size... sz) {
         this.style = st;
         if (sz.length > 0)
@@ -70,10 +65,20 @@ public class NavLink extends DrawWidget {
         this.size = tiny ? Size.SMALL : Size.NORMAL;
     }
 
-    public class MyRender implements Renderer {
+    public Renderer getRenderer(Technology technology) {
+        // TODO too stupid - register renderers...
+        return MyRender.singleton;
+    }
+
+    public static class MyRender implements Renderer {
+        static MyRender singleton = new MyRender();
 
         public boolean canRender(Object o, Technology technology) {
             return o instanceof NavLink;
+        }
+
+        public Object render(Object o, Technology technology, DrawStream stream) {
+            return irender("<a", o, technology, stream);
         }
 
         protected Object irender(String atype, Object o, Technology technology, DrawStream stream) {
@@ -87,25 +92,25 @@ public class NavLink extends DrawWidget {
 
             if (Technology.HTML.equals(technology)) {
                 String s = b.link != null && b.link.length() > 0 ? atype + " href=\"" + b.link + "\">" : "";
-                if (!style.equals(Style.JUST_LABEL) && icon != null && !icon.equals(b.action.name)) {
-                    if (Size.TINY.equals(size)) {
+                if (!b.style.equals(Style.JUST_LABEL) && icon != null && !icon.equals(b.action.name)) {
+                    if (Size.TINY.equals(b.size)) {
                         s += "<img border=0 width=21 height=21 src=\"" + icon + "\" alt=\"" + b.action.label
                                 + "\"/>";
-                    } else if (Size.SMALL.equals(size)) {
+                    } else if (Size.SMALL.equals(b.size)) {
                         s += "<img border=0 width=30 height=30 src=\"" + icon + "\" alt=\"" + b.action.label
                                 + "\"/>";
-                    } else if (Size.NORMAL.equals(size)) {
+                    } else if (Size.NORMAL.equals(b.size)) {
                         s += "<img border=0 width=80 height=80 src=\"" + icon + "\" alt=\"" + b.action.label
                                 + "\"/>";
-                    } else if (Size.LARGE.equals(size)) {
+                    } else if (Size.LARGE.equals(b.size)) {
                         s += "<img border=0 width=180 height=180 src=\"" + icon + "\" alt=\""
                                 + b.action.label + "\"/>";
                     }
 
-                    if (Style.ONELINE.equals(style)) {
+                    if (Style.ONELINE.equals(b.style)) {
                         s += b.action.label;
-                    } else if (Style.JUST_ICON.equals(style)) {
-                    } else if (Style.TEXT_UNDER.equals(style)) {
+                    } else if (Style.JUST_ICON.equals(b.style)) {
+                    } else if (Style.TEXT_UNDER.equals(b.style)) {
                         s += "<br>" + b.action.label;
                     }
                 } else {// Style.JUST_LABEL
@@ -119,8 +124,5 @@ public class NavLink extends DrawWidget {
             return b.action.label;
         }
 
-        public Object render(Object o, Technology technology, DrawStream stream) {
-            return irender("<a", o, technology, stream);
-        }
     }
 }

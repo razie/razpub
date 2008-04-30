@@ -33,6 +33,10 @@ public class HttpAssetSoaBinding extends HttpSoaBinding {
                 .getAnnotation(SoaAsset.class)).type()));
     }
 
+    public static boolean has(String type) {
+        return bindings.containsKey(type);
+    }
+
     public Object executeCmdServer(String actionName, String protocol, String cmdargs, Properties parms,
             MyServerSocket socket) {
         AssetKey key = AssetKey.fromEntityUrl(HttpUtils.fromUrlEncodedString(actionName));

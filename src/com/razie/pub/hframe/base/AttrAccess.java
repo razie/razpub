@@ -4,8 +4,10 @@
  */
 package com.razie.pub.hframe.base;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -24,10 +26,15 @@ import com.razie.pub.hframe.base.data.HttpUtils;
  * 
  */
 public interface AttrAccess {
+    /** these types MUST be supported by forms for capture, not necessarily by displays */
+    public static enum AttrType {
+        STRING, MEMO, SCRIPT, INT, FLOAT, DATE
+    };
+
     /** @return the value of the named attribute */
     public Object getAttr(String name);
 
-    /** set the value of the named attribute */
+    /** set the value of the named attribute + the name can be of the form name:type */
     public void setAttr(String name, Object value);
 
     /**
@@ -44,6 +51,15 @@ public interface AttrAccess {
 
     /** check if an attribute is populated */
     public boolean isPopulated(String name);
+
+    /**
+     * @return the type of the named attribute OR null if not known. Default is bny convention
+     *         String
+     */
+    public AttrType getAttrType(String name);
+
+    /** set the value of the named attribute */
+    public void setAttrType(String name, AttrType type);
 
     /** some random xml format */
     public String toXml();
@@ -62,7 +78,9 @@ public interface AttrAccess {
     /** simple base implementation */
     public class Impl implements AttrAccess {
         // lazy
-        protected Map<String, Object> parms = null;
+        protected Map<String, Object>   parms = null;
+        protected Map<String, AttrType> types = null;
+        protected List<String>          order = null;
 
         /** dummy */
         public Impl() {
@@ -80,6 +98,16 @@ public interface AttrAccess {
 
         public void setAttr(String name, Object value) {
             checkMap();
+            // check name for type definition
+            if (name.contains(":")) {
+                // type defn can be escaped by a \
+                String[] n = name.split("[^\\\\]:", 2);
+                name = n[0].replaceAll("\\\\:", ":");
+                if (n.length > 1)
+                    this.setAttrType(name, n[1]);
+            }
+            if (!this.parms.containsKey(name))
+                this.order.add(name);
             this.parms.put(name, value);
         }
 
@@ -118,11 +146,13 @@ public interface AttrAccess {
         private void checkMap() {
             if (this.parms == null) {
                 this.parms = new HashMap<String, Object>();
+                this.types = new HashMap<String, AttrType>();
+                this.order = new ArrayList<String>();
             }
         }
 
         public Iterable<String> getPopulatedAttr() {
-            return this.parms == null ? Collections.EMPTY_LIST : this.parms.keySet();
+            return this.parms == null ? Collections.EMPTY_LIST : this.order;
         }
 
         public int size() {
@@ -162,7 +192,6 @@ public interface AttrAccess {
 
         /** TODO implement */
         public static AttrAccess fromJson() {
-            // TODO
             AttrAccess a = new Impl();
             return a;
         }
@@ -191,6 +220,20 @@ public interface AttrAccess {
                         + HttpUtils.toUrlEncodedString(getAttr(a).toString());
             }
             return newurl;
+        }
+
+        public AttrType getAttrType(String name) {
+            return this.types != null ? types.get(name) : null;
+        }
+
+        public void setAttrType(String name, String type) {
+            this.setAttrType(name, AttrType.valueOf(type.toUpperCase()));
+        }
+
+        public void setAttrType(String name, AttrType type) {
+            checkMap();
+            // TODO maybe it's too slow this toString?
+            this.types.put(name, type);
         }
     }
 
