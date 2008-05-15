@@ -8,7 +8,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.razie.pub.hframe.comms.Comms;
+import com.razie.pub.comms.Comms;
 
 /**
  * a two way STRING communication channel. Adds filtering functionality

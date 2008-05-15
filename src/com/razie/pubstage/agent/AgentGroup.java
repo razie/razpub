@@ -3,7 +3,7 @@ package com.razie.pubstage.agent;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.razie.pub.hframe.http.AgentHandle;
+import com.razie.pub.http.AgentHandle;
 
 /**
  * a group of agents representing a logical structure, i.e. all the agents in my home (that is

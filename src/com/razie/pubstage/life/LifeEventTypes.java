@@ -1,6 +1,6 @@
 package com.razie.pubstage.life;
 
-import com.razie.pub.hframe.events.EvTypes;
+import com.razie.pub.events.EvTypes;
 
 /**
  * event types for life package

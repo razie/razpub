@@ -1,6 +1,6 @@
 package com.razie.pubstage.agent;
 
-import com.razie.pub.hframe.http.AgentHandle;
+import com.razie.pub.http.AgentHandle;
 import com.razie.pubstage.agent.Agent.AgentEvent;
 
 /**

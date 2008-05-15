@@ -3,10 +3,10 @@ package com.razie.pubstage.agent;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.razie.pub.hframe.base.AttrAccess;
-import com.razie.pub.hframe.base.log.Log;
-import com.razie.pub.hframe.http.AgentHandle;
-import com.razie.pub.hframe.http.Agents;
+import com.razie.pub.base.AttrAccess;
+import com.razie.pub.base.log.Log;
+import com.razie.pub.http.AgentHandle;
+import com.razie.pub.http.Agents;
 
 /**
  * Agents run at different locations and they cooperate. An agent has a bunch of services that run

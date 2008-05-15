@@ -7,8 +7,8 @@ package com.razie.pubstage.comms;
 import java.io.InputStream;
 import java.net.URL;
 
-import com.razie.pub.hframe.base.log.Log;
-import com.razie.pub.hframe.comms.Comms;
+import com.razie.pub.base.log.Log;
+import com.razie.pub.comms.Comms;
 
 /**
  * a two way communication stream. a stream serves one logical purpose, such as making a soa call or

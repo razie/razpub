@@ -13,6 +13,12 @@
  * to just start banging some light prototypes, after a few ideas. At the very least, I end up with
  * a model and the ideas are documented and crystallized that way.
  * 
+ * When adding features to base/common code, it generally becomes too coupled. Such as a plain action supporting
+ * http thus requiring authentication services...which also know about assets which are drawables etc :)
+ * 
+ * However, the packages here provide functionality we're most likely to need most of the time, so
+ * they can be bundled together.
+ * 
  * 
  * <h1>Quality</h1>
  * 

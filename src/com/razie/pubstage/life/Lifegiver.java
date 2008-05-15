@@ -3,7 +3,7 @@ package com.razie.pubstage.life;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.razie.pub.hframe.assets.AssetKey;
+import com.razie.pub.assets.AssetKey;
 
 /**
  * stupid thread pool model
@@ -39,7 +39,7 @@ public class Lifegiver {
                 try {
                     Thread.sleep(6 * 1000);
                 } catch (InterruptedException e) {
-                    // TODO Auto-generated catch block
+                    // ignore
                     e.printStackTrace();
                 }
 

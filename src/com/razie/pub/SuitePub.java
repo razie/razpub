@@ -6,11 +6,9 @@ package com.razie.pub;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-import com.razie.pub.hframe.SuiteHframe;
-import com.razie.pub.hframe.http.test.TestLightServer;
-import com.razie.pub.hframe.lightsoa.test.TestLightServerSoaAssets;
-import com.razie.pub.hframe.lightsoa.test.TestLocalSoa;
-import com.razie.pub.hframe.lightsoa.test.TestLocalSoaAssets;
+import com.razie.pub.draw.test.SuiteDraw;
+import com.razie.pub.http.test.SuiteHttp;
+import com.razie.pub.lightsoa.test.SuiteLightsoa;
 
 /**
  * suite to run all pub tests
@@ -21,13 +19,10 @@ public class SuitePub extends TestSuite {
     public static Test suite() {
         TestSuite result = new TestSuite(SuitePub.class.getName());
 
-        result.addTest(SuiteHframe.suite());
+        result.addTest(SuiteDraw.suite());
+        result.addTest(SuiteHttp.suite());
+        result.addTest(SuiteLightsoa.suite());
 
-        result.addTestSuite(TestLightServer.class);
-
-        result.addTestSuite(TestLocalSoa.class);
-        result.addTestSuite(TestLocalSoaAssets.class);
-        result.addTestSuite(TestLightServerSoaAssets.class);
 
         return result;
     }
