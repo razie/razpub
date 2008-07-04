@@ -1,21 +1,7 @@
-// ============================================================================
-// FILE INFO
-// $Id: MTWrkRq.java,v 1.20 2007-10-01 17:00:58 razvanc Exp $
-//
-// Service Broker 2.0
-// Copyright (c) 1993, 2001 Sigma Systems Group (Canada) Inc.
-// All rights reserved.
-//
-// DESCRIPTION
-// Framewrk class for Thread Manager.
-//
-// REVISION HISTORY
-// * Sorinel C 2000-12-27
-// Original version
-// * Sorinel C 2003-02-07
-// * Based on CVS log
-// ============================================================================
-
+/**
+ * Razvan's public code. Copyright 2008 based on Apache license (share alike) see LICENSE.txt for
+ * details.
+ */
 package com.razie.pubstage.life;
 
 import java.util.HashMap;
@@ -198,7 +184,7 @@ public abstract class Worker implements Runnable, Being {
      * Notification that the thread has stopped (called after 'process' function)
      */
     final private void notifyStopped() {
-        PostOffice.shout(LifeEventTypes.EV_THREAD_END, this);
+        PostOffice.shout(null, LifeEventTypes.EV_THREAD_END, "subject", this);
 
         synchronized (allRq) {
             allRq.remove(Thread.currentThread().getName());
@@ -209,7 +195,7 @@ public abstract class Worker implements Runnable, Being {
      * Notification that the thread has stopped (called after 'process' function)
      */
     final private void notifyUpdated() {
-        PostOffice.shout(LifeEventTypes.EV_THREAD_UPD, this);
+        PostOffice.shout(null, LifeEventTypes.EV_THREAD_UPD, "subject", this);
     }
 
     /**
@@ -224,7 +210,7 @@ public abstract class Worker implements Runnable, Being {
      * @see com.sigma.hframe.jmt.BeingDyingRtException
      * @return true if the thread should stop...
      */
-    public static boolean die() {
+    public static boolean dying() {
         Worker w = findMe();
         if (w != null) {
             synchronized (w) {

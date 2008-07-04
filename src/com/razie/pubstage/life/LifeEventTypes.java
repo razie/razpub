@@ -1,3 +1,7 @@
+/**
+ * Razvan's public code. Copyright 2008 based on Apache license (share alike) see LICENSE.txt for
+ * details.
+ */
 package com.razie.pubstage.life;
 
 import com.razie.pub.events.EvTypes;
@@ -6,7 +10,6 @@ import com.razie.pub.events.EvTypes;
  * event types for life package
  * 
  * @version $Revision: 1.63 $
- * @author $Author: davidx $
  * @since $Date: 2005/04/01 16:22:12 $
  */
 public class LifeEventTypes extends EvTypes {
