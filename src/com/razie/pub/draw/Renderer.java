@@ -106,6 +106,12 @@ public interface Renderer<T> {
         }
     }
 
+    /**
+     * rendering containers involves hearder/body (elements)/footer.
+     * <p>
+     * Note that this also extends the Renderer, so there's also a method to render everything in
+     * one shot. That may or may not make sense...
+     */
     public static interface ContainerRenderer extends Renderer {
         /**
          * the return object is technology specific

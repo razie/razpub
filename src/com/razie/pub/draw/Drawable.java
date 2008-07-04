@@ -7,7 +7,7 @@ package com.razie.pub.draw;
 import com.razie.pub.draw.Renderer.Technology;
 
 /**
- * basic drawable objects. are rendered by Renderers for different technologies
+ * basic drawable objects, which are rendered by Renderers for different technologies
  * 
  * Convention: each drawable MUST support at least HTML and TEXT. It SHOULD also support XML and
  * JSON. For other rendering technologies, you should create basic drawable objects in this package,

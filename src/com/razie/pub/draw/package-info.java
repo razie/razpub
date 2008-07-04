@@ -37,10 +37,21 @@
  * Instead, we propose a simple streaming model, where the equivalent is
  * <code>search (resultStream, x)</code> which doesn't complicate either implementation nor
  * client. Since we're talking multiple results, the client code can be a simple for loop but now it
- * has the option of mounting processors on the stream and do more stuff, incuding paralle
+ * has the option of mounting processors on the stream and do more stuff, including parallel
  * processing etc. Likewise, the results for instance can be streamed on screen (or html page) as
  * they're found, so the clients don't have to wait for all 1000 movies to be found when they care
  * about the second...
+ * <p>
+ * Note that this is not about iterating or page up/down/next functionality. That can be implemented
+ * into a specific stream. All we want here is to make sure all code streams results as efficiently
+ * and as soon as possible, for a good user experience.
+ * 
+ * <p>
+ * The next direction that I see for this is updatable containers, where the streaming is combined
+ * with lazy updating. This is useful let's say when grabbing remote data grouped by artists and
+ * rendering it grouped by genre. The rendered page should update itself as more results are
+ * available.
+ * 
  * 
  * <h2>Model View Controller</h2>
  * 
@@ -56,7 +67,7 @@
  * registration. There are three use cases for views:
  * 
  * 1. you simply want to display a model...just use model.view().render() or write the model to the
- * stream. This is hte default behavior
+ * stream. This is the default behavior
  * 
  * 2. you want to display it differently in a new composite view - meaning you have a new composite
  * model you're managing...in that case, just use your own Drawable to re-draw the basic models. or

@@ -6,7 +6,7 @@ package com.razie.pub.draw;
 
 
 /**
- * many methods just get result sets, wihtout caring about the form in which these will be
+ * many methods just get result sets, without caring about the form in which these will be
  * presented. Clients can feed them whichever accumulator they want. Normal accumulators are
  * DrawStreams and DrawContainers.
  * 
