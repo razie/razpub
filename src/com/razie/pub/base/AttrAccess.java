@@ -20,7 +20,14 @@ import com.razie.pub.base.data.HttpUtils;
  * simple attribute access interface and implementation - a bunch of name-value pairs with many
  * different constructors - everything these days has attributes.
  * 
- * it is used throughout to access parms $
+ * it is used throughout to access parms in a unified manner: from http requests, method arguments,
+ * properties etc
+ * 
+ * <p>
+ * It has a skeleton type definition.
+ * 
+ * <p>
+ * Note the funny behavior of setAttr ("attrname:type", value)...
  * 
  * @author razvanc99
  * 
@@ -38,8 +45,11 @@ public interface AttrAccess {
     public void setAttr(String name, Object value);
 
     /**
+     * set the value of one or more attributes
+     * 
      * @parm pairs are pais of name/value, i.e. "car", "lexus" OR a Properties, OR another
-     *       AttrAccess OR a Map<String,String>
+     *       AttrAccess OR a Map<String,String>. Note that the parm name can contain the type, i.e.
+     *       "name:string".
      */
     public void setAttr(Object... pairs);
 
@@ -58,7 +68,9 @@ public interface AttrAccess {
      */
     public AttrType getAttrType(String name);
 
-    /** set the value of the named attribute */
+    /**
+     * set the type of the named attribute
+     */
     public void setAttrType(String name, AttrType type);
 
     /** some random xml format */
@@ -90,7 +102,7 @@ public interface AttrAccess {
          * build from sequence of parm/value pairs or other stuff
          * 
          * @parm pairs are pais of name/value, i.e. "car", "lexus" OR a Properties, OR another
-         *       AttrAccess OR a Map<String,String>
+         *       AttrAccess OR a Map<String,String>. Note the parm names can contain type: "name:string"
          */
         public Impl(Object... pairs) {
             this.setAttr(pairs);
