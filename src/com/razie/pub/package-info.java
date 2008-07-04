@@ -13,8 +13,9 @@
  * to just start banging some light prototypes, after a few ideas. At the very least, I end up with
  * a model and the ideas are documented and crystallized that way.
  * 
- * When adding features to base/common code, it generally becomes too coupled. Such as a plain action supporting
- * http thus requiring authentication services...which also know about assets which are drawables etc :)
+ * When adding features to base/common code, it generally becomes too coupled. Such as a plain
+ * action supporting http thus requiring authentication services...which also know about assets
+ * which are drawables etc :)
  * 
  * However, the packages here provide functionality we're most likely to need most of the time, so
  * they can be bundled together.
@@ -23,8 +24,8 @@
  * <h1>Quality</h1>
  * 
  * One good thing from sharing this code is that I have to make it good enough. Documented,
- * tested...and clean. Any contributors will have to stick the same quality. Of course you'll find
- * hacks here and there, but I'll keep them to a minimum.
+ * tested...and clean. Any contributors will have to stick the same quality requirements. Of course
+ * you'll find hacks here and there, but I'll keep them to a minimum.
  * 
  * 
  * <h1>Lightweight distributed application support</h1>
@@ -37,11 +38,12 @@
  * 
  * <h1>Some principles</h1>
  * 
+ * Here are some of my fundamental programming principles.
+ * 
  * <h2>Embedded presentation</h2>
  * 
  * All artifacts end up being used by some user. In this framework, presentation is embedded and as
  * generic as possible.
- * 
  * 
  * <h2>Performance</h2>
  * 
@@ -51,6 +53,23 @@
  * 
  * The idea behind the entire comm package is a future optimization of sequences of calls via new
  * protocols like SCTP or similar.
+ * 
+ * Note that this performance requirement does not conflict with the use of Java: the code must
+ * respond in a timely fashion, but does not have to be the most optimal code from an assembly
+ * language perspective. This means that using patterns etc to make the code easier to maintain/flex
+ * is more important than using the most efficient constructs all the time.
+ * 
+ * <h2>Remote management</h2>
+ * 
+ * All software must be able to be remotely controlled, best option is http (upnp and similar work
+ * as well). This is to say that all important internal functionality must be presented via a simple
+ * telnet/http interface, for others to automate. No component is limited to just user interaction.
+ * 
+ * Just think how easy it would be to automate playing a batch of files from a remote server, if
+ * only Windows Media Player had a very simple interface for play/pause/etc...
+ * 
+ * This is an extension of the unix command lines, where you could easily script higher-level
+ * functionality from available commands.
  * 
  * @version $Id: package-info.java,v 1.1 2007-10-02 11:54:36 razvanc Exp $
  */
