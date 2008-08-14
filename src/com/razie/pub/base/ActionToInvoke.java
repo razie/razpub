@@ -18,15 +18,16 @@ import com.razie.pub.http.LightAuth;
 
 /**
  * this is an instance of an action, meant to be invoked. It is prepared by someone and can be
- * executed on the spot OR presented to the user as a menu and invoked later. It contains everything
- * needed to invoke itself. It can be invoked in the same JVM or remotely (from a web page etc).
+ * executed on the spot OR presented to the user as a menu or some other invokable and invoked later.
+ * It contains everything needed to invoke itself. It can be invoked in the same JVM or remotely
+ * (from a web page etc).
  * 
  * it can be placed on a menu, web page, dialog as a button etc - it generally represents a menu
  * item or a button.
  * 
  * @author razvanc99
  */
-public class ActionToInvoke extends AttrAccess.Impl implements AttrAccess, Drawable{
+public class ActionToInvoke extends AttrAccess.Impl implements AttrAccess, Drawable {
     /** this is the action, contains the actual command name and label to display */
     public ActionItem actionItem;
 
