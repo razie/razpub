@@ -1,10 +1,7 @@
-//==========================================================================
-// FILE INFO
-// $Id: ScriptCallback.java,v 1.7 2007-09-26 16:14:58 sorinelc Exp $
-//
-// REVISION HISTORY
-// * Based on CVS log
-//==========================================================================
+/**
+ * Razvan's public code. Copyright 2008 based on Apache license (share alike) see LICENSE.txt for
+ * details.
+ */
 package com.razie.pub.lightsoa;
 
 import java.lang.annotation.Documented;
