@@ -43,7 +43,8 @@
  * <h2>Embedded presentation</h2>
  * 
  * All artifacts end up being used by some user. In this framework, presentation is embedded and as
- * generic as possible.
+ * generic as possible. The tough part is getting the presentation to be as independent as possible
+ * so as not to have to rewrite this for every "platform".
  * 
  * <h2>Performance</h2>
  * 
@@ -55,9 +56,9 @@
  * protocols like SCTP or similar.
  * 
  * Note that this performance requirement does not conflict with the use of Java: the code must
- * respond in a timely fashion, but does not have to be the most optimal code from an assembly
- * language perspective. This means that using patterns etc to make the code easier to maintain/flex
- * is more important than using the most efficient constructs all the time.
+ * respond to the user in a timely fashion, but does not have to be the most optimal code from an
+ * assembly language perspective. This means that using patterns etc to make the code easier to
+ * maintain/flex is more important than using the most efficient constructs all the time.
  * 
  * <h2>Remote management</h2>
  * 
@@ -70,6 +71,59 @@
  * 
  * This is an extension of the unix command lines, where you could easily script higher-level
  * functionality from available commands.
+ * 
+ * <h2>Unique naming/addressing</h2>
+ * 
+ * Each and every object, attribute, concept that is worth reaching by someone should be reached via
+ * a unified API and have a unique ID/handle of sorts.
+ * 
+ * Of course we're talking URL/URI/xpath/XCAP stuff here...I don't want to have to say "the current
+ * user's home directory" but "/user[@name=$env.USER]/@homeDir", which is already usable...
+ * 
+ * 
+ * <h1>Main concepts</h1>
+ * 
+ * Let's see if we can identify the main concepts used be everyone, everywhere...that'd be fun!
+ * Besides, if we can settle those in a common format, aliens would surely take over earth, wouldn't
+ * they?
+ * 
+ * <h2>Action: ActionToInvoke.java</h2>
+ * 
+ * Well, we got: object method, remote procedures, URLs, but these are just mechanisms for
+ * transmitting actions and sometimes communication.
+ * 
+ * So what's an action? In this view, it is a (possibly parameterized) uniquely identifiable piece
+ * of functionality of data that can be requested of some software. It is part of the advertised
+ * "interface" of the something... I suck at wording definitions like this...
+ * 
+ * Actions can be invoked via command lines, web links, web forms, menus and other action views.
+ * They can obviously be automated and organized into other, higher-level actions.
+ * 
+ * At this level, invoking the actions <b>must be abstracted from the implementation technology</b>.
+ * This is the one defining aspect of what I call "action" as a main application-building concept.
+ * Thus, Java class methods need not apply, but http://amazon.com/buy qualifies.
+ * 
+ * Why are actions important? Well, they connect pieces of functionality! Duh? Look around at the
+ * proliferation of CORBA, RPC, then WS etc...everyone needs to invoke some piece of remote
+ * functionality. What's special about my view is that main functionality of any piece of software
+ * or application MUST be presented as actions via URLs. Absolutely, MUST!
+ * 
+ * It is imperative then that actions be easy to code in clients: client languages, scripts, even
+ * tools.
+ * 
+ * <h2>Properties: AttrAccess.java</h2>
+ * 
+ * Well, If Eve was "virgin", that was maybe her 5th property: female, name, approximate age etc
+ * being other. Everything has properties. In particular, every object has properties. Period. I'm
+ * not sure it is worth distinguishing between Java class members and a person's properties, but
+ * here I mean the later.
+ * 
+ * Properties fly through all kinds of formats, including URLs, xml and JSON. Are persisted as XML,
+ * text, table columns or file names...They can be accessed from many different languages and
+ * environments and be translated into all kinds of other representations.
+ * 
+ * 
+ * 
  * 
  * @version $Id: package-info.java,v 1.1 2007-10-02 11:54:36 razvanc Exp $
  */
