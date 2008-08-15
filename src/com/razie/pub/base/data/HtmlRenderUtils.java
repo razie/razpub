@@ -4,6 +4,8 @@
  */
 package com.razie.pub.base.data;
 
+import com.razie.pub.base.NoStatic;
+
 /**
  * a bunch of utilities related to rendering html content, including minimal support for themes via
  * stylesheets, if so supported by the server.
@@ -18,7 +20,7 @@ package com.razie.pub.base.data;
  * 
  */
 public class HtmlRenderUtils {
-    static HtmlTheme theme = new HtmlTheme();
+    static NoStatic<HtmlTheme> theme = new NoStatic<HtmlTheme>("razie.theme", new DarkTheme());
 
     /** wrap contents as an html document */
     public static String htmlWrap(String s) {
@@ -28,19 +30,19 @@ public class HtmlRenderUtils {
 
     /** wrap contents as an html document */
     public static String htmlHeader(String... metas) {
-        String s = theme.get(HtmlTheme.HEADSTART);
+        String s = theme.value().get(HtmlTheme.HEADSTART);
         if (metas.length > 0) {
             s += "<head>";
             for (String m : metas)
                 s += m;
             s += "</head>";
         }
-        return s + theme.get(HtmlTheme.BODYSTART);
+        return s + theme.value().get(HtmlTheme.BODYSTART);
     }
 
     /** wrap contents as an html document */
     public static String htmlFooter() {
-        return theme.get(HtmlTheme.BODYEND) + theme.get(HtmlTheme.HEADSTART);
+        return theme.value().get(HtmlTheme.BODYEND) + theme.value().get(HtmlTheme.HEADSTART);
     }
 
     /** wrap contents as an html document */
@@ -51,16 +53,27 @@ public class HtmlRenderUtils {
     }
 
     public static class HtmlTheme {
-        public static final int BODYSTART = 0;
-        public static final int BODYEND   = 1;
-        public static final int HEADSTART = 2;
-        public static final int HEADEND   = 3;
-        public static final int LAST      = 3;
+        protected static final int BODYSTART = 0;
+        protected static final int BODYEND   = 1;
+        protected static final int HEADSTART = 2;
+        protected static final int HEADEND   = 3;
+        protected static final int LAST      = 3;
 
-        static String[]         patterns  = { "<body.*>", "</body>", "<html.*>", "</html>" };
-        static String[]         tags      = { "<body>", "</body>", "<html>", "</html>" };
+        static String[]            patterns  = { "<body.*>", "</body>", "<html.*>", "</html>" };
+        static String[]            tags      = { "<body>", "</body>", "<html>", "</html>" };
 
-        public String get(int what) {
+        protected String get(int what) {
+            return tags[what];
+        }
+    }
+
+    /** a simple, css-based theme to be used by the sample server */
+    public static class DarkTheme extends HtmlTheme {
+        static String[] tags = {
+                                     "<head><link rel=\"stylesheet\" type=\"text/css\" href=\"/classpath/com/razie/pub/http/test/style.css\" /></head><body link=\"yellow\" vlink=\"yellow\">",
+                                     "</body>", "<html>", "</html>" };
+
+        protected String get(int what) {
             return tags[what];
         }
     }
@@ -68,12 +81,12 @@ public class HtmlRenderUtils {
     public static String replace(String input) {
         String output = input;
         for (int i = 0; i <= HtmlTheme.LAST; i++) {
-            output = output.replace(theme.patterns[i], theme.get(i));
+            output = output.replace(theme.value().patterns[i], theme.value().get(i));
         }
         return output;
     }
 
     public static void setTheme(HtmlTheme theTheme) {
-        theme = theTheme;
+        theme.setThreadValue(theTheme);
     }
 }
