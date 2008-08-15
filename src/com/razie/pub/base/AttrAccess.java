@@ -29,6 +29,9 @@ import com.razie.pub.base.data.HttpUtils;
  * <p>
  * Note the funny behavior of setAttr ("attrname:type", value)...
  * 
+ * <p>
+ * Note the funny behavior of setAttr ("attrname:type=value,attrname2:type=value")...
+ * 
  * @author razvanc99
  * 
  */
@@ -63,8 +66,7 @@ public interface AttrAccess {
     public boolean isPopulated(String name);
 
     /**
-     * @return the type of the named attribute OR null if not known. Default is bny convention
-     *         String
+     * @return the type of the named attribute OR null if not known. Default is by convention String
      */
     public AttrType getAttrType(String name);
 
@@ -102,21 +104,31 @@ public interface AttrAccess {
          * build from sequence of parm/value pairs or other stuff
          * 
          * @parm pairs are pais of name/value, i.e. "car", "lexus" OR a Properties, OR another
-         *       AttrAccess OR a Map<String,String>. Note the parm names can contain type: "name:string"
+         *       AttrAccess OR a Map<String,String>. Note the parm names can contain type:
+         *       "name:string"
          */
         public Impl(Object... pairs) {
             this.setAttr(pairs);
         }
 
+        /* TODO should setAttr(xx,null) remove it so it's not populated? */
         public void setAttr(String name, Object value) {
             checkMap();
             // check name for type definition
             if (name.contains(":")) {
                 // type defn can be escaped by a \
-                String[] n = name.split("[^\\\\]:", 2);
-                name = n[0].replaceAll("\\\\:", ":");
-                if (n.length > 1)
-                    this.setAttrType(name, n[1]);
+                // TODO what the heck does this mean?
+                 String[] n = name.split("[^\\\\]:", 2);
+                // name = n[0].replaceAll("\\\\:", ":");
+//                String[] n = name.split(":", 2);
+                // basically, IF there's a ":" AND what's after is a recognied type...otherwise i'll
+                // assume the parm name is "a:b"
+                if (n.length > 1) {
+                    if (AttrType.valueOf(n[1].toUpperCase()) != null) {
+                        name = n[0];
+                        this.setAttrType(name, n[1]);
+                    }
+                }
             }
             if (!this.parms.containsKey(name))
                 this.order.add(name);
@@ -146,6 +158,24 @@ public interface AttrAccess {
                 AttrAccess m = (AttrAccess) pairs[0];
                 for (String s : m.getPopulatedAttr()) {
                     this.setAttr((String) s, m.getAttr((String) s));
+                }
+            } else if (pairs != null && pairs.length == 1 && pairs[0] instanceof String) {
+                /* one line defn of a bunch of parms */
+                /*
+                 * Note the funny behavior of setAttr
+                 * ("attrname:type=value,attrname2:type=value")...
+                 */
+                String m = (String) pairs[0];
+                String[] n = m.split(",");
+                for (String s : n) {
+                    String[] ss = s.split("=", 2);
+                    
+                    String val = null;
+                    if (ss.length > 1)
+                        val = ss[1];
+                    
+                    String nametype = ss[0];
+                    this.setAttr(nametype, val);
                 }
             } else if (pairs != null && pairs.length > 1) {
                 for (int i = 0; i < pairs.length / 2; i++) {
@@ -235,7 +265,8 @@ public interface AttrAccess {
         }
 
         public AttrType getAttrType(String name) {
-            return this.types != null ? types.get(name) : null;
+            AttrType t = this.types != null ? types.get(name) : null;
+            return t == null ? AttrType.STRING : t;
         }
 
         public void setAttrType(String name, String type) {
