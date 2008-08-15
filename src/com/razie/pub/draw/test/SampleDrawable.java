@@ -6,12 +6,14 @@ package com.razie.pub.draw.test;
 
 import com.razie.pub.base.ActionItem;
 import com.razie.pub.base.ActionToInvoke;
+import com.razie.pub.base.AttrAccess;
 import com.razie.pub.draw.DrawSequence;
 import com.razie.pub.draw.DrawStream;
 import com.razie.pub.draw.Drawable;
 import com.razie.pub.draw.Renderer;
 import com.razie.pub.draw.Renderer.Technology;
 import com.razie.pub.draw.widgets.DrawError;
+import com.razie.pub.draw.widgets.DrawForm;
 import com.razie.pub.draw.widgets.DrawLater;
 import com.razie.pub.draw.widgets.DrawSelection;
 import com.razie.pub.draw.widgets.NavButton;
@@ -97,6 +99,12 @@ public class SampleDrawable extends Drawable.DrawWidget {
         }
         seq.write("\nDrawError ^^^\n");
 
+        seq.write("\nDrawForm vvv\n");
+        DrawForm df = new DrawForm(AI, ATI,
+                new AttrAccess.Impl("url", "http://www.google.com", "filter:script", "<write script here>"));
+        seq.write(df);
+        seq.write("\nDrawForm ^^^\n");
+        
         seq.write("\nDrawLater vvv\n");
         seq.write(new DrawLater(ATI));
         seq.write("\nDrawLater ^^^\n");

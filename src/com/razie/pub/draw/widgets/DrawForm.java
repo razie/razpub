@@ -72,6 +72,7 @@ public class DrawForm extends Drawable.DrawWidget {
         return DefaultRenderer.singleton;
     }
 
+    /** html templates for the different types of fields */
     private static Map<AttrAccess.AttrType, String> types = new HashMap<AttrAccess.AttrType, String>();
     static {
         types.put(AttrType.STRING, "<input type=\"text\" name=\"RAZ.NAME\" value=\"RAZ.VALUE\" />");
