@@ -16,6 +16,8 @@ Details
 -------
 See com.razie.pub's package-info.java and the others, for up-to-date details. Here's an abstract.
 
+The aim is to support a grid/fabric like framework for smart assets. Read-on to figure out the pieces of the puzzle :)
+
 There's a very simple and light and especially embedded http server.
 
 On top of this there's a simple LightSoa framework, which allows you to easily create "services": 
