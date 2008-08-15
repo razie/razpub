@@ -1,7 +1,12 @@
+/**
+ * Razvan's code. Copyright 2008 based on Apache (share alike) see LICENSE.txt for details.
+ */
 package com.razie.pubstage.agent;
 
+import com.razie.pub.base.AttrAccess;
+import com.razie.pub.draw.Drawable;
+import com.razie.pub.events.EvListener;
 import com.razie.pub.http.AgentHandle;
-import com.razie.pubstage.agent.Agent.AgentEvent;
 
 /**
  * basic interface/contract with the Agent - it's not an interface so methods are not public
@@ -30,9 +35,27 @@ import com.razie.pubstage.agent.Agent.AgentEvent;
  * @version $Id$
  * 
  */
-public abstract class AgentService {
+public abstract class AgentService implements EvListener {
+    /**
+     * the agent sets itself when the service is registered. that will guaranteed hapen before
+     * onStartup()
+     */
+    protected Agent agent;
+
     /** the second initialization phase: the agent is starting up */
     protected abstract void onStartup();
+
+    /** run diagnostics and report */
+    protected DiagReport diagnose() {
+        DiagReport res = new DiagReport();
+        return res;
+    }
+
+    /** get status and report */
+    protected StatusReport status() {
+        StatusReport res = new StatusReport();
+        return res;
+    }
 
     /** the agent needs to shutdown this service. You must join() all threads and return to agent. */
     protected abstract void onShutdown();
@@ -44,7 +67,28 @@ public abstract class AgentService {
     protected void onConnectToOtherAgent(AgentHandle remote) {
     }
 
-    /** distributed notification between agents/services */
-    protected void notified(AgentEvent event) {
+    /** @return the list of event types you're interested in or null/empty if interested in all */
+    public String[] interestedIn() {
+        return EMPTY;
     }
+
+    /** main method to be notified about an event */
+    public void eatThis(String srcID, String eventId, AttrAccess info) {
+    }
+
+    /** diagnostics results */
+    public static class DiagReport extends StatusReport {
+    }
+
+    /** status report */
+    public static class StatusReport {
+        public static enum Status {
+            UNKNOWN, GREEN, YELLOW, RED
+        };
+
+        public Status   status = Status.UNKNOWN;
+        public Drawable details;
+    }
+
+    private static final String[] EMPTY = new String[0];
 }

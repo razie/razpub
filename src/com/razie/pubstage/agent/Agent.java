@@ -1,29 +1,75 @@
+/**
+ * Razvan's code. Copyright 2008 based on Apache (share alike) see LICENSE.txt for details.
+ */
 package com.razie.pubstage.agent;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.razie.pub.base.AttrAccess;
+import com.razie.pub.base.NoStatics;
+import com.razie.pub.base.ThreadContext;
 import com.razie.pub.base.log.Log;
+import com.razie.pub.comms.Comms;
+import com.razie.pub.events.PostOffice;
 import com.razie.pub.http.AgentHandle;
 import com.razie.pub.http.Agents;
+import com.razie.pubstage.comms.HtmlContents;
 
 /**
  * Agents run at different locations and they cooperate. An agent has a bunch of services that run
  * on it and it offers these a platform for inter-operation.
+ * 
+ * There are many platforms for this type of services, including OCAP, OSGI etc.
  * 
  * @author razvanc
  * @version $Id$
  * 
  */
 public class Agent {
-    private List<AgentService> services    = new ArrayList<AgentService>();
-    protected boolean          stopped     = false;
-    protected boolean          initialized = false;
-    protected boolean          started     = false;
+    private Map<String, AgentService> services    = new HashMap<String, AgentService>();
+    protected boolean                 stopped     = false;
+    protected boolean                 initialized = false;
+    protected boolean                 started     = false;
+    protected NoStatics               myStatics   = new NoStatics();
+    protected AgentHandle             myHandle    = null;
+    protected AgentGroup              homeGroup;
+    private ThreadContext             mainContext;
+
+    /** initialize agent with given info */
+    public Agent(AgentHandle myHandle, AgentGroup homeGroup) {
+        mainContext = new ThreadContext();
+        NoStatics ns = new NoStatics();
+
+        mainContext.setAttr("Agent", this);
+        mainContext.setAttr("NoStatics", ns);
+
+        // initialize required static services
+        NoStatics.register(myHandle.name, ns);
+        NoStatics.put(Agents.class, new Agents(homeGroup, myHandle));
+        this.myHandle=myHandle;
+        this.homeGroup = homeGroup;
+    }
+
+    public AgentHandle getHandle() {
+        return myHandle;
+    }
+
+    /** shorthand for other registerbyname: use the simple class name as service name */
+    public void register(AgentService l) {
+        register(l.getClass().getSimpleName(), l);
+    }
+
     /** register a new service with the agent */
-    public synchronized void register(AgentService l) {
-        this.services.add(l);
+    public synchronized void register(String name, AgentService l) {
+        this.services.put(name, l);
+        l.agent = this;
+
+        // delegate notifications to the post office
+        PostOffice.register(l);
+
         if (started && !stopped) {
             l.onStartup();
         }
@@ -41,7 +87,7 @@ public class Agent {
 
     /** called when main() is done initializing everything else */
     public synchronized void onStartup() {
-        for (AgentService s : services) {
+        for (AgentService s : services.values()) {
             s.onStartup();
         }
 
@@ -54,13 +100,7 @@ public class Agent {
         if (remote.hostname.equals(Agents.getMyHostName())) {
             Log.logThis("AGENT_CONNECTED_TO_SELF - ignoring...");
         } else {
-            // copy devices to avoid sync'd
-            List<AgentService> copy = new ArrayList<AgentService>();
-            synchronized (this) {
-                copy.addAll(services);
-            }
-
-            for (AgentService s : copy) {
+            for (AgentService s : copyOfServices()) {
                 s.onConnectToOtherAgent(remote);
             }
         }
@@ -79,19 +119,6 @@ public class Agent {
         Log.logThis("AGENT_SHUTDOWN_COMPLETE");
     }
 
-    /** notify all local services about an event */
-    public void notifyLocal(AgentEvent event) {
-        // copy devices to avoid sync'd
-        List<AgentService> copy = new ArrayList<AgentService>();
-        synchronized (this) {
-            copy.addAll(services);
-        }
-
-        for (AgentService l : this.services) {
-            l.notified(event);
-        }
-    }
-
     /** indicates if the agent has been shutdown */
     public boolean hasStopped() {
         return stopped;
@@ -108,44 +135,38 @@ public class Agent {
 
     public synchronized List<AgentService> copyOfServices() {
         List<AgentService> ret = new ArrayList<AgentService>();
-        ret.addAll(services);
+        ret.addAll(services.values());
         return ret;
     }
 
+    /** locate the implementation of a given service */
+    public synchronized AgentService locateService(String name) {
+        return services.get(name);
+    }
+
     /**
-     * an event that can be sent to other agents.
+     * notify another specific agent. Note that in order to use this, the remote agent must have the
+     * AgentHttpService initialized
      * 
-     * all services will be notified of events. It is good practice that the event name starts with
-     * the service name if only you care about it.
-     * 
-     * TODO sync-up with the post office local eventing system
-     * 
-     * @author razvanc
-     * 
+     * @param device agent to notify
+     * @param eventId event
+     * @param args event data
+     * @return response of remote - usually meaningless
      */
-    public static class AgentEvent {
-        public String     name;
-        public String     srcAgentNm; // initialized by agent when sending to avoid screwups
-        public AttrAccess info;
+    public String notifyOther(AgentHandle device, String eventId, Object... args) {
+        String srcAgentNm = Agents.getMyHostName();
 
-        /**
-         * create a new event
-         * 
-         * @param name the event name, should start with the service name if service specific using
-         *        dot notation
-         * @param srcAgentNm the name of the source agent
-         * @param info extra information carried by the event
-         */
-        public AgentEvent(String name, AttrAccess info) {
-            this.name = name;
-            this.info = info;
-        }
+        // TODO if device is me call notify local directly
+        String url = "http://" + device.ip + ":" + device.port + "/mutant/control/";
+        url += "Notify?name=" + eventId + "&srcAgentNm=" + srcAgentNm;
+        url = new AttrAccess.Impl(args).addToUrl(url);
+        String otherList = (Comms.readUrl(url));
+        otherList = HtmlContents.justBody(otherList);
+        return otherList;
+    }
 
-        public AgentEvent(AttrAccess info) {
-            this.name = (String) info.getAttr("name");
-            this.srcAgentNm = (String) info.getAttr("srcAgentNm");
-            this.info = info;
-        }
+    public ThreadContext getMainContext() {
+        return mainContext;
     }
 
 }
