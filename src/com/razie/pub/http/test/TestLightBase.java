@@ -1,3 +1,7 @@
+/**
+ * Razvan's code. 
+ * Copyright 2008 based on Apache (share alike) see LICENSE.txt for details.
+ */
 package com.razie.pub.http.test;
 
 import junit.framework.TestCase;
@@ -22,7 +26,7 @@ public class TestLightBase extends TestCase {
         if (server == null) {
             LightAuth.init(new LightAuth("lightsoa"));
 
-            server = new LightServer(PORT);
+            server = new LightServer(PORT, null);
             server.registerCmdListener(cmdGET);
 
             // you can start the server in its dedicated thread or use a pool

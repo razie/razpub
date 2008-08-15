@@ -1,3 +1,7 @@
+/**
+ * Razvan's code. 
+ * Copyright 2008 based on Apache (share alike) see LICENSE.txt for details.
+ */
 package com.razie.pub.http.test;
 
 import java.io.IOException;
@@ -6,7 +10,6 @@ import java.net.URL;
 import java.util.Properties;
 
 import com.razie.pub.base.data.HtmlRenderUtils;
-import com.razie.pub.base.data.HtmlRenderUtils.HtmlTheme;
 import com.razie.pub.draw.DrawStream;
 import com.razie.pub.draw.test.SampleDrawable;
 import com.razie.pub.http.AuthException;
@@ -60,7 +63,7 @@ public class SampleWebServer {
 
     public static void start(int port) {
         // stuff to set before you start the server
-        HtmlRenderUtils.setTheme(new DarkTheme());
+        HtmlRenderUtils.setTheme(new HtmlRenderUtils.DarkTheme());
 
         singleton = new SampleWebServer();
 
@@ -110,17 +113,6 @@ public class SampleWebServer {
             }
 
             return null;
-        }
-    }
-
-    /** a simple, css-based theme to be used by the sample server */
-    static class DarkTheme extends HtmlTheme {
-        static String[] tags = {
-                                     "<head><link rel=\"stylesheet\" type=\"text/css\" href=\"/classpath/com/razie/pub/http/test/style.css\" /></head><body link=\"yellow\" vlink=\"yellow\">",
-                                     "</body>", "<html>", "</html>" };
-
-        public String get(int what) {
-            return tags[what];
         }
     }
 

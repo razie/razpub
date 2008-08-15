@@ -1,7 +1,7 @@
-// ==========================================================================
-// $Id: Svc.java,v 1.63 2005/04/01 16:22:12 davidx Exp $
-// (@) Copyright Sigma Systems (Canada) Inc.
-// ==========================================================================
+/**
+ * Razvan's code. 
+ * Copyright 2008 based on Apache (share alike) see LICENSE.txt for details.
+ */
 package com.razie.pub.http.test;
 
 import com.razie.pub.http.LightServer;
@@ -16,7 +16,7 @@ import com.razie.pub.http.LightServer;
 public class SampleNoThreadsServer extends LightServer {
 
     public SampleNoThreadsServer(int port) {
-        super(port);
+        super(port, null);
     }
 
     @Override
