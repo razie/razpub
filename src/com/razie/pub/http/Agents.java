@@ -1,10 +1,12 @@
+/**
+ * Razvan's code. Copyright 2008 based on Apache (share alike) see LICENSE.txt for details.
+ */
 package com.razie.pub.http;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.HashMap;
-import java.util.Map;
 
+import com.razie.pub.base.NoStatics;
 import com.razie.pub.base.log.Log;
 import com.razie.pubstage.agent.AgentGroup;
 
@@ -23,36 +25,25 @@ import com.razie.pubstage.agent.AgentGroup;
  * 
  */
 public class Agents {
-    protected Map<String, AgentHandle> byName   = null;       // lazy
-    public static boolean              testing  = false;
-    public static final String         TESTHOST = "TEST-host";
-    private static Agents              singleton;
-    public static String               homeNetPrefix;
-    private static AgentHandle         me       = null;
+    protected AgentGroup       myGroup  = null;
+    public boolean             testing  = false;
+    public static final String TESTHOST = "TEST-host";
+    public static String       homeNetPrefix;
+    private AgentHandle        me       = null;
 
-    private static AgentGroup         homeGroup;
-
-    /** TODO encapsulate somehow */
-    public static void setHomeGroup(AgentGroup ag) {
-        homeGroup = ag;
+    public Agents(AgentGroup homeGroup, AgentHandle me) {
+        myGroup = homeGroup;
+        this.me = me;
     }
 
-    public static AgentGroup getHomeGroup() {
-        return homeGroup;
-    }
-
-    private Agents() {
-        byName = new HashMap<String, AgentHandle>();
-    }
-
-    protected static Agents instance() {
-        if (singleton == null)
-            singleton = new Agents();
+    /** THIS must be initialized in the nostatic context before this... */
+    public static Agents instance() {
+        Agents singleton = (Agents) NoStatics.get(Agents.class);
         return singleton;
     }
 
     public static AgentHandle me() {
-        return me;
+        return instance().me;
     }
 
     /** @return my host name */
@@ -76,13 +67,6 @@ public class Agents {
         return instance().agentByIpImpl(remote);
     }
 
-    /** TODO remove - this is temporary */
-    public static void add(AgentHandle remote) {
-        instance().addImpl(remote);
-        if (remote.name.equals(getMyHostName()))
-            me = remote;
-    }
-
     public String getMyHostNameImpl() throws RuntimeException {
         if (testing) {
             return TESTHOST;
@@ -95,24 +79,32 @@ public class Agents {
         }
     }
 
-    public AgentHandle agentImpl(String host) {
-        return byName.get(host);
+    public static String findMyHostName(boolean testing) throws RuntimeException {
+        if (testing) {
+            return TESTHOST;
+        }
+        try {
+            String n = InetAddress.getLocalHost().getHostName();
+            return n;
+        } catch (UnknownHostException e1) {
+            throw new RuntimeException("ERR: " + e1.toString(), e1);
+        }
     }
 
-    protected void addImpl(com.razie.pub.http.AgentHandle remote) {
-        byName.put(remote.name, remote);
+    public AgentHandle agentImpl(String host) {
+        return instance().myGroup.get(host);
     }
 
     /** TODO sync this */
     public AgentHandle agentByIpImpl(String ip) {
-        for (AgentHandle a : byName.values()) {
+        for (AgentHandle a : instance().myGroup.agents().values()) {
             if (a.ip.equals(ip)) {
                 return a;
             }
         }
 
         Log.logThis("ERR_AGENTBYIP_NOTFOUND - you may get a null pointer about now. ip=" + ip
-                + byName.values());
+                + instance().myGroup.agents().values());
         return null;
     }
 
