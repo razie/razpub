@@ -1,3 +1,7 @@
+/**
+ * Razvan's public code. Copyright 2008 based on Apache license (share alike) see LICENSE.txt for
+ * details.
+ */
 package com.razie.pub.lightsoa;
 
 import java.lang.reflect.Method;
@@ -8,7 +12,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.razie.pub.assets.AssetKey;
-import com.razie.pub.assets.BaseAssetMgr;
+import com.razie.pub.assets.AssetMgr;
 import com.razie.pub.base.AttrAccess;
 import com.razie.pub.draw.DrawStream;
 
@@ -43,11 +47,13 @@ public class SoaBinding {
     public SoaBinding(Class assetClass, String serviceName) {
         this.serviceName = serviceName;
 
-        for (Method m : assetClass.getDeclaredMethods()) {
-            if (m.getAnnotation(SoaMethod.class) != null) {
-                methods.put(m.getName(), m);
+        // allow hacks with no methods - don't have to blow up...
+        if (assetClass != null)
+            for (Method m : assetClass.getDeclaredMethods()) {
+                if (m.getAnnotation(SoaMethod.class) != null) {
+                    methods.put(m.getName(), m);
+                }
             }
-        }
     }
 
     public Set<String> getSoaMethods() {
@@ -61,7 +67,7 @@ public class SoaBinding {
 
     /** invoke a lightsoa method on a given service */
     public Object invoke(AssetKey key, String action, AttrAccess inparms) {
-        Object asset = BaseAssetMgr.getAsset(key);
+        Object asset = AssetMgr.getAsset(key);
         if (asset != null)
             return this.invoke(asset, action, inparms);
         else
@@ -113,7 +119,7 @@ public class SoaBinding {
 
     /** invoke a lightsoa method on a given service */
     public Object invokeStreamable(AssetKey key, String action, DrawStream stream, AttrAccess inparms) {
-        Object asset = BaseAssetMgr.getAsset(key);
+        Object asset = AssetMgr.getAsset(key);
         if (asset != null)
             return this.invokeStreamable(asset, action, stream, inparms);
         else

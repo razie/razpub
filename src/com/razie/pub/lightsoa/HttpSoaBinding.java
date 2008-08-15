@@ -1,11 +1,15 @@
+/**
+ * Razvan's code. Copyright 2008 based on Apache (share alike) see LICENSE.txt for details.
+ */
 package com.razie.pub.lightsoa;
 
 import java.io.IOException;
 import java.util.Properties;
 
 import com.razie.pub.assets.AssetKey;
-import com.razie.pub.assets.BaseAssetMgr;
+import com.razie.pub.assets.AssetMgr;
 import com.razie.pub.base.AttrAccess;
+import com.razie.pub.base.ScriptContext;
 import com.razie.pub.base.data.HttpUtils;
 import com.razie.pub.base.log.Log;
 import com.razie.pub.draw.DrawStream;
@@ -19,7 +23,7 @@ import com.razie.pub.http.SoaNotHtml;
 import com.razie.pub.http.StreamConsumedReply;
 
 /**
- * call services via simple http requests
+ * call services or assets via simple http requests
  * 
  * can handle methods that take only String arguments, including SoaStreamables, which return one
  * of: void, String, Drawable, Object - the return value will be drawn on an HttpDrawStream
@@ -36,7 +40,7 @@ public class HttpSoaBinding extends SoaBinding {
     public static final String PREFIX = "/lightsoa/cmd/";
 
     /**
-     * create a simple binding - you then have to register it with the server
+     * create a simple binding for a service instance - you then have to register it with the server
      * 
      * if the class is annotated, use the other constructor, please...
      * 
@@ -54,7 +58,7 @@ public class HttpSoaBinding extends SoaBinding {
      * 
      * if the class is annotated, use the other constructor, please...
      * 
-     * @param service the object implementing the service methods
+     * @param service the class of the callback implementing the service/asset methods
      * @param serviceName the name to use - no funky characters, other than ".". Especially no
      *        spaces, eh?
      */
@@ -62,16 +66,20 @@ public class HttpSoaBinding extends SoaBinding {
         super(serviceCls, serviceName);
 
         // check service name matches annotation
-        if (serviceCls.getAnnotation(SoaService.class) != null) {
+        if (serviceCls != null && serviceCls.getAnnotation(SoaService.class) != null) {
             SoaService s = (SoaService) serviceCls.getAnnotation(SoaService.class);
             if (!s.name().equals(serviceName))
-                throw new IllegalArgumentException("can't bind service not annotated with @SoaService: "
-                        + service.getClass().getName());
-        } else if (serviceCls.getAnnotation(SoaAsset.class) != null) {
+                throw new IllegalArgumentException(
+                        "can't bind service not annotated with @SoaService/@SoaAsset: "
+                                + service.getClass().getName());
+        } else if (serviceCls != null && serviceCls.getAnnotation(SoaAsset.class) != null) {
             SoaAsset s = (SoaAsset) serviceCls.getAnnotation(SoaAsset.class);
             if (!s.type().equals(serviceName))
-                throw new IllegalArgumentException("can't bind service not annotated with @SoaService: "
-                        + service.getClass().getName());
+                throw new IllegalArgumentException(
+                        "can't bind service not annotated with @SoaService/@SoaAsset: "
+                                + service.getClass().getName());
+        } else {
+            Log.logThis("BOUND class which was not annotated...");
         }
     }
 
@@ -114,28 +122,46 @@ public class HttpSoaBinding extends SoaBinding {
             MyServerSocket socket) {
 
         Object otoi = this.service;
+        AssetKey key = null;
 
         if (otoi == null) {
             // must be an asset instance
-            AssetKey key = AssetKey.fromEntityUrl(HttpUtils.fromUrlEncodedString(actionName));
+            key = AssetKey.fromEntityUrl(HttpUtils.fromUrlEncodedString(actionName));
             String[] ss = cmdargs.split("/", 2);
 
             actionName = ss[0];
             cmdargs = ss.length > 1 ? ss[1] : null;
 
-            otoi = BaseAssetMgr.getAsset(key);
+            otoi = AssetMgr.getAsset(key);
         }
 
-        if (methods.containsKey(actionName)) {
+        if (otoi == null) {
+            Log.logThis("HTTP_SOA_ASSETNOTFOUND: " + key);
+            return "HTTP_SOA_ASSETNOTFOUND: " + key;
+        }
+
+        // maybe it's a dumb asset or injected functionality
+        if (methods.size() > 0 && !methods.containsKey(actionName)) {
+            Log.logThis("HTTP_SOA_UNKWNOWNACTION: " + actionName);
+            return "HTTP_SOA_UNKNOWNACTION: " + actionName;
+        }
+
+        Object response = null;
+        DrawStream out = null;
+
+        if (methods.size() <= 0) {
+            // didn't find it but there's no methods for this anyhow...
+            Log.logThis("HTTP_SOA_injected: " + actionName + ": ");
+            ScriptContext ctx = new ScriptContext.Impl(ScriptContext.Impl.global());
+            ctx.setAttr(parms);
+            response = AssetMgr.executeCmd(actionName, key, ctx);
+        } else if (methods.containsKey(actionName)) {
             Log.logThis("HTTP_SOA_" + actionName + ": ");
 
             AttrAccess args = new AttrAccess.Impl(parms);
 
             // setup the parms
             SoaMethod mdesc = methods.get(actionName).getAnnotation(SoaMethod.class);
-
-            Object resp = null;
-            DrawStream out = null;
 
             if (mdesc.auth().length() > 0) {
                 // TODO check auth
@@ -147,9 +173,9 @@ public class HttpSoaBinding extends SoaBinding {
                     out = makeMimeDrawStream(socket, nh.streamMimeType());
                 } else
                     out = makeDrawStream(socket, protocol);
-                resp = invokeStreamable(otoi, actionName, out, args);
+                response = invokeStreamable(otoi, actionName, out, args);
             } else {
-                resp = invoke(otoi, actionName, args);
+                response = invoke(otoi, actionName, args);
             }
 
             if (methods.get(actionName).getAnnotation(SoaNotHtml.class) != null) {
@@ -157,27 +183,24 @@ public class HttpSoaBinding extends SoaBinding {
                     throw new IllegalArgumentException("Cannot have a streamable nothtml");
                 }
                 // no special formatting, probably defaults to toString()
-                return resp;
+                return response;
             }
 
-            if (resp != null) {
-                // maybe stream already created for a streamable that returned a Drawable?
-                // unbelievable...
-                out = out != null ? out : makeDrawStream(socket, protocol);
-                out.write(resp);
+        }
+        if (response != null) {
+            // maybe stream already created for a streamable that returned a Drawable?
+            // unbelievable...
+            out = out != null ? out : makeDrawStream(socket, protocol);
+            out.write(response);
+            out.close();
+            return new StreamConsumedReply();
+        } else if (response == null) {
+            if (out != null)
                 out.close();
-                return new StreamConsumedReply();
-            } else if (resp == null) {
-                if (out != null)
-                    out.close();
-                return new StreamConsumedReply();
-            }
-
-            return resp;
+            return new StreamConsumedReply();
         }
 
-        Log.logThis("HTTP_SOA_UNKWNOWNACTION: " + actionName);
-        return "HTTP_SOA_UNKNOWNACTION: " + actionName;
+        return response;
     }
 
     private DrawStream makeDrawStream(MyServerSocket socket, String protocol) {

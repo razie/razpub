@@ -1,3 +1,6 @@
+/**
+ * Razvan's code. Copyright 2008 based on Apache (share alike) see LICENSE.txt for details.
+ */
 package com.razie.pub.lightsoa;
 
 import java.util.HashMap;
@@ -5,7 +8,6 @@ import java.util.Map;
 import java.util.Properties;
 
 import com.razie.pub.assets.AssetKey;
-import com.razie.pub.assets.BaseAssetMgr;
 import com.razie.pub.base.AttrAccess;
 import com.razie.pub.base.data.HttpUtils;
 import com.razie.pub.http.MyServerSocket;
@@ -16,7 +18,9 @@ import com.razie.pub.http.MyServerSocket;
  * @author razvanc99
  */
 public class HttpAssetSoaBinding extends HttpSoaBinding {
-    static Map<String, HttpSoaBinding> bindings = new HashMap<String, HttpSoaBinding>();
+    static Map<String, HttpSoaBinding> bindings            = new HashMap<String, HttpSoaBinding>();
+
+    static HttpSoaBinding              defaultAssetBinding = new HttpSoaBinding((Class) null, "");
 
     /**
      * create a simple binding - you then have to register it with the server
@@ -42,9 +46,13 @@ public class HttpAssetSoaBinding extends HttpSoaBinding {
         AssetKey key = AssetKey.fromEntityUrl(HttpUtils.fromUrlEncodedString(actionName));
 
         HttpSoaBinding binding = bindings.get(key.getType());
-        if (binding == null)
-            throw new IllegalArgumentException("ERR_HTTPSOAASSET type is not bound: " + key.getType());
-        return binding.executeCmdServer(actionName, protocol, cmdargs, parms, socket);
+        if (binding == null) {
+            // throw new IllegalArgumentException("ERR_HTTPSOAASSET type is not bound: " +
+            // key.getType());
+            // try to call a generic asset via its inventory or other injection mechanism...
+            return defaultAssetBinding.executeCmdServer(actionName, protocol, cmdargs, parms, socket);
+        } else
+            return binding.executeCmdServer(actionName, protocol, cmdargs, parms, socket);
     }
 
     /** invoke a lightsoa method on a given service */

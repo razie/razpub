@@ -3,7 +3,8 @@
  * 
  * <p>
  * This package intends to eliminate much of the crap one has to deal with when writing any kind of
- * service accessible remotely. There's a miriad of protocols today and each has its own quirks.
+ * service accessible remotely. There's a myriad of protocols today and each has its own quirks.
+ * 
  * <p>
  * Just mark a method to be called with the "@SoaMethod", listing the parameter names. Then wrap the
  * object in a binding wrapper and register that with whatever protocol server you need. So far I
