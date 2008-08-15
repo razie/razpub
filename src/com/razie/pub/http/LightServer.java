@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Properties;
 
 import com.razie.pub.base.ActionItem;
+import com.razie.pub.base.ThreadContext;
 import com.razie.pub.base.data.HtmlRenderUtils;
 import com.razie.pub.base.log.Exceptions;
 import com.razie.pub.base.log.Log;
@@ -24,9 +25,9 @@ import com.razie.pubstage.life.Worker;
  * just for http...just derive and overwrite the makeReceiver() to use a fancier receiver
  * 
  * <p>
- * As is, you can hook it up with the {@link com.razie.pub.http.LightCmdGET} and implement
- * simple services or lightsoa bindings...that's usually enough. ROADMAP for usage: define your
- * lightsoa classes, and register them with the server and start the server...that's it.
+ * As is, you can hook it up with the {@link com.razie.pub.http.LightCmdGET} and implement simple
+ * services or lightsoa bindings...that's usually enough. ROADMAP for usage: define your lightsoa
+ * classes, and register them with the server and start the server...that's it.
  * 
  * <p>
  * See self-documented samples in {@link com.razie.pub.http.test.TestLightServer} which does
@@ -42,6 +43,7 @@ public class LightServer extends Worker {
     protected int           port;
     // TODO find an icon for this
     static final ActionItem ME             = new ActionItem("LightServer");
+    protected ThreadContext mainContext;
 
     /** set this to something nonzero to limit the number of connections accepted in parallel */
     protected int           maxConnections = 0;
@@ -56,9 +58,10 @@ public class LightServer extends Worker {
      * @param soaPrefix if not null, it will call the LightSoa bindings when sees this prefix...make
      *        sure it ends in a space. An example is "GET ", see the test
      */
-    public LightServer(int port) {
+    public LightServer(int port, ThreadContext mainContext) {
         super(ME);
         this.port = port;
+        this.mainContext = mainContext;
 
         // not sure why i try 3 times, but...seems sturdier than not ;)
         for (int i = 0; i < 3; i++) {
@@ -131,7 +134,7 @@ public class LightServer extends Worker {
      * 
      * TODO derive from MTWrkRq
      */
-    protected static class Receiver implements Runnable {
+    protected class Receiver implements Runnable {
         protected MyServerSocket socket;
         protected LightServer    server;
 
@@ -141,6 +144,7 @@ public class LightServer extends Worker {
         }
 
         public void run() {
+            ThreadContext.enter(mainContext);
 
             String input = "";
 
@@ -167,6 +171,8 @@ public class LightServer extends Worker {
                 // what
                 Log.logThis("IOException on socket listen: " + ioe);
                 ioe.printStackTrace();
+            } finally {
+                ThreadContext.exit();
             }
         }
 
@@ -210,8 +216,9 @@ public class LightServer extends Worker {
             }
         }
 
-        static final Log logger = Log.Factory.create(Receiver.class.getName());
     }
+
+    static final Log logger = Log.Factory.create(Receiver.class.getName());
 
     public void registerCmdListener(SocketCmdListener c) {
         getListeners().add(c);
