@@ -1,9 +1,16 @@
 /**
  * Simple embeddable socket/http server implementation. It is not a complete web server
- * implementation, but serves most purposes.
+ * implementation, but serves most purposes. It is easy to extend/use - just start it up and mount
+ * "listeners".
  * 
  * You can use it as a plain socket server (i.e. ftp or something) OR, just mount the LightCmdGET
  * and it becomes an http server with SOA support.
+ * 
+ * Features:
+ * <li>bind java code to URL
+ * <li>parse URL into map of values and viceversa
+ * <li>handles multithreaded request processing
+ * <li>handles simple authentication/authorization
  * 
  * The basic serving logic is in LightCmdGET: it can either serve a file from URL (classpath, disk)
  * or call a SOA method/service.
