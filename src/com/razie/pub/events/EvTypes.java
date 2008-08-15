@@ -5,9 +5,7 @@
 package com.razie.pub.events;
 
 /**
- * all event types must derive from here
- * 
- * TODO detailed docs
+ * all event types must derive from here - easy way to find all event types in a large distributed system
  * 
  * @author razvanc99
  * 
