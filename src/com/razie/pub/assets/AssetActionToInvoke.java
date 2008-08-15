@@ -49,7 +49,7 @@ public class AssetActionToInvoke extends ActionToInvoke {
      * @param pairs
      */
     public AssetActionToInvoke(AssetKey key, ActionItem item, Object... pairs) {
-        this("", key, item, pairs);
+        this(Agents.me().url, key, item, pairs);
     }
 
     @Override

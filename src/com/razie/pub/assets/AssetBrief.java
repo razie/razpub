@@ -1,6 +1,6 @@
 /**
- * Razvan's public code. 
- * Copyright 2008 based on Apache license (share alike) see LICENSE.txt for details.
+ * Razvan's public code. Copyright 2008 based on Apache license (share alike) see LICENSE.txt for
+ * details.
  */
 package com.razie.pub.assets;
 
@@ -8,6 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONString;
 
+import com.razie.pub.assets.AssetMgr.Meta;
 import com.razie.pub.base.ActionToInvoke;
 import com.razie.pub.base.AttrAccess;
 import com.razie.pub.base.data.HtmlRenderUtils;
@@ -17,6 +18,7 @@ import com.razie.pub.draw.Drawable;
 import com.razie.pub.draw.Renderer;
 import com.razie.pub.draw.Renderer.Technology;
 import com.razie.pub.http.Agents;
+import com.razie.pub.http.LightAuth;
 import com.razie.pub.resources.RazIconRes;
 
 /**
@@ -47,11 +49,19 @@ public class AssetBrief extends AttrAccess.Impl implements AttrAccess, Drawable,
     private AssetKey   ref;
     public String      player;
     public String      parentID    = "";
+    protected AssetKey series      = null;
 
     public DetailLevel detailLevel = DetailLevel.LIST;
 
     public static enum DetailLevel {
         BRIEFLIST, LIST, LARGE, FULL
+    }
+
+    public AssetBrief() {
+    }
+
+    public AssetBrief(String name) {
+        this.setName(name);
     }
 
     /** shortcut to render self - don't like controllers that much */
@@ -71,7 +81,14 @@ public class AssetBrief extends AttrAccess.Impl implements AttrAccess, Drawable,
         s += "\n   urlForDetails=" + getUrlForDetails().makeActionUrl();
         s += "\n   localDir=" + getLocalDir();
         s += "\n   ref=" + getKey();
+        s += "\n   series=" + (series == null ? "" : getSeries());
         return s + "\n}";
+    }
+
+    public String getMimeType() {
+        String fname = getLocalDir() + getFileName();
+        String mimeType = HttpUtils.getMimeType(getLocalDir() + getFileName());
+        return mimeType;
     }
 
     public String toUpnpItem(String parentID) {
@@ -101,12 +118,6 @@ public class AssetBrief extends AttrAccess.Impl implements AttrAccess, Drawable,
                 + getUrlForStreaming().makeActionUrl() + "</res>";
 
         return s + p + "\n</item>";
-    }
-
-    public String getMimeType() {
-        String fname = getLocalDir() + getFileName();
-        String mimeType = HttpUtils.getMimeType(getLocalDir() + getFileName());
-        return mimeType;
     }
 
     /**
@@ -246,6 +257,20 @@ public class AssetBrief extends AttrAccess.Impl implements AttrAccess, Drawable,
     }
 
     /**
+     * @param series the series to set
+     */
+    public void setSeries(AssetKey series) {
+        this.series = series;
+    }
+
+    /**
+     * @return the series
+     */
+    public AssetKey getSeries() {
+        return series;
+    }
+
+    /**
      * @param b
      * @return
      */
@@ -273,6 +298,9 @@ public class AssetBrief extends AttrAccess.Impl implements AttrAccess, Drawable,
 
         a.setAttr("localDir", getLocalDir());
         a.setAttr("fileName", getFileName());
+
+        if (series != null)
+            a.setAttr("series", getSeries().toUrlEncodedString());
 
         return a;
     }
@@ -305,6 +333,10 @@ public class AssetBrief extends AttrAccess.Impl implements AttrAccess, Drawable,
             // getUrlForDetails().makeActionUrl());
             brief.setLocalDir(a.optString("localDir"));
             brief.setKey(AssetKey.fromEntityUrl(HttpUtils.fromUrlEncodedString(a.getString("ref"))));
+            if (a.has("series"))
+                brief
+                        .setSeries(AssetKey.fromEntityUrl(HttpUtils.fromUrlEncodedString(a
+                                .getString("series"))));
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
@@ -314,6 +346,35 @@ public class AssetBrief extends AttrAccess.Impl implements AttrAccess, Drawable,
 
     public Renderer getRenderer(Technology technology) {
         return new MyRender();
+    }
+
+    /**
+     * make a url for the image/icon representing this asset...gives you something to display for
+     * this asset
+     */
+    public String getIconImgUrl() {
+        // 1. it may be the image
+        // 2. it may be the icon
+        // 3. default to the meta
+        String img = icon;
+
+        if (image != null && image.length() > 0) {
+            img = image;
+        }
+
+        if (img == null || img.length() <= 0) { // default to the meta
+            Meta meta = AssetMgr.meta(getKey().getType());
+            if (meta != null)
+                img = AssetMgr.meta(getKey().getType()).id.getIconProp();
+        }
+
+        String i = RazIconRes.getIconFile(img);
+        // img = (img.startsWith("/mutant") ? img : "/mutant/getPic/" + img);
+        i = (i.startsWith("/") ? i : "/getPic/" + img);
+        i = Agents.getMyUrl() + i;
+        i = LightAuth.wrapUrl(i);
+
+        return i;
     }
 
     public static class MyRender implements Renderer {
@@ -342,16 +403,11 @@ public class AssetBrief extends AttrAccess.Impl implements AttrAccess, Drawable,
          * @param b
          * @return
          */
-        private Object toHtml(AssetBrief b) {
+        protected Object toHtml(AssetBrief b) {
             String s = "<table align=middle><tr>";
-            String img = b.icon;
+            String img = b.getIconImgUrl();
 
             // NavButton button = new NavButton(DETAILS, "");
-
-            if (b.image != null && b.image.length() > 0) {
-                String i = RazIconRes.getIconFile(b.image);
-                img = Agents.getMyUrl() + (i.length() == 0 ? ("/mutant/getPic/" + b.image) : i);
-            }
 
             String width = b.detailLevel.equals(DetailLevel.LIST) ? "80" : "300";
             width = b.detailLevel.equals(DetailLevel.LARGE) ? "150" : width;
@@ -375,7 +431,9 @@ public class AssetBrief extends AttrAccess.Impl implements AttrAccess, Drawable,
                     s += b.getLargeDesc() + "<br>";
                 } else if (b.detailLevel.equals(DetailLevel.FULL)) {
                     s += b.getLargeDesc() + "<br>";
-                    s += b.getLocalDir().replace("/", " /") + "<br>";
+
+                    if (b.getLocalDir() != null)
+                        s += b.getLocalDir().replace("/", " /") + "<br>";
                 }
             }
             // s += "<a href=\"" + b.getUrlForDetails() + "\">details</a>" + "</td>";
