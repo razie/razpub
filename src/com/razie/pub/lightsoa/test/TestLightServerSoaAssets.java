@@ -1,3 +1,6 @@
+/**
+ * Razvan's code. Copyright 2008 based on Apache (share alike) see LICENSE.txt for details.
+ */
 package com.razie.pub.lightsoa.test;
 
 import java.io.BufferedReader;
@@ -7,6 +10,7 @@ import java.net.URL;
 
 import com.razie.pub.assets.AssetActionToInvoke;
 import com.razie.pub.assets.AssetHandle;
+import com.razie.pub.assets.AssetMgr;
 import com.razie.pub.base.ActionItem;
 import com.razie.pub.base.ActionToInvoke;
 import com.razie.pub.base.log.Log;
@@ -25,7 +29,7 @@ public class TestLightServerSoaAssets extends TestLightBase {
         super.setUp();
 
         // initialize the main asset manager - is responsible for instantiating assets by key
-        SampleAssetMgr.init();
+        AssetMgr.init(new SampleAssetMgr());
 
         // register the test asset
         HttpAssetSoaBinding.register(SampleAsset.class);

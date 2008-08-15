@@ -1,3 +1,6 @@
+/**
+ * Razvan's code. Copyright 2008 based on Apache (share alike) see LICENSE.txt for details.
+ */
 package com.razie.pub.lightsoa.test;
 
 import java.io.IOException;
@@ -8,6 +11,7 @@ import java.util.Properties;
 import junit.framework.TestCase;
 
 import com.razie.pub.assets.AssetKey;
+import com.razie.pub.assets.AssetMgr;
 import com.razie.pub.base.AttrAccess;
 import com.razie.pub.base.log.Log;
 import com.razie.pub.draw.DrawStream;
@@ -22,7 +26,7 @@ public class TestLocalSoaAssets extends TestCase {
     public static AssetKey MOVIEKEY  = new AssetKey("raz.test.Movie", "300.avi");
 
     public void setUp() {
-        SampleAssetMgr.init();
+        AssetMgr.init(new SampleAssetMgr());
         LightAuth.init(new LightAuth("lightsoa"));
     }
 
