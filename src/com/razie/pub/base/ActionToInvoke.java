@@ -14,13 +14,14 @@ import com.razie.pub.draw.Renderer;
 import com.razie.pub.draw.Renderer.Technology;
 import com.razie.pub.draw.widgets.NavButton;
 import com.razie.pub.draw.widgets.NavLink;
+import com.razie.pub.http.Agents;
 import com.razie.pub.http.LightAuth;
 
 /**
  * this is an instance of an action, meant to be invoked. It is prepared by someone and can be
- * executed on the spot OR presented to the user as a menu or some other invokable and invoked later.
- * It contains everything needed to invoke itself. It can be invoked in the same JVM or remotely
- * (from a web page etc).
+ * executed on the spot OR presented to the user as a menu or some other invokable and invoked
+ * later. It contains everything needed to invoke itself. It can be invoked in the same JVM or
+ * remotely (from a web page etc).
  * 
  * it can be placed on a menu, web page, dialog as a button etc - it generally represents a menu
  * item or a button.
@@ -69,7 +70,7 @@ public class ActionToInvoke extends AttrAccess.Impl implements AttrAccess, Drawa
      * @param pairs
      */
     public ActionToInvoke(ActionItem item, Object... pairs) {
-        this("", item, pairs);
+        this(Agents.me().url, item, pairs);
     }
 
     /** shortcut to render self - don't like controllers that much */
