@@ -116,14 +116,31 @@ public interface AttrAccess {
             checkMap();
             // check name for type definition
             if (name.contains(":")) {
+                String n[];
+
                 // type defn can be escaped by a \
-                // TODO what the heck does this mean?
-                 String[] n = name.split("[^\\\\]:", 2);
-                // name = n[0].replaceAll("\\\\:", ":");
-//                String[] n = name.split(":", 2);
+                int idx = name.indexOf("\\:");
+                if (idx >= 0 && idx == name.indexOf(":") - 1) {
+                    n = new String[2];
+                    
+                    // let's see if it does have a type...
+                    String s2 = name.substring(idx + 2);
+                    int idx2 = name.substring(idx + 2).indexOf(":");
+                    if (idx2 >= 0) {
+                        n[0] = name.substring(0, idx+2+idx2);
+                        n[1] = name.substring(idx+2+idx2+1);
+                    } else {
+                        n[0] = name;
+                        n[1] = null;
+                    }
+                    
+                    name = n[0] = n[0].replaceAll("\\\\:", ":");
+                } else
+                    n = name.split(":", 2);
+
                 // basically, IF there's a ":" AND what's after is a recognied type...otherwise i'll
                 // assume the parm name is "a:b"
-                if (n.length > 1) {
+                if (n.length > 1 && n[1] != null) {
                     if (AttrType.valueOf(n[1].toUpperCase()) != null) {
                         name = n[0];
                         this.setAttrType(name, n[1]);
@@ -169,11 +186,11 @@ public interface AttrAccess {
                 String[] n = m.split(",");
                 for (String s : n) {
                     String[] ss = s.split("=", 2);
-                    
+
                     String val = null;
                     if (ss.length > 1)
                         val = ss[1];
-                    
+
                     String nametype = ss[0];
                     this.setAttr(nametype, val);
                 }

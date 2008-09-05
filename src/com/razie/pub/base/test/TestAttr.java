@@ -28,6 +28,14 @@ public class TestAttr extends TestCase {
         check(aa, 2);
     }
 
+    public void testEscapedDefn() throws InterruptedException {
+        AttrAccess aa = new AttrAccess.Impl();
+        aa.setAttr("attr1\\:string", "val1");
+        aa.setAttr("attr2\\:string:int", "2");
+        assertTrue(aa.isPopulated("attr1:string"));
+        assertTrue(aa.isPopulated("attr2:string"));
+    }
+
     public void testComplexDefn() throws InterruptedException {
         AttrAccess aa = new AttrAccess.Impl("attr1:string", "val1", "attr2:int", "2");
         check(aa, 2);
