@@ -15,8 +15,11 @@ import java.util.List;
 import java.util.Properties;
 
 import com.razie.pub.base.data.HttpUtils;
-import com.razie.pub.base.log.CommRtException;
+import com.razie.pub.base.exceptions.CommRtException;
 import com.razie.pub.base.log.Log;
+import com.razie.pub.comms.AuthException;
+import com.razie.pub.comms.LightAuth;
+import com.razie.pub.comms.MyServerSocket;
 import com.razie.pub.draw.Renderer.Technology;
 import com.razie.pub.draw.widgets.DrawError;
 import com.razie.pub.lightsoa.HttpSoaBinding;

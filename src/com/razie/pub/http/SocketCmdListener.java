@@ -7,6 +7,8 @@ package com.razie.pub.http;
 import java.util.Properties;
 
 import com.razie.pub.base.log.Log;
+import com.razie.pub.comms.AuthException;
+import com.razie.pub.comms.MyServerSocket;
 
 /**
  * a command listener listens to commands, executes them and returns an object, normally a Drawable

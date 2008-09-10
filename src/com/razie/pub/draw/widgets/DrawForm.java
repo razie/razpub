@@ -8,9 +8,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.razie.pub.base.ActionItem;
-import com.razie.pub.base.ActionToInvoke;
 import com.razie.pub.base.AttrAccess;
 import com.razie.pub.base.AttrAccess.AttrType;
+import com.razie.pub.comms.ActionToInvoke;
 import com.razie.pub.draw.DrawStream;
 import com.razie.pub.draw.Drawable;
 import com.razie.pub.draw.Renderer;

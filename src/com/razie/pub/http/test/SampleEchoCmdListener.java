@@ -7,8 +7,8 @@ package com.razie.pub.http.test;
 import java.util.Properties;
 
 import com.razie.pub.base.log.Log;
-import com.razie.pub.http.AuthException;
-import com.razie.pub.http.MyServerSocket;
+import com.razie.pub.comms.AuthException;
+import com.razie.pub.comms.MyServerSocket;
 import com.razie.pub.http.SocketCmdListener;
 
 /**

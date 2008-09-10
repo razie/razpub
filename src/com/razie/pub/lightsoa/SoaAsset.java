@@ -14,18 +14,20 @@ import java.lang.annotation.Target;
 /**
  * identifies an asset class as opposed to a service (see SoaService for details).
  * 
- * asset ulrs are <code>PREFIX/asset/KEYURL/METHOD?parms=values&</code>. Note that "asset" is in
- * the same position as a service would be and it is in fact a reserved service :)
+ * asset ulrs are <code>PREFIX/asset/KEYURL/METHOD?parms=values&</code>. Note that "asset" is in the
+ * same position as a service would be and it is in fact a reserved service :)
  * 
  * RESTful: by convention, <code>PREFIX/asset/KEYURL</code> represents the asset and the
  * GET/POST/etc are translated directly into inventory commands.
  * 
  * equivalent forms:
  * 
- * <code>PREFIX/asset/KEYURL</code>
- * <code>PREFIX/[text|xml|json]/asset/KEYURL</code>
- * <code>PREFIX/[text|xml|json]/asset/KEYURL/METHOD?parms=values&</code> -
- * the result of the method is rendered using the indicated format
+ * <ul>
+ * <li><code>PREFIX/asset/KEYURL</code>
+ * <li><code>PREFIX/[text|xml|json]/asset/KEYURL</code>
+ * <li><code>PREFIX/[text|xml|json]/asset/KEYURL/METHOD?parms=values&</code> - the result of the
+ * method is rendered using the indicated format
+ *</ul>
  * 
  * the basic idea is that, instead of talking about remote services that manage stupid entities, we
  * like to think in terms of smart objects, implicitly remote (CORBA). To escape the granularity
@@ -48,7 +50,7 @@ import java.lang.annotation.Target;
 public @interface SoaAsset {
     /** the type of the asset modelled by this class */
     String type();
-    
+
     /** the type of the asset modelled by this class */
     String base() default "";
 

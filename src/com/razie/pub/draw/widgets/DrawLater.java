@@ -4,7 +4,7 @@
  */
 package com.razie.pub.draw.widgets;
 
-import com.razie.pub.base.ActionToInvoke;
+import com.razie.pub.comms.ActionToInvoke;
 import com.razie.pub.draw.DrawStream;
 import com.razie.pub.draw.Drawable;
 import com.razie.pub.draw.Renderer;

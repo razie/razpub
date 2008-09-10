@@ -10,7 +10,7 @@ import java.util.Properties;
 import com.razie.pub.assets.AssetKey;
 import com.razie.pub.base.AttrAccess;
 import com.razie.pub.base.data.HttpUtils;
-import com.razie.pub.http.MyServerSocket;
+import com.razie.pub.comms.MyServerSocket;
 
 /**
  * there can be only one instance of this, reghstered as the service name "asset"
@@ -43,7 +43,7 @@ public class HttpAssetSoaBinding extends HttpSoaBinding {
 
     public Object executeCmdServer(String actionName, String protocol, String cmdargs, Properties parms,
             MyServerSocket socket) {
-        AssetKey key = AssetKey.fromEntityUrl(HttpUtils.fromUrlEncodedString(actionName));
+        AssetKey key = AssetKey.fromString(HttpUtils.fromUrlEncodedString(actionName));
 
         HttpSoaBinding binding = bindings.get(key.getType());
         if (binding == null) {

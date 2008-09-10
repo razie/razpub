@@ -18,6 +18,7 @@ import com.razie.pub.base.ThreadContext;
 import com.razie.pub.base.data.HtmlRenderUtils;
 import com.razie.pub.base.log.Exceptions;
 import com.razie.pub.base.log.Log;
+import com.razie.pub.comms.MyServerSocket;
 import com.razie.pubstage.life.Worker;
 
 /**
@@ -73,7 +74,7 @@ public class LightServer extends Worker {
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {
-                    // TODO Auto-generated catch block
+                    // dont care
                     e.printStackTrace();
                 }
             }
@@ -209,7 +210,8 @@ public class LightServer extends Worker {
 
             if (reply != null) {
                 if (!(reply instanceof StreamConsumedReply))
-                    out.println(reply);
+                    out.print(reply);
+//                    out.println(reply);
                 Log.logThis("HTTP_CLIENT_SERVED");
             } else {
                 logger.trace(3, "command listener returned nothing...");

@@ -10,12 +10,12 @@ import java.net.URL;
 import java.util.Properties;
 
 import com.razie.pub.base.data.HtmlRenderUtils;
+import com.razie.pub.comms.AuthException;
+import com.razie.pub.comms.MyServerSocket;
 import com.razie.pub.draw.DrawStream;
 import com.razie.pub.draw.test.SampleDrawable;
-import com.razie.pub.http.AuthException;
 import com.razie.pub.http.LightCmdGET;
 import com.razie.pub.http.LightServer;
-import com.razie.pub.http.MyServerSocket;
 import com.razie.pub.lightsoa.HttpSoaBinding;
 import com.razie.pub.lightsoa.SoaMethod;
 import com.razie.pub.lightsoa.SoaStreamable;

@@ -5,7 +5,7 @@
 package com.razie.pub.draw.widgets;
 
 import com.razie.pub.base.ActionItem;
-import com.razie.pub.base.ActionToInvoke;
+import com.razie.pub.comms.ActionToInvoke;
 
 /**
  * a button with an action and image that navigates elsewhere (i.e. open a new window or do GET in

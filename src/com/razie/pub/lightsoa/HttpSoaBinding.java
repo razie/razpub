@@ -12,13 +12,13 @@ import com.razie.pub.base.AttrAccess;
 import com.razie.pub.base.ScriptContext;
 import com.razie.pub.base.data.HttpUtils;
 import com.razie.pub.base.log.Log;
+import com.razie.pub.comms.MyServerSocket;
 import com.razie.pub.draw.DrawStream;
 import com.razie.pub.draw.HttpDrawStream;
 import com.razie.pub.draw.JsonDrawStream;
 import com.razie.pub.draw.MimeDrawStream;
 import com.razie.pub.draw.SimpleDrawStream;
 import com.razie.pub.draw.Renderer.Technology;
-import com.razie.pub.http.MyServerSocket;
 import com.razie.pub.http.SoaNotHtml;
 import com.razie.pub.http.StreamConsumedReply;
 
@@ -126,7 +126,7 @@ public class HttpSoaBinding extends SoaBinding {
 
         if (otoi == null) {
             // must be an asset instance
-            key = AssetKey.fromEntityUrl(HttpUtils.fromUrlEncodedString(actionName));
+            key = AssetKey.fromString(HttpUtils.fromUrlEncodedString(actionName));
             String[] ss = cmdargs.split("/", 2);
 
             actionName = ss[0];
