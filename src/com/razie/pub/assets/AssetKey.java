@@ -187,7 +187,7 @@ public class AssetKey implements Serializable {
      * 
      * @return the entity-URI
      */
-    public static AssetKey fromEntityUrl(String inurl) {
+    public static AssetKey fromString(String inurl) {
         // get rid of <>
         // honestly, if it didn't have them i should blow up?
         String url = inurl;

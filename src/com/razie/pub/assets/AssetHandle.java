@@ -5,8 +5,8 @@
 package com.razie.pub.assets;
 
 import com.razie.pub.base.ActionItem;
-import com.razie.pub.base.ActionToInvoke;
 import com.razie.pub.base.AttrAccess;
+import com.razie.pub.comms.ActionToInvoke;
 
 /**
  * this represents a full asset

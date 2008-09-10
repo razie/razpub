@@ -9,17 +9,20 @@ import org.json.JSONObject;
 import org.json.JSONString;
 
 import com.razie.pub.assets.AssetMgr.Meta;
-import com.razie.pub.base.ActionToInvoke;
+import com.razie.pub.base.ActionItem;
 import com.razie.pub.base.AttrAccess;
 import com.razie.pub.base.data.HtmlRenderUtils;
 import com.razie.pub.base.data.HttpUtils;
+import com.razie.pub.comms.ActionToInvoke;
+import com.razie.pub.comms.Agents;
+import com.razie.pub.comms.LightAuth;
+import com.razie.pub.comms.ServiceActionToInvoke;
 import com.razie.pub.draw.DrawStream;
 import com.razie.pub.draw.Drawable;
 import com.razie.pub.draw.Renderer;
 import com.razie.pub.draw.Renderer.Technology;
-import com.razie.pub.http.Agents;
-import com.razie.pub.http.LightAuth;
 import com.razie.pub.resources.RazIconRes;
+import com.razie.pub.resources.RazIcons;
 
 /**
  * a brief description of an asset. It includes enough information to allow users to initiate
@@ -39,19 +42,25 @@ import com.razie.pub.resources.RazIconRes;
  * 
  */
 public class AssetBrief extends AttrAccess.Impl implements AttrAccess, Drawable, JSONString {
-    protected String   name;
-    protected String   fileName;
-    protected String   icon;
-    protected String   image;
-    protected String   briefDesc;
-    protected String   largeDesc;
-    private String     localDir;
-    private AssetKey   ref;
-    public String      player;
-    public String      parentID    = "";
-    protected AssetKey series      = null;
 
-    public DetailLevel detailLevel = DetailLevel.LIST;
+    protected String               name;
+    protected String               fileName;
+    protected String               icon;
+    protected String               image;
+    protected String               briefDesc;
+    protected String               largeDesc;
+    private String                 localDir;
+    private AssetKey               ref;
+    public String                  player;
+    public String                  parentID    = "";
+    protected AssetKey             series      = null;
+
+    public DetailLevel             detailLevel = DetailLevel.LIST;
+
+    /** standard actions on assets */
+    public static final ActionItem DETAILS     = new ActionItem("details", RazIcons.UNKNOWN);
+    public static final ActionItem PLAY        = new ActionItem("play", RazIcons.PLAY);
+    public static final ActionItem STREAM      = new ActionItem("stream", RazIcons.PLAY);
 
     public static enum DetailLevel {
         BRIEFLIST, LIST, LARGE, FULL
@@ -198,8 +207,15 @@ public class AssetBrief extends AttrAccess.Impl implements AttrAccess, Drawable,
      * @return the urlForDetails
      */
     public ActionToInvoke getUrlForDetails() {
-        // TODO make abstract
-        return null;
+        if (this.getSeries() != null) {
+            // FIXME do i incorporate series into the baseline assets?
+            return new ServiceActionToInvoke("cmd", DETAILS, "ref", getKey(), "series", this.getSeries()
+                    .toString());
+        } else {
+            return new ServiceActionToInvoke("cmd", DETAILS, "ref", getKey());
+            // FIXME must use only asset stuff, no mutant specifics...
+            // return new AssetActionToInvoke(getKey(), DETAILS);
+        }
     }
 
     /**
@@ -207,11 +223,20 @@ public class AssetBrief extends AttrAccess.Impl implements AttrAccess, Drawable,
      * 
      * TODO define the protocol to serve/get/use the description
      * 
-     * @return a url you can use to stream the asset or null if streaming is not supported
+     * @return a url you can use to stream the asset or null if streaming is not supported. the url
+     *         you can use to stream the file - it includes the filename just so IE can figure out
+     *         what to do with it (open the right player etc)...
      */
     public ActionToInvoke getUrlForStreaming() {
-        // TODO make abstract
-        return null;
+        if (this.getSeries() != null) {
+            // FIXME do i incorporate series into the baseline assets?
+            return new ActionToInvoke(new ActionItem(AssetBrief.STREAM.name + "/" + this.getFileName(),
+                    RazIcons.DOWNLOAD), "ref", getKey().toUrlEncodedString(), "series", this.getSeries()
+                    .toString());
+        } else {
+            return new ActionToInvoke(new ActionItem(AssetBrief.STREAM.name + "/" + this.getFileName(),
+                    RazIcons.DOWNLOAD), "ref", getKey().toUrlEncodedString());
+        }
     }
 
     /**
@@ -332,11 +357,9 @@ public class AssetBrief extends AttrAccess.Impl implements AttrAccess, Drawable,
             // brief.setUrlForDetails(a.getString("urlForDetails"),
             // getUrlForDetails().makeActionUrl());
             brief.setLocalDir(a.optString("localDir"));
-            brief.setKey(AssetKey.fromEntityUrl(HttpUtils.fromUrlEncodedString(a.getString("ref"))));
+            brief.setKey(AssetKey.fromString(HttpUtils.fromUrlEncodedString(a.getString("ref"))));
             if (a.has("series"))
-                brief
-                        .setSeries(AssetKey.fromEntityUrl(HttpUtils.fromUrlEncodedString(a
-                                .getString("series"))));
+                brief.setSeries(AssetKey.fromString(HttpUtils.fromUrlEncodedString(a.getString("series"))));
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }

@@ -15,7 +15,7 @@ public interface AssetBase extends Referenceable {
 
     AssetKey getKey();
 
-    public class Impl implements AssetBase {
+    public static class Impl implements AssetBase {
 
         protected AssetBrief brief;
 

@@ -8,11 +8,11 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import com.razie.pub.base.ActionItem;
-import com.razie.pub.base.ActionToInvoke;
 import com.razie.pub.base.ScriptContext;
+import com.razie.pub.comms.ActionToInvoke;
+import com.razie.pub.comms.Agents;
 import com.razie.pub.comms.Comms;
-import com.razie.pub.http.Agents;
-import com.razie.pub.http.LightAuth;
+import com.razie.pub.comms.LightAuth;
 import com.razie.pub.lightsoa.HttpAssetSoaBinding;
 
 /**

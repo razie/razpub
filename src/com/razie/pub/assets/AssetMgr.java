@@ -6,6 +6,7 @@ package com.razie.pub.assets;
 
 import com.razie.pub.base.ActionItem;
 import com.razie.pub.base.ScriptContext;
+import com.razie.pub.draw.Drawable;
 
 /**
  * the asset mgr is the way to interact with all assets. it can find, query and manage the assets
@@ -34,6 +35,19 @@ public abstract class AssetMgr {
         return impl.metaImpl(name);
     }
 
+    /** a detailed description and commands for an asset */
+    public static Drawable details(AssetBrief asset) {
+        return impl.detailsImpl(asset);
+    }
+
+    public static ActionItem[] supportedActions(AssetKey ref) {
+        return impl.supportedActionsImpl(ref);
+    }
+
+    public static AssetBrief brief(AssetKey ref) {
+        return impl.briefImpl(ref);
+    }
+
     /**
      * execute injected command on given asset
      * 
@@ -49,6 +63,12 @@ public abstract class AssetMgr {
 
     protected abstract Object getAssetImpl(AssetKey key);
 
+    protected abstract Drawable detailsImpl(AssetBrief key);
+
+    protected abstract AssetBrief briefImpl(AssetKey key);
+
+    protected abstract ActionItem[] supportedActionsImpl(AssetKey key);
+
     protected abstract Meta metaImpl(String name);
 
     protected abstract Object executeCmdImpl(String cmd, AssetKey ref, ScriptContext... ctx);
@@ -60,10 +80,11 @@ public abstract class AssetMgr {
      * have to use them
      */
     public static class Meta {
-        public String     inventory;
-        public String     assetCls;
-        public String     baseMetaname;
-        public ActionItem id;
+        public String       inventory;
+        public String       assetCls;
+        public String       baseMetaname;
+        public ActionItem   id;
+        public ActionItem[] supportedActions;
 
         public Meta(ActionItem id, String base, String inventory) {
             this.baseMetaname = base;

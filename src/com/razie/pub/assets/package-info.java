@@ -1,10 +1,10 @@
 /**
- * Fairly light and flexible asset management framework
+ * Fairly light and flexible asset/resource management framework
  * 
  * <h1>Vision</h1>
  * <p>
- * There are assets all over the place, like movies, devices, a running windows computer etc. These
- * can be uniquely identified and managed.
+ * There are assets and resources all over the place, like movies, devices, a running windows
+ * computer etc. These can be uniquely identified and managed (remotely).
  * <p>
  * The more code supports common asset management, the better they can integrate. This entire
  * project is mostly about an asset management framework and related utilities for managing those
@@ -27,7 +27,7 @@
  * unless you add a wrapper layer of intelligent objects that delegate their methods to services.
  * <p>
  * That's what this entire framework is about: providing a unified set of frameworks to allow rapid
- * and unified implementation of smart assets which then can be controlled remotely.
+ * and unified implementation of smart assets which then can be used and controlled remotely.
  * <p>
  * This is the difference between <code>somerobotservice.move(myrobot, x, y)</code> and
  * <code>myrobot.move(x,y)</code>.
@@ -40,7 +40,7 @@
  * and fuzzy for what we want here. Assets borrow from service the remoteness and add intelligence,
  * transparent control, and some notional presentation.
  * 
- * <h2>Inventories</h2>
+ * <h2>Inventories or managers</h2>
  * <p>
  * Factories for objects are abstracted into an <b>inventory</b>, which acts as a locator for
  * assets. The assets are assumed to be intelligent, but from a generic handling perspective, the
@@ -62,6 +62,12 @@
  * <p>
  * The lightsoa framework provides the service abstraction, which is good for remote block of
  * functionality. On top of this we add the smart asset objects.
+ * 
+ * <h1>REST</h1>
+ * <p>
+ * Assets lend themselves well to the REST programming. Same as resources, slight semantic
+ * difference.
+ * 
  * 
  * STATE: post-concept, changes but not often
  * 

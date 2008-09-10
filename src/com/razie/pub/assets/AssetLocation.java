@@ -9,8 +9,8 @@ import java.io.Serializable;
 import java.net.URL;
 
 import com.razie.pub.FileUtils;
-import com.razie.pub.http.AgentHandle;
-import com.razie.pub.http.Agents;
+import com.razie.pub.comms.AgentHandle;
+import com.razie.pub.comms.Agents;
 
 /**
  * the location of an asset, either a remote url like below or a directory.
