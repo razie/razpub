@@ -5,8 +5,8 @@
 package com.razie.pub.draw.test;
 
 import com.razie.pub.base.ActionItem;
-import com.razie.pub.base.ActionToInvoke;
 import com.razie.pub.base.AttrAccess;
+import com.razie.pub.comms.ActionToInvoke;
 import com.razie.pub.draw.DrawSequence;
 import com.razie.pub.draw.DrawStream;
 import com.razie.pub.draw.Drawable;

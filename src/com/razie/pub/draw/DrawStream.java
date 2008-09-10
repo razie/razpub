@@ -8,8 +8,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.razie.pub.comms.CommChannel.ChannelEndPoint;
 import com.razie.pub.draw.Renderer.Technology;
-import com.razie.pubstage.comms.CommChannel.ChannelEndPoint;
 
 /**
  * trying to setup a stream drawing framework. this could also be called DrawCanvas or panel in

@@ -7,9 +7,9 @@ package com.razie.pub.draw;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import com.razie.pub.comms.MyServerSocket;
 import com.razie.pub.draw.Renderer.Technology;
 import com.razie.pub.http.HttpHelper;
-import com.razie.pub.http.MyServerSocket;
 
 /**
  * a drawing stream to an http client (plain old web). Will render objects in the html and wrap in
@@ -25,7 +25,7 @@ public class JsonDrawStream extends com.razie.pub.draw.DrawStream.DrawStreamWrap
 
     public JsonDrawStream(MyServerSocket socket) throws IOException {
         super(new SimpleDrawStream(Technology.JSON, socket.getOutputStream()));
-        this.setEndPoint(socket);
+        this.setEndPoint(socket.from);
         ((SimpleDrawStream)proxied).writeBytes(HttpHelper.httpHeader(HttpHelper.OK, MIME_APPLICATION_JSON).getBytes());
     }
 

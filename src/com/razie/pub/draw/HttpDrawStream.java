@@ -10,9 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.razie.pub.base.data.HtmlRenderUtils;
+import com.razie.pub.comms.MyServerSocket;
 import com.razie.pub.draw.Renderer.Technology;
 import com.razie.pub.http.HttpHelper;
-import com.razie.pub.http.MyServerSocket;
 
 /**
  * a drawing stream to an http client (plain old web). Will render objects in the html and wrap in
@@ -30,7 +30,7 @@ public class HttpDrawStream extends com.razie.pub.draw.DrawStream.DrawStreamWrap
 
     public HttpDrawStream(MyServerSocket socket) throws IOException {
         super(new SimpleDrawStream(Technology.HTML, socket.getOutputStream()));
-        this.setEndPoint(socket);
+        this.setEndPoint(socket.from);
     }
 
     public HttpDrawStream(OutputStream socket) throws IOException {
@@ -73,6 +73,7 @@ public class HttpDrawStream extends com.razie.pub.draw.DrawStream.DrawStreamWrap
 
     @Override
     public void close() {
+        header();
         // TODO not correct, since BG threads may still produce stuff...
         // ((SimpleDrawStream) proxied).writeBytes("<p> END OF STREAM </p>".getBytes());
         if (this.technology.equals(Technology.HTML)) {
