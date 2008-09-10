@@ -48,8 +48,7 @@ public class HtmlRenderUtils {
     /** wrap contents as an html document */
     public static String textToHtml(String s) {
         String r = s;// GRef.toUrlEncodedString(s);
-        r = r.replaceAll("\n", "<br>");
-        return r;
+        return r == null ? "null" : r.replaceAll("\n", "<br>");
     }
 
     public static class HtmlTheme {

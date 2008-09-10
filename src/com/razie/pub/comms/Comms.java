@@ -15,7 +15,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import com.razie.pub.base.data.ByteArray;
-import com.razie.pub.base.log.CommRtException;
+import com.razie.pub.base.exceptions.CommRtException;
 import com.razie.pub.base.log.Log;
 import com.sun.org.apache.xerces.internal.parsers.DOMParser;
 

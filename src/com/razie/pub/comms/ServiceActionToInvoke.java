@@ -2,9 +2,9 @@
  * Razvan's public code. 
  * Copyright 2008 based on Apache license (share alike) see LICENSE.txt for details.
  */
-package com.razie.pub.base;
+package com.razie.pub.comms;
 
-import com.razie.pub.http.LightAuth;
+import com.razie.pub.base.ActionItem;
 
 /**
  * this action is on a service - relevant when making up the URL: PREFIX/service/action/...

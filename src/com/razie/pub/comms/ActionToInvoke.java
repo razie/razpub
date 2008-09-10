@@ -2,20 +2,20 @@
  * Razvan's public code. Copyright 2008 based on Apache license (share alike) see LICENSE.txt for
  * details.
  */
-package com.razie.pub.base;
+package com.razie.pub.comms;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import com.razie.pub.comms.Comms;
+import com.razie.pub.base.ActionItem;
+import com.razie.pub.base.AttrAccess;
+import com.razie.pub.base.ScriptContext;
 import com.razie.pub.draw.DrawStream;
 import com.razie.pub.draw.Drawable;
 import com.razie.pub.draw.Renderer;
 import com.razie.pub.draw.Renderer.Technology;
 import com.razie.pub.draw.widgets.NavButton;
 import com.razie.pub.draw.widgets.NavLink;
-import com.razie.pub.http.Agents;
-import com.razie.pub.http.LightAuth;
 
 /**
  * this is an instance of an action, meant to be invoked. It is prepared by someone and can be

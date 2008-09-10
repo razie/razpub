@@ -3,12 +3,13 @@
  * details.
  * 
  * Note that this is based on work I did elsewhere:
- *
+ * 
  * Copyright 2006 - 2007 The Members of the OSS through Java(TM) Initiative. All rights reserved.
  * Use is subject to license terms.
  */
 package com.razie.pub.base.data;
 
+import java.io.StringBufferInputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,8 +30,16 @@ public class XmlDoc {
     protected Document                   document;
     protected String                     name;
     protected Element                    root;
+    protected Map<String, String>        prefixes = null;                          // lazy
 
-    protected static Map<String, XmlDoc> allDocs = new HashMap<String, XmlDoc>();
+    protected static Map<String, XmlDoc> allDocs  = new HashMap<String, XmlDoc>();
+
+    /** add prefix to be used in resolving xpath in this doc */
+    public void addPrefix(String s, String d) {
+        if (prefixes == null)
+            prefixes = new HashMap<String, String>();
+        prefixes.put(s, d);
+    }
 
     /** TEMP */
     public static void docAdd(String s, XmlDoc d) {
@@ -73,7 +82,7 @@ public class XmlDoc {
      * @return never null
      */
     public List<Element> listEntities(String path) {
-        return RiXmlUtils.getNodeList(root, path, null);
+        return RiXmlUtils.getNodeList(root, path, prefixes);
     }
 
     /**
@@ -110,7 +119,7 @@ public class XmlDoc {
      * @return never null
      */
     public Element getEntity(String path) {
-        return (Element) RiXmlUtils.getNode(root, path, null);
+        return (Element) RiXmlUtils.getNode(root, path, prefixes);
     }
 
     /**
@@ -126,5 +135,12 @@ public class XmlDoc {
 
     public Document getDocument() {
         return this.document;
+    }
+
+    public static XmlDoc createFromString(String name, String str) {
+        XmlDoc doc = new XmlDoc();
+        Document d = RiXmlUtils.readXml(new StringBufferInputStream(str), "");
+        doc.load(name, d);
+        return doc;
     }
 }

@@ -20,8 +20,6 @@ import com.razie.pub.resources.RazIcons;
  * @version $Id$
  */
 public class ActionItem {
-    public static final ActionItem   PLAY          = new ActionItem("play", RazIcons.PLAY);
-    public static final ActionItem   STREAM        = new ActionItem("stream", RazIcons.PLAY);
     public static final ActionItem   WARN          = new ActionItem("warn", RazIcons.WARN);
     public static final ActionItem   VIEW_DETAILED = new ActionItem("view_detailed", RazIcons.VIEW_DETAILED);
     public static final ActionItem   VIEW_LIST     = new ActionItem("view_list", RazIcons.VIEW_LIST);
