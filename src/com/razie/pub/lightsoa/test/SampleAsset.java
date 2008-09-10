@@ -26,7 +26,7 @@ public class SampleAsset {
 
     @SoaMethod(descr = "play a movie", args = { "movie" })
     public String play(String movie) {
-        AssetKey key = AssetKey.fromEntityUrl(movie);
+        AssetKey key = AssetKey.fromString(movie);
         if (key == null) {
             throw new IllegalArgumentException("Movie not found: " + movie);
         }

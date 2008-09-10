@@ -3,9 +3,12 @@
  */
 package com.razie.pub.lightsoa.test;
 
+import com.razie.pub.assets.AssetBrief;
 import com.razie.pub.assets.AssetKey;
 import com.razie.pub.assets.AssetMgr;
+import com.razie.pub.base.ActionItem;
 import com.razie.pub.base.ScriptContext;
+import com.razie.pub.draw.Drawable;
 
 /**
  * dumb asset manager
@@ -26,6 +29,24 @@ public class SampleAssetMgr extends AssetMgr {
 
     @Override
     protected Object executeCmdImpl(String cmd, AssetKey ref, ScriptContext... ctx) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    protected AssetBrief briefImpl(AssetKey key) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    protected Drawable detailsImpl(AssetBrief key) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    protected ActionItem[] supportedActionsImpl(AssetKey key) {
         // TODO Auto-generated method stub
         return null;
     }

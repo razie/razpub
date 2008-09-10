@@ -12,8 +12,8 @@ import com.razie.pub.assets.AssetActionToInvoke;
 import com.razie.pub.assets.AssetHandle;
 import com.razie.pub.assets.AssetMgr;
 import com.razie.pub.base.ActionItem;
-import com.razie.pub.base.ActionToInvoke;
 import com.razie.pub.base.log.Log;
+import com.razie.pub.comms.ActionToInvoke;
 import com.razie.pub.http.test.TestLightBase;
 import com.razie.pub.lightsoa.HttpAssetSoaBinding;
 

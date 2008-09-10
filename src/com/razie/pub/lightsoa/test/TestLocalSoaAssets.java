@@ -14,9 +14,9 @@ import com.razie.pub.assets.AssetKey;
 import com.razie.pub.assets.AssetMgr;
 import com.razie.pub.base.AttrAccess;
 import com.razie.pub.base.log.Log;
+import com.razie.pub.comms.LightAuth;
 import com.razie.pub.draw.DrawStream;
 import com.razie.pub.draw.SimpleDrawStream;
-import com.razie.pub.http.LightAuth;
 import com.razie.pub.lightsoa.SoaBinding;
 import com.razie.pub.lightsoa.SoaResponse;
 
