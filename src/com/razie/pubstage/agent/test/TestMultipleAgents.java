@@ -7,12 +7,12 @@ package com.razie.pubstage.agent.test;
 import junit.framework.TestCase;
 
 import com.razie.pub.base.log.Log;
-import com.razie.pub.http.AgentHandle;
-import com.razie.pub.http.LightAuth;
+import com.razie.pub.comms.AgentGroup;
+import com.razie.pub.comms.AgentHandle;
+import com.razie.pub.comms.LightAuth;
 import com.razie.pub.http.LightCmdGET;
 import com.razie.pub.http.LightServer;
 import com.razie.pubstage.agent.Agent;
-import com.razie.pubstage.agent.AgentGroup;
 import com.razie.pubstage.agent.webservice.AgentHttpService;
 
 /**

@@ -12,6 +12,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.razie.pub.comms.CommChannel;
+
 /**
  * a two way STRING communication channel. Adds filtering functionality
  * 

@@ -4,9 +4,9 @@
 package com.razie.pubstage.agent;
 
 import com.razie.pub.base.AttrAccess;
+import com.razie.pub.comms.AgentHandle;
 import com.razie.pub.draw.Drawable;
 import com.razie.pub.events.EvListener;
-import com.razie.pub.http.AgentHandle;
 
 /**
  * basic interface/contract with the Agent - it's not an interface so methods are not public
@@ -76,10 +76,6 @@ public abstract class AgentService implements EvListener {
     public void eatThis(String srcID, String eventId, AttrAccess info) {
     }
 
-    /** diagnostics results */
-    public static class DiagReport extends StatusReport {
-    }
-
     /** status report */
     public static class StatusReport {
         public static enum Status {
@@ -88,6 +84,10 @@ public abstract class AgentService implements EvListener {
 
         public Status   status = Status.UNKNOWN;
         public Drawable details;
+    }
+
+    /** diagnostics results */
+    public static class DiagReport extends StatusReport {
     }
 
     private static final String[] EMPTY = new String[0];

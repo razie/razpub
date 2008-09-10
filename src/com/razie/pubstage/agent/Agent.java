@@ -12,17 +12,18 @@ import com.razie.pub.base.AttrAccess;
 import com.razie.pub.base.NoStatics;
 import com.razie.pub.base.ThreadContext;
 import com.razie.pub.base.log.Log;
+import com.razie.pub.comms.AgentGroup;
+import com.razie.pub.comms.AgentHandle;
+import com.razie.pub.comms.Agents;
 import com.razie.pub.comms.Comms;
 import com.razie.pub.events.PostOffice;
-import com.razie.pub.http.AgentHandle;
-import com.razie.pub.http.Agents;
 import com.razie.pubstage.comms.HtmlContents;
 
 /**
  * Agents run at different locations and they cooperate. An agent has a bunch of services that run
  * on it and it offers these a platform for inter-operation.
  * 
- * There are many platforms for this type of services, including OCAP, OSGI etc.
+ * There are many platforms for this type of "services", including OCAP, OSGI etc.
  * 
  * @author razvanc
  * @version $Id$
@@ -108,11 +109,11 @@ public class Agent {
 
     public synchronized void onShutdown() {
         stopped = true;
-        // shutdown in the reverse sequence
-        for (int i = services.size() - 1; i >= 0; i--) {
+        // TODO shutdown in the reverse sequence
+        for (AgentService s : services.values()) {
             // TODO give them some time to cleanup and then kill them if they didn't stop
-            Log.logThis("AGENT_SHUTDOWN service: " + services.get(i).getClass().getName());
-            services.get(i).onShutdown();
+            Log.logThis("AGENT_SHUTDOWN service: " + s.getClass().getName());
+            s.onShutdown();
         }
 
         // TODO are there any threads/workers/beings i should kill?

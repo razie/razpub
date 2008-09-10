@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.net.URL;
 
 import com.razie.pub.base.log.Log;
+import com.razie.pub.comms.CommChannel;
 import com.razie.pub.comms.Comms;
 
 /**

@@ -15,7 +15,7 @@ import com.razie.pubstage.agent.Agent;
 import com.razie.pubstage.agent.AgentService;
 
 /**
- * this is the main web server - required by the Agent itself. Note that you hvae to create an
+ * this is the main web server - required by the Agent itself. Note that you have to create an
  * actual server and initialize it before mounting this service...
  * 
  * As you can see from the code, it simply abstracts the soa registration to an agent service level.
