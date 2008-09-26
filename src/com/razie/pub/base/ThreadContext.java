@@ -35,16 +35,23 @@ public class ThreadContext extends AttrAccess.Impl {
         return s == null ? MAIN : s;
     }
 
+    /** current thread enters given context */
     public static void enter(ThreadContext tc) {
         if (tc != null)
             instances.put(Thread.currentThread(), tc);
     }
 
-    public void enter() {
+    /** current thread ENTERs this context and return the old one - you can use the old one on exit */
+    public ThreadContext enter() {
+        ThreadContext old = instances.get(Thread.currentThread());
         instances.put(Thread.currentThread(), this);
+        return old;
     }
 
-    public static void exit() {
+    /** current thread EXITs this context */
+    public static void exit(ThreadContext... old) {
         instances.remove(Thread.currentThread());
+        if (old.length > 0)
+            instances.put(Thread.currentThread(), old[0]);
     }
 }

@@ -107,7 +107,7 @@ public class ScriptJS implements RazScript {
                 result = Context.toString(result);
             }
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("While processing script: " + this.script, e);
         } finally {
             // Exit from the context.
             Context.exit();

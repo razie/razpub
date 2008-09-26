@@ -102,7 +102,7 @@ public class Log {
     }
 
     public void alarm(String m, Throwable... e) {
-        log(m + (e.length > 0 ? "" : e.toString()));
+        log(m + (e.length <= 0 ? "" : Exceptions.getStackTraceAsString(e[0])));
     }
 
     /**

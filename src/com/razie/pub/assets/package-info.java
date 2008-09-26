@@ -15,9 +15,17 @@
  * An asset framework concerns with how they are defined, how they are implemented and how we
  * interact with them.
  * 
- * How they're defined
+ * <h3>How they're defined</h3>
  * 
- * TODO complete text
+ * One must define:
+ * <ul>
+ * <li>the asset class (or proxy, if the asset is defined in a different environment) - use the SoaAsset annotation
+ * <li>CRUD+query functionality - overload the AssetMgr
+ * <li>methods/actions that can be invoked - both SoaAsset as well as the AssetMgr
+ * </ul>
+ * 
+ * <h3>How they're implemented</h3>
+ * 
  * 
  * 
  * <h2>Assets and services</h2>

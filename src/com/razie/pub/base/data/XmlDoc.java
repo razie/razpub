@@ -9,6 +9,7 @@
  */
 package com.razie.pub.base.data;
 
+import java.io.File;
 import java.io.StringBufferInputStream;
 import java.net.URL;
 import java.util.ArrayList;
@@ -21,6 +22,9 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.razie.pub.FileUtils;
+import com.razie.pub.base.log.Log;
+
 /**
  * represents an xml document - generally for configuration.
  * 
@@ -28,11 +32,16 @@ import org.w3c.dom.NodeList;
  */
 public class XmlDoc {
     protected Document                   document;
+    protected URL                        myUrl;
     protected String                     name;
     protected Element                    root;
-    protected Map<String, String>        prefixes = null;                          // lazy
+    protected Map<String, String>        prefixes         = null;                         // lazy
+    public long                          fileLastModified = -1;
+    private long                         lastChecked      = 0;
+    // TODO use a reasonable interval, make configurable - maybe per db
+    public long                          reloadMilis      = 1000 * 30;
 
-    protected static Map<String, XmlDoc> allDocs  = new HashMap<String, XmlDoc>();
+    protected static Map<String, XmlDoc> allDocs          = new HashMap<String, XmlDoc>();
 
     /** add prefix to be used in resolving xpath in this doc */
     public void addPrefix(String s, String d) {
@@ -48,13 +57,39 @@ public class XmlDoc {
 
     /** TEMP */
     public static XmlDoc doc(String s) {
+        XmlDoc d = allDocs.get(s);
+        if (d != null)
+            d.checkFile();
         return allDocs.get(s);
     }
 
+    protected void checkFile() {
+        if (this.reloadMilis > 0 && System.currentTimeMillis() - this.lastChecked >= this.reloadMilis) {
+            File f = FileUtils.fileFromUrl(this.myUrl);
+            long ft = f != null ? f.lastModified() : -1;
+            if (ft != this.fileLastModified) {
+                load(name, myUrl);
+            }
+        }
+    }
+
     public void load(String name, URL url) {
+        this.myUrl = url;
         this.name = name;
         this.document = RiXmlUtils.readXml(url);
         this.root = this.document.getDocumentElement();
+        if (this.root != null && this.root.hasAttribute("razieReloadMillis")) {
+            this.reloadMilis = Long.parseLong(this.root.getAttribute("razieReloadMillis"));
+        }
+
+        try {
+            File f = FileUtils.fileFromUrl(url);
+            fileLastModified = f != null ? f.lastModified() : -1;
+            this.lastChecked = System.currentTimeMillis();
+        } catch (Exception e) {
+            Log.logThis("XMLDOC won't be refreshed automatically: Can't get datetime for file URL=" + url);
+            this.reloadMilis = 0;
+        }
     }
 
     protected void load(String name, Document d) {

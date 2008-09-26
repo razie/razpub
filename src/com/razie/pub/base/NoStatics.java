@@ -32,10 +32,12 @@ public class NoStatics {
         return s == null ? root : s;
     }
 
+    /** the current thread uses this instance - normally from a ThreadContext */
     public static void enter(NoStatics instance) {
         instances.put(Thread.currentThread(), instance);
     }
 
+    /** the current thread uses this instance - normally from a ThreadContext */
     public static void enter(String name) {
         instances.put(Thread.currentThread(), contexts.get(name));
     }
@@ -44,6 +46,7 @@ public class NoStatics {
         contexts.put(name, instance);
     }
 
+    /** the current thread done with this instance - normally from a ThreadContext */
     public static void exit() {
         instances.remove(Thread.currentThread());
     }
@@ -53,6 +56,7 @@ public class NoStatics {
         return o;
     }
 
+    /** get the instance/static for this thread of the given class */
     public static Object get(Class c) {
         return instance().statics.get(c);
     }

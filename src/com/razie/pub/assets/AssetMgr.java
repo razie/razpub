@@ -4,6 +4,8 @@
  */
 package com.razie.pub.assets;
 
+import java.util.Map;
+
 import com.razie.pub.base.ActionItem;
 import com.razie.pub.base.ScriptContext;
 import com.razie.pub.draw.Drawable;
@@ -48,6 +50,10 @@ public abstract class AssetMgr {
         return impl.briefImpl(ref);
     }
 
+    public static Map<AssetKey, AssetBrief> find(String type, AssetLocation env, boolean... recurse) {
+        return impl.findImpl(type, env, recurse);
+    }
+
     /**
      * execute injected command on given asset
      * 
@@ -72,6 +78,8 @@ public abstract class AssetMgr {
     protected abstract Meta metaImpl(String name);
 
     protected abstract Object executeCmdImpl(String cmd, AssetKey ref, ScriptContext... ctx);
+
+    public abstract Map<AssetKey, AssetBrief> findImpl(String type, AssetLocation env, boolean... recurse);
 
     /**
      * a meta-description

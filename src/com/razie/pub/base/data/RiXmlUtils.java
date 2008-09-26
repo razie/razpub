@@ -225,4 +225,17 @@ public class RiXmlUtils {
         return s;
     }
 
+    public static String getOptNodeVal(Element elem) {
+        String ret = null;
+        if (elem != null) {
+            for (Node child = elem.getFirstChild(); child != null; child = child.getNextSibling()) {
+                if (child.getNodeType() == Node.CDATA_SECTION_NODE ||
+                    child.getNodeType() == Node.TEXT_NODE) {
+                    ret = ret == null ? child.getNodeValue() : ret + child.getNodeValue();
+                }
+            }
+        }
+        return ret;
+    }
+
 }

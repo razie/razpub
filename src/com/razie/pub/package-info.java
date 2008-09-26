@@ -10,8 +10,8 @@
  * 
  * I generally like to play around with fuzzy concepts and see where they take me. I could, of
  * course, sit down, smoke a lot and just think abstract concepts, but often it is more interesting
- * to just start banging some light prototypes, after a few ideas. At the very least, I end up with
- * a model and the ideas are documented and crystallized that way.
+ * to just start banging some light prototypes, after a few ideas and/or beers. At the very least, I
+ * end up with a model and the ideas are documented and crystallised that way.
  * 
  * When adding features to base/common code, it generally becomes too coupled. Such as a plain
  * action supporting http thus requiring authentication services...which also know about assets
@@ -50,7 +50,7 @@
  * 
  * Response time is paramount and this is reflected throughout. All code tries to reply to the user
  * as fast as possible. You can see this from the streamable drawables to the background
- * initialization of irrelevant services.
+ * Initialisation of irrelevant services.
  * 
  * The idea behind the entire comm package is a future optimization of sequences of calls via new
  * protocols like SCTP or similar.
@@ -75,10 +75,9 @@
  * <h2>Unique naming/addressing</h2>
  * 
  * Each and every object, attribute, concept that is worth reaching by someone should be reached via
- * a unified API and have a unique ID/handle of sorts.
- * 
- * Of course we're talking URL/URI/xpath/XCAP stuff here...I don't want to have to say "the current
- * user's home directory" but "/user[@name=$env.USER]/@homeDir", which is already usable...
+ * a unified API and have a unique ID/handle of sorts. Of course we're talking URL/URI/xpath/XCAP
+ * stuff here...I don't want to have to say "the current user's home
+ * directory" but "/user[@name=$env.USER]/@homeDir", which is already usable...
  * 
  * 
  * <h1>Main concepts</h1>
@@ -93,8 +92,8 @@
  * transmitting actions and sometimes communication.
  * 
  * So what's an action? In this view, it is a (possibly parameterized) uniquely identifiable piece
- * of functionality of data that can be requested of some software. It is part of the advertised
- * "interface" of the something... I suck at wording definitions like this...
+ * of functionality or data that can be requested of/from some software. It is part of the
+ * advertised "interface" of the something... I suck at wording definitions like this...
  * 
  * Actions can be invoked via command lines, web links, web forms, menus and other action views.
  * They can obviously be automated and organized into other, higher-level actions.
@@ -113,7 +112,7 @@
  * 
  * <h2>Properties: AttrAccess.java</h2>
  * 
- * Well, If Eve was "virgin", that was maybe her 5th property: female, name, approximate age etc
+ * Well, If Eve was "virgin", that was maybe her n-th property: female, name, approximate age etc
  * being other. Everything has properties. In particular, every object has properties. Period. I'm
  * not sure it is worth distinguishing between Java class members and a person's properties, but
  * here I mean the later.
@@ -122,7 +121,9 @@
  * text, table columns or file names...They can be accessed from many different languages and
  * environments and be translated into all kinds of other representations.
  * 
- * 
+ * The best representation of this concept is NVP Name-Value Pairs, i.e. a Map<String,Object> for
+ * javaistas. Wether the values are NVPs themselves or complex structured objects is another
+ * discussion and it really only matters in the context of how you'll handle them.
  * 
  * 
  * @version $Id: package-info.java,v 1.1 2007-10-02 11:54:36 razvanc Exp $

@@ -4,6 +4,7 @@
  */
 package com.razie.pub.base;
 
+
 /**
  * thread local static object, see NoStatics - not sure why i don't like ThreadLocal yet :)
  * 

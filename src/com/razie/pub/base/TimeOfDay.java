@@ -56,6 +56,6 @@ public class TimeOfDay {
     ActionItem[]    aivalues;
     ActionItem      aidflt = new ActionItem("?");
 
-    String[][]      ranges = { { "0", "6", "night" }, { "7", "11", "morning" }, { "12", "19", "day" },
-            { "20", "23", "evening" } };
+    String[][]      ranges = { { "0", "6", "night" }, { "7", "11", "morning" }, { "12", "18", "day" },
+            { "19", "23", "evening" } };
 }

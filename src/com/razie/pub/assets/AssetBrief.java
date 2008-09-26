@@ -209,10 +209,10 @@ public class AssetBrief extends AttrAccess.Impl implements AttrAccess, Drawable,
     public ActionToInvoke getUrlForDetails() {
         if (this.getSeries() != null) {
             // FIXME do i incorporate series into the baseline assets?
-            return new ServiceActionToInvoke("cmd", DETAILS, "ref", getKey(), "series", this.getSeries()
+            return new ServiceActionToInvoke("assets", DETAILS, "ref", getKey(), "series", this.getSeries()
                     .toString());
         } else {
-            return new ServiceActionToInvoke("cmd", DETAILS, "ref", getKey());
+            return new ServiceActionToInvoke("assets", DETAILS, "ref", getKey());
             // FIXME must use only asset stuff, no mutant specifics...
             // return new AssetActionToInvoke(getKey(), DETAILS);
         }
