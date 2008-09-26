@@ -13,8 +13,6 @@
 	</buildSpec>
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
-		<nature>com.tssap.selena.model.modeling_nature</nature>
-		<nature>com.borland.selena.uml20.uml20_nature</nature>
 	</natures>
 	<linkedResources>
 		<link>
