@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.razie.pub.base.ActionItem;
+import com.razie.pub.base.ThreadContext;
 import com.razie.pub.base.log.Exceptions;
 import com.razie.pub.base.log.Log;
 import com.razie.pub.events.PostOffice;
@@ -16,27 +17,25 @@ import com.razie.pub.events.PostOffice;
  * You should always check to see if you're dying...shhh, you'll be killed soon if you don't...
  * 
  * <code>
- *   @Override
- *   public void process() {
- *       while (!this.dying) {
- *           ...
- *           // sleep if you must but you should be a breather instead...
- *           try {
- *               sleep(5 * 60 * 1000);
- *           } catch (InterruptedException e) {
- *           }
- *       }
- *   }
- * </code>
+ * 
+ * @Override public void process() { while (!this.dying) { ... // sleep if you must but you should
+ *           be a breather instead... try { sleep(5 * 60 * 1000); } catch (InterruptedException e) {
+ *           } } } </code>
  * 
  * @author razvanc99
  */
 public abstract class Worker implements Runnable, Being {
 
-    private ActionItem progressCode;
-    private ActionItem me;
+    private ActionItem    progressCode;
+    private ActionItem    me;
+    protected ThreadContext threadCtx;
 
-    private ActionItem SLEEPING = new ActionItem("sleeping...");
+    private ActionItem    SLEEPING = new ActionItem("sleeping...");
+
+    public Worker(ActionItem me, ThreadContext threadCtx) {
+        this.me = me;
+        this.threadCtx = threadCtx;
+    }
 
     public Worker(ActionItem me) {
         this.me = me;
@@ -157,10 +156,13 @@ public abstract class Worker implements Runnable, Being {
         }
         // real thread (run) function
         try {
+            if (this.threadCtx != null)
+                this.threadCtx.enter();
+            
             process();
         } catch (Throwable t) {
             if (t instanceof ThreadDeath) {
-                logger.log("Thread stopped with ThreaDeath, not graceful !");
+                logger.log("Thread stopped with ThreaDeath, not nice !");
                 this.setIntState(IntState.STOPPED);
 
                 // Notification that the thread has stopped (called after 'process' function)
@@ -173,7 +175,11 @@ public abstract class Worker implements Runnable, Being {
             } else {
                 logger.alarm(t.getMessage(), t);
             }
+        } finally {
+            if (this.threadCtx != null)
+                this.threadCtx.exit();
         }
+        
         this.setIntState(IntState.STOPPED);
 
         // Notification that the thread has stopped (called after 'process' function)
@@ -225,7 +231,7 @@ public abstract class Worker implements Runnable, Being {
     /**
      * graceful thread stop - the framework will set this 5 seconds before thread is killed. Client
      * threads should check this every now and then and if true, NOT exit or return, but throw
-     * GracefulShutdownRtException. This specific exception will not be reported...
+     * BeingDyingRtException. This specific exception will not be reported...
      * 
      * @see com.sigma.hframe.jmt.BeingDyingRtException
      * @return true if the thread should stop...

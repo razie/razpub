@@ -26,7 +26,8 @@ import com.razie.pub.lightsoa.HttpSoaBinding;
 
 /**
  * WARNING this is a no-security whatsoever web server...will serve whatever it finds and it can, so
- * DO NOT enable this towards the internet...it's intended as a sample class...see the SampleWebServer.
+ * DO NOT enable this towards the internet...it's intended as a sample class...see the
+ * SampleWebServer.
  * 
  * very simple http server implementation, with lightsoa hookup. It will:
  * <ul>
@@ -42,7 +43,7 @@ public class LightCmdGET extends SocketCmdListener.Impl {
      * 
      * @param path is the path the user wants: the entire url after GET
      * @return null to disable serving or the path to serve. normally you remove auth tokens
-     * @throws AuthException 
+     * @throws AuthException
      */
     protected String shouldServe(MyServerSocket socket, String path) throws AuthException {
         return LightAuth.unwrapUrl(path);
@@ -170,7 +171,7 @@ public class LightCmdGET extends SocketCmdListener.Impl {
         if (cmd != null) {
             String[] ss = cmd.split("/", 3);
             String svc = ss[0];
-            
+
             if (ss.length < 2) {
                 throw new IllegalArgumentException(
                         "ERR_ Path must be http://host:port/PREFIX/SERVICE/METHOD - you're missing something");
@@ -206,7 +207,9 @@ public class LightCmdGET extends SocketCmdListener.Impl {
             }
         } catch (MalformedURLException e) {
             logger.log("can't serve the file: ", e);
-            return null;
+            DrawError reply = new DrawError("ERR_HTTP_SOA_?: ", e);
+            return HttpHelper.httpWrap(HttpHelper.EXC, ((DrawError) reply).render(Technology.HTML, null)
+                    .toString(), 0);
         }
     }
 
@@ -238,7 +241,8 @@ public class LightCmdGET extends SocketCmdListener.Impl {
         } else {
             String type = HttpUtils.getMimeType(filenm);
             if (type.equals(HttpUtils.UNKNOWN_MIME_TYPE)) {
-                out.print(HttpHelper.httpWrap(HttpHelper.OK, null, len));
+                out.print(HttpHelper.httpWrapMimeType(type, len));
+//                out.print(HttpHelper.httpWrap(HttpHelper.OK, null, len));
             } else {
                 out.print(HttpHelper.httpWrapMimeType(type, len));
             }

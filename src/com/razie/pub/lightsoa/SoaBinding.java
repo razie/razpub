@@ -49,7 +49,7 @@ public class SoaBinding {
 
         // allow hacks with no methods - don't have to blow up...
         if (assetClass != null)
-            for (Method m : assetClass.getDeclaredMethods()) {
+            for (Method m : assetClass.getMethods()) {
                 if (m.getAnnotation(SoaMethod.class) != null) {
                     methods.put(m.getName(), m);
                 }

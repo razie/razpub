@@ -3,8 +3,11 @@
  */
 package com.razie.pub.lightsoa.test;
 
+import java.util.Map;
+
 import com.razie.pub.assets.AssetBrief;
 import com.razie.pub.assets.AssetKey;
+import com.razie.pub.assets.AssetLocation;
 import com.razie.pub.assets.AssetMgr;
 import com.razie.pub.base.ActionItem;
 import com.razie.pub.base.ScriptContext;
@@ -47,6 +50,12 @@ public class SampleAssetMgr extends AssetMgr {
 
     @Override
     protected ActionItem[] supportedActionsImpl(AssetKey key) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Map<AssetKey, AssetBrief> findImpl(String type, AssetLocation env, boolean... recurse) {
         // TODO Auto-generated method stub
         return null;
     }

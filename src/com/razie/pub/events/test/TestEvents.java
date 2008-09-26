@@ -8,7 +8,7 @@ import junit.framework.TestCase;
 
 import com.razie.pub.base.NoStatics;
 import com.razie.pub.base.log.Log;
-import com.razie.pub.events.PostOfficeNew;
+import com.razie.pub.events.PostOffice;
 import com.razie.pub.events.RazQueue;
 import com.razie.pub.events.RazTopic;
 import com.razie.pub.events.RazDestination.QOS;
@@ -32,7 +32,7 @@ public class TestEvents extends TestCase {
     public void setUp() {
         // IMPORTANT - services must mount their resources for each context / agent instance
         curContext = NoStatics.instance();
-        environment = PostOfficeNew.getInstance();
+        environment = PostOffice.getInstance();
 
         environment.register(TEST_QUEUE, new RazQueue(TEST_QUEUE, false, QOS.VOLANS));
     }
@@ -40,28 +40,41 @@ public class TestEvents extends TestCase {
     public void testSendMessageQ() {
         NoStatics.enter(curContext);
         SampleListener res = new SampleListener(TESTEVENT1Q, "msg", "msg1");
-        PostOfficeNew.register(TEST_QUEUE, res);
+        PostOffice.register(TEST_QUEUE, res);
 
         RazQueue q = (RazQueue) environment.locate(TEST_QUEUE);
         q.send("?", TESTEVENT1Q, "msg", "msg1");
 
-        res.check();
+        assertTrue (res.count == 1);
     }
 
     public void testSendMessageT() {
         NoStatics.enter(curContext);
         SampleListener res = new SampleListener(TESTEVENT1T, "msg", "msg1");
-        PostOfficeNew.register(PostOfficeNew.DFLT_TOPIC, res);
+        PostOffice.register(PostOffice.DFLT_TOPIC, res);
 
-        RazTopic t = (RazTopic) environment.locate(PostOfficeNew.DFLT_TOPIC);
+        RazTopic t = (RazTopic) environment.locate(PostOffice.DFLT_TOPIC);
         t.send("?", TESTEVENT1T, "msg", "msg1");
 
-        res.check();
+        assertTrue (res.count == 1);
+    }
+
+    //send two but only one should be received
+    public void testSendMessageTFilter() {
+        NoStatics.enter(curContext);
+        SampleListener res = new SampleListener(TESTEVENT1T, "msg", "msg1");
+        PostOffice.register(PostOffice.DFLT_TOPIC, res);
+
+        RazTopic t = (RazTopic) environment.locate(PostOffice.DFLT_TOPIC);
+        t.send("?", TESTEVENT1T, "msg", "msg1");
+        t.send("?", "x"+TESTEVENT1T, "msg", "msg1");
+
+        assertTrue (res.count == 1);
     }
 
     public void testSendMessage() {
-        PostOfficeNew.send(TEST_QUEUE, "?", TESTEVENT1Q, "msg", "msg2");
-        PostOfficeNew.send(PostOfficeNew.DFLT_TOPIC, "?", TESTEVENT1T, "msg", "msg2");
+        PostOffice.send(TEST_QUEUE, "?", TESTEVENT1Q, "msg", "msg2");
+        PostOffice.send(PostOffice.DFLT_TOPIC, "?", TESTEVENT1T, "msg", "msg2");
     }
 
     static final Log logger = Log.Factory.create(TestEvents.class.getName());

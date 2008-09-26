@@ -96,8 +96,10 @@ public class LightServer extends Worker {
                 Log.logThis("HTTP_CLIENT_IP: " + server.getInetAddress().getHostAddress());
                 runReceiver(conn_c);
             } catch (IOException ioe) {
-                Log.logThis("IOException on socket listen: " + ioe);
-                ioe.printStackTrace();
+                if (ioe.getMessage().equals("socket closed"))
+                    Log.logThis("socket closed...stopped listening: "+ioe.getMessage());
+                else
+                    Log.logThis("IOException on socket listen: " + ioe, ioe);
             }
         }
     }
@@ -120,7 +122,7 @@ public class LightServer extends Worker {
         try {
             this.listener.close();
         } catch (IOException ioe) {
-            Log.logThis("IOException on socket listen: " + ioe);
+            Log.logThis("IOException on socket close: " + ioe);
             ioe.printStackTrace();
         }
     }
@@ -164,13 +166,20 @@ public class LightServer extends Worker {
 
                 logger.trace(3, "INPUT:\n", input);
 
+                // TODO xxx
+                String moreInput = null;
+                while (moreInput == null || moreInput.length() <= 0 && in.available() > 0)
+                    moreInput = in.readLine();
+
+                logger.trace(3, "   >>> MOREINPUT:\n", moreInput);
+
                 handleInputLine(out, input);
 
                 socket.close();
             } catch (Exception ioe) {
                 // must catch all exceptions to avoid screwing up something bad...don't remember
                 // what
-                Log.logThis("IOException on socket listen: " + ioe);
+                logger.log("IOException on socket listen: ", ioe);
                 ioe.printStackTrace();
             } finally {
                 ThreadContext.exit();
@@ -211,7 +220,7 @@ public class LightServer extends Worker {
             if (reply != null) {
                 if (!(reply instanceof StreamConsumedReply))
                     out.print(reply);
-//                    out.println(reply);
+                // out.println(reply);
                 Log.logThis("HTTP_CLIENT_SERVED");
             } else {
                 logger.trace(3, "command listener returned nothing...");
@@ -220,7 +229,7 @@ public class LightServer extends Worker {
 
     }
 
-    static final Log logger = Log.Factory.create(Receiver.class.getName());
+    static final Log logger = Log.Factory.create(Receiver.class.getSimpleName());
 
     public void registerCmdListener(SocketCmdListener c) {
         getListeners().add(c);

@@ -53,6 +53,9 @@ public @interface SoaService {
     /** the value is a description of the method */
     String descr();
 
-    /** can limit the bindings */
+    /**
+     * can limit the bindings. if mentioned, the service will be mounted, onStart, to the respective
+     * bindings: http, upnp for now
+     */
     String[] bindings() default {};
 }
