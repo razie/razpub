@@ -6,6 +6,7 @@ package com.razie.pub;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
+import com.razie.pub.agent.test.SuiteAgents;
 import com.razie.pub.base.test.SuiteBase;
 import com.razie.pub.draw.test.SuiteDraw;
 import com.razie.pub.events.test.SuiteEvents;
@@ -26,6 +27,7 @@ public class SuitePub extends TestSuite {
         result.addTest(SuiteDraw.suite());
         result.addTest(SuiteHttp.suite());
         result.addTest(SuiteLightsoa.suite());
+        result.addTest(SuiteAgents.suite());
 
         return result;
     }
