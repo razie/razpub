@@ -5,10 +5,19 @@
 package com.razie.pub.events;
 
 import java.lang.ref.WeakReference;
+import java.util.List;
 
 import com.razie.pub.assets.AssetBrief;
 import com.razie.pub.base.AttrAccess;
 
+/**
+ * like a jms queue
+ * 
+ * TODO detailed docs
+ * 
+ * @author razvanc
+ * 
+ */
 public class RazQueue extends RazDestination {
     int lastConsumer = -1; // so that the first is index 0
 
@@ -31,16 +40,19 @@ public class RazQueue extends RazDestination {
         // load-balancing the consumers
         boolean repeat = true;
         while (repeat) {
-            if (++lastConsumer >= this.listeners.size()) {
+            List<WeakReference<EvListener>> list = this.listeners.get(eventId);
+            // TODO protect against concurrent changes
+            // TODO protect against no listeners, i.e. list==null
+            
+            if (++lastConsumer >= list.size()) {
                 lastConsumer = 0;
             }
 
-            WeakReference<EvListener> l = lastConsumer < this.listeners.size() ? this.listeners
-                    .get(lastConsumer) : null;
+            WeakReference<EvListener> l = lastConsumer < list.size() ? list.get(lastConsumer) : null;
 
             if (l != null) {
                 if (l.get() == null) {
-                    this.listeners.remove(lastConsumer);
+                    list.remove(lastConsumer);
                 } else {
                     EvListener evl = l.get();
                     if (info == null)

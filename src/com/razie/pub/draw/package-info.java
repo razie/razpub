@@ -2,14 +2,14 @@
  * Basic Drawables and streamables
  * 
  * <p>
- * This package has two main ideas: rendering and streaming of objects.
+ * This package has two main ideas: technology-independent rendering and streaming of objects.
  * 
  * <h1>Drawables and rendering</h1>
  * 
  * <p>
  * The idea is that all objects are Drawables and as such, can be rendered onto some technology. The
  * rendering logic rests with the developer of the object (Drawable.render()) and can also be added
- * from the outisde, when a new rendering technology is added for existing classes:
+ * from the outside, when a new rendering technology is added for existing classes:
  * Renderer.Helper.register().
  * <p>
  * A set of basic widgets is offered, which you can use to render thyself. It is highly recommended
@@ -54,9 +54,6 @@
  * 
  * 
  * <h2>Model View Controller</h2>
- * 
- * <p>
- * I'm having some trouble applying this right now - I'm still playing with the basic concepts.
  * 
  * <p>
  * Models are Drawables and can normally render themselves using the basic widgets. If you want to

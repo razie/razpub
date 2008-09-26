@@ -74,7 +74,7 @@ public class Comms {
             throw iex;
         } catch (IOException e1) {
             // server/node down
-            CommRtException rte = new CommRtException("Connection exception");
+            CommRtException rte = new CommRtException("Connection exception for url="+url);
             rte.initCause(e1);
             throw rte;
         }

@@ -53,12 +53,12 @@ public class AgentHandle extends AssetKey {
     }
 
     public String toString() {
-        return name + ":" + hostname + ":" + ip + ":" + port + ":" + url;
+        return "AgentHandle("+name + ";" + hostname + ";" + ip + ";" + port + ";" + url+")";
     }
 
     public static AgentHandle fromString(String s) {
-        String ss[] = s.split(":");
-        return new AgentHandle(ss[0], ss[1], ss[2], ss[3], ss[4]);
+        String ss[] = s.split("[;()]");
+        return new AgentHandle(ss[1], ss[2], ss[3], ss[4], ss[5]);
     }
 
     public AgentHandle clone() {

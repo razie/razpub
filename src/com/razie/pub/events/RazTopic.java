@@ -6,13 +6,14 @@ package com.razie.pub.events;
 
 import java.lang.ref.WeakReference;
 import java.util.Iterator;
+import java.util.List;
 
 import com.razie.pub.base.AttrAccess;
 
-/** a topic sends each message to all listeners
+/**
+ * a topic sends each message to all listeners
  * 
  * @author razvanc
- *
  */
 public class RazTopic extends RazDestination {
     public RazTopic(String name, boolean distributed, QOS qos) {
@@ -32,11 +33,12 @@ public class RazTopic extends RazDestination {
         AttrAccess info = null; // lazy
         synchronized (listeners) {
             // TODO dont sync eating events
+            List<WeakReference<EvListener>> list = listeners.get(eventId);
 
             // TODO this shold be outside the sync but don't want to clone the list (poltergeist)
             // any ideas? Idea1: make a SyncMemDb with read/write lock in separate methods:
             // acquire(x) release(x)
-            for (Iterator<WeakReference<EvListener>> i = listeners.iterator(); i.hasNext();) {
+            for (Iterator<WeakReference<EvListener>> i = list.iterator(); i.hasNext();) {
                 EvListener l = i.next().get();
                 if (l != null) {
                     if (info == null)
@@ -46,6 +48,24 @@ public class RazTopic extends RazDestination {
                     // garbage collection...
                     i.remove();
             }
+            
+            list = listeners.get("*");
+            
+            // TODO this shold be outside the sync but don't want to clone the list (poltergeist)
+            // any ideas? Idea1: make a SyncMemDb with read/write lock in separate methods:
+            // acquire(x) release(x)
+            for (Iterator<WeakReference<EvListener>> i = list.iterator(); i.hasNext();) {
+                EvListener l = i.next().get();
+                if (l != null) {
+                    if (info == null)
+                        info = new AttrAccess.Impl(args);
+                    l.eatThis(srcId, eventId, info);
+                } else
+                    // garbage collection...
+                    i.remove();
+            }
+            
         }
     }
 }
+

@@ -27,7 +27,7 @@ public class DrawSelection extends Drawable.DrawWidget {
 
     private List<ActionToInvoke> actions;
     private boolean[]            selected;
-    private String               name;
+    protected String               name;
 
     public DrawSelection(String name, List<ActionToInvoke> actions) {
         this(name, actions.toArray(new ActionToInvoke[0]));
@@ -65,7 +65,7 @@ public class DrawSelection extends Drawable.DrawWidget {
         return seq.render(technology, stream);
     }
 
-    public Renderer getRenderer(Technology technology) {
+    public Renderer<Drawable> getRenderer(Technology technology) {
         return DefaultRenderer.singleton;
     }
 

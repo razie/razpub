@@ -5,13 +5,12 @@
 package com.razie.pub.events;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.razie.pub.assets.AssetBase;
 import com.razie.pub.assets.AssetBrief;
 import com.razie.pub.assets.AssetKey;
 import com.razie.pub.base.ActionItem;
+import com.razie.pub.base.data.MemDb;
 
 /**
  * a destination for messages - basically a queue or a topic...
@@ -26,7 +25,7 @@ public abstract class RazDestination extends AssetBase.Impl implements RazResour
                                                                 "/mutant/pics/IceAgeScrat.png");
     // public static Meta MMETA = new Meta(META, "", "", ResourceInventory.class.getName());
 
-    protected List<WeakReference<EvListener>> listeners = new ArrayList<WeakReference<EvListener>>();
+    static MemDb<String, WeakReference<EvListener>> listeners = new MemDb<String, WeakReference<EvListener>>();
 
     protected String                          resName;
     protected boolean                         distributed;
@@ -72,9 +71,9 @@ public abstract class RazDestination extends AssetBase.Impl implements RazResour
      * 
      * @param l the listener
      */
-    public void register(EvListener l) {
+    public void register(String eventId, EvListener l) {
         synchronized (listeners) {
-            listeners.add(new WeakReference<EvListener>(l));
+            listeners.put(eventId, new WeakReference<EvListener>(l));
         }
     }
 

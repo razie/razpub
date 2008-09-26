@@ -52,7 +52,7 @@ public class Agents {
 
     /** @return my url, of the form http://ip:port */
     public static String getMyUrl() throws RuntimeException {
-        return instance().agentImpl(getMyHostName()).url;
+        return instance().me.url;
     }
 
     /** @return the URL for the mentioned remote agent, in the form "http://IP:PORT" */
@@ -109,5 +109,17 @@ public class Agents {
 
     public static String getHomeNetPrefix() {
         return homeNetPrefix;
+    }
+
+    public static AgentGroup homeGroup() {
+        return instance().myGroup;
+    }
+
+    public static void setMe(AgentHandle myHandle) {
+        Agents i = instance();
+        if (i.me != null && ! i.me.name.equals(myHandle.name))
+            throw new IllegalStateException("Can't change who I am...");
+        else
+            i.me = myHandle;
     }
 }

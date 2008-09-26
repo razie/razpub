@@ -34,7 +34,7 @@ public class DrawScript extends DrawWidget {
         this.ctx = ctx;
     }
 
-    public Renderer getRenderer(Technology technology) {
+    public Renderer<DrawScript> getRenderer(Technology technology) {
         return MyRenderer.singleton;
     }
 

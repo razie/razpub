@@ -7,11 +7,6 @@ package com.razie.pub.draw.test;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-import com.razie.pub.draw.test.TestContainers;
-import com.razie.pub.draw.test.TestDrawables;
-import com.razie.pub.draw.test.TestRendering;
-import com.razie.pub.draw.test.TestStreams;
-
 /**
  * suite to run all pub.hframe tests
  * 
@@ -22,7 +17,6 @@ public class SuiteDraw extends TestSuite {
         TestSuite result = new TestSuite(SuiteDraw.class.getName());
 
         result.addTestSuite(TestDrawables.class);
-        result.addTestSuite(TestRendering.class);
         result.addTestSuite(TestContainers.class);
         result.addTestSuite(TestStreams.class);
 

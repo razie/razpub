@@ -38,7 +38,7 @@ public interface RazResource {
 
     /** stupid default resource manager */
     public static class RazResourceManager implements RazResourceLocator {
-        static Map<String, RazResource> resources = new HashMap<String, RazResource>();
+        Map<String, RazResource> resources = new HashMap<String, RazResource>();
 
         // TODO change this to simply find the smart asset resource...
         public RazResource locate(String name) {

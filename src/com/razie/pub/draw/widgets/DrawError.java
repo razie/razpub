@@ -30,7 +30,7 @@ public class DrawError extends DrawWidget {
         this.t = t;
     }
 
-    public Renderer getRenderer(Technology technology) {
+    public Renderer<DrawError> getRenderer(Technology technology) {
         return MyRenderer.singleton;
     }
 
