@@ -32,7 +32,7 @@ import com.razie.pub.base.log.Log;
  */
 public class XmlDoc {
     protected Document                   document;
-    protected URL                        myUrl;
+    public URL                        myUrl;
     protected String                     name;
     protected Element                    root;
     protected Map<String, String>        prefixes         = null;                         // lazy
@@ -74,6 +74,7 @@ public class XmlDoc {
     }
 
     public void load(String name, URL url) {
+        Log.logThis("XmlDoc:loading from URL=" + url);
         this.myUrl = url;
         this.name = name;
         this.document = RiXmlUtils.readXml(url);

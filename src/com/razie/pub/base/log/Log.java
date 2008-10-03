@@ -9,7 +9,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-
 /**
  * simple log proxy - log4j is dominant but then there's the JDK's log... this gives you the freedom
  * to use one or the other
@@ -19,6 +18,7 @@ import java.io.IOException;
  * if you're lazy, use the static Log.logThis()
  * 
  * $
+ * 
  * @author razvanc99
  * 
  */
@@ -113,7 +113,7 @@ public class Log {
         if (isTraceLevel(l)) {
             String m = "";
             for (int i = 0; i < o.length; i++)
-                m += o[i].toString();
+                m += (o[i] == null ? "null" : o[i].toString());
             log(m);
         }
     }

@@ -57,14 +57,14 @@ public abstract class AssetMgr {
     /**
      * execute injected command on given asset
      * 
-     * @param cmd the command to execute. Default empty/null means "details" or paing the asset
+     * @param action the action/command to execute. Default empty/null means "details" or paing the asset
      *        itself
      * @param ref ref to the object to invoke on
      * @param ctx context with parms etc
      * @return
      */
-    public static Object executeCmd(String cmd, AssetKey ref, ScriptContext... ctx) {
-        return impl.executeCmdImpl(cmd, ref, ctx);
+    public static Object doAction(String action, AssetKey ref, ScriptContext... ctx) {
+        return impl.doActionImpl(action, ref, ctx);
     }
 
     protected abstract Object getAssetImpl(AssetKey key);
@@ -77,7 +77,7 @@ public abstract class AssetMgr {
 
     protected abstract Meta metaImpl(String name);
 
-    protected abstract Object executeCmdImpl(String cmd, AssetKey ref, ScriptContext... ctx);
+    protected abstract Object doActionImpl(String cmd, AssetKey ref, ScriptContext... ctx);
 
     public abstract Map<AssetKey, AssetBrief> findImpl(String type, AssetLocation env, boolean... recurse);
 

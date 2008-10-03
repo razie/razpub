@@ -45,8 +45,9 @@ public class Agent {
 
     /** initialize agent with given info */
     public Agent(AgentHandle myHandle, AgentGroup homeGroup) {
-        mainContext = new ThreadContext();
         NoStatics ns = new NoStatics();
+        mainContext = new ThreadContext(ns);
+        mainContext.enter();
 
         mainContext.setAttr("Agent", this);
         mainContext.setAttr("NoStatics", ns);
@@ -60,6 +61,11 @@ public class Agent {
 
         this.myHandle = myHandle;
         this.homeGroup = homeGroup;
+    }
+
+    /** return the instance to use for the current thread... */
+    public static Agent instance() {
+        return (Agent) ThreadContext.instance().getAttr("Agent");
     }
 
     public AgentHandle getHandle() {
@@ -92,7 +98,7 @@ public class Agent {
 
     private void startSvc(AgentService svc) {
         svc.onStartup();
-        
+
         SoaService soas = svc.getClass().getAnnotation(SoaService.class);
         if (soas != null && soas.bindings().length > 0) {
             for (String binding : soas.bindings()) {

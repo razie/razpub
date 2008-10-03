@@ -123,9 +123,7 @@ public abstract class AgentService implements EvListener {
 
 	/** simple utility to locate a service given its class, from the current agent */
 	public static AgentService locate(Class cls) {
-		ThreadContext threadCtx = ThreadContext.instance();
-		Agent aa = ((Agent) threadCtx.getAttr("Agent"));
-		AgentService aus = (AgentService) aa.locateService(cls.getSimpleName());
+		AgentService aus = (AgentService) Agent.instance().locateService(cls.getSimpleName());
 		return aus;
 	}
 

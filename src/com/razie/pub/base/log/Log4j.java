@@ -157,7 +157,7 @@ public class Log4j extends Log {
         if (isTraceLevel(l)) {
             String m = "";
             for (int i = 0; i < o.length; i++)
-                m += o[i].toString();
+                m += (o[i] == null ? "null" : o[i].toString());
             log4jLogger.debug(m);
             addLogLine(m);
         }

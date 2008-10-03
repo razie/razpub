@@ -4,17 +4,13 @@
  */
 package com.razie.pub.http.test;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
-import java.net.URL;
 
 import com.razie.pub.base.ActionItem;
 import com.razie.pub.base.log.Log;
 import com.razie.pub.comms.ActionToInvoke;
-import com.razie.pub.lightsoa.HttpSoaBinding;
 
 /**
  * test the light server
@@ -33,6 +29,7 @@ public class TestLightServer extends TestLightBase {
         Socket remote = new Socket("localhost", PORT);
         PrintStream out = new PrintStream(remote.getOutputStream());
         out.println("echo samurai");
+        out.close();
 
         // wait a bit for receiver thread to consume...
         for (long deadline = System.currentTimeMillis() + 2000; deadline > System.currentTimeMillis();) {
@@ -41,7 +38,7 @@ public class TestLightServer extends TestLightBase {
                 break;
         }
         server.removeCmdListener(echo);
-        assertTrue(echo.input.contains("samurai"));
+        assertTrue("echo.input did not receive string from socket...", echo.input!=null && echo.input.contains("samurai"));
     }
 
     /**

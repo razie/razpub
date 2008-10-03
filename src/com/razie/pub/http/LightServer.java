@@ -97,7 +97,7 @@ public class LightServer extends Worker {
                 runReceiver(conn_c);
             } catch (IOException ioe) {
                 if (ioe.getMessage().equals("socket closed"))
-                    Log.logThis("socket closed...stopped listening: "+ioe.getMessage());
+                    Log.logThis("socket closed...stopped listening: " + ioe.getMessage());
                 else
                     Log.logThis("IOException on socket listen: " + ioe, ioe);
             }
@@ -147,7 +147,8 @@ public class LightServer extends Worker {
         }
 
         public void run() {
-            ThreadContext.enter(mainContext);
+            if (mainContext != null)
+                mainContext.enter();
 
             String input = "";
 
@@ -168,7 +169,7 @@ public class LightServer extends Worker {
 
                 // TODO xxx
                 String moreInput = null;
-                while (moreInput == null || moreInput.length() <= 0 && in.available() > 0)
+                while ((moreInput == null || moreInput.length() <= 0) && in.available() > 0)
                     moreInput = in.readLine();
 
                 logger.trace(3, "   >>> MOREINPUT:\n", moreInput);

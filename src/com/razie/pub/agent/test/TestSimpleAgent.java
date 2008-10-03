@@ -35,7 +35,7 @@ public class TestSimpleAgent extends TestCase {
 
 	/** start an agent and mount basic services */
 	public static Agent startAgent(AgentHandle h, AgentGroup g) {
-		Agent agent = new Agent(me, g);
+		Agent agent = new Agent(h, g);
 		agent.getMainContext().enter();
 		agent.onInit();
 

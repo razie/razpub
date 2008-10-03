@@ -28,23 +28,25 @@ public class ThreadContext extends AttrAccess.Impl {
     // TODO actually use weak refrences - this keeps Threads from being collected
     private static Map<Thread, ThreadContext> instances = Collections
                                                                 .synchronizedMap(new HashMap<Thread, ThreadContext>());
-    static ThreadContext                      MAIN      = new ThreadContext();
+    static ThreadContext                      MAIN      = new ThreadContext(null);
+    NoStatics                                 statics   = null;
 
+    public ThreadContext(NoStatics myStatics) {
+        this.statics = myStatics;
+    }
+
+    /** return the instance to use for the curent thread */
     public static ThreadContext instance() {
         ThreadContext s = instances.get(Thread.currentThread());
         return s == null ? MAIN : s;
-    }
-
-    /** current thread enters given context */
-    public static void enter(ThreadContext tc) {
-        if (tc != null)
-            instances.put(Thread.currentThread(), tc);
     }
 
     /** current thread ENTERs this context and return the old one - you can use the old one on exit */
     public ThreadContext enter() {
         ThreadContext old = instances.get(Thread.currentThread());
         instances.put(Thread.currentThread(), this);
+        if (statics != null)
+            NoStatics.enter(statics);
         return old;
     }
 

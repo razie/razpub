@@ -15,7 +15,7 @@ import com.razie.pub.base.log.Log;
  * @author razvanc99
  */
 public class TestNoStatics extends TestCase {
-    ThreadContext            t      = new ThreadContext();
+    ThreadContext            t      = new ThreadContext(null);
     static String            failed = null;
     static NoStatic<Boolean> STATIC = new NoStatic<Boolean>("testing", new Boolean(true));
 

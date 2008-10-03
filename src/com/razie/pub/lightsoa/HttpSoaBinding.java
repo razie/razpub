@@ -154,7 +154,7 @@ public class HttpSoaBinding extends SoaBinding {
             Log.logThis("HTTP_SOA_injected: " + actionName + ": ");
             ScriptContext ctx = new ScriptContext.Impl(ScriptContext.Impl.global());
             ctx.setAttr(parms);
-            response = AssetMgr.executeCmd(actionName, key, ctx);
+            response = AssetMgr.doAction(actionName, key, ctx);
         } else if (methods.containsKey(actionName)) {
             Log.logThis("HTTP_SOA_" + actionName + ": ");
 
