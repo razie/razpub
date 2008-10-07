@@ -9,6 +9,7 @@ import com.razie.pub.assets.AssetBrief;
 import com.razie.pub.assets.AssetKey;
 import com.razie.pub.assets.AssetLocation;
 import com.razie.pub.assets.AssetMgr;
+import com.razie.pub.assets.AssetPres;
 import com.razie.pub.base.ActionItem;
 import com.razie.pub.base.ScriptContext;
 import com.razie.pub.draw.Drawable;
@@ -56,6 +57,12 @@ public class SampleAssetMgr extends AssetMgr {
 
     @Override
     public Map<AssetKey, AssetBrief> findImpl(String type, AssetLocation env, boolean... recurse) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public AssetPres presImpl() {
         // TODO Auto-generated method stub
         return null;
     }
