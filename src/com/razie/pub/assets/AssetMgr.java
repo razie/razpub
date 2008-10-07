@@ -67,6 +67,8 @@ public abstract class AssetMgr {
         return impl.doActionImpl(action, ref, ctx);
     }
 
+    public static AssetPres pres() {return impl.presImpl();}
+    
     protected abstract Object getAssetImpl(AssetKey key);
 
     protected abstract Drawable detailsImpl(AssetBrief key);
@@ -81,6 +83,8 @@ public abstract class AssetMgr {
 
     public abstract Map<AssetKey, AssetBrief> findImpl(String type, AssetLocation env, boolean... recurse);
 
+    public abstract AssetPres presImpl();
+    
     /**
      * a meta-description
      * 

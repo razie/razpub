@@ -17,6 +17,7 @@ import com.razie.pub.comms.ActionToInvoke;
 import com.razie.pub.comms.Agents;
 import com.razie.pub.comms.LightAuth;
 import com.razie.pub.comms.ServiceActionToInvoke;
+import com.razie.pub.draw.DrawList;
 import com.razie.pub.draw.DrawStream;
 import com.razie.pub.draw.Drawable;
 import com.razie.pub.draw.Renderer;
@@ -62,6 +63,19 @@ public class AssetBrief extends AttrAccess.Impl implements AttrAccess, Drawable,
     public static final ActionItem PLAY        = new ActionItem("play", RazIcons.PLAY);
     public static final ActionItem STREAM      = new ActionItem("stream", RazIcons.PLAY);
 
+    /**
+     * detail levels are:
+     * 
+     * <ul>
+     * <li>BRIEFLIST -
+     * <li>LIST -
+     * <li>LARGE -
+     * <li>FULL -
+     *</ul>
+     * 
+     * @author razvanc
+     * 
+     */
     public static enum DetailLevel {
         BRIEFLIST, LIST, LARGE, FULL
     }
@@ -427,6 +441,62 @@ public class AssetBrief extends AttrAccess.Impl implements AttrAccess, Drawable,
          * @return
          */
         protected Object toHtml(AssetBrief b) {
+            String s = "<table align=middle><tr>";
+            String img = b.getIconImgUrl();
+
+            // NavButton button = new NavButton(DETAILS, "");
+
+            String width = b.detailLevel.equals(DetailLevel.LIST) ? "80" : "300";
+            width = b.detailLevel.equals(DetailLevel.LARGE) ? "150" : width;
+            width = b.detailLevel.equals(DetailLevel.BRIEFLIST) ? "30" : width;
+            width = b.detailLevel.equals(DetailLevel.FULL) ? "400" : width;
+
+            // THIS IS FUCKED - the nokia770 tablet browser has a problem if only height is
+            // specified. it accepts width however !!!!
+
+            if (b.detailLevel.equals(DetailLevel.LARGE)) {
+                s += "<td align=center>" + "<a href=\"" + b.getUrlForDetails().makeActionUrl() + "\">"
+                        + "<img border=0 " + " width=\"" + width + "\" " + " src=\"" + img + "\"/>" + "</a>";
+                s += "<br><b>" + b.getName() + "</b>";
+            } else {
+                s += "<td>" + "<a href=\"" + b.getUrlForDetails().makeActionUrl() + "\">" + "<img border=0 "
+                        + " width=\"" + width + "\" " + " src=\"" + img + "\"/>" + "</a>";
+                s += "</td>";
+                s += "<td><b>" + b.getName() + "</b><br>";
+                s += b.getBriefDesc() + "<br>";
+                if (b.detailLevel.equals(DetailLevel.LIST)) {
+                    s += b.getLargeDesc() + "<br>";
+                } else if (b.detailLevel.equals(DetailLevel.FULL)) {
+                    s += b.getLargeDesc() + "<br>";
+
+                    if (b.getLocalDir() != null)
+                        s += b.getLocalDir().replace("/", " /") + "<br>";
+                }
+            }
+            // s += "<a href=\"" + b.getUrlForDetails() + "\">details</a>" + "</td>";
+
+            // IF full details, then print all buttons inside:
+            if (b.detailLevel.equals(DetailLevel.FULL)) {
+                DrawList l = new DrawList();
+                for (Object a : AssetPres.instance().makeAllButtons(b, false))
+                    l.write(a);
+
+                s += l.render(Technology.HTML, null);
+            }
+
+            s += "</td>";
+
+            s += "</tr>";
+            s += "</table>";
+
+            return HtmlRenderUtils.textToHtml(s);
+        }
+
+        /**
+         * @param b
+         * @return
+         */
+        protected Object OLDtoHtml(AssetBrief b) {
             String s = "<table align=middle><tr>";
             String img = b.getIconImgUrl();
 
