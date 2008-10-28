@@ -5,7 +5,6 @@ package com.razie.pub.agent;
 
 import com.razie.pub.base.ActionItem;
 import com.razie.pub.base.AttrAccess;
-import com.razie.pub.base.ThreadContext;
 import com.razie.pub.comms.AgentHandle;
 import com.razie.pub.draw.Drawable;
 import com.razie.pub.draw.widgets.NavLink;
@@ -122,7 +121,8 @@ public abstract class AgentService implements EvListener {
 	}
 
 	/** simple utility to locate a service given its class, from the current agent */
-	public static AgentService locate(Class cls) {
+	@SuppressWarnings("unchecked")
+    public static AgentService locate(Class cls) {
 		AgentService aus = (AgentService) Agent.instance().locateService(cls.getSimpleName());
 		return aus;
 	}

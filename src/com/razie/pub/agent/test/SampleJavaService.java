@@ -1,3 +1,7 @@
+/**
+ * Razvan's public code. Copyright 2008 based on Apache license (share alike) see LICENSE.txt for
+ * details.
+ */
 package com.razie.pub.agent.test;
 
 import com.razie.pub.agent.AgentService;
@@ -31,7 +35,7 @@ public class SampleJavaService extends AgentService {
         return "echo1: " + msg;
     }
 
-    @SoaMethod(descr = "eno ho args")
+    @SoaMethod(descr = "echo no args")
     public String echo2() {
         return "echo2...";
     }

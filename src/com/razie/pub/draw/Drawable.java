@@ -39,6 +39,7 @@ import com.razie.pub.draw.Renderer.Technology;
  * 
  */
 public interface Drawable {
+    @SuppressWarnings("unchecked")
     public Renderer getRenderer(Renderer.Technology technology);
 
     /** shortcut to render self - don't like controllers that much */

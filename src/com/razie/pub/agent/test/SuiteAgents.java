@@ -1,6 +1,6 @@
 /**
- * Razvan's code. 
- * Copyright 2008 based on Apache (share alike) see LICENSE.txt for details.
+ * Razvan's public code. Copyright 2008 based on Apache license (share alike) see LICENSE.txt for
+ * details.
  */
 package com.razie.pub.agent.test;
 

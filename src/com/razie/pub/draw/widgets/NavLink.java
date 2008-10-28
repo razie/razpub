@@ -65,24 +65,19 @@ public class NavLink extends DrawWidget {
         this.size = tiny ? Size.SMALL : Size.NORMAL;
     }
 
-    public Renderer getRenderer(Technology technology) {
+    public Renderer<NavLink> getRenderer(Technology technology) {
         // TODO too stupid - register renderers...
         return MyRender.singleton;
     }
 
-    public static class MyRender implements Renderer {
+    public static class MyRender implements Renderer<NavLink> {
         static MyRender singleton = new MyRender();
 
-        public boolean canRender(Object o, Technology technology) {
-            return o instanceof NavLink;
-        }
-
-        public Object render(Object o, Technology technology, DrawStream stream) {
+        public Object render(NavLink o, Technology technology, DrawStream stream) {
             return irender("<a", o, technology, stream);
         }
 
-        protected Object irender(String atype, Object o, Technology technology, DrawStream stream) {
-            NavLink b = (NavLink) o;
+        protected Object irender(String atype, NavLink b, Technology technology, DrawStream stream) {
             String icon = RazIconRes.getIconFile(b.action.iconProp);
 
             // if not std property, then it's full url

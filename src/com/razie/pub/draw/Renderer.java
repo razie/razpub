@@ -31,15 +31,6 @@ public interface Renderer<T> {
     public Object render(T o, Technology technology, DrawStream stream);
 
     /**
-     * can i render the given object on the given technology?
-     * 
-     * @param o
-     * @param technology
-     * @return true if this renderer can render on the given technology
-     */
-    public boolean canRender(T o, Technology technology);
-
-    /**
      * about technologies...you see a pile of unrelated stuff...
      * 
      * <p>

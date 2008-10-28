@@ -81,6 +81,7 @@ public interface AttrAccess {
     /** same pairs format name,value,name,value... */
     public Object[] toPairs();
 
+    /** add my attributes to the JSONObject passed in */
     public JSONObject toJson(JSONObject obj);
 
     /**
@@ -125,7 +126,7 @@ public interface AttrAccess {
                     
                     // let's see if it does have a type...
                     String s2 = name.substring(idx + 2);
-                    int idx2 = name.substring(idx + 2).indexOf(":");
+                    int idx2 = s2.indexOf(":");
                     if (idx2 >= 0) {
                         n[0] = name.substring(0, idx+2+idx2);
                         n[1] = name.substring(idx+2+idx2+1);
@@ -210,6 +211,7 @@ public interface AttrAccess {
             }
         }
 
+        @SuppressWarnings("unchecked")
         public Iterable<String> getPopulatedAttr() {
             return this.parms == null ? Collections.EMPTY_LIST : this.order;
         }

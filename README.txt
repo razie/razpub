@@ -35,11 +35,11 @@ only process() something.
 
 Two things I'm investigating are drawing and streaming.
 
-Drawing - basically any code anywhere will draw something. If it doesn't, the objects it uses could be seen by 
+Drawing - basically any code anywhere will draw something. Even if it doesn't, the objects it uses could be seen by 
 someone somewhere, be it a web page, AJAX, SVG, Eclipse, SWING ... god knows what. So, here's a simple and 
 generic drawing framework. 
 
-Streaming - instead of hardcoding the communication protocols throughout the code, I'm trying to abstract the basics
+Streaming - instead of hard-coding the communication protocols throughout the code, I'm trying to abstract the basics
 of a communications framework.
 
 

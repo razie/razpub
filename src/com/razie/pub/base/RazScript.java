@@ -4,7 +4,6 @@
  */
 package com.razie.pub.base;
 
-import com.razie.pub.base.ScriptContext;
 
 /**
  * minimal script interface

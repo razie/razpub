@@ -38,10 +38,6 @@ public class DrawError extends DrawWidget {
     private static class MyRenderer implements Renderer<DrawError> {
         static DrawError.MyRenderer singleton = new MyRenderer();
 
-        public boolean canRender(DrawError o, Technology technology) {
-            return true;
-        }
-
         public Object render(DrawError o, Technology technology, DrawStream stream) {
             return o.toString();
         }

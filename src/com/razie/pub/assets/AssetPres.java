@@ -2,6 +2,8 @@ package com.razie.pub.assets;
 
 import java.util.List;
 
+import com.razie.pub.draw.Drawable;
+
 /**
  * concentrates asset presentation commonalities - are actually implemented in the mutant
  * 
@@ -16,5 +18,5 @@ public abstract class AssetPres {
         return AssetMgr.pres();
     }
     
-    public abstract List /* <writables> */makeAllButtons(AssetBrief movie, boolean drawTiny) ;
+    public abstract List<Drawable> makeAllButtons(AssetBrief movie, boolean drawTiny) ;
 }

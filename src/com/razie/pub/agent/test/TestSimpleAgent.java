@@ -9,6 +9,7 @@ import junit.framework.TestCase;
 import com.razie.pub.agent.Agent;
 import com.razie.pub.agent.AgentHttpService;
 import com.razie.pub.base.ActionItem;
+import com.razie.pub.base.ThreadContext;
 import com.razie.pub.base.log.Log;
 import com.razie.pub.comms.ActionToInvoke;
 import com.razie.pub.comms.AgentGroup;
@@ -50,7 +51,7 @@ public class TestSimpleAgent extends TestCase {
 		agent.register(new AgentHttpService(agent, server));
 
 		agent.onStartup();
-		agent.getMainContext().exit();
+        ThreadContext.exit();
 		return agent;
 	}
 

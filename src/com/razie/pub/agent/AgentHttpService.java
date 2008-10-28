@@ -5,8 +5,6 @@ package com.razie.pub.agent;
 
 import java.util.List;
 
-import com.razie.pub.agent.Agent;
-import com.razie.pub.agent.AgentService;
 import com.razie.pub.base.NoStatics;
 import com.razie.pub.base.log.Log;
 import com.razie.pub.http.LightCmdGET;
@@ -40,11 +38,13 @@ public class AgentHttpService extends AgentService {
 
 		AgentHttpService singleton = (AgentHttpService) NoStatics
 				.get(AgentHttpService.class);
-//		if (singleton != null) {
-//			status.lastError = new IllegalStateException(
-//					"ERR_SVC_INIT AgentWebSrevice already initialized!");
-//			throw (IllegalStateException) status.lastError;
-//		}
+		
+		if (singleton != null) {
+			status.lastError = new IllegalStateException(
+					"ERR_SVC_INIT AgentWebSrevice already initialized!");
+			throw (IllegalStateException) status.lastError;
+		}
+
 		NoStatics.put(AgentHttpService.class, this);
 
 		// the server must have a GET command for thise service...

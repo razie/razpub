@@ -3,6 +3,10 @@
  */
 package com.razie.pub.comms;
 
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+
 import com.razie.pub.assets.AssetKey;
 import com.razie.pub.assets.AssetLocation;
 
@@ -30,7 +34,7 @@ public class AgentHandle extends AssetKey {
 
     // TODO why not use the AssetLocation?
     /** cache the url, format: "http://[ip|hostname]:port" */
-    public String                 url;         
+    public String                 url;
 
     public AgentHandle(String name, String hostname, String ip, String port, String url) {
         super(sCLASS, name, new AssetLocation(url));
@@ -53,7 +57,7 @@ public class AgentHandle extends AssetKey {
     }
 
     public String toString() {
-        return "AgentHandle("+name + ";" + hostname + ";" + ip + ";" + port + ";" + url+")";
+        return "AgentHandle(" + name + ";" + hostname + ";" + ip + ";" + port + ";" + url + ")";
     }
 
     public static AgentHandle fromString(String s) {
@@ -64,4 +68,44 @@ public class AgentHandle extends AssetKey {
     public AgentHandle clone() {
         return new AgentHandle(this.name, this.hostname, this.ip, this.port, this.url);
     }
+
+    public boolean equals(Object o) {
+        AgentHandle other = (AgentHandle) o;
+        if (this.name.equals(other.name) && this.hostname.equals(other.hostname)
+                && this.port.equals(other.port))
+            return true;
+        return false;
+    }
+
+    public boolean isUpNow() {
+        // timeout quickly
+        try {
+            Socket server = new Socket();
+            int port = Integer.parseInt(Agents.agent(name).port);
+            server.connect(new InetSocketAddress(ip, port), 250);
+            server.close();
+            return true;
+        } catch (IOException e1) {
+            return false;
+        } catch (Exception e) {
+            // don't care what hapened...
+            return false;
+        }
+    }
+    
+    // public boolean isUpNow() {
+    // // timeout quickly
+    // try {
+    // RazClientSocket server;
+    // int port = Integer.parseInt(Agents.agent(name).port);
+    // server = new RazClientSocket(Agents.agent(name).ip, port, 250);
+    // server.close();
+    // return true;
+    // } catch (IOException e1) {
+    // return false;
+    // } catch (Exception e) {
+    // // don't care what hapened...
+    // return false;
+    // }
+    // }
 }

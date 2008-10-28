@@ -58,8 +58,8 @@ public class HtmlRenderUtils {
         protected static final int HEADEND   = 3;
         protected static final int LAST      = 3;
 
-        static String[]            patterns  = { "<body.*>", "</body>", "<html.*>", "</html>" };
-        static String[]            tags      = { "<body>", "</body>", "<html>", "</html>" };
+        String[]            patterns  = { "<body.*>", "</body>", "<html.*>", "</html>" };
+        String[]            tags      = { "<body>", "</body>", "<html>", "</html>" };
 
         protected String get(int what) {
             return tags[what];

@@ -92,7 +92,7 @@ public class Agent {
         if (started && !stopped) {
             ThreadContext old = this.mainContext.enter();
             startSvc(l);
-            this.mainContext.exit(old);
+            ThreadContext.exit(old);
         }
     }
 
@@ -129,7 +129,7 @@ public class Agent {
 
         started = true;
 
-        this.mainContext.exit(old);
+        ThreadContext.exit(old);
     }
 
     /** can't be synchronized since it may wait too long to notify others */
@@ -145,7 +145,7 @@ public class Agent {
             }
         }
 
-        this.mainContext.exit(old);
+        ThreadContext.exit(old);
     }
 
     public synchronized void onShutdown() {
@@ -160,7 +160,7 @@ public class Agent {
             s.onShutdown();
         }
 
-        this.mainContext.exit(old);
+        ThreadContext.exit(old);
 
         // TODO are there any threads/workers/beings i should kill?
         Log.logThis("AGENT_SHUTDOWN_COMPLETE");
@@ -212,6 +212,27 @@ public class Agent {
         String otherList = (Comms.readUrl(url));
         otherList = HtmlContents.justBody(otherList);
         return otherList;
+    }
+
+    /** users can call this to send notifications to the other agents */
+    public void notifyOthers(String eventId, Object... args) {
+        // TODO add SLA, i.e. will backup and notify when others come online etc
+        String notified = "";
+        String notnotified = "";
+
+        for (AgentHandle d : this.homeGroup.agents().values()) {
+            if (!d.equals(this.myHandle)) {
+                // TODO optimize this - notify can figure out if it's up at the
+                // same time
+                if (AgentHandle.DeviceStatus.UP.equals(d.status)) {
+                    notified += d.name + ":" + notifyOther(d, eventId, args) + " , ";
+                } else {
+                    notnotified += d.name + " ' ";
+                }
+            }
+        }
+
+        Log.logThis("AGENT_NOTIFIED_OTHERS: " + notified + " / NOTNOTIFIED: " + notnotified);
     }
 
     public ThreadContext getMainContext() {

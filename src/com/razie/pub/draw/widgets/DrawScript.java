@@ -43,10 +43,6 @@ public class DrawScript extends DrawWidget {
         // no state, MT-safe
         static DrawScript.MyRenderer singleton = new MyRenderer();
 
-        public boolean canRender(DrawScript o, Technology technology) {
-            return true;
-        }
-
         public Object render(DrawScript o, Technology technology, DrawStream stream) {
             ScriptJS js = new ScriptJS(o.script);
             Object res = js.eval(o.ctx);

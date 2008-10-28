@@ -36,17 +36,14 @@ public class DrawSequence extends DrawStream implements Drawable {
             return Renderer.Helper.draw(this, t, stream);
         }
     /** I'm also a Drawable */
-    public Renderer getRenderer(Technology technology) {
+    public Renderer<DrawSequence> getRenderer(Technology technology) {
         return new MyRenderer();
     }
 
     /** I'm also a Drawable */
-    public static class MyRenderer implements Renderer {
-        public boolean canRender(Object o, Technology technology) {
-            return o instanceof DrawSequence;
-        }
+    public static class MyRenderer implements Renderer<DrawSequence> {
 
-        public Object render(Object o, Technology technology, DrawStream stream) {
+        public Object render(DrawSequence o, Technology technology, DrawStream stream) {
             DrawSequence list = (DrawSequence) o;
             String reply = "";
             for (Element element : list.elements) {

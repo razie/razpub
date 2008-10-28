@@ -110,7 +110,7 @@ public class AssetBrief extends AttrAccess.Impl implements AttrAccess, Drawable,
 
     public String getMimeType() {
         String fname = getLocalDir() + getFileName();
-        String mimeType = HttpUtils.getMimeType(getLocalDir() + getFileName());
+        String mimeType = HttpUtils.getMimeType(fname);
         return mimeType;
     }
 
@@ -381,7 +381,7 @@ public class AssetBrief extends AttrAccess.Impl implements AttrAccess, Drawable,
         return brief;
     }
 
-    public Renderer getRenderer(Technology technology) {
+    public Renderer<?> getRenderer(Technology technology) {
         return new MyRender();
     }
 
@@ -414,14 +414,14 @@ public class AssetBrief extends AttrAccess.Impl implements AttrAccess, Drawable,
         return i;
     }
 
-    public static class MyRender implements Renderer {
+    public static class MyRender implements Renderer<AssetBrief> {
 
-        public boolean canRender(Object o, Technology technology) {
-            return o instanceof AssetBrief;
+        public boolean canRender(AssetBrief o, Technology technology) {
+            return true;
         }
 
-        public Object render(Object o, Technology technology, DrawStream stream) {
-            AssetBrief b = (AssetBrief) o;
+        public Object render(AssetBrief o, Technology technology, DrawStream stream) {
+            AssetBrief b = o;
             if (Technology.HTML.equals(technology)) {
                 return toHtml(b);
             } else if (Technology.XML.equals(technology)) {
@@ -478,7 +478,7 @@ public class AssetBrief extends AttrAccess.Impl implements AttrAccess, Drawable,
             // IF full details, then print all buttons inside:
             if (b.detailLevel.equals(DetailLevel.FULL)) {
                 DrawList l = new DrawList();
-                for (Object a : AssetPres.instance().makeAllButtons(b, false))
+                for (Drawable a : AssetPres.instance().makeAllButtons(b, false))
                     l.write(a);
 
                 s += l.render(Technology.HTML, null);

@@ -1,8 +1,8 @@
 package com.razie.pub.base.test;
 
-import com.razie.pub.base.log.Log;
-
 import junit.framework.TestCase;
+
+import com.razie.pub.base.log.Log;
 
 public class TestLastLog extends TestCase {
     public static void testA1() {

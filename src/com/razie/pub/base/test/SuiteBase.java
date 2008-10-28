@@ -16,6 +16,7 @@ public class SuiteBase extends TestSuite {
         TestSuite result = new TestSuite(SuiteBase.class.getName());
 
         result.addTestSuite(TestAttr.class);
+        result.addTestSuite(TestJason.class);
         result.addTestSuite(TestLastLog.class);
         result.addTestSuite(TestNoStatics.class);
 

@@ -22,7 +22,7 @@ public class ToString extends DrawWidget {
         this.o = o;
     }
 
-    public Renderer getRenderer(Technology technology) {
+    public Renderer<ToString> getRenderer(Technology technology) {
         return MyRenderer.singleton;
     }
 
@@ -30,10 +30,6 @@ public class ToString extends DrawWidget {
     private static class MyRenderer implements Renderer<ToString> {
         // no state, MT-safe
         static ToString.MyRenderer singleton = new MyRenderer();
-
-        public boolean canRender(ToString o, Technology technology) {
-            return true;
-        }
 
         public Object render(ToString o, Technology technology, DrawStream stream) {
             return o.o == null ? "" : o.o.toString();

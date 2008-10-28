@@ -111,20 +111,15 @@ public class ActionToInvoke extends AttrAccess.Impl implements AttrAccess, Drawa
         }
     }
 
-    public Renderer getRenderer(Technology technology) {
+    public Renderer<ActionToInvoke> getRenderer(Technology technology) {
         return MyRenderer.singleton;
     }
 
-    public static class MyRenderer implements Renderer {
+    public static class MyRenderer implements Renderer<ActionToInvoke> {
         static MyRenderer singleton = new MyRenderer();
 
-        public boolean canRender(Object o, Technology technology) {
-            return o instanceof ActionToInvoke;
-        }
-
         // TODO render on others like swing...
-        public Object render(Object o, Technology technology, DrawStream stream) {
-            ActionToInvoke ati = (ActionToInvoke) o;
+        public Object render(ActionToInvoke ati, Technology technology, DrawStream stream) {
             ActionItem cmd = ati.actionItem;
             String url = ati.makeActionUrl();
 

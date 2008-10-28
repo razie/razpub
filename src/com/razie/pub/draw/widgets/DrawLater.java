@@ -31,7 +31,7 @@ public class DrawLater extends Drawable.DrawWidget {
         return "<iframe frameborder=0 src=\"" + ai.makeActionUrl() + "\"/>";
     }
 
-    public Renderer getRenderer(Technology technology) {
+    public Renderer<Drawable> getRenderer(Technology technology) {
         return DefaultRenderer.singleton;
     }
 

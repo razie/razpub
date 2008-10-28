@@ -29,7 +29,7 @@ public class SimpleButton extends NavButton {
         super(a);
     }
 
-    public Renderer getRenderer(Technology technology) {
+    public Renderer<NavLink> getRenderer(Technology technology) {
         // TODO too stupid - register renderers...
         return MyRender.singleton;
     }
@@ -38,7 +38,7 @@ public class SimpleButton extends NavButton {
         static MyRender singleton=new MyRender();
         
         @Override
-        public Object render(Object o, Technology technology, DrawStream stream) {
+        public Object render(NavLink o, Technology technology, DrawStream stream) {
             return irender("<a type=\"POST\" ", o, technology, stream);
         }
     }

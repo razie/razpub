@@ -68,7 +68,7 @@ public class DrawForm extends Drawable.DrawWidget {
         return s;
     }
 
-    public Renderer getRenderer(Technology technology) {
+    public Renderer<Drawable> getRenderer(Technology technology) {
         return DefaultRenderer.singleton;
     }
 

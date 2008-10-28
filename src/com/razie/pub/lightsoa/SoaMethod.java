@@ -11,6 +11,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import com.razie.pub.http.SoaNotHtml;
+
 /**
  * mark the classes implementing callables from by the lightsoa framework
  * 

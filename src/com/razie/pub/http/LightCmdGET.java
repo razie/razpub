@@ -141,7 +141,7 @@ public class LightCmdGET extends SocketCmdListener.Impl {
         if (args.contains(" ")) {
             // standard HTTP call: "GET PATH HTTP1.1"
             path = args.substring(0, args.indexOf(' '));
-            String http = args.substring(args.indexOf(' ') + 1);
+//            String http = args.substring(args.indexOf(' ') + 1);
             // logger.trace(3, "GET path=", path, ", http=", http);
         } else {
             path = args;
