@@ -15,23 +15,23 @@ import com.razie.pub.draw.Renderer.Technology;
  * @author razvanc99
  * 
  */
-public class ToString extends DrawWidget {
+public class DrawToString extends DrawWidget {
     Object o;
 
-    public ToString(Object o) {
+    public DrawToString(Object o) {
         this.o = o;
     }
 
-    public Renderer<ToString> getRenderer(Technology technology) {
+    public Renderer<DrawToString> getRenderer(Technology technology) {
         return MyRenderer.singleton;
     }
 
     /** my renderer, MT-safe */
-    private static class MyRenderer implements Renderer<ToString> {
+    private static class MyRenderer implements Renderer<DrawToString> {
         // no state, MT-safe
-        static ToString.MyRenderer singleton = new MyRenderer();
+        static DrawToString.MyRenderer singleton = new MyRenderer();
 
-        public Object render(ToString o, Technology technology, DrawStream stream) {
+        public Object render(DrawToString o, Technology technology, DrawStream stream) {
             return o.o == null ? "" : o.o.toString();
         }
     }

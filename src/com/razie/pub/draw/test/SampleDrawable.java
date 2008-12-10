@@ -19,7 +19,7 @@ import com.razie.pub.draw.widgets.DrawSelection;
 import com.razie.pub.draw.widgets.NavButton;
 import com.razie.pub.draw.widgets.NavLink;
 import com.razie.pub.draw.widgets.SimpleButton;
-import com.razie.pub.draw.widgets.ToString;
+import com.razie.pub.draw.widgets.DrawToString;
 import com.razie.pub.draw.widgets.NavLink.Size;
 import com.razie.pub.draw.widgets.NavLink.Style;
 import com.razie.pub.resources.RazIcons;
@@ -87,7 +87,7 @@ public class SampleDrawable extends Drawable.DrawWidget {
         seq.write("\n selection ^^^\n");
 
         seq.write("\nToString vvv\n");
-        seq.write(new ToString("some text"));
+        seq.write(new DrawToString("some text"));
         seq.write("\nToString ^^^\n");
 
         seq.write("\nDrawError vvv\n");

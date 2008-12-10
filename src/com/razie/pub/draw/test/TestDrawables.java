@@ -9,7 +9,7 @@ import junit.framework.TestCase;
 import com.razie.pub.base.log.Log;
 import com.razie.pub.draw.Renderer;
 import com.razie.pub.draw.widgets.DrawError;
-import com.razie.pub.draw.widgets.ToString;
+import com.razie.pub.draw.widgets.DrawToString;
 
 public class TestDrawables extends TestCase {
 
@@ -18,7 +18,7 @@ public class TestDrawables extends TestCase {
 
     public void testToString() {
         // nasty way to get "13"... :))
-        String s = (String) new ToString(new Integer(13)).render(Renderer.Technology.ANY, null);
+        String s = (String) new DrawToString(new Integer(13)).render(Renderer.Technology.ANY, null);
         assertTrue("13".equals(s));
     }
 
