@@ -6,7 +6,6 @@ package com.razie.pub.http;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.PrintStream;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -14,8 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import com.razie.pub.agent.AgentFileService;
 import com.razie.pub.base.data.HttpUtils;
-import com.razie.pub.base.exceptions.CommRtException;
 import com.razie.pub.base.log.Log;
 import com.razie.pub.comms.AuthException;
 import com.razie.pub.comms.LightAuth;
@@ -251,22 +250,8 @@ public class LightCmdGET extends SocketCmdListener.Impl {
         if (in == null) {
             Log.logThis("THE INPUT STREAM IS NULL...url=" + url);
         } else
-            copyStream(in, out);
+            AgentFileService.copyStream(in, out);
         return null;
-    }
-
-    public static void copyStream(InputStream is, OutputStream fos) {
-        try {
-            byte[] buf = new byte[4 * 1024 + 1];
-            int n;
-            while ((n = is.read(buf, 0, 4096)) > 0) {
-                fos.write(buf, 0, n);
-            }
-            fos.close();
-            is.close();
-        } catch (IOException e1) {
-            throw new CommRtException("Copystream failed: ", e1);
-        }
     }
 
     /** add an http binding to be called when the method/service matches a url */
