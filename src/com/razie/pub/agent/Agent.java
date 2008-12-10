@@ -102,6 +102,7 @@ public class Agent {
         SoaService soas = svc.getClass().getAnnotation(SoaService.class);
         if (soas != null && soas.bindings().length > 0) {
             for (String binding : soas.bindings()) {
+            	// TODO register the binding types and use them here rather than just http
                 if ("http".equals(binding)) {
                     AgentHttpService.registerSoa(new HttpSoaBinding(svc));
                 }

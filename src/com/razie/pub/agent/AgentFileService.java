@@ -3,8 +3,12 @@
  */
 package com.razie.pub.agent;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
 import com.razie.pub.base.NoStatics;
-import com.razie.pub.base.log.Log;
+import com.razie.pub.base.exceptions.CommRtException;
 
 /**
  * basic file services - read/write files...since agents can run all over the place, don't count on
@@ -18,14 +22,13 @@ public class AgentFileService extends AgentService {
     StatusReport status = new StatusReport();
     String       path;
 
-    public AgentFileService(Agent agent, String path) {
-        this.agent = agent;
+    public AgentFileService(String path) {
         this.path = path;
 
         AgentFileService singleton = (AgentFileService) NoStatics.get(AgentFileService.class);
 
         if (singleton != null) {
-            status.lastError = new IllegalStateException("ERR_SVC_INIT AgentWebSrevice already initialized!");
+            status.lastError = new IllegalStateException("ERR_SVC_INIT AgentFileService already initialized!");
             throw (IllegalStateException) status.lastError;
         }
 
@@ -42,20 +45,33 @@ public class AgentFileService extends AgentService {
         return f;
     }
 
-    public String path() {
+    /** default path for files - use this to store files */
+    public String basePath() {
         return path;
     }
 
     protected void onShutdown() {
-        Log.logThis("AGENTWEB_SHUTDOWN");
     }
 
     protected void onStartup() {
-        Log.logThis("AGENTWEB_STARTUP");
     }
 
     /** get status and report */
     public StatusReport status() {
         return status;
+    }
+
+    public static void copyStream(InputStream is, OutputStream fos) {
+        try {
+            byte[] buf = new byte[4 * 1024 + 1];
+            int n;
+            while ((n = is.read(buf, 0, 4096)) > 0) {
+                fos.write(buf, 0, n);
+            }
+            fos.close();
+            is.close();
+        } catch (IOException e1) {
+            throw new CommRtException("Copystream failed: ", e1);
+        }
     }
 }
