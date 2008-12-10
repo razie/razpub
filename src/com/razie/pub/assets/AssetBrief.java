@@ -226,9 +226,9 @@ public class AssetBrief extends AttrAccess.Impl implements AttrAccess, Drawable,
             return new ServiceActionToInvoke("assets", DETAILS, "ref", getKey(), "series", this.getSeries()
                     .toString());
         } else {
+//             return new AssetActionToInvoke(getKey(), DETAILS);
             return new ServiceActionToInvoke("assets", DETAILS, "ref", getKey());
             // FIXME must use only asset stuff, no mutant specifics...
-            // return new AssetActionToInvoke(getKey(), DETAILS);
         }
     }
 
@@ -408,7 +408,7 @@ public class AssetBrief extends AttrAccess.Impl implements AttrAccess, Drawable,
         String i = RazIconRes.getIconFile(img);
         // img = (img.startsWith("/mutant") ? img : "/mutant/getPic/" + img);
         i = (i.startsWith("/") ? i : "/getPic/" + img);
-        i = Agents.getMyUrl() + i;
+        i = Agents.instance().me().url + i;
         i = LightAuth.wrapUrl(i);
 
         return i;
