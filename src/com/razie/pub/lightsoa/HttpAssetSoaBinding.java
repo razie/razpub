@@ -20,6 +20,7 @@ import com.razie.pub.comms.MyServerSocket;
 public class HttpAssetSoaBinding extends HttpSoaBinding {
     static Map<String, HttpSoaBinding> bindings            = new HashMap<String, HttpSoaBinding>();
 
+    // TODO what the heck is this?
     static HttpSoaBinding              defaultAssetBinding = new HttpSoaBinding((Class) null, "");
 
     /**

@@ -79,7 +79,8 @@ public class HttpSoaBinding extends SoaBinding {
                         "can't bind service not annotated with @SoaService/@SoaAsset: "
                                 + service.getClass().getName());
         } else {
-            Log.logThis("BOUND class which was not annotated...");
+            logger.log("WARN_HTTP_BOUND class which was not annotated: "
+                    + (serviceCls == null ? "null" : serviceCls.getName()));
         }
     }
 
@@ -136,13 +137,13 @@ public class HttpSoaBinding extends SoaBinding {
         }
 
         if (otoi == null) {
-            Log.logThis("HTTP_SOA_ASSETNOTFOUND: " + key);
+            logger.log("HTTP_SOA_ASSETNOTFOUND: " + key);
             return "HTTP_SOA_ASSETNOTFOUND: " + key;
         }
 
         // maybe it's a dumb asset or injected functionality
         if (methods.size() > 0 && !methods.containsKey(actionName)) {
-            Log.logThis("HTTP_SOA_UNKWNOWNACTION: " + actionName);
+            logger.log("HTTP_SOA_UNKWNOWNACTION: " + actionName);
             return "HTTP_SOA_UNKNOWNACTION: " + actionName;
         }
 
@@ -151,12 +152,12 @@ public class HttpSoaBinding extends SoaBinding {
 
         if (methods.size() <= 0) {
             // didn't find it but there's no methods for this anyhow...
-            Log.logThis("HTTP_SOA_injected: " + actionName + ": ");
+            logger.log("HTTP_SOA_injected: " + actionName + ": ");
             ScriptContext ctx = new ScriptContext.Impl(ScriptContext.Impl.global());
             ctx.setAttr(parms);
             response = AssetMgr.doAction(actionName, key, ctx);
         } else if (methods.containsKey(actionName)) {
-            Log.logThis("HTTP_SOA_" + actionName + ": ");
+            logger.log("HTTP_SOA_" + actionName + ": ");
 
             AttrAccess args = new AttrAccess.Impl(parms);
 
@@ -237,4 +238,6 @@ public class HttpSoaBinding extends SoaBinding {
         return this.serviceName + " : "
                 + (this.service == null ? "NULL SERVICE" : this.service.getClass().getName());
     }
+
+    private static final Log logger = Log.Factory.create("http", HttpSoaBinding.class.getName());
 }

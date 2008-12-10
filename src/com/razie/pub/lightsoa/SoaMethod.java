@@ -14,10 +14,11 @@ import java.lang.annotation.Target;
 import com.razie.pub.http.SoaNotHtml;
 
 /**
- * mark the classes implementing callables from by the lightsoa framework
+ * mark the methods callable from by the lightsoa framework, on a service class
+ * 
+ * asset ulrs are <code>PREFIX/SERVICE/METHOD?parms=values&</code>
  * 
  * <pre>
- *        &#064;SoaService(name=&quot;network&quot;,descr=&quot;network services&quot;)
  *        class ClassA {
  *            ...
  *            &#064;SoaMethod (descr=&quot;the name of the component&quot;)

@@ -12,11 +12,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * mark the methods callable from by the lightsoa framework, on a service class
+ * mark the classes implementing callables from by the lightsoa framework
  * 
  * asset ulrs are <code>PREFIX/SERVICE/METHOD?parms=values&</code>
  * 
  * <pre>
+ *        &#064;SoaService(name=&quot;network&quot;,descr=&quot;network services&quot;)
  *        class ClassA {
  *            ...
  *            &#064;SoaMethod (descr=&quot;the name of the component&quot;)
@@ -29,12 +30,6 @@ import java.lang.annotation.Target;
  *            ...
  *        }
  * </pre>
- * 
- * These methods can take arguments - limit yourself to String arguments for now. These however will
- * be escaped properly and unescaped properly by each binding, that's a requirement for te binding
- * since the method doesn't know which binding will wrap it.
- * 
- * If a protocol (UPNP) supports returning mutliple arguments, please return a SoaResponse
  * 
  * TODO can be used to figure out name clashes, register services automatically etc
  * 

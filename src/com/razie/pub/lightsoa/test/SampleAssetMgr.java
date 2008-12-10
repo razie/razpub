@@ -32,7 +32,7 @@ public class SampleAssetMgr extends AssetMgr {
     }
 
     @Override
-    protected Object doActionImpl(String cmd, AssetKey ref, ScriptContext... ctx) {
+    protected Object doActionImpl(String cmd, AssetKey ref, ScriptContext ctx) {
         // TODO Auto-generated method stub
         return null;
     }
