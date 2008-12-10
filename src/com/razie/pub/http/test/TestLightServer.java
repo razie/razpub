@@ -25,6 +25,8 @@ public class TestLightServer extends TestLightBase {
         SampleEchoCmdListener echo = new SampleEchoCmdListener();
         server.registerCmdListener(echo);
 
+            Thread.sleep(200);
+            
         // send echo command
         Socket remote = new Socket("localhost", PORT);
         PrintStream out = new PrintStream(remote.getOutputStream());

@@ -10,6 +10,7 @@ import java.net.URL;
 import java.util.Properties;
 
 import com.razie.pub.base.data.HtmlRenderUtils;
+import com.razie.pub.base.log.Log;
 import com.razie.pub.comms.AuthException;
 import com.razie.pub.comms.MyServerSocket;
 import com.razie.pub.draw.DrawStream;
@@ -72,6 +73,9 @@ public class SampleWebServer {
 
         HttpSoaBinding soa = new HttpSoaBinding(singleton, "service");
         cmdGET.registerSoa(soa);
+        
+        Log.logThis("Starting simple web server at port: " + port);
+        Log.logThis(" - try simple url like http://localhost:"+port+"/");
 
         // start the server thread...
         server.run();

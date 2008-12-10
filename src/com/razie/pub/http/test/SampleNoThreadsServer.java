@@ -19,6 +19,7 @@ public class SampleNoThreadsServer extends LightServer {
         super(port, null);
     }
 
+    /** if you have a special thread handling, overload this and use your own threads */
     @Override
     public void runReceiver(Receiver conn_c) {
         conn_c.run();

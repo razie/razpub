@@ -1,6 +1,5 @@
 /**
- * Razvan's code. 
- * Copyright 2008 based on Apache (share alike) see LICENSE.txt for details.
+ * Razvan's code. Copyright 2008 based on Apache (share alike) see LICENSE.txt for details.
  */
 package com.razie.pub.http.test;
 
@@ -11,10 +10,15 @@ import java.net.URL;
 import java.util.Properties;
 
 import com.razie.pub.base.ActionItem;
+import com.razie.pub.base.NoStatics;
 import com.razie.pub.base.data.HtmlRenderUtils;
 import com.razie.pub.base.data.HttpUtils;
 import com.razie.pub.base.data.HtmlRenderUtils.HtmlTheme;
+import com.razie.pub.base.log.Log;
 import com.razie.pub.comms.ActionToInvoke;
+import com.razie.pub.comms.AgentGroup;
+import com.razie.pub.comms.AgentHandle;
+import com.razie.pub.comms.Agents;
 import com.razie.pub.comms.AuthException;
 import com.razie.pub.comms.MyServerSocket;
 import com.razie.pub.comms.ServiceActionToInvoke;
@@ -101,6 +105,15 @@ public class SimpleFileServer {
     }
 
     public static void start(int port) {
+        // LightAuth.init(new LightAuth("lightsoa"));
+        String sport = String.valueOf(port);
+
+        AgentHandle me = new AgentHandle("localhost", "localhost", "127.0.0.1", sport, "http://localhost:"
+                + sport);
+        AgentGroup group = new AgentGroup();
+        group.put(me.name, me);
+        NoStatics.put(Agents.class, new Agents(group, me));
+
         // stuff to set before you start the server
         HtmlRenderUtils.setTheme(new DarkTheme());
 
@@ -111,6 +124,10 @@ public class SimpleFileServer {
 
         HttpSoaBinding soa = new HttpSoaBinding(singleton, "service");
         cmdGET.registerSoa(soa);
+
+        Log.logThis("Starting simple file server at port: " + port);
+        Log.logThis(" - try simple url like http://localhost:" + port
+                + "/lightsoa/service/browse?folderpath=c:\\");
 
         // start the server thread...
         server.run();
@@ -147,7 +164,7 @@ public class SimpleFileServer {
     /** a simple, css-based theme to be used by the sample server */
     static class DarkTheme extends HtmlTheme {
         static String[] tags = {
-                                     "<head><link rel=\"stylesheet\" type=\"text/css\" href=\"/classpath/com/razie/pub/hframe/http/test/style.css\" /></head><body link=\"yellow\" vlink=\"yellow\">",
+                                     "<head><link rel=\"stylesheet\" type=\"text/css\" href=\"/classpath/com/razie/pub/http/test/style.css\" /></head><body link=\"yellow\" vlink=\"yellow\">",
                                      "</body>", "<html>", "</html>" };
 
         public String get(int what) {
