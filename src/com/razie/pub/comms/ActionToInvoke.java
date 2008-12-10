@@ -10,6 +10,7 @@ import java.net.URL;
 import com.razie.pub.base.ActionItem;
 import com.razie.pub.base.AttrAccess;
 import com.razie.pub.base.ScriptContext;
+import com.razie.pub.base.actions.BaseActionToInvoke;
 import com.razie.pub.draw.DrawStream;
 import com.razie.pub.draw.Drawable;
 import com.razie.pub.draw.Renderer;
@@ -28,25 +29,7 @@ import com.razie.pub.draw.widgets.NavLink;
  * 
  * @author razvanc99
  */
-public class ActionToInvoke extends AttrAccess.Impl implements AttrAccess, Drawable {
-    /** this is the action, contains the actual command name and label to display */
-    public ActionItem actionItem;
-
-    /**
-     * the prefix used depending on the drawing technology - for http, it's the URL to append to.
-     * This will identify the target of the action
-     */
-    public String     target;
-
-    // TODO presentation in model, not nice
-    public boolean    drawTiny  = false;
-
-    /**
-     * does it navigate or just invoke something in the background? navigation means GET for
-     * instance as opposed to POST
-     */
-    public boolean    navigates = true;
-
+public class ActionToInvoke extends BaseActionToInvoke implements AttrAccess, Drawable {
     /**
      * constructor
      * 
@@ -56,9 +39,7 @@ public class ActionToInvoke extends AttrAccess.Impl implements AttrAccess, Drawa
      * @param pairs
      */
     public ActionToInvoke(String target, ActionItem item, Object... pairs) {
-        super(pairs);
-        this.target = target;
-        this.actionItem = item;
+        super(target, item, pairs);
     }
 
     /**
@@ -70,12 +51,7 @@ public class ActionToInvoke extends AttrAccess.Impl implements AttrAccess, Drawa
      * @param pairs
      */
     public ActionToInvoke(ActionItem item, Object... pairs) {
-        this(Agents.me().url, item, pairs);
-    }
-
-    /** shortcut to render self - don't like controllers that much */
-    public Object render(Technology t, DrawStream stream) {
-        return Renderer.Helper.draw(this, t, stream);
+        super(item, pairs);
     }
 
     public ActionToInvoke clone() {
@@ -108,24 +84,6 @@ public class ActionToInvoke extends AttrAccess.Impl implements AttrAccess, Drawa
             return Comms.readUrl(url.toExternalForm());
         } catch (MalformedURLException e) {
             throw new RuntimeException("while getting the command url: " + this.makeActionUrl(), e);
-        }
-    }
-
-    public Renderer<ActionToInvoke> getRenderer(Technology technology) {
-        return MyRenderer.singleton;
-    }
-
-    public static class MyRenderer implements Renderer<ActionToInvoke> {
-        static MyRenderer singleton = new MyRenderer();
-
-        // TODO render on others like swing...
-        public Object render(ActionToInvoke ati, Technology technology, DrawStream stream) {
-            ActionItem cmd = ati.actionItem;
-            String url = ati.makeActionUrl();
-
-            NavLink b1 = new NavButton(cmd, url);
-            b1.setTiny(ati.drawTiny);
-            return b1.render(technology, stream);
         }
     }
 }
