@@ -50,11 +50,6 @@ public class Agents {
         return instance().getMyHostNameImpl();
     }
 
-    /** @return my url, of the form http://ip:port */
-    public static String getMyUrl() throws RuntimeException {
-        return instance().me.url;
-    }
-
     /** @return the URL for the mentioned remote agent, in the form "http://IP:PORT" */
     public static AgentHandle agent(String remote) {
         AgentHandle ah = instance().agentImpl(remote);

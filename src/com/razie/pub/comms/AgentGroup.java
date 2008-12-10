@@ -17,7 +17,7 @@ import java.util.Map;
  * agent groups are the logical unit for distributed services, including negociation, database sync
  * etc.
  * 
- * agent groups can be configured statically (config.xml) or dynamically, based on
+ * agent groups can be configured statically (agent.xml) or dynamically, based on
  * AgentGroupNegociation
  * 
  * TODO detailed docs
