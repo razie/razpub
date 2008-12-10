@@ -63,7 +63,7 @@ public class AssetActionToInvoke extends ActionToInvoke {
      * default implementation assumes i need to call an url and get the first line of response
      */
     @Override
-    public Object exec(ScriptContext ctx) {
+    public Object act(ScriptContext ctx) {
         if (this.target == null || this.target.length() <= 0) {
             return HttpAssetSoaBinding.invokeLocal(key, actionItem.name, this);
         } else {

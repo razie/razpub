@@ -49,11 +49,11 @@ public class AssetHandle implements Referenceable {
 
         if (key.getLocation() == null || (key.getLocation().isLocal() || !key.getLocation().isRemote())) {
             ActionToInvoke action = new AssetActionToInvoke(key, new ActionItem(method), aa);
-            result = (String) action.exec(null);
+            result = (String) action.act(null);
         } else {
             ActionToInvoke action = new AssetActionToInvoke(key.getLocation().toHttp(), key, new ActionItem(
                     method), aa);
-            result = (String) action.exec(null);
+            result = (String) action.act(null);
         }
         return result;
     }

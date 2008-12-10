@@ -76,7 +76,7 @@ public class TestLightServerSoa extends TestLightBase {
         // send echo command
         ActionToInvoke action = new ActionToInvoke("http://localhost:" + PORT + "/", new ActionItem(
                 "echoservice/echo"), "msg", "samurai");
-        String result = (String) action.exec(null);
+        String result = (String) action.act(null);
 
         assertTrue(result.contains("samurai"));
     }

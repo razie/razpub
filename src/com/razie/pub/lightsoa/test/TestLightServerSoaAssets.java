@@ -60,7 +60,7 @@ public class TestLightServerSoaAssets extends TestLightBase {
         // send echo command
         ActionToInvoke action = new AssetActionToInvoke("http://localhost:" + PORT,
                 TestLocalSoaAssets.PLAYERKEY, new ActionItem("play"), "movie", TestLocalSoaAssets.MOVIEKEY);
-        String result = (String) action.exec(null);
+        String result = (String) action.act(null);
 
         assertTrue(result.contains(TestLocalSoaAssets.MOVIEKEY.getId()));
     }

@@ -78,7 +78,7 @@ public class ActionToInvoke extends BaseActionToInvoke implements AttrAccess, Dr
      * 
      * default implementation assumes i need to call an url and get the first line of response
      */
-    public Object exec(ScriptContext ctx) {
+    public Object act(ScriptContext ctx) {
         try {
             URL url = new URL(this.makeActionUrl());
             return Comms.readUrl(url.toExternalForm());

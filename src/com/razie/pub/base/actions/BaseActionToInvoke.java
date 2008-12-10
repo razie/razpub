@@ -4,15 +4,10 @@
  */
 package com.razie.pub.base.actions;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
 import com.razie.pub.base.ActionItem;
 import com.razie.pub.base.AttrAccess;
 import com.razie.pub.base.ScriptContext;
 import com.razie.pub.comms.Agents;
-import com.razie.pub.comms.Comms;
-import com.razie.pub.comms.LightAuth;
 import com.razie.pub.draw.DrawStream;
 import com.razie.pub.draw.Drawable;
 import com.razie.pub.draw.Renderer;
@@ -31,7 +26,7 @@ import com.razie.pub.draw.widgets.NavLink;
  * 
  * @author razvanc99
  */
-public abstract class BaseActionToInvoke extends AttrAccess.Impl implements AttrAccess, Drawable {
+public abstract class BaseActionToInvoke extends AttrAccess.Impl implements IActionable, AttrAccess, Drawable {
     /** this is the action, contains the actual command name and label to display */
     public ActionItem actionItem;
 
@@ -86,13 +81,6 @@ public abstract class BaseActionToInvoke extends AttrAccess.Impl implements Attr
      * actions
      */
     public abstract String makeActionUrl();
-
-    /**
-     * execute this action in a given context. The context must include me as well?
-     * 
-     * default implementation assumes i need to call an url and get the first line of response
-     */
-    public abstract Object exec(ScriptContext ctx);
 
     public Renderer<BaseActionToInvoke> getRenderer(Technology technology) {
         return MyRenderer.singleton;

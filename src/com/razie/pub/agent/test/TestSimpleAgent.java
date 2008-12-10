@@ -68,7 +68,7 @@ public class TestSimpleAgent extends TestCase {
 
 			ActionToInvoke a = new ServiceActionToInvoke(me.url, "samplejavaservice",
 					new ActionItem("echo2"));
-			Object oo = a.exec(null);
+			Object oo = a.act(null);
 			Log.logThis("REPLY: " + oo.toString());
 			assertTrue(oo.toString().contains("echo2"));
 		} finally {

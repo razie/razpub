@@ -64,13 +64,13 @@ public class TestLightServer extends TestLightBase {
         // send echo command
         ActionToInvoke action = new ActionToInvoke("http://localhost:" + (PORT + 1), new ActionItem(
                 "service/echo"), "msg", "samurai");
-        String result = (String) action.exec(null);
+        String result = (String) action.act(null);
         assertTrue(result.contains("samurai"));
         assertTrue(result.contains("style.css"));
 
         // send echo command
         action = new ActionToInvoke("http://localhost:" + (PORT + 1), new ActionItem("service/die"));
-        result = (String) action.exec(null);
+        result = (String) action.act(null);
 
         // TODO should check the server died
     }
