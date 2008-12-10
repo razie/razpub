@@ -167,8 +167,10 @@ public class LightServer extends Worker {
 
                 logger.trace(3, "INPUT:\n", input);
 
-                // TODO xxx
+                // finish reading the input stream until there's nothing else...this will get
+                // the entire command
                 String moreInput = null;
+                String restInput = null;
                 while ((moreInput == null || moreInput.length() <= 0) && in.available() > 0)
                     moreInput = in.readLine();
 
@@ -195,15 +197,20 @@ public class LightServer extends Worker {
 
             // Now write to the client
             if (input != null) {
-                cmd = input.substring(0, input.indexOf(' '));
-                args = input.substring(input.indexOf(' ') + 1);
+                if (input.indexOf(' ') > 0) {
+                    cmd = input.substring(0, input.indexOf(' '));
+                    args = input.substring(input.indexOf(' ') + 1);
+                } else {
+                    cmd = input;
+                    args = "";
+                }
 
                 Log.logThis("HTTP_CLIENT_RQ: " + cmd + " args=" + args);
 
                 for (SocketCmdListener c : server.getListeners()) {
                     for (String s : c.getSupportedCommands()) {
                         if (cmd.equals(s)) {
-                            logger.log("HTTP_FOUND_LISTENER: " + c.getClass().getName());
+                            logger.trace(1, "HTTP_FOUND_LISTENER: " + c.getClass().getName());
                             try {
                                 reply = c.executeCmdServer(cmd, "", args, new Properties(), socket);
                             } catch (Throwable e) {

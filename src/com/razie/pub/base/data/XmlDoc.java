@@ -31,17 +31,18 @@ import com.razie.pub.base.log.Log;
  * @author razvanc
  */
 public class XmlDoc {
-    protected Document                   document;
-    public URL                        myUrl;
-    protected String                     name;
-    protected Element                    root;
-    protected Map<String, String>        prefixes         = null;                         // lazy
-    public long                          fileLastModified = -1;
-    private long                         lastChecked      = 0;
+    protected Document                         document;
+    public URL                                 myUrl;
+    protected String                           name;
+    protected Element                          root;
+    protected Map<String, String>              prefixes         = null;                                 // lazy
+    public long                                fileLastModified = -1;
+    private long                               lastChecked      = 0;
     // TODO use a reasonable interval, make configurable - maybe per db
-    public long                          reloadMilis      = 1000 * 30;
+    public long                                reloadMilis      = 1000 * 3;
 
-    protected static Map<String, XmlDoc> allDocs          = new HashMap<String, XmlDoc>();
+    private static Map<String, IXmlDocFactory> factories        = new HashMap<String, IXmlDocFactory>();
+    protected static Map<String, XmlDoc>       allDocs          = new HashMap<String, XmlDoc>();
 
     /** add prefix to be used in resolving xpath in this doc */
     public void addPrefix(String s, String d) {
@@ -55,11 +56,20 @@ public class XmlDoc {
         allDocs.put(s, d);
     }
 
+    /** register a factory - this will load the document with the specified name when needed */
+    public static void registerFactory(String s, IXmlDocFactory factory) {
+        factories.put(s, factory);
+    }
+
     /** TEMP */
     public static XmlDoc doc(String s) {
         XmlDoc d = allDocs.get(s);
         if (d != null)
             d.checkFile();
+        else if (factories.containsKey(s)) {
+            d = factories.get(s).make();
+            docAdd(s, d);
+        }
         return allDocs.get(s);
     }
 
@@ -154,6 +164,28 @@ public class XmlDoc {
      * @name identifies the name attribute of the element - could also be part of xpath instead
      * @return never null
      */
+    public static Element getEntity(Element e, String path) {
+        return (Element) RiXmlUtils.getNode(e, path, null);
+    }
+
+    /**
+     * i.e. "/config/mutant/@localdir"
+     * 
+     * @param path identifies the xpath
+     * @name identifies the name attribute of the element - could also be part of xpath instead
+     * @return never null
+     */
+    public static String getAttr(Element e, String path) {
+        return RiXmlUtils.getStringValue(e, path, null);
+    }
+
+    /**
+     * get a specific element, by "name"
+     * 
+     * @param path identifies the xpath
+     * @name identifies the name attribute of the element - could also be part of xpath instead
+     * @return never null
+     */
     public Element getEntity(String path) {
         return (Element) RiXmlUtils.getNode(root, path, prefixes);
     }
@@ -178,5 +210,9 @@ public class XmlDoc {
         Document d = RiXmlUtils.readXml(new StringBufferInputStream(str), "");
         doc.load(name, d);
         return doc;
+    }
+
+    public static interface IXmlDocFactory {
+        public XmlDoc make();
     }
 }
