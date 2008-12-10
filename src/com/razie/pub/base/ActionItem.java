@@ -92,6 +92,25 @@ public class ActionItem {
         return i;
     }
 
+    /** only looking at the actual action code */
+    public boolean equals(Object another) {
+        if (another instanceof ActionItem && ((ActionItem) another).name.equals(this.name))
+            return true;
+        else if (another instanceof String && name.equals(another))
+            return true;
+        return false;
+    }
+
+    /** only looking at the actual action code */
+    public int hashcode() {
+        return name.hashCode();
+    }
+
+    /** only looking at the actual action code */
+    public String toString() {
+        return name;
+    }
+
     public String name;
     public String iconProp = RazIcons.UNKNOWN.name();
     public String label;

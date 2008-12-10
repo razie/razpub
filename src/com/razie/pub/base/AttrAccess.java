@@ -283,6 +283,10 @@ public interface AttrAccess {
             return newurl;
         }
 
+        protected boolean hasAttrType(String name) {
+            return this.types != null && types.get(name) != null;
+        }
+
         public AttrType getAttrType(String name) {
             AttrType t = this.types != null ? types.get(name) : null;
             return t == null ? AttrType.STRING : t;
@@ -296,6 +300,16 @@ public interface AttrAccess {
             checkMap();
             // TODO maybe it's too slow this toString?
             this.types.put(name, type);
+        }
+        
+        public String toString () {
+            String ret="";
+            String comma="";
+            for (String a : this.getPopulatedAttr()) {
+                ret += comma + a + (this.hasAttrType(a) ? ":"+getAttrType(a):"") + "=" + getAttr(a).toString();
+                comma=",";
+            }
+            return ret;
         }
     }
 
@@ -328,6 +342,11 @@ public interface AttrAccess {
         public boolean isPopulated(String name) {
             boolean b = this.parms != null && this.parms.containsKey(name);
             return b ? true : (parent != null ? parent.isPopulated(name) : false);
+        }
+        
+        public String toString () {
+            String ret= parent != null ? parent.toString() : "";
+            return ret + super.toString();
         }
     }
 }
