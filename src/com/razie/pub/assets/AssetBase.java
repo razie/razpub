@@ -13,8 +13,6 @@ package com.razie.pub.assets;
 public interface AssetBase extends Referenceable {
     AssetBrief getBrief();
 
-    AssetKey getKey();
-
     public static class Impl implements AssetBase {
 
         protected AssetBrief brief;

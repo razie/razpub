@@ -23,6 +23,8 @@ import com.razie.pub.draw.Drawable;
 public abstract class AssetMgr {
     protected static AssetMgr impl;
 
+    public static AssetMgr instance () { return impl; }
+    
     public static void init(AssetMgr implToUse) {
         impl = implToUse;
     }
@@ -63,7 +65,7 @@ public abstract class AssetMgr {
      * @param ctx context with parms etc
      * @return
      */
-    public static Object doAction(String action, AssetKey ref, ScriptContext... ctx) {
+    public static Object doAction(String action, AssetKey ref, ScriptContext ctx) {
         return impl.doActionImpl(action, ref, ctx);
     }
 
@@ -79,7 +81,7 @@ public abstract class AssetMgr {
 
     protected abstract Meta metaImpl(String name);
 
-    protected abstract Object doActionImpl(String cmd, AssetKey ref, ScriptContext... ctx);
+    protected abstract Object doActionImpl(String cmd, AssetKey ref, ScriptContext ctx);
 
     public abstract Map<AssetKey, AssetBrief> findImpl(String type, AssetLocation env, boolean... recurse);
 
