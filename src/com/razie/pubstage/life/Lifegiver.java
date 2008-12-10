@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.razie.pub.assets.AssetKey;
+import com.razie.pub.base.ThreadContext;
 
 /**
  * stupid thread pool model
@@ -16,11 +17,15 @@ import com.razie.pub.assets.AssetKey;
  * 
  */
 public class Lifegiver {
-    static Map<AssetKey, Breather> beings = new HashMap<AssetKey, Breather>();
+    static Map<AssetKey, Breather> beings        = new HashMap<AssetKey, Breather>();
     static Thread                  myThread;
+    static ThreadContext           threadContext = null;                             // passed at
 
-    public static void init() {
+    // init
+
+    public static void init(ThreadContext tc) {
         if (myThread == null) {
+            threadContext = tc;
             myThread = new Thread(new Runner());
             myThread.setName("Lifegiver" + myThread.getName());
             myThread.setDaemon(true);
@@ -29,12 +34,16 @@ public class Lifegiver {
     }
 
     public static void needstoBreathe(AssetKey key, Breather b) {
-        init();
+        if (myThread == null)
+            throw new IllegalStateException("Lifegiver needs init() beforehand!");
+
         beings.put(key, b);
     }
 
     private static class Runner implements Runnable {
         public void run() {
+            threadContext.enter();
+
             while (true) {
                 try {
                     Thread.sleep(6 * 1000);
@@ -51,7 +60,7 @@ public class Lifegiver {
 
                 for (Breather being : b) {
                     being.breathe();
-                    
+
                     try {
                         Thread.sleep(1 * 1000);
                     } catch (InterruptedException e) {
@@ -62,6 +71,5 @@ public class Lifegiver {
                 }
             }
         }
-
     }
 }
