@@ -83,7 +83,7 @@ public class XmlDoc {
         }
     }
 
-    public void load(String name, URL url) {
+    public XmlDoc load(String name, URL url) {
         Log.logThis("XmlDoc:loading from URL=" + url);
         this.myUrl = url;
         this.name = name;
@@ -101,12 +101,15 @@ public class XmlDoc {
             Log.logThis("XMLDOC won't be refreshed automatically: Can't get datetime for file URL=" + url);
             this.reloadMilis = 0;
         }
+        
+        return this;
     }
 
-    protected void load(String name, Document d) {
+    protected XmlDoc load(String name, Document d) {
         this.name = name;
         this.document = d;
         this.root = d.getDocumentElement();
+        return this;
     }
 
     /**

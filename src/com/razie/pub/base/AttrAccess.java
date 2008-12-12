@@ -43,6 +43,8 @@ public interface AttrAccess {
 
     /** @return the value of the named attribute */
     public Object getAttr(String name);
+    /** I'm really starting to hate typing... */
+    public Object a(String name);
 
     /** set the value of the named attribute + the name can be of the form name:type */
     public void setAttr(String name, Object value);
@@ -155,6 +157,10 @@ public interface AttrAccess {
 
         public Object getAttr(String name) {
             return this.parms != null ? this.parms.get(name) : null;
+        }
+
+        public Object a(String name) {
+            return getAttr(name);
         }
 
         /**
