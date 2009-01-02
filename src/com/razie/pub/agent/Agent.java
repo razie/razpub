@@ -43,6 +43,8 @@ public class Agent {
     protected AgentGroup              homeGroup;
     private ThreadContext             mainContext;
 
+    private final static Log          logger      = Log.Factory.create("agent", Agent.class.getSimpleName());
+
     /** initialize agent with given info */
     public Agent(AgentHandle myHandle, AgentGroup homeGroup) {
         NoStatics ns = new NoStatics();
@@ -102,7 +104,7 @@ public class Agent {
         SoaService soas = svc.getClass().getAnnotation(SoaService.class);
         if (soas != null && soas.bindings().length > 0) {
             for (String binding : soas.bindings()) {
-            	// TODO register the binding types and use them here rather than just http
+                // TODO register the binding types and use them here rather than just http
                 if ("http".equals(binding)) {
                     AgentHttpService.registerSoa(new HttpSoaBinding(svc));
                 }
@@ -139,7 +141,7 @@ public class Agent {
 
         // not me...
         if (remote.hostname.equals(Agents.getMyHostName())) {
-            Log.logThis("AGENT_CONNECTED_TO_SELF - ignoring...");
+            logger.log("AGENT_CONNECTED_TO_SELF - ignoring...");
         } else {
             for (AgentService s : copyOfServices()) {
                 s.onConnectToOtherAgent(remote);
@@ -157,14 +159,14 @@ public class Agent {
         for (AgentService s : services.values()) {
             // TODO give them some time to cleanup and then kill them if they
             // didn't stop
-            Log.logThis("AGENT_SHUTDOWN service: " + s.getClass().getName());
+            logger.log("AGENT_SHUTDOWN service: " + s.getClass().getName());
             s.onShutdown();
         }
 
         ThreadContext.exit(old);
 
         // TODO are there any threads/workers/beings i should kill?
-        Log.logThis("AGENT_SHUTDOWN_COMPLETE");
+        logger.log("AGENT_SHUTDOWN_COMPLETE");
     }
 
     /** indicates if the agent has been shutdown */
@@ -204,6 +206,9 @@ public class Agent {
      * @return response of remote - usually meaningless
      */
     public String notifyOther(AgentHandle device, String eventId, Object... args) {
+        if (logger.isTraceLevel(3))
+            logger.trace(3, "AGENT_NOTIFIYING_OTHER: " + device + " event: " + eventId);
+
         String srcAgentNm = Agents.getMyHostName();
 
         // TODO if device is me call notify local directly
@@ -212,6 +217,7 @@ public class Agent {
         url = new AttrAccess.Impl(args).addToUrl(url);
         String otherList = (Comms.readUrl(url));
         otherList = HtmlContents.justBody(otherList);
+
         return otherList;
     }
 
@@ -221,6 +227,9 @@ public class Agent {
         String notified = "";
         String notnotified = "";
 
+        if (logger.isTraceLevel(3))
+            logger.trace(3, "AGENT_NOTIFIYING_OTHERS: " + notified + " / NOTNOTIFIED: " + notnotified);
+        
         for (AgentHandle d : this.homeGroup.agents().values()) {
             if (!d.equals(this.myHandle)) {
                 // TODO optimize this - notify can figure out if it's up at the
@@ -233,7 +242,7 @@ public class Agent {
             }
         }
 
-        Log.logThis("AGENT_NOTIFIED_OTHERS: " + notified + " / NOTNOTIFIED: " + notnotified);
+        logger.log("AGENT_NOTIFIED_OTHERS: " + notified + " / NOTNOTIFIED: " + notnotified);
     }
 
     public ThreadContext getMainContext() {

@@ -7,13 +7,13 @@ package com.razie.pub.assets;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import com.razie.pub.agent.AgentHttpService;
 import com.razie.pub.base.ActionItem;
 import com.razie.pub.base.ScriptContext;
 import com.razie.pub.comms.ActionToInvoke;
 import com.razie.pub.comms.Agents;
 import com.razie.pub.comms.Comms;
 import com.razie.pub.comms.LightAuth;
-import com.razie.pub.lightsoa.HttpAssetSoaBinding;
 
 /**
  * an action to invoke on an asset. See ActionToInvoke for details.
@@ -65,7 +65,7 @@ public class AssetActionToInvoke extends ActionToInvoke {
     @Override
     public Object act(ScriptContext ctx) {
         if (this.target == null || this.target.length() <= 0) {
-            return HttpAssetSoaBinding.invokeLocal(key, actionItem.name, this);
+            return AgentHttpService.getInstance().assetBinding.invokeLocal(key, actionItem.name, this);
         } else {
             try {
                 URL url = new URL(this.makeActionUrl());

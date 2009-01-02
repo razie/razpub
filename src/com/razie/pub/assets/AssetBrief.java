@@ -4,6 +4,9 @@
  */
 package com.razie.pub.assets;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONString;
@@ -13,6 +16,7 @@ import com.razie.pub.base.ActionItem;
 import com.razie.pub.base.AttrAccess;
 import com.razie.pub.base.data.HtmlRenderUtils;
 import com.razie.pub.base.data.HttpUtils;
+import com.razie.pub.base.data.MimeUtils;
 import com.razie.pub.comms.ActionToInvoke;
 import com.razie.pub.comms.Agents;
 import com.razie.pub.comms.LightAuth;
@@ -39,6 +43,9 @@ import com.razie.pub.resources.RazIcons;
  * TODO AssetBrief should be final and immutable - for now i still use the SdkAssetBrief in the
  * mutant...
  * 
+ * TODO split into a generic assetbrief and a fileassetbrief - for files, with directories etc.
+ * these are not applicable to say web assets...
+ * 
  * @author razvanc99
  * 
  */
@@ -55,6 +62,7 @@ public class AssetBrief extends AttrAccess.Impl implements AttrAccess, Drawable,
     public String                  player;
     public String                  parentID    = "";
     protected AssetKey             series      = null;
+    public long             size      = -1;
 
     public DetailLevel             detailLevel = DetailLevel.LIST;
 
@@ -110,7 +118,7 @@ public class AssetBrief extends AttrAccess.Impl implements AttrAccess, Drawable,
 
     public String getMimeType() {
         String fname = getLocalDir() + getFileName();
-        String mimeType = HttpUtils.getMimeType(fname);
+        String mimeType = MimeUtils.getMimeType(fname);
         return mimeType;
     }
 
@@ -120,7 +128,35 @@ public class AssetBrief extends AttrAccess.Impl implements AttrAccess, Drawable,
 
         AttrAccess a = new AttrAccess.Impl();
 
-        a.setAttr("dc:title", getName());
+        a.setAttr("dc\\:title", getName());
+        a.setAttr("upnp\\:class", upnptypes.get(getKey().getType()));
+        // if (series != null)
+        // a.setAttr("series", getSeries().toUrlEncodedString());
+
+       // a.setAttr("upnp\\:genre", "");
+       // a.setAttr("upnp\\:longDescription", getLargeDesc());
+        a.setAttr("dc\\:description", getBriefDesc());
+
+        //a.setAttr("upnp\\:storageMedium", "");
+        //a.setAttr("upnp\\:channelName", "");
+
+        s += a.toXml();
+
+        String p = "\n<res protocolInfo=\"http-get:*:" + getMimeType() + ":*\" size=\"200000\">"
+                + getUrlForStreaming().makeActionUrl() + "</res>";
+
+        return s + p + "\n</item>";
+    }
+
+    // TODO
+    public String toRssMediaItem() {
+        String s = "\n<item>\n";
+
+        AttrAccess a = new AttrAccess.Impl();
+
+        a.setAttr("title", getName());
+        a.setAttr("link", "?");
+
         a.setAttr("upnp:class", "object.item.videoItem.movie");
         // if (series != null)
         // a.setAttr("series", getSeries().toUrlEncodedString());
@@ -226,7 +262,7 @@ public class AssetBrief extends AttrAccess.Impl implements AttrAccess, Drawable,
             return new ServiceActionToInvoke("assets", DETAILS, "ref", getKey(), "series", this.getSeries()
                     .toString());
         } else {
-//             return new AssetActionToInvoke(getKey(), DETAILS);
+            // return new AssetActionToInvoke(getKey(), DETAILS);
             return new ServiceActionToInvoke("assets", DETAILS, "ref", getKey());
             // FIXME must use only asset stuff, no mutant specifics...
         }
@@ -538,4 +574,9 @@ public class AssetBrief extends AttrAccess.Impl implements AttrAccess, Drawable,
             return HtmlRenderUtils.textToHtml(s);
         }
     }
+        protected static Map<String,String> upnptypes = new HashMap<String,String>();
+        static {
+            upnptypes.put ("Movie", "object.item.videoItem.movie");
+            upnptypes.put ("Music", "object.item.audioItem.musicTrack");
+        }
 }
