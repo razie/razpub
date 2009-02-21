@@ -12,7 +12,7 @@ import com.razie.pub.base.ActionItem;
 import com.razie.pub.base.ThreadContext;
 import com.razie.pub.base.log.Log;
 import com.razie.pub.comms.ActionToInvoke;
-import com.razie.pub.comms.AgentGroup;
+import com.razie.pub.comms.AgentCloud;
 import com.razie.pub.comms.AgentHandle;
 import com.razie.pub.comms.LightAuth;
 import com.razie.pub.comms.ServiceActionToInvoke;
@@ -35,7 +35,7 @@ public class TestSimpleAgent extends TestCase {
 	}
 
 	/** start an agent and mount basic services */
-	public static Agent startAgent(AgentHandle h, AgentGroup g) {
+	public static Agent startAgent(AgentHandle h, AgentCloud g) {
 		Agent agent = new Agent(h, g);
 		agent.getMainContext().enter();
 		agent.onInit();
@@ -57,8 +57,8 @@ public class TestSimpleAgent extends TestCase {
 
 	// create an agent, do something with it and destroy it
 	public void testDumbAgent() throws InterruptedException {
-		AgentGroup group = new AgentGroup();
-		group.put(me.name, me);
+		AgentCloud group = new AgentCloud();
+		group.put(me);
 		Agent agent = startAgent(me, group);
 
 		try {
