@@ -21,7 +21,7 @@ import com.razie.pub.base.NoStatic;
  */
 public class HtmlRenderUtils {
     static NoStatic<HtmlTheme> theme = new NoStatic<HtmlTheme>("razie.theme", new DarkTheme());
-
+    
     /** wrap contents as an html document */
     public static String htmlWrap(String s) {
         String r = s;// GRef.toUrlEncodedString(s);
@@ -30,25 +30,26 @@ public class HtmlRenderUtils {
 
     /** wrap contents as an html document */
     public static String htmlHeader(String... metas) {
-        String s = theme.value().get(HtmlTheme.HEADSTART);
+        String s = theme.get().get(HtmlTheme.HEADSTART);
         if (metas.length > 0) {
             s += "<head>";
             for (String m : metas)
                 s += m;
             s += "</head>";
         }
-        return s + theme.value().get(HtmlTheme.BODYSTART);
+        return s + theme.get().get(HtmlTheme.BODYSTART);
     }
 
     /** wrap contents as an html document */
     public static String htmlFooter() {
-        return theme.value().get(HtmlTheme.BODYEND) + theme.value().get(HtmlTheme.HEADSTART);
+        return theme.get().get(HtmlTheme.BODYEND) + theme.get().get(HtmlTheme.HEADSTART);
     }
 
     /** wrap contents as an html document */
     public static String textToHtml(String s) {
         String r = s;// GRef.toUrlEncodedString(s);
-        return r == null ? "null" : r.replaceAll("\n", "<br>");
+        r = r == null ? "null" : r.replaceAll("\n", "<br>");
+        return r == null ? "null" : r.replaceAll("\t", "&nbsp;&nbsp;&nbsp;");
     }
 
     public static class HtmlTheme {
@@ -80,12 +81,12 @@ public class HtmlRenderUtils {
     public static String replace(String input) {
         String output = input;
         for (int i = 0; i <= HtmlTheme.LAST; i++) {
-            output = output.replace(theme.value().patterns[i], theme.value().get(i));
+            output = output.replace(theme.get().patterns[i], theme.get().get(i));
         }
         return output;
     }
 
     public static void setTheme(HtmlTheme theTheme) {
-        theme.setThreadValue(theTheme);
+        theme.set(theTheme);
     }
 }

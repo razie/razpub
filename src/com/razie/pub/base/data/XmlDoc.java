@@ -26,51 +26,42 @@ import com.razie.pub.FileUtils;
 import com.razie.pub.base.log.Log;
 
 /**
- * represents an xml document - generally for configuration.
+ * represents an xml document - generally for configuration. For dynamic data, use the XmlDb class.
+ * 
+ * <p>
+ * This is the central point for xml access, usually with xpath.
+ * 
+ * <p>
+ * Registry: when decoupling loading xml docs from their actual use in code
+ * 
+ * TODO this class is quite dedicated - I should document in more detail how I see xml docs...
  * 
  * @author razvanc
  */
 public class XmlDoc {
-    protected Document                         document;
-    public URL                                 myUrl;
-    protected String                           name;
-    protected Element                          root;
-    protected Map<String, String>              prefixes         = null;                                 // lazy
-    public long                                fileLastModified = -1;
-    private long                               lastChecked      = 0;
+    protected Document            document;
+    public URL                    myUrl;
+    protected String              name;
+    protected Element             root;
+    protected Map<String, String> prefixes         = null;    // lazy
+    public long                   fileLastModified = -1;
+    private long                  lastChecked      = 0;
     // TODO use a reasonable interval, make configurable - maybe per db
-    public long                                reloadMilis      = 1000 * 3;
+    public long                   reloadMilis      = 1000 * 3;
 
-    private static Map<String, IXmlDocFactory> factories        = new HashMap<String, IXmlDocFactory>();
-    protected static Map<String, XmlDoc>       allDocs          = new HashMap<String, XmlDoc>();
+    /** the root element - i'm getting bored typing */
+    public Element e() {
+        return root;
+    }
 
-    /** add prefix to be used in resolving xpath in this doc */
+    /**
+     * add prefix to be used in resolving xpath in this doc...if you use multiple schemas, pay
+     * attention to this
+     */
     public void addPrefix(String s, String d) {
         if (prefixes == null)
             prefixes = new HashMap<String, String>();
         prefixes.put(s, d);
-    }
-
-    /** TEMP */
-    public static void docAdd(String s, XmlDoc d) {
-        allDocs.put(s, d);
-    }
-
-    /** register a factory - this will load the document with the specified name when needed */
-    public static void registerFactory(String s, IXmlDocFactory factory) {
-        factories.put(s, factory);
-    }
-
-    /** TEMP */
-    public static XmlDoc doc(String s) {
-        XmlDoc d = allDocs.get(s);
-        if (d != null)
-            d.checkFile();
-        else if (factories.containsKey(s)) {
-            d = factories.get(s).make();
-            docAdd(s, d);
-        }
-        return allDocs.get(s);
     }
 
     protected void checkFile() {
@@ -101,7 +92,7 @@ public class XmlDoc {
             Log.logThis("XMLDOC won't be refreshed automatically: Can't get datetime for file URL=" + url);
             this.reloadMilis = 0;
         }
-        
+
         return this;
     }
 
@@ -215,7 +206,39 @@ public class XmlDoc {
         return doc;
     }
 
+    /** see the registry - register factories that load specific documents */
     public static interface IXmlDocFactory {
         public XmlDoc make();
+    }
+
+    /**
+     * registry for all static (config) xml documents. You can register a document after loading or
+     * a factory responsible for loading a document
+     */
+    public static class Reg {
+        private static Map<String, IXmlDocFactory> factories = new HashMap<String, IXmlDocFactory>();
+        protected static Map<String, XmlDoc>       allDocs   = new HashMap<String, XmlDoc>();
+
+        /** TEMP */
+        public static void docAdd(String s, XmlDoc d) {
+            allDocs.put(s, d);
+        }
+
+        /** register a factory - this will load the document with the specified name when needed */
+        public static void registerFactory(String s, XmlDoc.IXmlDocFactory factory) {
+            factories.put(s, factory);
+        }
+
+        /** TEMP */
+        public static XmlDoc doc(String s) {
+            XmlDoc d = allDocs.get(s);
+            if (d != null)
+                d.checkFile();
+            else if (factories.containsKey(s)) {
+                d = factories.get(s).make();
+                docAdd(s, d);
+            }
+            return allDocs.get(s);
+        }
     }
 }

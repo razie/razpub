@@ -16,23 +16,9 @@ import eu.medsea.util.MimeUtil;
  * @author razvanc99
  * 
  */
-public class HttpUtils {
+public class MimeUtils {
 
-    public static String toUrlEncodedString(String ref) {
-        try {
-            return URLEncoder.encode(ref, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            return ref;
-        }
-    }
-
-    public static String fromUrlEncodedString(String ref) {
-        try {
-            return URLDecoder.decode(ref, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            return ref;
-        }
-    }
+    public static final String UNKNOWN_MIME_TYPE = "application/x-unknown-mime-type";
 
     /**
      * Using JMimeMagic Checking the file extension is not a very strong way to determine the file
@@ -60,7 +46,4 @@ public class HttpUtils {
             mimeType = UNKNOWN_MIME_TYPE;
         return mimeType;
     }
-
-    public static final String UNKNOWN_MIME_TYPE = "application/x-unknown-mime-type";
-
 }

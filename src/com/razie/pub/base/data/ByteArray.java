@@ -8,6 +8,8 @@ package com.razie.pub.base.data;
  * simple dynamic byte array
  * 
  * TODO make this class dissapear - use buffered inputs etc instead
+ * 
+ * TODO stupid implementation: at the very least, use ArrayList of chunks and concatenate only at the end
  */
 public class ByteArray {
     public static final int BUFF_QUOTA = 4096 + 4096; 
