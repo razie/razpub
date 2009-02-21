@@ -22,6 +22,12 @@
  * 
  * STATE: post-concept, changes but not often
  * 
+ * <h1>Developer's Guide</h1>
+ * 
+ * Write your functionality as an AgentService. Then, in the main(), setup an Agent and add your service.
+ * 
+ * See SampleJavaService.java and associated unit tests.
+ * 
  * @version $Id: package-info.java,v 1.1 2007-10-02 11:54:36 razvanc Exp $
  */
 package com.razie.pub.agent;

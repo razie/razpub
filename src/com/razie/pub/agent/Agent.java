@@ -12,7 +12,7 @@ import com.razie.pub.base.AttrAccess;
 import com.razie.pub.base.NoStatics;
 import com.razie.pub.base.ThreadContext;
 import com.razie.pub.base.log.Log;
-import com.razie.pub.comms.AgentGroup;
+import com.razie.pub.comms.AgentCloud;
 import com.razie.pub.comms.AgentHandle;
 import com.razie.pub.comms.Agents;
 import com.razie.pub.comms.Comms;
@@ -27,6 +27,9 @@ import com.razie.pubstage.comms.HtmlContents;
  * Agents run at different locations and they cooperate. An agent has a bunch of services that run
  * on it and it offers these a platform for inter-operation.
  * 
+ * This is a skeleton agent, should work fine for most purposes...the mutant agent adds a lot of
+ * other functionality...
+ * 
  * There are many platforms for this type of "services", including OCAP, OSGI etc.
  * 
  * @author razvanc
@@ -40,13 +43,13 @@ public class Agent {
     protected boolean                 started     = false;
     protected NoStatics               myStatics   = new NoStatics();
     protected AgentHandle             myHandle    = null;
-    protected AgentGroup              homeGroup;
+    protected AgentCloud              homeGroup;
     private ThreadContext             mainContext;
 
     private final static Log          logger      = Log.Factory.create("agent", Agent.class.getSimpleName());
 
     /** initialize agent with given info */
-    public Agent(AgentHandle myHandle, AgentGroup homeGroup) {
+    public Agent(AgentHandle myHandle, AgentCloud homeGroup) {
         NoStatics ns = new NoStatics();
         mainContext = new ThreadContext(ns);
         mainContext.enter();
@@ -229,7 +232,7 @@ public class Agent {
 
         if (logger.isTraceLevel(3))
             logger.trace(3, "AGENT_NOTIFIYING_OTHERS: " + notified + " / NOTNOTIFIED: " + notnotified);
-        
+
         for (AgentHandle d : this.homeGroup.agents().values()) {
             if (!d.equals(this.myHandle)) {
                 // TODO optimize this - notify can figure out if it's up at the
