@@ -11,14 +11,11 @@ import junit.framework.TestSuite;
  * 
  * @author razvanc99
  */
-public class SuiteBase extends TestSuite {
+public class SuiteBaseTest extends TestSuite {
     public static Test suite() {
-        TestSuite result = new TestSuite(SuiteBase.class.getName());
+        TestSuite result = new TestSuite(SuiteBaseTest.class.getName());
 
-        result.addTestSuite(TestAttr.class);
-        result.addTestSuite(TestJason.class);
         result.addTestSuite(TestLastLog.class);
-        result.addTestSuite(TestNoStatics.class);
 
         return result;
     }
