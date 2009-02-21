@@ -11,10 +11,16 @@ import com.razie.pub.base.ScriptContext;
 import com.razie.pub.draw.Drawable;
 
 /**
- * the asset mgr is the way to interact with all assets. it can find, query and manage the assets
+ * the asset mgr concentrates all interactions will all assets. it can find, query and manage all
+ * the assets
+ * 
  * <p>
  * Implementation: just derive and implement the xxxImpl methods. A smarter asset manager will use
  * the inventories and be able to handle smart assets...
+ * 
+ * <p>
+ * Where this is useful: it decouples the rest of the code that uses assets (clients) from the
+ * actual implementation of an asset. Also, it is augmented by generic REST access to assets etc.
  * 
  * @version $Revision: 1.63 $
  * @author $Author: davidx $
@@ -23,8 +29,10 @@ import com.razie.pub.draw.Drawable;
 public abstract class AssetMgr {
     protected static AssetMgr impl;
 
-    public static AssetMgr instance () { return impl; }
-    
+    public static AssetMgr instance() {
+        return impl;
+    }
+
     public static void init(AssetMgr implToUse) {
         impl = implToUse;
     }
@@ -59,8 +67,8 @@ public abstract class AssetMgr {
     /**
      * execute injected command on given asset
      * 
-     * @param action the action/command to execute. Default empty/null means "details" or paing the asset
-     *        itself
+     * @param action the action/command to execute. Default empty/null means "details" or paing the
+     *        asset itself
      * @param ref ref to the object to invoke on
      * @param ctx context with parms etc
      * @return
@@ -69,8 +77,10 @@ public abstract class AssetMgr {
         return impl.doActionImpl(action, ref, ctx);
     }
 
-    public static AssetPres pres() {return impl.presImpl();}
-    
+    public static AssetPres pres() {
+        return impl.presImpl();
+    }
+
     protected abstract Object getAssetImpl(AssetKey key);
 
     protected abstract Drawable detailsImpl(AssetBrief key);
@@ -86,7 +96,7 @@ public abstract class AssetMgr {
     public abstract Map<AssetKey, AssetBrief> findImpl(String type, AssetLocation env, boolean... recurse);
 
     public abstract AssetPres presImpl();
-    
+
     /**
      * a meta-description
      * 
@@ -113,5 +123,4 @@ public abstract class AssetMgr {
             this.assetCls = assetCls;
         }
     }
-    
 }

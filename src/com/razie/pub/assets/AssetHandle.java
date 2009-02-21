@@ -11,6 +11,8 @@ import com.razie.pub.comms.ActionToInvoke;
 /**
  * this represents a full asset
  * 
+ * TODO find a GOOD use for this - I think we need it but not sure if it simplifies clients...
+ * 
  * @author razvanc99
  */
 public class AssetHandle implements Referenceable {

@@ -255,6 +255,8 @@ public class AssetLocation implements Serializable {
             }
             return s;
         }
+        
+        // default to me
         return Agents.getMyHostName();
     }
 
@@ -266,7 +268,9 @@ public class AssetLocation implements Serializable {
             }
             return s;
         }
-        return Agents.getMyHostName();
+        
+        // default to my port
+        return Agents.me().port;
     }
 
     public String getProtocol() {

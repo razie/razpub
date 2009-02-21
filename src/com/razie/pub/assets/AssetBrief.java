@@ -40,6 +40,10 @@ import com.razie.pub.resources.RazIcons;
  * It normally includes an icon, an image, a name, small and large descriptions, plus whatever other
  * information is needed.
  * 
+ * Think that this is the equivalent of an item in a Media RSS. 
+ * 
+ * Uses for the asset brief: represent RSS items, UPNP items, etc.
+ * 
  * TODO AssetBrief should be final and immutable - for now i still use the SdkAssetBrief in the
  * mutant...
  * 
@@ -49,7 +53,7 @@ import com.razie.pub.resources.RazIcons;
  * @author razvanc99
  * 
  */
-public class AssetBrief extends AttrAccess.Impl implements AttrAccess, Drawable, JSONString {
+public class AssetBrief extends AttrAccess.Impl implements AttrAccess, Referenceable, Drawable, JSONString {
 
     protected String               name;
     protected String               fileName;
@@ -62,9 +66,10 @@ public class AssetBrief extends AttrAccess.Impl implements AttrAccess, Drawable,
     public String                  player;
     public String                  parentID    = "";
     protected AssetKey             series      = null;
-    public long             size      = -1;
+    public long                    size        = -1;
 
     public DetailLevel             detailLevel = DetailLevel.LIST;
+    public static final ActionItem DELETE = new ActionItem("delete", RazIcons.DELETE);
 
     /** standard actions on assets */
     public static final ActionItem DETAILS     = new ActionItem("details", RazIcons.UNKNOWN);
@@ -133,12 +138,12 @@ public class AssetBrief extends AttrAccess.Impl implements AttrAccess, Drawable,
         // if (series != null)
         // a.setAttr("series", getSeries().toUrlEncodedString());
 
-       // a.setAttr("upnp\\:genre", "");
-       // a.setAttr("upnp\\:longDescription", getLargeDesc());
+        // a.setAttr("upnp\\:genre", "");
+        // a.setAttr("upnp\\:longDescription", getLargeDesc());
         a.setAttr("dc\\:description", getBriefDesc());
 
-        //a.setAttr("upnp\\:storageMedium", "");
-        //a.setAttr("upnp\\:channelName", "");
+        // a.setAttr("upnp\\:storageMedium", "");
+        // a.setAttr("upnp\\:channelName", "");
 
         s += a.toXml();
 
@@ -574,9 +579,10 @@ public class AssetBrief extends AttrAccess.Impl implements AttrAccess, Drawable,
             return HtmlRenderUtils.textToHtml(s);
         }
     }
-        protected static Map<String,String> upnptypes = new HashMap<String,String>();
-        static {
-            upnptypes.put ("Movie", "object.item.videoItem.movie");
-            upnptypes.put ("Music", "object.item.audioItem.musicTrack");
-        }
+
+    protected static Map<String, String> upnptypes = new HashMap<String, String>();
+    static {
+        upnptypes.put("Movie", "object.item.videoItem.movie");
+        upnptypes.put("Music", "object.item.audioItem.musicTrack");
+    }
 }

@@ -7,6 +7,8 @@ package com.razie.pub.assets;
 /**
  * an asset has a brief and is referenceable...this is the deepest base for an asset
  * 
+ * Assets have a brief and a unique key.
+ * 
  * @author razvanc 
  * @stereotype thing
  */
