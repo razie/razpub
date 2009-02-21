@@ -14,24 +14,23 @@ import java.util.Map;
  * equivalent, except the home group. The home group is by default the current group that is the
  * target of distributed operations.
  * 
- * agent groups are the logical unit for distributed services, including negociation, database sync
+ * agent clouds are the logical unit for distributed services, including negociation, database sync
  * etc.
  * 
- * agent groups can be configured statically (agent.xml) or dynamically, based on
- * AgentGroupNegociation
+ * agent clouds can be configured statically (agent.xml) or dynamically, based on
+ * AgentCloudNegociation
  * 
  * TODO detailed docs
  * 
  * @author razvanc
- * 
  */
-public class AgentGroup {
+public class AgentCloud {
     /** map<name,handle> */
     private Map<String, AgentHandle> agents    = Collections
                                                       .synchronizedMap(new HashMap<String, AgentHandle>());
 
     // TODO implement this
-    public static AgentGroup        homeGroup = null;
+    public static AgentCloud        homeCloud = null;
 
     /**
      * only access is to clone the sync'd collection. The individual agents may still be modified by
@@ -45,8 +44,8 @@ public class AgentGroup {
         }
     }
 
-    public AgentHandle put (String name, AgentHandle h) {
-        agents.put(name, h);
+    public AgentHandle put (AgentHandle h) {
+        agents.put(h.name, h);
         return h;
     }
     

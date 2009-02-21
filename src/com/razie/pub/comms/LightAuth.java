@@ -49,7 +49,9 @@ public class LightAuth {
      * used by client to prepare the URL just before using it.
      * 
      * in basic HTTP communication, the only way to AA is by messing with the URL - add/remove, add
-     * tokens parameters etc
+     * tokens parameters etc. 
+     * 
+     * TODO We could mess with the header parms...but...ok...in the future :)
      * 
      * @parm url the url to prepare, full form possibly including server:port
      * @return the URL to use, with AA info inserted
@@ -84,6 +86,11 @@ public class LightAuth {
 
     /** default impl will just prefix the url */
     protected String wrapUrlImpl(String url) {
+        return prefixUrl (url, prefix);
+    }
+
+    /** default impl will just prefix the url */
+    protected String prefixUrl(String url, String prefix) {
         String[] ss = url.split("://", 2);
 
         // be nice if the path is local

@@ -10,27 +10,27 @@ import com.razie.pub.base.NoStatics;
 import com.razie.pub.base.log.Log;
 
 /**
- * basic proxy to whatever db of hosts you like to use - there's soooo many.
+ * just a static helper that concentrates current agent-location information. this is used in soooo
+ * many classes... It is updated by the agent at runtime. Notifications about these updates are sent
+ * by the agent to all services as an AGENTS_UPDATE
  * 
- * It's basic responsibility is mapping hosts to URLs, knowing the local host etc
+ * this is used with NoStatic so you use it on your thread with Agents.instance()
  * 
- * TODO use factory/singleton to allow users to use different implementations
- * 
- * TODO this approach limits me to one agent per box
- * 
- * TODO sync this class since it is updated at runtime
+ * TODO monitor network and ip and update this and send event
  * 
  * @author razvanc99
- * 
  */
 public class Agents {
-    protected AgentGroup       myGroup  = null;
-    public boolean             testing  = false;
-    public static final String TESTHOST = "TEST-host";
+    /** sent by agent to all AgentServices to notify of changes of network/ip friends etc */
+    public static final String evAGENTS_UPDATE = "AGENTS_UPDATE";
+    
+    protected AgentCloud       myGroup         = null;
+    public boolean             testing         = false;
+    public static final String TESTHOST        = "TEST-host";
     public static String       homeNetPrefix;
-    private AgentHandle        me       = null;
+    private AgentHandle        me              = null;
 
-    public Agents(AgentGroup homeGroup, AgentHandle me) {
+    public Agents(AgentCloud homeGroup, AgentHandle me) {
         myGroup = homeGroup;
         this.me = me;
     }
@@ -62,15 +62,7 @@ public class Agents {
     }
 
     public String getMyHostNameImpl() throws RuntimeException {
-        if (testing) {
-            return TESTHOST;
-        }
-        try {
-            String n = InetAddress.getLocalHost().getHostName();
-            return n;
-        } catch (UnknownHostException e1) {
-            throw new RuntimeException("ERR: " + e1.toString(), e1);
-        }
+        return findMyHostName(testing);
     }
 
     public static String findMyHostName(boolean testing) throws RuntimeException {
@@ -106,13 +98,13 @@ public class Agents {
         return homeNetPrefix;
     }
 
-    public static AgentGroup homeGroup() {
+    public static AgentCloud homeGroup() {
         return instance().myGroup;
     }
 
     public static void setMe(AgentHandle myHandle) {
         Agents i = instance();
-        if (i.me != null && ! i.me.name.equals(myHandle.name))
+        if (i.me != null && !i.me.name.equals(myHandle.name))
             throw new IllegalStateException("Can't change who I am...");
         else
             i.me = myHandle;
