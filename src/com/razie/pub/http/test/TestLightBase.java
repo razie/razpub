@@ -7,7 +7,7 @@ import junit.framework.TestCase;
 
 import com.razie.pub.base.NoStatics;
 import com.razie.pub.base.log.Log;
-import com.razie.pub.comms.AgentGroup;
+import com.razie.pub.comms.AgentCloud;
 import com.razie.pub.comms.AgentHandle;
 import com.razie.pub.comms.Agents;
 import com.razie.pub.comms.LightAuth;
@@ -32,8 +32,8 @@ public class TestLightBase extends TestCase {
         if (server == null) {
             LightAuth.init(new LightAuth("lightsoa"));
 
-            AgentGroup group = new AgentGroup();
-            group.put(me.name, me);
+            AgentCloud group = new AgentCloud();
+            group.put(me);
             NoStatics.put(Agents.class, new Agents(group, me));
 
             server = new LightServer(PORT, null);

@@ -16,7 +16,7 @@ import com.razie.pub.base.data.HttpUtils;
 import com.razie.pub.base.data.HtmlRenderUtils.HtmlTheme;
 import com.razie.pub.base.log.Log;
 import com.razie.pub.comms.ActionToInvoke;
-import com.razie.pub.comms.AgentGroup;
+import com.razie.pub.comms.AgentCloud;
 import com.razie.pub.comms.AgentHandle;
 import com.razie.pub.comms.Agents;
 import com.razie.pub.comms.AuthException;
@@ -110,8 +110,8 @@ public class SimpleFileServer {
 
         AgentHandle me = new AgentHandle("localhost", "localhost", "127.0.0.1", sport, "http://localhost:"
                 + sport);
-        AgentGroup group = new AgentGroup();
-        group.put(me.name, me);
+        AgentCloud group = new AgentCloud();
+        group.put(me);
         NoStatics.put(Agents.class, new Agents(group, me));
 
         // stuff to set before you start the server
