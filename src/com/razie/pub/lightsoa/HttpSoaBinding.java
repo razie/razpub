@@ -12,6 +12,7 @@ import com.razie.pub.base.AttrAccess;
 import com.razie.pub.base.ScriptContext;
 import com.razie.pub.base.data.HttpUtils;
 import com.razie.pub.base.log.Log;
+import com.razie.pub.comms.Agents;
 import com.razie.pub.comms.MyServerSocket;
 import com.razie.pub.draw.DrawStream;
 import com.razie.pub.draw.HttpDrawStream;
@@ -164,10 +165,30 @@ public class HttpSoaBinding extends SoaBinding {
             // setup the parms
             SoaMethod mdesc = methods.get(actionName).getAnnotation(SoaMethod.class);
 
-            if (mdesc.auth().length() > 0) {
-                // TODO check auth
+            boolean reject = true;
+
+            // TODO check auth
+            switch (getAuth(mdesc)) {
+            case ANYBODY:
+                reject = false;
+                break;
+            case FRIEND:
+                reject = false;
+            case SHAREDSECRET:
+                reject = false;
+            case INHOUSE:
+                // allow on the home net and if the same machine
+                String fromip = socket.from.getIp();
+                if (socket.from.getIp().startsWith(Agents.getHomeNetPrefix())
+                        || socket.from.getIp().equals(Agents.me().ip) || "127.0.0.1".equals(fromip))
+                    reject = false;
+                else
+                    break;
             }
 
+            if (reject)
+                return "Permission denied...";
+            
             if (methods.get(actionName).getAnnotation(SoaStreamable.class) != null) {
                 SoaStreamable nh = methods.get(actionName).getAnnotation(SoaStreamable.class);
                 if (nh.streamMimeType().length() > 0) {
@@ -202,6 +223,20 @@ public class HttpSoaBinding extends SoaBinding {
         }
 
         return response;
+    }
+
+    private static SoaMethod.AuthType getAuth(SoaMethod m) {
+        switch (m.perm()) {
+        case ADMIN:
+            return SoaMethod.AuthType.INHOUSE;
+        case CONTROL:
+            return SoaMethod.AuthType.SHAREDSECRET;
+        case VIEW:
+            return SoaMethod.AuthType.FRIEND;
+        case ANYBODY:
+            return SoaMethod.AuthType.ANYBODY;
+        }
+        return SoaMethod.AuthType.SHAREDSECRET;
     }
 
     private DrawStream makeDrawStream(MyServerSocket socket, String protocol) {

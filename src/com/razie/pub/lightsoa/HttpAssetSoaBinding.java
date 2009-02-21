@@ -18,10 +18,10 @@ import com.razie.pub.comms.MyServerSocket;
  * @author razvanc99
  */
 public class HttpAssetSoaBinding extends HttpSoaBinding {
-    static Map<String, HttpSoaBinding> bindings            = new HashMap<String, HttpSoaBinding>();
+    Map<String, HttpSoaBinding> bindings            = new HashMap<String, HttpSoaBinding>();
 
     // TODO what the heck is this?
-    static HttpSoaBinding              defaultAssetBinding = new HttpSoaBinding((Class) null, "");
+    static HttpSoaBinding       defaultAssetBinding = new HttpSoaBinding((Class) null, "");
 
     /**
      * create a simple binding - you then have to register it with the server
@@ -33,15 +33,17 @@ public class HttpAssetSoaBinding extends HttpSoaBinding {
         // now should register all asset types as listeners...
     }
 
-    public static void register(Class c) {
-        bindings.put(((SoaAsset) c.getAnnotation(SoaAsset.class)).type(), new HttpSoaBinding(c, ((SoaAsset) c
-                .getAnnotation(SoaAsset.class)).type()));
+    public void register(Class c) {
+        if (!bindings.containsKey(((SoaAsset) c.getAnnotation(SoaAsset.class)).type()))
+            bindings.put(((SoaAsset) c.getAnnotation(SoaAsset.class)).type(), new HttpSoaBinding(c,
+                    ((SoaAsset) c.getAnnotation(SoaAsset.class)).type()));
     }
 
-    public static boolean has(String type) {
+    public boolean has(String type) {
         return bindings.containsKey(type);
     }
 
+    @Override
     public Object executeCmdServer(String actionName, String protocol, String cmdargs, Properties parms,
             MyServerSocket socket) {
         AssetKey key = AssetKey.fromString(HttpUtils.fromUrlEncodedString(actionName));
@@ -57,7 +59,7 @@ public class HttpAssetSoaBinding extends HttpSoaBinding {
     }
 
     /** invoke a lightsoa method on a given service */
-    public static Object invokeLocal(AssetKey key, String action, AttrAccess inparms) {
+    public Object invokeLocal(AssetKey key, String action, AttrAccess inparms) {
         HttpSoaBinding binding = bindings.get(key.getType());
         return binding.invoke(key, action, inparms);
     }

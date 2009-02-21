@@ -59,7 +59,29 @@ public @interface SoaMethod {
      * if defined, put here the permission to check - the framework will check the current
      * connection and user for this permission and throw AuthException if not permitted
      */
-    String auth() default "";
+    PermType perm() default PermType.ANYBODY;
 
     String[] args() default {};
+
+    /**
+     * permissions
+     * 
+     * TODO need mapping to the AUTH types
+     */
+    enum PermType {
+        /** highest permission: includes upgrades and code changes */
+        ADMIN, /** allows control of play/preferences etc */
+        CONTROL, /** just query and view */
+        VIEW, /** what you want anybody to be able to do */
+        ANYBODY
+    }
+
+    /**auth types*/
+    enum AuthType {
+        ANYBODY, FRIEND,
+        /** shared same secret anywhere */
+        SHAREDSECRET,
+        /** only in-house */
+        INHOUSE
+    }
 }
