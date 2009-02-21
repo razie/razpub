@@ -9,7 +9,6 @@ import java.util.Map;
 
 import com.razie.pub.base.ActionItem;
 import com.razie.pub.base.ThreadContext;
-import com.razie.pub.base.log.Exceptions;
 import com.razie.pub.base.log.Log;
 import com.razie.pub.events.PostOffice;
 
@@ -170,7 +169,7 @@ public abstract class Worker implements Runnable, Being {
 
                 // ThreadDeath must be propagated
                 throw (ThreadDeath) t;
-            } else if (Exceptions.getRootCause(t) instanceof BeingDyingRtException) {
+            } else if (Worker.getRootCause(t) instanceof BeingDyingRtException) {
                 logger.log("Thread stopped at user request...");
             } else {
                 logger.alarm(t.getMessage(), t);
@@ -303,6 +302,19 @@ public abstract class Worker implements Runnable, Being {
             this.progressCode = this.progressWhileSleeping;
             this.progressWhileSleeping = null;
         }
+    }
+
+    /**
+     * simply recurse to get the root cause
+     */
+    public static Throwable getRootCause(Throwable aThrowable) {
+        Throwable root = aThrowable;
+    
+        while (root != null && root.getCause() != null) {
+            root = root.getCause();
+        }
+    
+        return root;
     }
 
     /*

@@ -33,6 +33,11 @@ public class Lifegiver {
         }
     }
 
+    public static void die () {
+        // TODO be more gracious: give beings a notification and maybe timeout/clean resources etc
+        myThread.stop();
+    }
+    
     public static void needstoBreathe(AssetKey key, Breather b) {
         if (myThread == null)
             throw new IllegalStateException("Lifegiver needs init() beforehand!");
