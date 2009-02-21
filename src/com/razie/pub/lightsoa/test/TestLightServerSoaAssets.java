@@ -31,11 +31,12 @@ public class TestLightServerSoaAssets extends TestLightBase {
         // initialize the main asset manager - is responsible for instantiating assets by key
         AssetMgr.init(new SampleAssetMgr());
 
+        HttpAssetSoaBinding soa = new HttpAssetSoaBinding();
+        
         // register the test asset
-        HttpAssetSoaBinding.register(SampleAsset.class);
+        soa.register(SampleAsset.class);
 
         // register the asset management service
-        HttpAssetSoaBinding soa = new HttpAssetSoaBinding();
         cmdGET.registerSoa(soa);
     }
 
