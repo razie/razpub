@@ -6,11 +6,22 @@ package com.razie.pub.http;
 
 import com.razie.pub.base.data.HtmlRenderUtils;
 
+/** basic http utilities
+ * 
+ * @author razvanc
+ */
 public class HttpHelper {
     public static final String OK       = "200 OK";
     public static final String EXC      = "500 Exception";
     public static final String NOTFOUND = "404 Not Found";
 
+    /** wrap reply text into http
+     * 
+     * @param code the code, i.e. constant OK above
+     * @param s the string reply
+     * @param len the length of the reply or 0 
+     * @return
+     */
     public static String httpWrap(String code, String s, long len) {
         String temp = (s == null ? "" : s);
         temp = HtmlRenderUtils.htmlWrap(temp);
@@ -19,6 +30,11 @@ public class HttpHelper {
         return r;
     }
 
+    /** wrap reply text into http
+     * 
+     * @param code
+     * @return
+     */
     public static String httpHeader(String code){
         String ctype = "text/html";
         String r = "HTTP/1.1 " + code + "\r\nContent-Type: " + ctype + "\r\n\r\n";

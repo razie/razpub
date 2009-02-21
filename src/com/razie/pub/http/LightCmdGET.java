@@ -15,6 +15,7 @@ import java.util.Properties;
 
 import com.razie.pub.agent.AgentFileService;
 import com.razie.pub.base.data.HttpUtils;
+import com.razie.pub.base.data.MimeUtils;
 import com.razie.pub.base.log.Log;
 import com.razie.pub.comms.AuthException;
 import com.razie.pub.comms.LightAuth;
@@ -238,8 +239,8 @@ public class LightCmdGET extends SocketCmdListener.Impl {
         } else if (HttpHelper.isOtherFile(filenm)) {
             out.print(HttpHelper.httpWrapOtherFile(filenm, len));
         } else {
-            String type = HttpUtils.getMimeType(filenm);
-            if (type.equals(HttpUtils.UNKNOWN_MIME_TYPE)) {
+            String type = MimeUtils.getMimeType(filenm);
+            if (type.equals(MimeUtils.UNKNOWN_MIME_TYPE)) {
                 out.print(HttpHelper.httpWrapMimeType(type, len));
 //                out.print(HttpHelper.httpWrap(HttpHelper.OK, null, len));
             } else {

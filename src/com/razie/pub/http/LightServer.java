@@ -162,8 +162,13 @@ public class LightServer extends Worker {
                 PrintStream out = new PrintStream(socket.getOutputStream());
 
                 // TODO why do i flush empty lines?
-                while (input == null || input.length() <= 0)
-                    input = in.readLine();
+				while (input == null || input.length() <= 0) {
+					input = in.readLine();
+					if (input == null) {
+					   logger.alarm("ERR_SOCKET_EOF socket had EOF before any byte...dropping connection");
+					   return;
+					}
+				}
 
                 logger.trace(3, "INPUT:\n", input);
 
@@ -178,13 +183,18 @@ public class LightServer extends Worker {
 
                 handleInputLine(out, input);
 
-                socket.close();
             } catch (Exception ioe) {
                 // must catch all exceptions to avoid screwing up something bad...don't remember
                 // what
                 logger.log("IOException on socket listen: ", ioe);
                 ioe.printStackTrace();
             } finally {
+				try {
+               socket.close();
+            } catch (IOException e) {
+               // TODO Auto-generated catch block
+               e.printStackTrace();
+            }
                 ThreadContext.exit();
             }
         }
