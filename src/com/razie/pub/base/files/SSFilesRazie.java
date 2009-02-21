@@ -19,6 +19,9 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import com.razie.pub.FileUtils;
 import com.razie.pub.base.log.Log;
+import com.razie.pubstage.data.StrucList;
+import com.razie.pubstage.data.StrucTree;
+import com.razie.pubstage.data.Structure;
 import com.razie.pubstage.life.BeingDyingRtException;
 import com.razie.pubstage.life.Worker;
 
@@ -34,29 +37,76 @@ public class SSFilesRazie {
     }
 
     /**
-     * @param inpath the path to look in
+     * @param start the path to look in
      * @param filter - a filter, see Reg* classes defined here
      * @param recurse if true will search recursively through directories
      * @return a list of xml file names in the given path with the given mask, having the root tag
      *         and root attribute matching an expression. It may be empty but not null
      */
-    public static List<File> findFiles(String inpath, FileFilter filter, boolean recurse,
+    public static StrucList<File> listFiles(String start, FileFilter filter, boolean recurse,
             FileFoundCback... cback) {
-        List<File> l = new ArrayList<File>();
+        StrucList<File> l = new StrucList.Impl<File>(null);
 
-        if (inpath == null)
-            return l;
-        
-        String dir = inpath;
+        ifindFiles(start, l, filter, recurse, cback);
+
+        return l;
+    }
+
+    /**
+     * @param start the path to look in
+     * @param filter - a filter, see Reg* classes defined here
+     * @param recurse if true will search recursively through directories
+     * @return a list of xml file names in the given path with the given mask, having the root tag
+     *         and root attribute matching an expression. It may be empty but not null
+     */
+    public static StrucTree<File> treeFiles(String start, FileFilter filter, boolean recurse,
+            FileFoundCback... cback) {
+        StrucTree<File> l = new StrucTree.ImplNode<File>(null);
+
+        ifindFiles(start, l, filter, recurse, cback);
+
+        return l;
+    }
+
+    /**
+     * @param start the path to look in
+     * @param filter - a filter, see Reg* classes defined here
+     * @param recurse if true will search recursively through directories
+     * @return a list of xml file names in the given path with the given mask, having the root tag
+     *         and root attribute matching an expression. It may be empty but not null
+     */
+    public static void ifindFiles(String start, Structure<File> l, FileFilter filter, boolean recurse,
+            FileFoundCback... cback) {
+        if (start == null)
+            return;
+
+        String dir = start;
         if (!dir.endsWith("/") && !dir.endsWith("\\")) {
             dir += "/";
         }
 
         File f = new File(dir);
 
+        if (f.isDirectory() && l instanceof StrucTree)
+            ((StrucTree.ImplNode<File>) l).setContents(f);
+
         findFiles(f, l, filter, recurse, 2, 100, cback);
 
-        return l;
+        Log.logThis(l.toString());
+    }
+
+    private static Structure<File> add(Structure<File> l, File f, boolean isDirectory) {
+        if (l instanceof StrucTree) {
+            if (isDirectory)
+                return ((StrucTree.ImplNode<File>) l).addNode(f);
+            else
+                ((StrucTree.ImplNode<File>) l).addLeaf(f);
+        } else if (!isDirectory) {
+            StrucList.Impl<File> tree = (StrucList.Impl<File>) l;
+            tree.add(f);
+            return tree;
+        } else return l;
+        return null;
     }
 
     /**
@@ -67,8 +117,8 @@ public class SSFilesRazie {
      * @param filter the filter for files
      * @param recurse if true will search recursively
      */
-    public static void findFiles(File dir, List<File> files, FileFilter filter, boolean recurse, int min,
-            int max, FileFoundCback... cback) {
+    public static void findFiles(File dir, Structure<File> files, FileFilter filter, boolean recurse,
+            int min, int max, FileFoundCback... cback) {
 
         if (Worker.dying()) {
             throw new BeingDyingRtException();
@@ -78,7 +128,7 @@ public class SSFilesRazie {
             File[] s = filter != null ? dir.listFiles(filter) : dir.listFiles();
             if (s != null) {
                 for (int i = 0; s != null && i < s.length; i++) {
-                    files.add(s[i]);
+                    add(files, s[i], false);
                     if (cback.length > 0) {
                         cback[0].fileFound(s[i]);
                     }
@@ -104,7 +154,7 @@ public class SSFilesRazie {
 
                     for (int i = 0; i < dirs.length; i++) {
                         if (dirs[i].isDirectory()) {
-                            findFiles(dirs[i], files, filter, recurse, min
+                            findFiles(dirs[i], add(files, dirs[i], true), filter, recurse, min
                                     + (int) ((max - min) * (curDirNo * 1.0 / noDirs)), min
                                     + (int) ((max - min) * ((curDirNo + 1) * 1.0 / noDirs)), cback);
                             curDirNo++;
@@ -398,10 +448,10 @@ public class SSFilesRazie {
     }
 
     /** formatting file sizes */
-    private static float    K        = 1024;
-    private static float    M        = K * 1024;
-    private static float    G        = M * 1024;
+    private static float    K      = 1024;
+    private static float    M      = K * 1024;
+    private static float    G      = M * 1024;
 
-    public static final Log logger   = Log.Factory.create("", SSFilesRazie.class.getName());
+    public static final Log logger = Log.Factory.create("", SSFilesRazie.class.getName());
 
 }
