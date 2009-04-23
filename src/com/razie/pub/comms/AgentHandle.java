@@ -18,7 +18,7 @@ import com.razie.pub.assets.AssetLocation;
  * 
  */
 @SuppressWarnings("serial")
-public class AgentHandle extends AssetKey {
+public class AgentHandle extends AssetKey implements Cloneable {
 
     /** the handles keep transient peer status info, if an updater service is used */
     public static enum DeviceStatus {

@@ -7,7 +7,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-
 /**
  * a group of agents representing a logical structure, i.e. all the agents in my home (that is
  * actually a special group, the "home group". The different groups you could have/belong to are
@@ -20,7 +19,7 @@ import java.util.Map;
  * agent clouds can be configured statically (agent.xml) or dynamically, based on
  * AgentCloudNegociation
  * 
- * TODO detailed docs
+ * TODO genericize this - clouds of any kind of agent/device, together with its protocol
  * 
  * @author razvanc
  */

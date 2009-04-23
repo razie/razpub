@@ -33,7 +33,7 @@ import com.razie.pub.draw.Renderer.Technology;
  * and actions/commands back to the model element). Controllers are optional for managing
  * interaction (there is a defualt controller).
  * 
- * TODO Also NOTE that most of the above is TODO (sic!)
+ * TODO Also NOTE that most of the above is to do 
  * 
  * @author razvanc99
  * 

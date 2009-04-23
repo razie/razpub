@@ -14,6 +14,8 @@ import java.net.URL;
  * can reconnect automatically etc. The idea is that the client code doesn't care about the actual
  * communication channel technology and optimizations/implementation, i.e. SCTP vs TCP. $
  * 
+ * this is also so virtual that it can connect two agents via a proxy. it can also accomodate multiple sessions in parallel.
+ * 
  * @author razvanc99
  * 
  */

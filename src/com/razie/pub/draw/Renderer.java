@@ -63,6 +63,7 @@ public interface Renderer<T> {
     }
 
     /** simple renderer utils */
+    @SuppressWarnings("unchecked")
     public static class Helper {
         private static IndexedMemDb<Class, Technology, Renderer> renderers = new IndexedMemDb<Class, Technology, Renderer>();
 

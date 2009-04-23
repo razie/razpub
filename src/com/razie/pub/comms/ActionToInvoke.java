@@ -11,12 +11,7 @@ import com.razie.pub.base.ActionItem;
 import com.razie.pub.base.AttrAccess;
 import com.razie.pub.base.ScriptContext;
 import com.razie.pub.base.actions.BaseActionToInvoke;
-import com.razie.pub.draw.DrawStream;
 import com.razie.pub.draw.Drawable;
-import com.razie.pub.draw.Renderer;
-import com.razie.pub.draw.Renderer.Technology;
-import com.razie.pub.draw.widgets.NavButton;
-import com.razie.pub.draw.widgets.NavLink;
 
 /**
  * this is an instance of an action, meant to be invoked. It is prepared by someone and can be
@@ -29,7 +24,7 @@ import com.razie.pub.draw.widgets.NavLink;
  * 
  * @author razvanc99
  */
-public class ActionToInvoke extends BaseActionToInvoke implements AttrAccess, Drawable {
+public class ActionToInvoke extends BaseActionToInvoke implements Cloneable, AttrAccess, Drawable {
     /**
      * constructor
      * 

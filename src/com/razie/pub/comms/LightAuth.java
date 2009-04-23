@@ -19,8 +19,9 @@ package com.razie.pub.comms;
  * capabilities). Also, the AA can be negociated with the endpoints. Not sure how this will hookup
  * with the comms channel framework.
  * 
- * @author razvanc99
+ * TODO make nostaticsafe
  * 
+ * @author razvanc99
  */
 public class LightAuth {
     protected static LightAuth impl;

@@ -19,6 +19,7 @@ import com.razie.pub.draw.Renderer.Technology;
  * @author razvanc99
  * 
  */
+    @SuppressWarnings("unchecked")
 public class DrawList extends StreamableContainer.Impl implements Drawable, StreamableContainer {
 
     private List   list       = new ArrayList();

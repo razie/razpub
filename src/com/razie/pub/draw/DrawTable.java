@@ -23,6 +23,7 @@ import com.razie.pub.draw.Renderer.Technology;
  * @author razvanc99
  * 
  */
+@SuppressWarnings("unchecked")
 public class DrawTable extends StreamableContainer.Impl implements Drawable, StreamableContainer {
 
     private List        rows       = new ArrayList();

@@ -23,21 +23,25 @@ import com.razie.pub.base.log.Log;
 public class Agents {
     /** sent by agent to all AgentServices to notify of changes of network/ip friends etc */
     public static final String evAGENTS_UPDATE = "AGENTS_UPDATE";
-    
-    protected AgentCloud       myGroup         = null;
+
+    protected AgentCloud       myCloud         = null;
     public boolean             testing         = false;
     public static final String TESTHOST        = "TEST-host";
     public static String       homeNetPrefix;
     private AgentHandle        me              = null;
 
     public Agents(AgentCloud homeGroup, AgentHandle me) {
-        myGroup = homeGroup;
+        myCloud = homeGroup;
         this.me = me;
     }
 
     /** THIS must be initialized in the nostatic context before this... */
     public static Agents instance() {
         Agents singleton = (Agents) NoStatics.get(Agents.class);
+
+        if (singleton == null)
+            throw new IllegalStateException("Agents not initialied - You need to initialize it in NoStatics");
+
         return singleton;
     }
 
@@ -78,19 +82,19 @@ public class Agents {
     }
 
     public AgentHandle agentImpl(String host) {
-        return instance().myGroup.get(host);
+        return instance().myCloud.get(host);
     }
 
     /** TODO sync this */
     public AgentHandle agentByIpImpl(String ip) {
-        for (AgentHandle a : instance().myGroup.agents().values()) {
+        for (AgentHandle a : instance().myCloud.agents().values()) {
             if (a.ip.equals(ip)) {
                 return a;
             }
         }
 
         Log.logThis("ERR_AGENTBYIP_NOTFOUND - you may get a null pointer about now. ip=" + ip
-                + instance().myGroup.agents().values());
+                + instance().myCloud.agents().values());
         return null;
     }
 
@@ -98,8 +102,8 @@ public class Agents {
         return homeNetPrefix;
     }
 
-    public static AgentCloud homeGroup() {
-        return instance().myGroup;
+    public static AgentCloud homeCloud() {
+        return instance().myCloud;
     }
 
     public static void setMe(AgentHandle myHandle) {
