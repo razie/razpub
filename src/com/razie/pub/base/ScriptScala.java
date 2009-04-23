@@ -12,22 +12,18 @@ import org.mozilla.javascript.*;
 import com.razie.pub.comms.Comms;
 
 /**
- * running javascripts
- * 
- * TODO pre-parse the thing
- * 
- * TODO use JSR 264 or whatever the thing is and ditch custom code...
+ * running interpreted scala
  * 
  * @version $Revision: 1.13 $
  * @author $Author: razvanc $
  * @since $Date: 2007-05-03 13:31:49 $
  */
-public class ScriptJS implements RazScript {
+public class ScriptScala implements RazScript {
 
     private String script;
 
     /** use this for remote, files and classpath scripts */
-    public ScriptJS(URL sfile) {
+    public ScriptScala(URL sfile) {
         try {
             this.setScript(Comms.readStream(sfile.openStream()));
         } catch (IOException e) {
@@ -36,7 +32,7 @@ public class ScriptJS implements RazScript {
     }
 
     /** build from script string */
-    public ScriptJS(String s) {
+    public ScriptScala(String s) {
         this.setScript(s);
     }
 
@@ -113,12 +109,12 @@ public class ScriptJS implements RazScript {
     }
 
     public static void main(String[] argv) {
-        String script = "x = 'abc'; y = 3; function f(x){return x+1} f(7)";
-        ScriptJS js = new ScriptJS(script);
+        String script = "val y = 3; def f(x)={x+1}; f(7)";
+        ScriptScala js = new ScriptScala(script);
         System.out.println(js.eval(new ScriptContext.Impl()));
 
         script = "TimeOfDay.value()";
-        js = new ScriptJS(script);
+        js = new ScriptScala(script);
         ScriptContext ctx = new ScriptContext.Impl();
         ctx.setAttr("TimeOfDay", new TimeOfDay());
         System.out.println(js.eval(ctx));

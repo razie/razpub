@@ -9,9 +9,11 @@
  * speeds it all up. If you don't care to even comment, maybe there's some new ideas you can pickup.
  * 
  * I generally like to play around with fuzzy concepts and see where they take me. I could, of
- * course, sit down, smoke a lot and just think abstract concepts, but often it is more interesting
- * to just start banging some light prototypes, after a few ideas and/or beers. At the very least, I
- * end up with a model and the ideas are documented and crystallised that way.
+ * course, sit down, smoke a lot (later edit: I stopped smoking altogether - feel great) and just
+ * think abstract concepts, but often it is more interesting to just start banging some light
+ * prototypes, after a few ideas and/or beers. English is my thrid language - code is first and
+ * romanian second :) At the very least, I end up with a model and the ideas are documented and
+ * crystallised that way.
  * 
  * When adding features to base/common code, it generally becomes too coupled. Such as a plain
  * action supporting http thus requiring authentication services...which also know about assets
@@ -61,6 +63,8 @@
  * maintain/flex is more important than using the most efficient constructs all the time.
  * 
  * <h2>Remote management</h2>
+ * 
+ * READ http://blog.homecloud.ca/remote-management
  * 
  * All software must be able to be remotely controlled, best option is http (upnp and similar work
  * as well). This is to say that all important internal functionality must be presented via a simple

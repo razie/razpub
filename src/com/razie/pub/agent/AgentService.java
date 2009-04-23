@@ -14,6 +14,8 @@ import com.razie.pub.events.EvListener;
  * basic interface/contract with the Agent - it's not an interface so methods
  * are not public
  * 
+ * <p> In your service: you CAN implement onStartup(). You SHOULD implement onShutdown().
+ * 
  * <p>
  * A service will be instantiated and registered by the agent on startup, in the
  * sequence from the config.xml/services. A service is a single instance. Each
@@ -48,7 +50,7 @@ public abstract class AgentService implements EvListener {
 	protected Agent agent;
 
 	/** the second initialization phase: the agent is starting up */
-	protected abstract void onStartup();
+	protected void onStartup() {}
 
 	/** run diagnostics and report */
 	protected DiagReport diagnose() {
@@ -66,7 +68,7 @@ public abstract class AgentService implements EvListener {
 	 * the agent needs to shutdown this service. You must join() all threads and
 	 * return to agent.
 	 */
-	protected abstract void onShutdown();
+	protected void onShutdown() {}
 
 	/**
 	 * called when the agent connects to another agent the first time (remote

@@ -9,24 +9,30 @@ import java.io.Serializable;
 import com.razie.pub.base.data.HttpUtils;
 
 /**
- * Each entity/asset has a unique id, which identifies the asset's type, key and location. Borrowed
+ * Each entity/asset has a unique key, which identifies the asset's type, id and location. Borrowed
  * from OSS/J's ManagedEntityKey (type, key, location), this is lighter and designed to pass through
  * URLs and be easily managed as a string form.
  * 
  * <p>
- * the asset-URI has this format: <code>"<mutant://entityType:entityKey@location>"</code>
+ * asset-URI has this format: <code>"razie.uri:entityType:entityKey@location"</code>
  * <ul>
  * <li>type is the type of entity, should be unique among all other types. HINT: do not keep
- * defining "Movie" etc - alsways assume someone else did...
- * <li>key is the unique key of the given entity, unique in this location and for this type
+ * defining "Movie" etc - always assume someone else did...use "JohnsonsPrick.Movie" for instance :D
+ * <li>key is the unique key of the given entity, unique in this location and for this type. The key
+ * could be anything that doesn't have an '@' un-escaped. it could contain ':' itself like an
+ * XCAP/XPATH etc, which is rather cool?
  * <li>location identifies the location of the entity: either URL or folder or a combination
  * </ul>
+ * 
+ * <p>
+ * Keys must have at least type. By convention, if the key is missing, the key refers to all
+ * entities of the given type.
  * 
  * @author razvanc99
  */
 @SuppressWarnings("serial")
-public class AssetKey implements Serializable {
-    public static final String      PREFIX = "mutant://";
+public class AssetKey implements Serializable, Cloneable {
+    public static final String      PREFIX = "razie.uri:";
 
     /** don't want to keep formatting new strings every time, so we cache the last one */
     private String                  cachedUrlForm;
@@ -82,12 +88,11 @@ public class AssetKey implements Serializable {
     @Override
     public String toString() {
         if (cachedUrlForm == null) {
-            cachedUrlForm = "<" + PREFIX + getType() + ":"
+            cachedUrlForm = PREFIX + getType() + ":"
                     + (getId() == null ? "" : HttpUtils.toUrlEncodedString(getId()));
             if (getLocation() != null) {
                 cachedUrlForm += "@" + getLocation().toString();
             }
-            cachedUrlForm += ">";
         }
         return cachedUrlForm;
     }
@@ -188,8 +193,6 @@ public class AssetKey implements Serializable {
      * @return the entity-URI
      */
     public static AssetKey fromString(String inurl) {
-        // get rid of <>
-        // honestly, if it didn't have them i should blow up?
         String url = inurl;
 
         // sometimes the GUI will put an extra pair of < and >
@@ -203,14 +206,20 @@ public class AssetKey implements Serializable {
             url = url.substring(1, url.length());
         }
 
-        String[] map1 = url.split("://", 2);
-        
-        // with the following, i support also a missing PREFIX, i.e. a simplified KEY with just type:key@loc
-        String news = (map1.length > 1 ? map1[1] : (map1.length==1?map1[0]:null));
+        String news;
+        if (url.startsWith(PREFIX)) {
+            news = url.replace(PREFIX, "");
+        } else {
+            String[] map1 = url.split("://", 2);
+
+            // with the following, i support also a missing PREFIX, i.e. a simplified KEY with just
+            // type:key@loc
+            news = (map1.length > 1 ? map1[1] : (map1.length == 1 ? map1[0] : null));
+        }
 
         if (news != null) {
             // i have a class nm
-            String[] map2 = map1[1].split(":", 2);
+            String[] map2 = news.split(":", 2);
             if (map2[1] != null) {
                 // i have a key/id
                 String[] map3 = map2[1].split("@", 2);

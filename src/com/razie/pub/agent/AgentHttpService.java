@@ -72,7 +72,7 @@ public class AgentHttpService extends AgentService {
         getInstance().cmdGET.registerSoa(c);
     }
 
-    public static void registerSoaAsset(Class c) {
+    public static void registerSoaAsset(Class<?> c) {
         getInstance().assetBinding.register(c);
     }
 
