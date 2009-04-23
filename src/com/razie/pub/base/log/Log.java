@@ -94,10 +94,10 @@ public class Log {
          fos.flush();
          fos.close();
       } catch (FileNotFoundException e) {
-         // TODO Auto-generated catch block
+         // can't recurse to log...
          e.printStackTrace();
       } catch (IOException e) {
-         // TODO Auto-generated catch block
+         // can't recurse to log...
          e.printStackTrace();
       }
       addLogLine(msg);

@@ -6,7 +6,6 @@ package com.razie.pub.base.actions;
 
 import com.razie.pub.base.ActionItem;
 import com.razie.pub.base.AttrAccess;
-import com.razie.pub.base.ScriptContext;
 import com.razie.pub.comms.Agents;
 import com.razie.pub.draw.DrawStream;
 import com.razie.pub.draw.Drawable;
@@ -82,7 +81,7 @@ public abstract class BaseActionToInvoke extends AttrAccess.Impl implements IAct
      */
     public abstract String makeActionUrl();
 
-    public Renderer<BaseActionToInvoke> getRenderer(Technology technology) {
+    public Renderer<? extends BaseActionToInvoke> getRenderer(Technology technology) {
         return MyRenderer.singleton;
     }
 

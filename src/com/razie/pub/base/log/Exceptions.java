@@ -4,7 +4,6 @@
  */
 package com.razie.pub.base.log;
 
-import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;

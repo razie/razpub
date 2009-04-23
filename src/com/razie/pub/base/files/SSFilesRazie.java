@@ -246,7 +246,7 @@ public class SSFilesRazie {
      * a regexp based file filter, will filter files based on their name, if it matches the given
      * regular expression
      */
-    public static class ORFileFilter implements FileFilter {
+    public static class ORFileFilter implements FileFilter, Cloneable {
         protected List<FileFilter> filters = new ArrayList<FileFilter>();
 
         public ORFileFilter() {
@@ -377,7 +377,6 @@ public class SSFilesRazie {
      */
     public static class RegExpXmlFileFilter extends RegExpFileFilter implements FileFilter {
         private String    rootTag, rootAttrNm, rootAttrRegExp;
-        protected Pattern pattern;
 
         /**
          * c-tor
@@ -393,7 +392,6 @@ public class SSFilesRazie {
             this.rootTag = rootTag;
             this.rootAttrNm = rootAttrNm;
             this.rootAttrRegExp = rootAttrRegExp;
-            pattern = Pattern.compile(regExp);
         }
 
         public String toString() {
