@@ -17,7 +17,7 @@ import com.razie.pub.draw.Drawable;
  * 
  * @author razvanc99
  */
-public class ActionableSpec extends BaseActionToInvoke implements AttrAccess, Drawable {
+public class ActionableSpec extends BaseActionToInvoke implements AttrAccess, Drawable, Cloneable {
     /**
      * constructor
      * 

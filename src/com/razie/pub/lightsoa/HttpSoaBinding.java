@@ -63,7 +63,7 @@ public class HttpSoaBinding extends SoaBinding {
      * @param serviceName the name to use - no funky characters, other than ".". Especially no
      *        spaces, eh?
      */
-    public HttpSoaBinding(Class serviceCls, String serviceName) {
+    public HttpSoaBinding(Class<?> serviceCls, String serviceName) {
         super(serviceCls, serviceName);
 
         // check service name matches annotation
@@ -173,7 +173,6 @@ public class HttpSoaBinding extends SoaBinding {
                 reject = false;
                 break;
             case FRIEND:
-                reject = false;
             case SHAREDSECRET:
                 reject = false;
             case INHOUSE:

@@ -21,7 +21,7 @@ public class HttpAssetSoaBinding extends HttpSoaBinding {
     Map<String, HttpSoaBinding> bindings            = new HashMap<String, HttpSoaBinding>();
 
     // TODO what the heck is this?
-    static HttpSoaBinding       defaultAssetBinding = new HttpSoaBinding((Class) null, "");
+    static HttpSoaBinding       defaultAssetBinding = new HttpSoaBinding((Class<?>) null, "");
 
     /**
      * create a simple binding - you then have to register it with the server
@@ -33,7 +33,7 @@ public class HttpAssetSoaBinding extends HttpSoaBinding {
         // now should register all asset types as listeners...
     }
 
-    public void register(Class c) {
+    public void register(Class<?> c) {
         if (!bindings.containsKey(((SoaAsset) c.getAnnotation(SoaAsset.class)).type()))
             bindings.put(((SoaAsset) c.getAnnotation(SoaAsset.class)).type(), new HttpSoaBinding(c,
                     ((SoaAsset) c.getAnnotation(SoaAsset.class)).type()));

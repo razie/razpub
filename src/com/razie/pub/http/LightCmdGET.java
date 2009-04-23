@@ -29,7 +29,10 @@ import com.razie.pub.lightsoa.HttpSoaBinding;
  * DO NOT enable this towards the internet...it's intended as a sample class...see the
  * SampleWebServer.
  * 
- * very simple http server implementation, with lightsoa hookup. It will:
+ * very simple http server implementation, with lightsoa hookup. This is a good demonstration of how
+ * http is built on top of a plain socket :)
+ * 
+ * It will:
  * <ul>
  * <li>call lightsoa methods, i.e. "echo" if the path is "/lightsoa/echo"</li>
  * <li>serve files from the classpath if the path is "/classpath/com/razie/..."
@@ -141,7 +144,7 @@ public class LightCmdGET extends SocketCmdListener.Impl {
         if (args.contains(" ")) {
             // standard HTTP call: "GET PATH HTTP1.1"
             path = args.substring(0, args.indexOf(' '));
-//            String http = args.substring(args.indexOf(' ') + 1);
+            // String http = args.substring(args.indexOf(' ') + 1);
             // logger.trace(3, "GET path=", path, ", http=", http);
         } else {
             path = args;
@@ -242,7 +245,7 @@ public class LightCmdGET extends SocketCmdListener.Impl {
             String type = MimeUtils.getMimeType(filenm);
             if (type.equals(MimeUtils.UNKNOWN_MIME_TYPE)) {
                 out.print(HttpHelper.httpWrapMimeType(type, len));
-//                out.print(HttpHelper.httpWrap(HttpHelper.OK, null, len));
+                // out.print(HttpHelper.httpWrap(HttpHelper.OK, null, len));
             } else {
                 out.print(HttpHelper.httpWrapMimeType(type, len));
             }
@@ -278,7 +281,7 @@ public class LightCmdGET extends SocketCmdListener.Impl {
         return COMMANDS;
     }
 
-    static final String[]        COMMANDS = { "GET" };
+    static final String[]        COMMANDS = { "GET"}; // TODO "POST", "PUT", "DELETE" };
     static final Log             logger   = Log.Factory.create("", LightCmdGET.class.getName());
     private List<HttpSoaBinding> bindings = new ArrayList<HttpSoaBinding>();
 }

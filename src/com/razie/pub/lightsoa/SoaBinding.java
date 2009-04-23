@@ -44,7 +44,7 @@ public class SoaBinding {
     }
 
     /** build for an asset class */
-    public SoaBinding(Class assetClass, String serviceName) {
+    public SoaBinding(Class<?> assetClass, String serviceName) {
         this.serviceName = serviceName;
 
         // allow hacks with no methods - don't have to blow up...
@@ -84,7 +84,7 @@ public class SoaBinding {
         }
 
         // setup the parms
-        List args = new ArrayList();
+        List<Object> args = new ArrayList<Object>();
         SoaMethod mdesc = toinvoke.getAnnotation(SoaMethod.class);
 
         if (toinvoke.getAnnotation(SoaAllparms.class) != null) {
@@ -144,7 +144,7 @@ public class SoaBinding {
         }
 
         // setup the parms
-        List args = new ArrayList();
+        List<Object> args = new ArrayList<Object>();
         SoaMethod mdesc = toinvoke.getAnnotation(SoaMethod.class);
 
         // the first argument is a stream and not in the description

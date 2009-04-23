@@ -192,8 +192,7 @@ public class LightServer extends Worker {
 				try {
                socket.close();
             } catch (IOException e) {
-               // TODO Auto-generated catch block
-               e.printStackTrace();
+                Log.logThis("", e);
             }
                 ThreadContext.exit();
             }

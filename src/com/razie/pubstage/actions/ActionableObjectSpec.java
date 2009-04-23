@@ -1,5 +1,6 @@
 package com.razie.pubstage.actions;
 
+import java.util.Collections;
 import java.util.List;
 
 public interface ActionableObjectSpec {
@@ -10,8 +11,7 @@ public interface ActionableObjectSpec {
 
         @Override
         public List<ActionableSpec> getActionables() {
-            // TODO Auto-generated method stub
-            return null;
+            return Collections.EMPTY_LIST;
         }
         
     }

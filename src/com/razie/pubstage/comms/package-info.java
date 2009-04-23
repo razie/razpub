@@ -11,6 +11,7 @@
  * 
  * There's also a few streams, such as filtered string stream, for your convenience.
  * 
+ * CURRENT STATE: quite unclear, if you ask me - just a bunch of utilities for now :)
  * 
  * @version $Id: package-info.java,v 1.1 2007-10-02 11:54:36 razvanc Exp $
  */

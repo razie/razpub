@@ -4,9 +4,10 @@
  * use of Thread is strictly forbidden, since it doesn't offer enough functionality. Instead, use
  * the Worker and Being with the Lifegiver.
  * 
- * All must always be say what they're doing and be prepared to die. The idea is that the user can
- * always tell what the heck is going on and can kill anyone he/she doesn't like. Don't we hate it
- * when the hard-drive keeps the computer frozen and we don't know what the hell is going on?
+ * All active objects must always be able to say what they're doing and be prepared to die. The idea
+ * is that the user can always tell what the heck is going on and can kill anyone he/she doesn't
+ * like. Don't we hate it when the hard-drive keeps the computer frozen and we don't know what the
+ * hell is going on?
  * 
  * There are two types of active objects:
  * 

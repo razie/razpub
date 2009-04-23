@@ -28,6 +28,7 @@ public interface ObjectStream {
     public boolean hasMore();
 
     public static class Impl implements ObjectStream {
+        @SuppressWarnings("unchecked")
         List    objects = new ArrayList();
         boolean done    = false;
 
