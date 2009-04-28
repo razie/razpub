@@ -42,7 +42,7 @@ import java.lang.annotation.Target;
 @Target( { ElementType.TYPE })
 @Inherited
 public @interface SoaService {
-    /** the name of the service */
+    /** the name of the service. I think right now you should make sure it matches the simpleclassname of the service! */
     String name();
 
     /** the value is a description of the method */

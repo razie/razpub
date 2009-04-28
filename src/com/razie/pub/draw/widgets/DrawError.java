@@ -44,7 +44,7 @@ public class DrawError extends DrawWidget {
     }
 
     public String toString() {
-        String reply = HtmlRenderUtils.textToHtml(Exceptions.getStackTraceAsString(t));
-        return (msg == null ? "<no msg>" : msg) + (t == null ? "" : "\n" + reply);
+        return (msg == null ? "<no msg>" : msg)
+                + (t == null ? "" : "\n" + HtmlRenderUtils.textToHtml(Exceptions.getStackTraceAsString(t)));
     }
 }

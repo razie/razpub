@@ -1,3 +1,7 @@
+/*
+ * Razvan's public code. Copyright 2008 based on Apache license (share alike) see LICENSE.txt for
+ * details.
+ */
 package com.razie.pub.resources;
 
 /**
@@ -8,7 +12,6 @@ package com.razie.pub.resources;
  * 
  * @author razvanc99
  * @version $Id$
- * 
  */
 public enum RazIcons {
     PLAY, PAUSE, SKIP_NEXT, SKIP_PREV, REW, FWD, MUTANT, EJECT, UNKNOWN, STOP, UPLOAD, DOWNLOAD, POWER,

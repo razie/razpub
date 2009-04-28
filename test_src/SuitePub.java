@@ -22,6 +22,8 @@ public class SuitePub extends TestSuite {
     public static Test suite() {
         TestSuite result = new TestSuite(SuitePub.class.getName());
 
+        result.addTest(SuiteBase.suite());
+        
         result.addTest(SuiteBaseTest.suite());
         result.addTest(SuiteEvents.suite());
         result.addTest(SuiteDraw.suite());

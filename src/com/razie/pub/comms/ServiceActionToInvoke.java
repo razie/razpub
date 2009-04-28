@@ -16,11 +16,27 @@ import com.razie.pub.base.ActionItem;
 public class ServiceActionToInvoke extends ActionToInvoke {
     String service;
 
+    /**
+     * constructor
+     * 
+     * @param target the prefix used depending on the drawing technology - for http, it's the URL to
+     *        append to
+     * @param service the name of the service, it's part of the URL
+     * @param item this is the action, contains the actual command name and label to display
+     * @param pairs
+     */
     public ServiceActionToInvoke(String target, String service, ActionItem item, Object... pairs) {
         super(target, item, pairs);
         this.service = service;
     }
 
+    /**
+     * constructor
+     * 
+     * @param service the name of the service, it's part of the URL
+     * @param item this is the action, contains the actual command name and label to display
+     * @param pairs
+     */
     public ServiceActionToInvoke(String service, ActionItem item, Object... pairs) {
         super(item, pairs);
         this.service = service;

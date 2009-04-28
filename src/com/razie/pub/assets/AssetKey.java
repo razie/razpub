@@ -220,7 +220,7 @@ public class AssetKey implements Serializable, Cloneable {
         if (news != null) {
             // i have a class nm
             String[] map2 = news.split(":", 2);
-            if (map2[1] != null) {
+            if (map2.length > 1 && map2[1] != null) {
                 // i have a key/id
                 String[] map3 = map2[1].split("@", 2);
                 if (map3.length > 1) {
