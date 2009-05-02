@@ -16,7 +16,7 @@ import com.razie.pub.lightsoa.SoaStreamable;
  * @author razvanc99
  * 
  */
-@SoaAsset(type = "raz.test.Player", descr = "test player asset")
+@SoaAsset(meta = "raz.test.Player", descr = "test player asset")
 public class SampleAsset {
     AssetKey key;
 

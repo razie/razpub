@@ -75,7 +75,7 @@ public class HttpSoaBinding extends SoaBinding {
                                 + service.getClass().getName());
         } else if (serviceCls != null && serviceCls.getAnnotation(SoaAsset.class) != null) {
             SoaAsset s = (SoaAsset) serviceCls.getAnnotation(SoaAsset.class);
-            if (!s.type().equals(serviceName))
+            if (!s.meta().equals(serviceName))
                 throw new IllegalArgumentException(
                         "can't bind service not annotated with @SoaService/@SoaAsset: "
                                 + service.getClass().getName());

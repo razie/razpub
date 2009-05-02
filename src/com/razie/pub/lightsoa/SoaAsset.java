@@ -49,7 +49,7 @@ import java.lang.annotation.Target;
 @Inherited
 public @interface SoaAsset {
     /** the type of the asset modelled by this class */
-    String type();
+    String meta();
 
     /** the type of the asset modelled by this class */
     String base() default "";

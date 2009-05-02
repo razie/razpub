@@ -34,9 +34,9 @@ public class HttpAssetSoaBinding extends HttpSoaBinding {
     }
 
     public void register(Class<?> c) {
-        if (!bindings.containsKey(((SoaAsset) c.getAnnotation(SoaAsset.class)).type()))
-            bindings.put(((SoaAsset) c.getAnnotation(SoaAsset.class)).type(), new HttpSoaBinding(c,
-                    ((SoaAsset) c.getAnnotation(SoaAsset.class)).type()));
+        if (!bindings.containsKey(((SoaAsset) c.getAnnotation(SoaAsset.class)).meta()))
+            bindings.put(((SoaAsset) c.getAnnotation(SoaAsset.class)).meta(), new HttpSoaBinding(c,
+                    ((SoaAsset) c.getAnnotation(SoaAsset.class)).meta()));
     }
 
     public boolean has(String type) {
