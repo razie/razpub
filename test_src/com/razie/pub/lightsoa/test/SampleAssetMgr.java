@@ -56,7 +56,7 @@ public class SampleAssetMgr extends AssetMgr {
     }
 
     @Override
-    public Map<AssetKey, AssetBrief> findImpl(String type, AssetLocation env, boolean... recurse) {
+    public Map<AssetKey, AssetBrief> findImpl(String type, AssetLocation env, boolean recurse) {
         // should implement in a proper asset mgr
         return null;
     }
