@@ -5,6 +5,7 @@ package com.razie.pub.lightsoa.test;
 
 import com.razie.pub.draw.DrawStream;
 import com.razie.pub.lightsoa.SoaMethod;
+import com.razie.pub.lightsoa.SoaMethodSink;
 import com.razie.pub.lightsoa.SoaResponse;
 import com.razie.pub.lightsoa.SoaStreamable;
 
@@ -16,6 +17,7 @@ import com.razie.pub.lightsoa.SoaStreamable;
  */
 public class SampleService {
     @SoaMethod (descr="concatenate two values", args={"parm1","parm2"})
+    @SoaMethodSink
     public SoaResponse concatenate(String parm1, String parm2) {
         // that's how it's done in UPnP
         return new SoaResponse("Result", parm1 + parm2);
