@@ -41,6 +41,7 @@ public interface AssetBase extends Referenceable {
 
         public void setKey(AssetKey ref) {
             this.brief.setKey(ref);
+            this.brief.setName(ref.getId());
         }
     }
 }

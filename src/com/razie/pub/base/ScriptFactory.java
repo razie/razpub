@@ -4,7 +4,6 @@
  */
 package com.razie.pub.base;
 
-
 /**
  * minimal factory to decouple scripting
  * 
@@ -12,8 +11,20 @@ package com.razie.pub.base;
  * 
  * @author razvanc
  */
+@Factory
 public class ScriptFactory {
-    public static RazScript make(String script) {
+    public static ScriptFactory singleton = new ScriptFactory();
+
+    public static void init(ScriptFactory theOneToUse) {
+        singleton = theOneToUse;
+    }
+
+    public static RazScript make(String lang, String script) {
+        return singleton.makeImpl(lang, script);
+    }
+
+    // TODO make protected
+    public RazScript makeImpl(String lang, String script) {
         return new ScriptJS(script);
     }
 }

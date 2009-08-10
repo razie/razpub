@@ -80,7 +80,7 @@ public class AgentHttpService extends AgentService {
         return getInstance().server.getListeners();
     }
 
-    public static List<HttpSoaBinding> getBindings() {
+    public static Iterable<HttpSoaBinding> getBindings() {
         return getInstance().cmdGET.getBindings();
     }
 

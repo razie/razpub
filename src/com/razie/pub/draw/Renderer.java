@@ -10,6 +10,8 @@ import com.razie.pub.base.data.IndexedMemDb;
 /**
  * a renderer can render an object on a display...
  * 
+ * Note that you can inject renderers for objects by registering with the RendererUtils below...
+ * 
  * @author razvanc99
  * 
  */
@@ -22,11 +24,15 @@ public interface Renderer<T> {
     /* #com.razie.sdk.draw.Drawable Dependency_Link */
 
     /**
-     * the return object is technology specific
+     * the return object is technology specific...it could be a swing dialog reference :) 
      * 
-     * @param o
-     * @param technology
-     * @return
+     * The convention here is: the caller prepares a stream. The implementation will either use 
+     * the stream or just return an object. Note that the stream is always present! 
+     * 
+     * @param o - not null, the object to draw
+     * @param technology -  the technology to draw on
+     * @param stream - not null, a stream to draw on. Use DrawSequence if you don't know what to do and draw that.
+     * @return null if it was drawn on the stream, a drawable object otherwise
      */
     public Object render(T o, Technology technology, DrawStream stream);
 

@@ -52,6 +52,7 @@ public interface StreamableContainer extends DrawAccumulator {
             this.state = DrawStream.Element.State.OPEN;
 
             this.ownerStream = owner;
+            // stream protects against recursive opening here :)
             owner.open(this);
             // if i can start writing, the owner will update my status to open and write
         }

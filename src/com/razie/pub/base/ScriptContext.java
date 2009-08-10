@@ -33,11 +33,16 @@ public interface ScriptContext extends AttrAccess {
     /** TODO document */
     public void unguard(String name, String condition, String expr);
 
-    public class Impl extends AttrAccess.TreeImpl implements ScriptContext {
-        private static ScriptContext    main   = new ScriptContext.Impl();
+    /** TODO document */
+    public void verbose(boolean v);
 
-        protected Map<String, String>   macros = new HashMap<String, String>();
-        protected Map<String, String[]> guards = new HashMap<String, String[]>();
+    public class Impl extends AttrAccess.TreeImpl implements ScriptContext {
+        private static ScriptContext    main    = new ScriptContext.Impl();
+
+        protected Map<String, String>   macros  = new HashMap<String, String>();
+        protected Map<String, String[]> guards  = new HashMap<String, String[]>();
+
+        protected boolean               verbose = false;
 
         public static ScriptContext global() {
             return main;
@@ -72,7 +77,7 @@ public interface ScriptContext extends AttrAccess {
 
         public Object getAttr(String name) {
             if (macros.containsKey(name)) {
-                return ScriptFactory.make(macros.get(name)).eval(this);
+                return ScriptFactory.make(null, macros.get(name)).eval(this);
             }
             return super.getAttr(name);
         }
@@ -99,7 +104,10 @@ public interface ScriptContext extends AttrAccess {
             macros.remove(macro);
         }
 
-        /** TODO use the gurads - currently i'm not using them. I think i want them to be what, rules??? */
+        /**
+         * TODO use the gurads - currently i'm not using them. I think i want them to be what,
+         * rules???
+         */
         public void guard(String name, String condition, String expr) {
             String[] g = new String[2];
             g[0] = condition;
@@ -109,6 +117,11 @@ public interface ScriptContext extends AttrAccess {
 
         public void unguard(String name, String condition, String expr) {
             guards.remove(name);
+        }
+
+        /** TODO document */
+        public void verbose(boolean v) {
+            this.verbose = v;
         }
     }
 }

@@ -29,9 +29,17 @@ public class WinExec {
     }
 
     /**
-     * use this to execute a document - windows will use the proper proogram...
+     * use this to execute a program with arguments, which together form a command line. When passed
+     * to CMD, the arguments will be wrapped in quotes to preserve semantics.
      * 
-     * @param file
+     * Example <code>execCmd("ls", "-a", "*.*")</code>
+     * 
+     * Example <code>execCmd("ls -a *.*")</code>
+     * 
+     * Windows Example <code>execCmd("dir", "-a", "c:\\Documents and Settings\\*.*")</code>
+     * 
+     * @param program - the program name, including path if needed
+     * @param args - the arguments, simply are concatenated to form the command line.
      * @throws IOException
      */
     public static void execCmd(String program, String... args) throws IOException {
@@ -41,7 +49,7 @@ public class WinExec {
         }
 
         Runtime rt = Runtime.getRuntime();
-        Log.logThis("EXECUTE cmd: " + cmdline);
+        logger.log("EXECUTE cmd: " + cmdline);
         Process proc = rt.exec(cmdline);
         // any error message?
         StreamGobbler errorGobbler = new StreamGobbler(proc.getErrorStream(), "ERROR");
@@ -75,8 +83,10 @@ public class WinExec {
                 while ((line = br.readLine()) != null)
                     System.out.println(type + ">" + line);
             } catch (IOException ioe) {
-                ioe.printStackTrace();
+                logger.alarm("while gobbling...", ioe);
             }
         }
     }
+
+    static Log logger = Log.Factory.create("UTILS", WinExec.class.getName());
 }

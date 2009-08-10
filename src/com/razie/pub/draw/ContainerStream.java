@@ -14,7 +14,6 @@ import com.razie.pub.draw.Renderer.Technology;
  * note again, that the objects are not rendered yet, in either this stream or its container...
  * 
  * @author razvanc99
- * 
  */
 public class ContainerStream extends DrawStream {
     StreamableContainer c;
@@ -50,4 +49,14 @@ public class ContainerStream extends DrawStream {
         // nothing to do - that element container has already been forwarded to my target
     }
 
+        // TODO DrawList is streamable but if you used it as below it doesn't close containerd containers
+    private void fixme () {
+        DrawList c=new DrawList();
+        ContainerStream s=new ContainerStream(new DrawList());
+        s.open (c);
+        //...// write to c
+       c.close(); 
+        // it doesn't close it properly - try to use it instead of a draw sequence and 
+ 
+    }
 }

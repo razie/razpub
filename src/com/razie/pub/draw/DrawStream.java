@@ -28,6 +28,8 @@ import com.razie.pub.draw.Renderer.Technology;
  * A stream implementation should only bother with the writeObjectToStream() - everything else is
  * implemented here...
  * 
+ * <p>Lots of drawing methods use a stream. Use DrawSequence if you don't have one...
+ * 
  * @author razvanc99
  * @version $Id$
  * @param <EndPoint>

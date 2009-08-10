@@ -79,9 +79,14 @@ public class AgentHandle extends AssetKey implements Cloneable {
 
     public boolean isUpNow() {
         // timeout quickly
+      if (this.port.length() <= 0 ) {
+         // for now ignore those that don't run agents:
+         return false;
+      }
+      
         try {
             Socket server = new Socket();
-            int port = Integer.parseInt(Agents.agent(name).port);
+            int port = Integer.parseInt(this.port);
             server.connect(new InetSocketAddress(ip, port), 250);
             server.close();
             return true;

@@ -88,18 +88,15 @@ public class NavLink extends DrawWidget {
             if (Technology.HTML.equals(technology)) {
                 String s = b.link != null && b.link.length() > 0 ? atype + " href=\"" + b.link + "\">" : "";
                 if (!b.style.equals(Style.JUST_LABEL) && icon != null && !icon.equals(b.action.name)) {
+                    String tip = b.action.tooltip != null ? b.action.tooltip : b.action.label;
                     if (Size.TINY.equals(b.size)) {
-                        s += "<img border=0 width=21 height=21 src=\"" + icon + "\" alt=\"" + b.action.label
-                                + "\"/>";
+                        s += "<img border=0 width=21 height=21 src=\"" + icon + "\" alt=\"" + tip + "\"/>";
                     } else if (Size.SMALL.equals(b.size)) {
-                        s += "<img border=0 width=30 height=30 src=\"" + icon + "\" alt=\"" + b.action.label
-                                + "\"/>";
+                        s += "<img border=0 width=30 height=30 src=\"" + icon + "\" alt=\"" + tip + "\"/>";
                     } else if (Size.NORMAL.equals(b.size)) {
-                        s += "<img border=0 width=80 height=80 src=\"" + icon + "\" alt=\"" + b.action.label
-                                + "\"/>";
+                        s += "<img border=0 width=80 height=80 src=\"" + icon + "\" alt=\"" + tip + "\"/>";
                     } else if (Size.LARGE.equals(b.size)) {
-                        s += "<img border=0 width=180 height=180 src=\"" + icon + "\" alt=\""
-                                + b.action.label + "\"/>";
+                        s += "<img border=0 width=180 height=180 src=\"" + icon + "\" alt=\"" + tip + "\"/>";
                     }
 
                     if (Style.ONELINE.equals(b.style)) {

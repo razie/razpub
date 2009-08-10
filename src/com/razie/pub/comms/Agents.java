@@ -66,7 +66,8 @@ public class Agents {
     }
 
     public String getMyHostNameImpl() throws RuntimeException {
-        return findMyHostName(testing);
+//        return findMyHostName(testing);
+        return me.name;
     }
 
     public static String findMyHostName(boolean testing) throws RuntimeException {

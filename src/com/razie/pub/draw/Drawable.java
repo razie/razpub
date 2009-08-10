@@ -42,7 +42,17 @@ public interface Drawable {
     @SuppressWarnings("unchecked")
     public Renderer getRenderer(Renderer.Technology technology);
 
-    /** shortcut to render self - don't like controllers that much */
+    /** shortcut to render self - don't like controllers that much 
+     * 
+     * the return object is technology specific...it could be a swing dialog reference :) 
+     * 
+     * The convention here is: the caller prepares a stream. The implementation will either use 
+     * the stream or just return an object. Note that the stream is always present! 
+     * 
+     * @param technology -  the technology to draw in
+     * @param stream - not null, a stream to draw to
+     * @return null if it was drawn on the stream, a drawable object otherwise
+     */
     public Object render(Technology t, DrawStream stream);
 
     public static abstract class DrawWidget implements Drawable {

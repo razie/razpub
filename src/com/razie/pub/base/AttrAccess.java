@@ -49,6 +49,8 @@ public interface AttrAccess {
     public String sa(String name);
 
     /** set the value of the named attribute + the name can be of the form name:type */
+    public void set(String name, Object value);
+    /** set the value of the named attribute + the name can be of the form name:type */
     public void setAttr(String name, Object value);
 
     /**
@@ -116,6 +118,9 @@ public interface AttrAccess {
             this.setAttr(pairs);
         }
 
+        /* TODO should setAttr(xx,null) remove it so it's not populated? */
+        public void set(String name, Object value) { setAttr(name,value); }
+        
         /* TODO should setAttr(xx,null) remove it so it's not populated? */
         public void setAttr(String name, Object value) {
             checkMap();
@@ -210,7 +215,8 @@ public interface AttrAccess {
             } else if (pairs != null && pairs.length > 1) {
                 for (int i = 0; i < pairs.length / 2; i++) {
                     String name = (String) pairs[2 * i];
-                    this.setAttr(name, pairs[2 * i + 1]);
+                    if (name != null)
+                        this.setAttr(name, pairs[2 * i + 1]);
                 }
             }
         }

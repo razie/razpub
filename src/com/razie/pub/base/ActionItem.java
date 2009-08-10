@@ -18,6 +18,8 @@ import com.razie.pub.resources.RazIcons;
  * 
  * TODO implement fully, with property bundle for the labels and actions, including tooltips etc
  * 
+ * TODO the arguments are patched on...try to nice-fy via constructors maybe?
+ * 
  * @author razvanc99
  * @version $Id$
  */
@@ -29,6 +31,12 @@ public class ActionItem implements Cloneable {
 
     public static final ActionItem[] NOACTIONS     = {};
 
+    /** most actions do not have arguments...for those that do, this contains their defs (name:type=default) */
+    public AttrAccess args = null;
+    
+    public enum ActionType { A, C, R, U, D };
+    public ActionType actionType = ActionType.R;
+    
     /**
      * overwrite the label of another action item
      * 
@@ -47,6 +55,19 @@ public class ActionItem implements Cloneable {
      */
     public ActionItem(String name, RazIcons icon) {
         this.name = this.label = name;
+        this.iconProp = icon.name();
+    }
+
+    /**
+     * @param name action name
+     * @param icon one of standard icons
+     * @param label the label for this action
+     * @param tooltip
+     */
+    public ActionItem(String name, RazIcons icon, String label, String tooltip) {
+        this.name = name;
+        this.label = label;
+        this.tooltip = tooltip;
         this.iconProp = icon.name();
     }
 

@@ -60,7 +60,7 @@ public abstract class AssetMgr {
         return impl.briefImpl(ref);
     }
 
-    public static Map<AssetKey, AssetBrief> find(String type, AssetLocation env, boolean... recurse) {
+    public static Map<AssetKey, AssetBrief> find(String type, AssetLocation env, boolean recurse) {
         return impl.findImpl(type, env, recurse);
     }
 
@@ -93,7 +93,7 @@ public abstract class AssetMgr {
 
     protected abstract Object doActionImpl(String cmd, AssetKey ref, ScriptContext ctx);
 
-    public abstract Map<AssetKey, AssetBrief> findImpl(String type, AssetLocation env, boolean... recurse);
+    public abstract Map<AssetKey, AssetBrief> findImpl(String type, AssetLocation env, boolean recurse);
 
     public abstract AssetPres presImpl();
 

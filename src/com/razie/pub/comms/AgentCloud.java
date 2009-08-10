@@ -26,10 +26,10 @@ import java.util.Map;
 public class AgentCloud {
     /** map<name,handle> */
     private Map<String, AgentHandle> agents    = Collections
-                                                      .synchronizedMap(new HashMap<String, AgentHandle>());
+                                                       .synchronizedMap(new HashMap<String, AgentHandle>());
 
     // TODO implement this
-    public static AgentCloud        homeCloud = null;
+    public static AgentCloud         homeCloud = null;
 
     /**
      * only access is to clone the sync'd collection. The individual agents may still be modified by
@@ -43,12 +43,16 @@ public class AgentCloud {
         }
     }
 
-    public AgentHandle put (AgentHandle h) {
+    /**
+     * agents are indexed by name which can't change. You can change IPs etc without any obvious
+     * side effects (at least at this level :)
+     */
+    public AgentHandle put(AgentHandle h) {
         agents.put(h.name, h);
         return h;
     }
-    
-    public AgentHandle get (String name) {
+
+    public AgentHandle get(String name) {
         return agents.get(name);
     }
 }

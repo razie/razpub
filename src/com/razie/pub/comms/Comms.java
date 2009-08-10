@@ -4,12 +4,16 @@
  */
 package com.razie.pub.comms;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.List;
 
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -17,6 +21,7 @@ import org.xml.sax.SAXException;
 import com.razie.pub.base.data.ByteArray;
 import com.razie.pub.base.exceptions.CommRtException;
 import com.razie.pub.base.log.Log;
+import com.razie.pub.http.HttpHelper;
 import com.sun.org.apache.xerces.internal.parsers.DOMParser;
 
 /**
@@ -121,6 +126,30 @@ public class Comms {
             return null;
         }
         return readStream(s);
+    }
+
+    /** copy a stream using a simple SED like filter */
+    public static void copyStreamSED(InputStream is, OutputStream fos, List<SedFilter> filters) {
+        try {
+            String line;
+            fos.write(HttpHelper.httpHeader(HttpHelper.OK).getBytes());
+
+            BufferedReader input = new BufferedReader(new InputStreamReader(is));
+            while ((line = input.readLine()) != null) {
+                for (SedFilter filter : filters) {
+                    line = filter.filter(line);
+                }
+
+                fos.write(line.getBytes());
+                fos.write('\n');
+            }
+            fos.flush();
+            fos.close();
+            input.close();
+            is.close();
+        } catch (IOException e1) {
+            throw new CommRtException("Copystream failed: ", e1);
+        }
     }
 
     static Log logger = Log.Factory.create(Comms.class.getName());
