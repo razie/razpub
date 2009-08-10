@@ -11,6 +11,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import com.razie.pub.base.ActionItem;
 import com.razie.pub.http.SoaNotHtml;
 
 /**
@@ -45,6 +46,12 @@ import com.razie.pub.http.SoaNotHtml;
  * html. This should not be used and may in fact be rmeoved, since you can just make the method
  * SoaStreamable.
  * 
+ * <p>Annotate with @SoaAllParms if you want all parms in an array
+ * 
+ * <p> annotate with @SoaMethodSink if this is the sink for all unknown method names
+ * 
+ * TODO document the request's httpattrs
+ * 
  * @author razvanc99
  */
 @Documented
@@ -61,6 +68,12 @@ public @interface SoaMethod {
      */
     PermType perm() default PermType.ANYBODY;
 
+    /** action type may dictate if it's ACT/GET/POST/PUT/DELETE
+     * 
+     *  TODO did i actually end up using this?
+     */
+    ActionItem.ActionType actionType() default  ActionItem.ActionType.R;
+    
     String[] args() default {};
 
     /**

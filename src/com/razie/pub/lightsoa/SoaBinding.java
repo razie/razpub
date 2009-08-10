@@ -32,10 +32,11 @@ import com.razie.pub.draw.DrawStream;
  * 
  */
 public class SoaBinding {
-
     protected Object              service;
     protected String              serviceName;
     protected Map<String, Method> methods = new HashMap<String, Method>();
+    // if not null wants to sink all calls
+    protected Method              sink    = null;
 
     /** build for a service object */
     public SoaBinding(Object service, String serviceName) {
@@ -52,6 +53,10 @@ public class SoaBinding {
             for (Method m : assetClass.getMethods()) {
                 if (m.getAnnotation(SoaMethod.class) != null) {
                     methods.put(m.getName(), m);
+                }
+                if (m.getAnnotation(SoaMethodSink.class) != null) {
+                    // there's just one sink
+                    sink = m;
                 }
             }
     }
@@ -77,6 +82,10 @@ public class SoaBinding {
     /** invoke a lightsoa method on a given service */
     public Object invoke(Object target, String action, AttrAccess inparms) {
         Method toinvoke = methods.get(action);
+        if (toinvoke == null && sink != null) {
+            toinvoke = sink;
+            inparms.set(SoaMethodSink.SOA_METHODNAME, action);
+        }
 
         if (toinvoke == null) {
             throw new IllegalArgumentException("ERR_SOA cannot find method=" + action + " on target class="
@@ -95,6 +104,7 @@ public class SoaBinding {
             }
 
         if (toinvoke.getAnnotation(SoaStreamable.class) != null) {
+            // TODO should throwup since you're supposed to call invikeStreamable...
         }
 
         // actual invocation
@@ -102,7 +112,8 @@ public class SoaBinding {
         try {
             res = toinvoke.invoke(target, args.toArray());
         } catch (Exception e) {
-            throw new RuntimeException("ERR_INVOKING_SOA ", e);
+            throw new RuntimeException("ERR_INVOKING_SOA " + mdesc.toString() + "\n ARGS: "
+                    + inparms.toString(), e);
         }
 
         // so void methods don't need to do anything...
@@ -132,6 +143,8 @@ public class SoaBinding {
      */
     public Object invokeStreamable(Object target, String action, DrawStream stream, AttrAccess inparms) {
         Method toinvoke = methods.get(action);
+        if (toinvoke == null && sink != null)
+            toinvoke = sink;
 
         if (toinvoke == null) {
             throw new IllegalArgumentException("ERR_SOA cannot find method=" + action + " on target class="

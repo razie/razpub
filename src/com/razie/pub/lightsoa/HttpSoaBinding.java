@@ -4,6 +4,7 @@
 package com.razie.pub.lightsoa;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.Properties;
 
 import com.razie.pub.assets.AssetKey;
@@ -125,6 +126,7 @@ public class HttpSoaBinding extends SoaBinding {
 
         Object otoi = this.service;
         AssetKey key = null;
+        Method method = null;
 
         if (otoi == null) {
             // must be an asset instance
@@ -142,72 +144,77 @@ public class HttpSoaBinding extends SoaBinding {
             return "HTTP_SOA_ASSETNOTFOUND: " + key;
         }
 
-        // maybe it's a dumb asset or injected functionality
-        if (methods.size() > 0 && !methods.containsKey(actionName)) {
-            logger.log("HTTP_SOA_UNKWNOWNACTION: " + actionName);
-            return "HTTP_SOA_UNKNOWNACTION: " + actionName;
-        }
-
         Object response = null;
         DrawStream out = null;
-
+        
         if (methods.size() <= 0) {
             // didn't find it but there's no methods for this anyhow...
             logger.log("HTTP_SOA_injected: " + actionName + ": ");
             ScriptContext ctx = new ScriptContext.Impl(ScriptContext.Impl.global());
             ctx.setAttr(parms);
             response = AssetMgr.doAction(actionName, key, ctx);
-        } else if (methods.containsKey(actionName)) {
-            logger.log("HTTP_SOA_" + actionName + ": ");
+        } else {
+            if (methods.containsKey(actionName)) {
+                method = methods.get(actionName);
+            } else if (sink != null) {
+                method = sink;
+            } else if (methods.size() > 0 && !methods.containsKey(actionName)) {
+                logger.log("HTTP_SOA_UNKWNOWNACTION: " + actionName);
+                return "HTTP_SOA_UNKNOWNACTION: " + actionName;
+            }
 
-            AttrAccess args = new AttrAccess.Impl(parms);
+            if (method != null) {
+                logger.log("HTTP_SOA_" + actionName + ": ");
 
-            // setup the parms
-            SoaMethod mdesc = methods.get(actionName).getAnnotation(SoaMethod.class);
+                AttrAccess args = new AttrAccess.Impl(parms);
 
-            boolean reject = true;
+                // setup the parms
+                SoaMethod mdesc = method.getAnnotation(SoaMethod.class);
 
-            // TODO check auth
-            switch (getAuth(mdesc)) {
-            case ANYBODY:
-                reject = false;
-                break;
-            case FRIEND:
-            case SHAREDSECRET:
-                reject = false;
-            case INHOUSE:
-                // allow on the home net and if the same machine
-                String fromip = socket.from.getIp();
-                if (socket.from.getIp().startsWith(Agents.getHomeNetPrefix())
-                        || socket.from.getIp().equals(Agents.me().ip) || "127.0.0.1".equals(fromip))
+                boolean reject = true;
+
+                // TODO check auth
+                switch (getAuth(mdesc)) {
+                case ANYBODY:
                     reject = false;
-                else
                     break;
-            }
-
-            if (reject)
-                return "Permission denied...";
-            
-            if (methods.get(actionName).getAnnotation(SoaStreamable.class) != null) {
-                SoaStreamable nh = methods.get(actionName).getAnnotation(SoaStreamable.class);
-                if (nh.streamMimeType().length() > 0) {
-                    out = makeMimeDrawStream(socket, nh.streamMimeType());
-                } else
-                    out = makeDrawStream(socket, protocol);
-                response = invokeStreamable(otoi, actionName, out, args);
-            } else {
-                response = invoke(otoi, actionName, args);
-            }
-
-            if (methods.get(actionName).getAnnotation(SoaNotHtml.class) != null) {
-                if (methods.get(actionName).getAnnotation(SoaStreamable.class) != null) {
-                    throw new IllegalArgumentException("Cannot have a streamable nothtml");
+                case FRIEND:
+                case SHAREDSECRET:
+                    reject = false;
+                case INHOUSE:
+                    // allow on the home net and if the same machine
+                    String fromip = socket.from.getIp();
+                    if (socket.from.getIp().startsWith(Agents.getHomeNetPrefix())
+                            || socket.from.getIp().equals(Agents.me().ip) || "127.0.0.1".equals(fromip))
+                        reject = false;
+                    else
+                        break;
                 }
-                // no special formatting, probably defaults to toString()
-                return response;
-            }
 
+                if (reject)
+                    return "Permission denied...";
+
+                if (method.getAnnotation(SoaStreamable.class) != null) {
+                    SoaStreamable nh = method.getAnnotation(SoaStreamable.class);
+                    if (nh.streamMimeType().length() > 0) {
+                        out = makeMimeDrawStream(socket, nh.streamMimeType());
+                    } else
+                        out = makeDrawStream(socket, protocol);
+                    response = invokeStreamable(otoi, actionName, out, args);
+                } else {
+                    response = invoke(otoi, actionName, args);
+                }
+
+                if (method.getAnnotation(SoaNotHtml.class) != null) {
+                    if (method.getAnnotation(SoaStreamable.class) != null) {
+                        throw new IllegalArgumentException("Cannot have a streamable nothtml");
+                    }
+                    // no special formatting, probably defaults to toString()
+                    return response;
+                }
+            }
         }
+
         if (response != null) {
             // maybe stream already created for a streamable that returned a Drawable?
             // unbelievable...

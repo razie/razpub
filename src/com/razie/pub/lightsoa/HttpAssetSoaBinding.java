@@ -13,7 +13,7 @@ import com.razie.pub.base.data.HttpUtils;
 import com.razie.pub.comms.MyServerSocket;
 
 /**
- * there can be only one instance of this, reghstered as the service name "asset"
+ * TODO there can be only one instance of this, reghstered as the service name "asset"
  * 
  * @author razvanc99
  */
