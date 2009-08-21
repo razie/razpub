@@ -137,6 +137,10 @@ public class Log {
       Factory.logger.log(m + " Exception: " + Exceptions.getStackTraceAsString(t));
    }
 
+   public static void alarmThis(String m, Throwable... e) {
+      Factory.logger.alarm(m,e);
+   }
+   
    /**
     * helper to turn lists/arrays/maps into strings for nice logging
     *
