@@ -11,6 +11,6 @@ package com.razie.pub.comms;
  * @version $Id$
  * 
  */
-public class AuthException extends Exception {
+public class AuthException extends RuntimeException {
 
 }

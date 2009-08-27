@@ -47,11 +47,72 @@ public class HtmlRenderUtils {
 
     /** wrap contents as an html document */
     public static String textToHtml(String s) {
-        String r = s;// GRef.toUrlEncodedString(s);
-        r = r == null ? "null" : r.replaceAll("\n", "<br>");
-        return r == null ? "null" : r.replaceAll("\t", "&nbsp;&nbsp;&nbsp;");
+//        String r = s;// GRef.toUrlEncodedString(s);
+//        r = r == null ? "null" : r.replaceAll("\n", "<br>");
+//        return r == null ? "null" : r.replaceAll("\t", "&nbsp;&nbsp;&nbsp;");
+        return stringToHTMLString (s);
     }
 
+    // from http://www.rgagnon.com/javadetails/java-0306.html
+    private static String stringToHTMLString(String string) {
+        StringBuffer sb = new StringBuffer(string.length());
+        // true if last char was blank
+        boolean lastWasBlankChar = false;
+        int len = string.length();
+        char c;
+
+        for (int i = 0; i < len; i++)
+            {
+            c = string.charAt(i);
+            if (c == ' ') {
+                // blank gets extra work,
+                // this solves the problem you get if you replace all
+                // blanks with &nbsp;, if you do that you loss 
+                // word breaking
+                if (lastWasBlankChar) {
+                    lastWasBlankChar = false;
+                    sb.append("&nbsp;");
+                    }
+                else {
+                    lastWasBlankChar = true;
+                    sb.append(' ');
+                    }
+                }
+            else {
+                lastWasBlankChar = false;
+                //
+                // HTML Special Chars
+                if (c == '"')
+                    sb.append("&quot;");
+                else if (c == '&')
+                    sb.append("&amp;");
+                else if (c == '<')
+                    sb.append("&lt;");
+                else if (c == '>')
+                    sb.append("&gt;");
+                else if (c == '\n')
+                    // Handle Newline
+//                    sb.append("&lt;br/&gt;");
+                    sb.append("<br/>");
+                else if (c == '\t')
+                    sb.append("&nbsp;&nbsp;&nbsp;");
+                else {
+                    int ci = 0xffff & c;
+                    if (ci < 160 )
+                        // nothing special only 7 Bit
+                        sb.append(c);
+                    else {
+                        // Not 7 Bit use the unicode system
+                        sb.append("&#");
+                        sb.append(new Integer(ci).toString());
+                        sb.append(';');
+                        }
+                    }
+                }
+            }
+        return sb.toString();
+    }
+    
     public static class HtmlTheme {
         protected static final int BODYSTART = 0;
         protected static final int BODYEND   = 1;

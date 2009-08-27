@@ -8,7 +8,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
-
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * a wrapper for connections (from/to clients) so i can add functionality as i please and not depend
@@ -22,9 +23,41 @@ public class MyServerSocket extends CommChannel {
     public Socket server;
 
     public MyServerSocket(Socket s) {
+        super(LightAuth.singleton().iauthorize(s));
         this.server = s;
         this.from = new SocketEndPoint(server);
         this.to = null;// TODO this is me...
+    }
+
+    /**
+     * authorize a request on a given channel. note that this is not agnostic about the particular
+     * request/action, so it's only high-level authentication, really
+     * 
+     * @param perm
+     * @throws AuthException
+     */
+    public void auth(LightAuth.PermType perm) throws AuthException {
+        LightAuth.AuthType minAuth = mapAuth(perm);
+
+        if (level.get(getAuth()) >= level.get(minAuth))
+            return;
+
+        throw new AuthException();
+    }
+
+    private static LightAuth.AuthType mapAuth(LightAuth.PermType perm) {
+        switch (perm) {
+        case ADMIN:
+            return LightAuth.AuthType.INHOUSE;
+        case CONTROL:
+            return LightAuth.AuthType.SHAREDSECRET;
+        case VIEW:
+        case WRITE:
+            return LightAuth.AuthType.FRIEND;
+        case PUBLIC:
+            return LightAuth.AuthType.ANYBODY;
+        }
+        return LightAuth.AuthType.SHAREDSECRET;
     }
 
     public InputStream getInputStream() throws IOException {
@@ -41,5 +74,13 @@ public class MyServerSocket extends CommChannel {
 
     public void close() throws IOException {
         server.close();
+    }
+
+    static Map<LightAuth.AuthType, Integer> level = new HashMap<LightAuth.AuthType, Integer>();
+    static {
+        level.put(LightAuth.AuthType.ANYBODY, 0);
+        level.put(LightAuth.AuthType.FRIEND, 1);
+        level.put(LightAuth.AuthType.SHAREDSECRET, 2);
+        level.put(LightAuth.AuthType.INHOUSE, 3);
     }
 }

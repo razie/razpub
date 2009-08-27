@@ -7,6 +7,8 @@ package com.razie.pub.comms;
 import java.net.Socket;
 import java.net.URL;
 
+import com.razie.pub.comms.LightAuth.AuthType;
+
 /**
  * a communication channel serves two endpoints.
  * 
@@ -20,8 +22,18 @@ import java.net.URL;
  * 
  */
 public class CommChannel {
+    // TODO add notional direction, i.e. who is me?
     public ChannelEndPoint from, to;
+   
+    // the current level of auth of the peer. Normally I am "to" and the peer if "from"
+    private LightAuth.AuthType auth = LightAuth.AuthType.ANYBODY;
 
+    public CommChannel(AuthType ia) {
+        auth = ia;
+    }
+
+    protected LightAuth.AuthType getAuth() { return auth; };
+    
     /**
      * need to figure out the commonalities of channel end-points. at the very least, these will be
      * abstract logical constructs and have nothing to do with phisical

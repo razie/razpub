@@ -4,6 +4,7 @@
  */
 package com.razie.pub.comms;
 
+import java.net.Socket;
 
 /**
  * auth providers have, for me, several responsibilities - see the static methods below
@@ -24,6 +25,39 @@ package com.razie.pub.comms;
  * @author razvanc99
  */
 public class LightAuth {
+    /**
+     * permissions that can be assigned to objects, actions and methods. These are decoupled from the authentications below.
+     */
+    public static enum PermType {
+        /** highest permission: includes upgrades and code changes, define new assets */
+        ADMIN,
+        /** allows control of play/preferences, turn on lights etc */
+        CONTROL,
+        /** since we have VIEW/READ, let's have write as well, eh? */
+        WRITE,
+        /** just query and view */
+        VIEW,
+        /** what you want anybody to be able to do */
+        PUBLIC
+    }
+
+    /** auth types */
+    public static enum AuthType {
+        /** only in-house...i.e. from the same subnetwork */
+        INHOUSE,
+        /**
+         * shared same secret anywhere. this is basically you (or your delegate) from anywhere in
+         * the world
+         */
+        SHAREDSECRET,
+        /** in-cloud - members of the same cloud */
+        INCLOUD,
+        /** friends - their public ID is listed in your friends list */
+        FRIEND,
+        /** anybody */
+        ANYBODY,
+    }
+
     protected static LightAuth impl;
     protected String           prefix = "";
 
@@ -50,7 +84,7 @@ public class LightAuth {
      * used by client to prepare the URL just before using it.
      * 
      * in basic HTTP communication, the only way to AA is by messing with the URL - add/remove, add
-     * tokens parameters etc. 
+     * tokens parameters etc.
      * 
      * TODO We could mess with the header parms...but...ok...in the future :)
      * 
@@ -87,7 +121,7 @@ public class LightAuth {
 
     /** default impl will just prefix the url */
     protected String wrapUrlImpl(String url) {
-        return prefixUrl (url, prefix);
+        return prefixUrl(url, prefix);
     }
 
     /** default impl will just prefix the url */
@@ -134,16 +168,8 @@ public class LightAuth {
         }
     }
 
-    /**
-     * authorize a request on a given channel. note that this is not agnostic about the particular
-     * request/action, so it's only high-level authentication, really
-     * 
-     * @param string
-     * @param socket
-     * @throws AuthException
-     */
-    public static void authorize(String string, MyServerSocket socket) throws AuthException {
-        String clientip = socket.client();
+    public LightAuth.AuthType iauthorize(Socket socket) {
+        String clientip = socket.getInetAddress().getHostAddress();
 
         // if Agents doesn't know myself, this should succeed, it's not a proper server but maybe
         // some sort of a test???
@@ -152,8 +178,14 @@ public class LightAuth {
         if (clientip.startsWith(Agents.getHomeNetPrefix()) || "127.0.0.1".equals(clientip)
                 || Agents.agent(Agents.getMyHostName()) == null
                 || clientip.equals(Agents.agent(Agents.getMyHostName()).ip)) {
-            return;
-        }
-        throw new AuthException();
+            return LightAuth.AuthType.INHOUSE;
+        } else if (false) {
+            // TODO identify shared secret
+            return LightAuth.AuthType.SHAREDSECRET;
+        } else if (false) {
+            // TODO identify friends 
+            return LightAuth.AuthType.FRIEND;
+        } else
+            return LightAuth.AuthType.ANYBODY;
     }
 }
