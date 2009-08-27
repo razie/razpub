@@ -52,14 +52,59 @@ public class WinExec {
         logger.log("EXECUTE cmd: " + cmdline);
         Process proc = rt.exec(cmdline);
         // any error message?
-        StreamGobbler errorGobbler = new StreamGobbler(proc.getErrorStream(), "ERROR");
+        StreamGobbler errorGobbler = new StreamGobbler(proc.getErrorStream(), "ERROR", false);
 
         // any output?
-        StreamGobbler outputGobbler = new StreamGobbler(proc.getInputStream(), "OUTPUT");
+        StreamGobbler outputGobbler = new StreamGobbler(proc.getInputStream(), "OUTPUT", false);
 
         // kick them off
         errorGobbler.start();
         outputGobbler.start();
+    }
+
+    /**
+     * use this to execute a program with arguments, which together form a command line. When passed
+     * to CMD, the arguments will be wrapped in quotes to preserve semantics.
+     * 
+     * Example <code>execCmd("ls", "-a", "*.*")</code>
+     * 
+     * Example <code>execCmd("ls -a *.*")</code>
+     * 
+     * Windows Example <code>execCmd("dir", "-a", "c:\\Documents and Settings\\*.*")</code>
+     * 
+     * TODO don't return the entire string - stream and buffer on demand or something...
+     * 
+     * @param program - the program name, including path if needed
+     * @param args - the arguments, simply are concatenated to form the command line.
+     * @throws IOException
+     */
+    public static StringBuilder execAndWait(String program, String... args) throws IOException {
+        String cmdline = program;
+        for (String arg : args) {
+            cmdline += " \"" + arg + "\"";
+        }
+
+        Runtime rt = Runtime.getRuntime();
+        logger.log("EXECUTE win command line: " + cmdline);
+        Process proc = rt.exec(cmdline);
+        // any error message?
+        StreamGobbler errorGobbler = new StreamGobbler(proc.getErrorStream(), "ERROR", false);
+
+        // any output?
+        StreamGobbler outputGobbler = new StreamGobbler(proc.getInputStream(), "OUTPUT", true);
+
+        // kick them off
+        errorGobbler.start();
+        outputGobbler.start();
+        
+        try {
+            outputGobbler.join();
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
+        return outputGobbler.result();
     }
 
     /**
@@ -69,10 +114,13 @@ public class WinExec {
     static class StreamGobbler extends Thread {
         InputStream is;
         String      type;
+        StringBuilder acc = new StringBuilder();
+        boolean accumulate = false;
 
-        StreamGobbler(InputStream is, String type) {
+        StreamGobbler(InputStream is, String type, boolean accumulate) {
             this.is = is;
             this.type = type;
+            this.accumulate = accumulate;
         }
 
         public void run() {
@@ -80,13 +128,17 @@ public class WinExec {
                 InputStreamReader isr = new InputStreamReader(is);
                 BufferedReader br = new BufferedReader(isr);
                 String line = null;
-                while ((line = br.readLine()) != null)
-                    System.out.println(type + ">" + line);
+                while ((line = br.readLine()) != null) {
+                    logger.trace(2, "   " + type + ">" + line);
+                    if (accumulate) 
+                        acc.append(line).append ("\n");
+                }
             } catch (IOException ioe) {
                 logger.alarm("while gobbling...", ioe);
             }
         }
+    public StringBuilder result() { return acc; }
     }
-
+    
     static Log logger = Log.Factory.create("UTILS", WinExec.class.getName());
 }
