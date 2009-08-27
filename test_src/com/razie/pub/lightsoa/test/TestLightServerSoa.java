@@ -13,6 +13,7 @@ import java.net.URL;
 import com.razie.pub.base.ActionItem;
 import com.razie.pub.base.log.Log;
 import com.razie.pub.comms.ActionToInvoke;
+import com.razie.pub.http.HttpHelper;
 import com.razie.pub.http.test.TestLightBase;
 import com.razie.pub.lightsoa.HttpSoaBinding;
 
@@ -32,7 +33,9 @@ public class TestLightServerSoa extends TestLightBase {
             // that's how you start/mount a service
             echo = new SampleEchoLightSoaService();
             HttpSoaBinding soa = new HttpSoaBinding(echo, "echoservice");
+            // TODO share bindings between multiple versions of protocol: GET/POST
             cmdGET.registerSoa(soa);
+            cmdPOST.registerSoa(soa);
         }
     }
 
@@ -70,6 +73,20 @@ public class TestLightServerSoa extends TestLightBase {
     }
 
     /**
+     * test the SOA simple echo via the proper URL reader (check implementation as a proper http
+     * server)
+     */
+    public void testSoaEchoSink() throws IOException, InterruptedException {
+        // send echo command
+        URL url = new URL("http://localhost:" + PORT + "/lightsoa/echoservice/sinking?msg=samurai");
+        BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
+        String result = in.readLine();
+        in.close();
+
+        assertTrue(result.contains("samurai"));
+    }
+
+    /**
      * test the SOA simple echo via the ActionToInvoke
      */
     public void testSoaEchoAction() throws IOException, InterruptedException {
@@ -79,6 +96,25 @@ public class TestLightServerSoa extends TestLightBase {
         String result = (String) action.act(null);
 
         assertTrue(result.contains("samurai"));
+    }
+
+    /**
+     * test the SOA simple echo via the proper URL reader (check implementation as a proper http
+     * server)
+     */
+    public void testSoaEchoUrlPost() throws IOException, InterruptedException {
+        // send echo command
+        Socket remote = new Socket("localhost", PORT);
+        HttpHelper.sendPOST(remote, "POST /lightsoa/echoservice/echo HTTP/1.1", null, "msg=samurai");
+
+        // wait a bit for receiver thread to consume...
+        for (long deadline = System.currentTimeMillis() + 20000; deadline > System.currentTimeMillis();) {
+            Thread.sleep(100);
+            if (echo.input != null)
+                break;
+        }
+
+        assertTrue(echo.input.contains("samurai"));
     }
 
     static final Log logger = Log.Factory.create(TestLightServerSoa.class.getName());

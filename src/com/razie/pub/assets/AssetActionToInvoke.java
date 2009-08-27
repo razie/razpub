@@ -33,7 +33,7 @@ public class AssetActionToInvoke extends ActionToInvoke {
      * TODO the target should be an object identifying the location to send the command to. For now
      * I use a simple URL
      * 
-     * @param the target for this command - a location
+     * @param the target for this command - a location (url)
      * @param item this is the action, contains the actual command name and label to display
      * @param pairs
      */

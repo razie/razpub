@@ -34,7 +34,7 @@ import com.razie.pub.draw.DrawStream;
 public class SoaBinding {
     protected Object              service;
     protected String              serviceName;
-    protected Map<String, Method> methods = new HashMap<String, Method>();
+    public Map<String, Method> methods = new HashMap<String, Method>();
     // if not null wants to sink all calls
     protected Method              sink    = null;
 

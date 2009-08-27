@@ -100,6 +100,11 @@ public class AssetBrief extends AttrAccess.Impl implements AttrAccess, Reference
         this.setName(name);
     }
 
+    public AssetBrief(AssetKey ref) {
+        this.setKey(ref);
+        this.setName(ref.getId());
+    }
+
     /** shortcut to render self - don't like controllers that much */
     public Object render(Technology t, DrawStream stream) {
         return Renderer.Helper.draw(this, t, stream);
@@ -530,7 +535,7 @@ public class AssetBrief extends AttrAccess.Impl implements AttrAccess, Reference
             s += "</tr>";
             s += "</table>";
 
-            return HtmlRenderUtils.textToHtml(s);
+            return s;//HtmlRenderUtils.textToHtml(s);
         }
 
         /**

@@ -11,16 +11,17 @@ import com.razie.pub.lightsoa.SoaResponse;
 import com.razie.pub.lightsoa.SoaStreamable;
 
 /**
- * fully annotated sample asset class
+ * not annotated asset class - you can add annotated methods to any class
+ * 
+ * this is useful when the metas are not available but you can modify the asset class to add SoaMethod and avoid injection
  * 
  * @author razvanc99
  * 
  */
-@SoaAsset(meta = "raz.test.Player", descr = "test player asset")
-public class SampleAsset {
+public class SampleAsset2 {
     AssetKey key;
 
-    public SampleAsset(AssetKey key) {
+    public SampleAsset2(AssetKey key) {
         this.key = key;
     }
 

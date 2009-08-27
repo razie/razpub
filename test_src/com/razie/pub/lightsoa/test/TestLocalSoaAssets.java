@@ -37,6 +37,14 @@ public class TestLocalSoaAssets extends TestCase {
         assertTrue(MOVIEKEY.getId().equals(resp));
     }
 
+    // test non-annotated asset class
+    public void testSampleServiceANA() {
+        AttrAccess aa = new AttrAccess.Impl();
+        aa.setAttr("movie", MOVIEKEY.toString());
+        Object resp = new SoaBinding(SampleAsset.class, "").invoke(new AssetKey("bibi", "cu"), "play", aa);
+        assertTrue(MOVIEKEY.getId().equals(resp));
+    }
+
     public void testSampleService2A() {
         Object resp = new SoaBinding(SampleAsset.class, "").invoke(PLAYERKEY, "play", new AttrAccess.Impl(
                 "movie", MOVIEKEY.toString()));

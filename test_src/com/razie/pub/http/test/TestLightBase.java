@@ -12,6 +12,7 @@ import com.razie.pub.comms.AgentHandle;
 import com.razie.pub.comms.Agents;
 import com.razie.pub.comms.LightAuth;
 import com.razie.pub.http.LightCmdGET;
+import com.razie.pub.http.LightCmdPOST;
 import com.razie.pub.http.LightServer;
 
 /**
@@ -22,8 +23,9 @@ import com.razie.pub.http.LightServer;
  */
 public class TestLightBase extends TestCase {
     protected static LightServer server;
-    protected static Integer     PORT   = 4445;
+    public static Integer     PORT   = 4445;
     protected static LightCmdGET cmdGET = new LightCmdGET();
+    protected static LightCmdPOST cmdPOST = new LightCmdPOST();
 
     static AgentHandle           me     = new AgentHandle("localhost", "localhost", "127.0.0.1", PORT
                                                 .toString(), "http://localhost:" + PORT.toString());
@@ -38,6 +40,7 @@ public class TestLightBase extends TestCase {
 
             server = new LightServer(PORT, null);
             server.registerCmdListener(cmdGET);
+            server.registerCmdListener(cmdPOST);
 
             // you can start the server in its dedicated thread or use a pool
             Thread serverThread = new Thread(server, "AgentServerThread");

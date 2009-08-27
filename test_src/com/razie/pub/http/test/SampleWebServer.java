@@ -59,7 +59,7 @@ public class SampleWebServer {
 
     public static void main(String[] argv) throws IOException {
         RazIconRes.init();
-        start(TestLightServer.PORT);
+        start(TestLightBase.PORT);
     }
 
     public static void start(int port) {

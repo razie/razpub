@@ -20,7 +20,7 @@ import com.razie.pub.comms.MyServerSocket;
 public class HttpAssetSoaBinding extends HttpSoaBinding {
     Map<String, HttpSoaBinding> bindings            = new HashMap<String, HttpSoaBinding>();
 
-    // TODO what the heck is this?
+    // hack: null has no methods and, in HttpSoaBinding, will default to delegating to AssetMgr
     static HttpSoaBinding       defaultAssetBinding = new HttpSoaBinding((Class<?>) null, "");
 
     /**

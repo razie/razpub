@@ -4,6 +4,11 @@
  */
 package com.razie.pub.http;
 
+import java.io.IOException;
+import java.io.PrintStream;
+import java.net.Socket;
+
+import com.razie.pub.base.AttrAccess;
 import com.razie.pub.base.data.HtmlRenderUtils;
 
 /** basic http utilities
@@ -91,6 +96,31 @@ public class HttpHelper {
         String ext = fname.toUpperCase();
         return ext.endsWith(".GIF") || ext.endsWith(".JPG")
                 || ext.endsWith(".PNG") || ext.endsWith(".ICO");
+    }
+
+    /**
+     * @param
+     * 
+     * @param remote socket to write to
+     * @param cmd the POST line
+     * @param httpArgs http args
+     * @param parms the content posted over
+     * @throws IOException
+     */
+    public static void sendPOST(Socket remote, String cmd, AttrAccess httpArgs, String parms) throws IOException {
+        PrintStream out = new PrintStream(remote.getOutputStream());
+        // this is how an http request is sent via the socket
+        out.println(cmd);
+        
+        if (httpArgs == null)
+            httpArgs = new AttrAccess.Impl();
+        httpArgs.set("Content-Length", parms.length()); 
+        
+        for (String n : httpArgs.getPopulatedAttr())
+            out.println(n + ": " + httpArgs.a(n));
+        
+        out.println("");
+        out.print(parms);
     }
 
 }

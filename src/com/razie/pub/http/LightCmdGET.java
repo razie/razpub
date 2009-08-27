@@ -10,7 +10,9 @@ import java.io.PrintStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import com.razie.pub.agent.AgentFileService;
@@ -18,11 +20,14 @@ import com.razie.pub.base.data.HttpUtils;
 import com.razie.pub.base.data.MimeUtils;
 import com.razie.pub.base.log.Log;
 import com.razie.pub.comms.AuthException;
+import com.razie.pub.comms.Comms;
 import com.razie.pub.comms.LightAuth;
 import com.razie.pub.comms.MyServerSocket;
+import com.razie.pub.comms.SedFilter;
 import com.razie.pub.draw.Renderer.Technology;
 import com.razie.pub.draw.widgets.DrawError;
 import com.razie.pub.lightsoa.HttpSoaBinding;
+import com.razie.pub.webui.MutantPresentation;
 
 /**
  * WARNING this is a no-security whatsoever web server...will serve whatever it finds and it can, so
@@ -87,10 +92,10 @@ public class LightCmdGET extends SocketCmdListener.Impl {
     /**
      * call the actual soa service with the command you just identified. At this point the path
      * 
-     * @param socket
-     * @param originalPath
-     * @param svc
-     * @param cmd
+     * @param socket the socket in use
+     * @param originalPath - the original path in the http call
+     * @param svc the name of the service to call
+     * @param cmd name of the command (method) of the service
      * @param cmdargs
      * @param parms
      * @return
@@ -105,16 +110,18 @@ public class LightCmdGET extends SocketCmdListener.Impl {
         for (HttpSoaBinding c : getBindings()) {
             if (c.getServiceName().equals(svc)) {
                 boolean callThisOne = false;
-
-                if ("asset".equals(svc)) {
-                    // the asset soa binding doesn't have soamethods - must hack here
-                    callThisOne = true;
-                } else
-                    for (String s : c.getSoaMethods()) {
-                        if (cmd.equals(s)) {
-                            callThisOne = true;
-                        }
-                    }
+                
+// TODO why was i filtering known methods?
+               callThisOne=true; 
+//                if ("asset".equals(svc)) {
+//                    // the asset soa binding doesn't have soamethods - must hack here
+//                    callThisOne = true;
+//                } else
+//                    for (String s : c.getSoaMethods()) {
+//                        if (cmd.equals(s)) {
+//                            callThisOne = true;
+//                        }
+//                    }
 
                 if (callThisOne) {
                     logger.log("HTTP_FOUND_SOA_BRIDGE: " + c.getClass().getName());
@@ -239,6 +246,8 @@ public class LightCmdGET extends SocketCmdListener.Impl {
 
         if (HttpHelper.isImage(filenm)) {
             out.print(HttpHelper.httpWrapPic(filenm, len));
+        } else if (filenm.endsWith(".html")) {
+            Comms.copyStreamSED(in, out, MPRES);
         } else if (HttpHelper.isOtherFile(filenm)) {
             out.print(HttpHelper.httpWrapOtherFile(filenm, len));
         } else {
@@ -258,30 +267,35 @@ public class LightCmdGET extends SocketCmdListener.Impl {
         return null;
     }
 
-    /** add an http binding to be called when the method/service matches a url */
+    /** PUT (i.e. not ADD) an http binding to be called when the method/service matches a url */
     public void registerSoa(HttpSoaBinding c) {
-        bindings.add(c);
+        bindings.put(c.getServiceName(), c);
         Log.logThis("HTTP_INIT_LISTENER " + c.getClass().getName());
     }
 
     /** remove an existing soa binding */
     public void removeSoa(HttpSoaBinding c) {
-        bindings.remove(c);
+        bindings.remove(c.getServiceName());
         Log.logThis("HTTP_REMOVE_LISTENER " + c.getClass().getName());
     }
 
     /**
      * @return the soa bindings in use
      */
-    public List<HttpSoaBinding> getBindings() {
-        return bindings;
+    public Iterable<HttpSoaBinding> getBindings() {
+        return bindings.values();
     }
 
     public String[] getSupportedCommands() {
         return COMMANDS;
     }
 
+    static final List<SedFilter> MPRES = new ArrayList<SedFilter>();
+    static {
+       MPRES.add (MutantPresentation.getInstance());
+    }
+    
     static final String[]        COMMANDS = { "GET"}; // TODO "POST", "PUT", "DELETE" };
     static final Log             logger   = Log.Factory.create("", LightCmdGET.class.getName());
-    private List<HttpSoaBinding> bindings = new ArrayList<HttpSoaBinding>();
+    private Map<String, HttpSoaBinding> bindings = new HashMap<String,HttpSoaBinding>();
 }

@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Properties;
 
 import com.razie.pub.base.ActionItem;
+import com.razie.pub.base.AttrAccess;
 import com.razie.pub.base.ThreadContext;
 import com.razie.pub.base.data.HtmlRenderUtils;
 import com.razie.pub.base.log.Exceptions;
@@ -162,6 +163,7 @@ public class LightServer extends Worker {
                 PrintStream out = new PrintStream(socket.getOutputStream());
 
                 // TODO why do i flush empty lines?
+                // consume the input until a non-emtpty line
 				while (input == null || input.length() <= 0) {
 					input = in.readLine();
 					if (input == null) {
@@ -174,14 +176,18 @@ public class LightServer extends Worker {
 
                 // finish reading the input stream until there's nothing else...this will get
                 // the entire command
-                String moreInput = null;
-                String restInput = null;
-                while ((moreInput == null || moreInput.length() <= 0) && in.available() > 0)
-                    moreInput = in.readLine();
+                String rest = in.readLine();
+                AttrAccess httpattrs = new AttrAccess.Impl();
+                while (rest != null && rest.length() > 0) {
+                   String s[] = rest.split(": ");
+                   httpattrs.setAttr(s[0], s[1]);
+                    rest = in.readLine();
+                }
 
-                logger.trace(3, "   >>> MOREINPUT:\n", moreInput);
+					ThreadContext.instance().setLocalAttr("httpattrs", httpattrs);
+					logger.trace(3, "   HTTPATTRSINPUT:\n" + httpattrs.toString());
 
-                handleInputLine(out, input);
+                handleInputLine(out, input, httpattrs);
 
             } catch (Exception ioe) {
                 // must catch all exceptions to avoid screwing up something bad...don't remember
@@ -198,7 +204,7 @@ public class LightServer extends Worker {
             }
         }
 
-        protected void handleInputLine(PrintStream out, String input) {
+        protected void handleInputLine(PrintStream out, String input, AttrAccess httpattrs) {
             String cmd;
             String args;
             // will be null if no listeners found...
@@ -214,6 +220,10 @@ public class LightServer extends Worker {
                     args = "";
                 }
 
+                // TODO document these
+                httpattrs.set("lightsoa.methodname", cmd);
+                httpattrs.set("lightsoa.path", args);
+                
                 Log.logThis("HTTP_CLIENT_RQ: " + cmd + " args=" + args);
 
                 for (SocketCmdListener c : server.getListeners()) {

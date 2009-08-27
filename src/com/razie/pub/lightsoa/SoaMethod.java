@@ -12,6 +12,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import com.razie.pub.base.ActionItem;
+import com.razie.pub.comms.LightAuth;
 import com.razie.pub.http.SoaNotHtml;
 
 /**
@@ -46,9 +47,11 @@ import com.razie.pub.http.SoaNotHtml;
  * html. This should not be used and may in fact be rmeoved, since you can just make the method
  * SoaStreamable.
  * 
- * <p>Annotate with @SoaAllParms if you want all parms in an array
+ * <p>
+ * Annotate with @SoaAllParms if you want all parms in an array
  * 
- * <p> annotate with @SoaMethodSink if this is the sink for all unknown method names
+ * <p>
+ * annotate with @SoaMethodSink if this is the sink for all unknown method names
  * 
  * TODO document the request's httpattrs
  * 
@@ -66,35 +69,14 @@ public @interface SoaMethod {
      * if defined, put here the permission to check - the framework will check the current
      * connection and user for this permission and throw AuthException if not permitted
      */
-    PermType perm() default PermType.ANYBODY;
-
-    /** action type may dictate if it's ACT/GET/POST/PUT/DELETE
-     * 
-     *  TODO did i actually end up using this?
-     */
-    ActionItem.ActionType actionType() default  ActionItem.ActionType.R;
-    
-    String[] args() default {};
+    LightAuth.PermType perm() default LightAuth.PermType.WRITE;
 
     /**
-     * permissions
+     * action type may dictate if it's ACT/GET/POST/PUT/DELETE
      * 
-     * TODO need mapping to the AUTH types
+     * TODO did i actually end up using this?
      */
-    enum PermType {
-        /** highest permission: includes upgrades and code changes */
-        ADMIN, /** allows control of play/preferences etc */
-        CONTROL, /** just query and view */
-        VIEW, /** what you want anybody to be able to do */
-        ANYBODY
-    }
+    ActionItem.ActionType actionType() default ActionItem.ActionType.R;
 
-    /**auth types*/
-    enum AuthType {
-        ANYBODY, FRIEND,
-        /** shared same secret anywhere */
-        SHAREDSECRET,
-        /** only in-house */
-        INHOUSE
-    }
+    String[] args() default {};
 }

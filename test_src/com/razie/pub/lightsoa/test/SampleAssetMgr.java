@@ -3,6 +3,7 @@
  */
 package com.razie.pub.lightsoa.test;
 
+import java.util.Collection;
 import java.util.Map;
 
 import com.razie.pub.assets.AssetBrief;
@@ -22,7 +23,9 @@ import com.razie.pub.draw.Drawable;
 public class SampleAssetMgr extends AssetMgr {
     @Override
     public Object getAssetImpl(AssetKey key) {
-        return new SampleAsset(key);
+        if (key.getType().equals("raz.test.Player"))
+                return new SampleAsset(key);
+        return new SampleAsset2(key);
     }
 
     @Override
@@ -63,6 +66,12 @@ public class SampleAssetMgr extends AssetMgr {
 
     @Override
     public AssetPres presImpl() {
+        // should implement in a proper asset mgr
+        return null;
+    }
+
+    @Override
+    protected Iterable<String> metasImpl() {
         // should implement in a proper asset mgr
         return null;
     }

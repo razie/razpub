@@ -36,6 +36,11 @@ public class DrawForm extends Drawable.DrawWidget {
         this.parms = parms;
     }
 
+    /** set the value of the named attribute + the name can be of the form name:type */
+    public void set(String name, Object value) {
+        this.parms.set(name, value);
+    }
+    
     /** shortcut to render self - don't like controllers that much */
     public Object render(Technology technology, DrawStream stream) {
         String s = "\n<form name=\"" + name.label + "\" action=\"" + ai.makeActionUrl()

@@ -4,6 +4,7 @@
  */
 package com.razie.pub.assets;
 
+import java.util.Collection;
 import java.util.Map;
 
 import com.razie.pub.base.ActionItem;
@@ -21,10 +22,6 @@ import com.razie.pub.draw.Drawable;
  * <p>
  * Where this is useful: it decouples the rest of the code that uses assets (clients) from the
  * actual implementation of an asset. Also, it is augmented by generic REST access to assets etc.
- * 
- * @version $Revision: 1.63 $
- * @author $Author: davidx $
- * @since $Date: 2005/04/01 16:22:12 $
  */
 public abstract class AssetMgr {
     protected static AssetMgr impl;
@@ -40,6 +37,11 @@ public abstract class AssetMgr {
     /** locator for assets by key */
     public static Object getAsset(AssetKey key) {
         return impl.getAssetImpl(key);
+    }
+
+    /** get the supported metas*/
+    public static Iterable<String> metas() {
+        return impl.metasImpl();
     }
 
     /** get the meta description for a certain type */
@@ -67,8 +69,8 @@ public abstract class AssetMgr {
     /**
      * execute injected command on given asset
      * 
-     * @param action the action/command to execute. Default empty/null means "details" or paing the
-     *        asset itself
+     * @param action the action/command to execute. Default empty/null means "details" or painting
+     *        the asset itself
      * @param ref ref to the object to invoke on
      * @param ctx context with parms etc
      * @return
@@ -90,6 +92,7 @@ public abstract class AssetMgr {
     protected abstract ActionItem[] supportedActionsImpl(AssetKey key);
 
     protected abstract Meta metaImpl(String name);
+    protected abstract Iterable<String> metasImpl();
 
     protected abstract Object doActionImpl(String cmd, AssetKey ref, ScriptContext ctx);
 
@@ -121,6 +124,36 @@ public abstract class AssetMgr {
             this.id = id;
             this.inventory = inventory;
             this.assetCls = assetCls;
+        }
+
+        public String toBriefXml() {
+            StringBuilder b = new StringBuilder();
+            b.append("<metaspec name=\"" + id.name + "\"");
+            b.append(" inventory=\"" + inventory + "\"");
+            if (baseMetaname != null && baseMetaname.length() > 0)
+                b.append(" base=\"" + baseMetaname + "\"");
+            b.append(">");
+           
+            b.append("</metaspec>");
+            
+            return b.toString();
+        }
+        
+        public String toDetailedXml() {
+            StringBuilder b = new StringBuilder();
+            b.append("<metaspec name=\"" + id.name + "\"");
+            b.append(" inventory=\"" + inventory + "\"");
+            if (baseMetaname != null && baseMetaname.length() > 0)
+                b.append(" base=\"" + baseMetaname + "\"");
+            b.append(">");
+
+            for (ActionItem ai : supportedActions) {
+                b.append("<action name=\""+ai.name+"\"");
+            b.append("/>");
+            }
+            b.append("</metaspec>");
+            
+            return b.toString();
         }
     }
 }
