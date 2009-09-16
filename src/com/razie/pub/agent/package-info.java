@@ -1,10 +1,13 @@
 /**
- * Light agent framework.
+ * Razvan's code. Copyright 2008 based on Apache (share alike) see LICENSE.txt for details.
+ *
+ * Light agent framework...serving two purposes: modular plugins (services) and distributed services.
  * 
  * <h1>What is?</h1>
  * <p>
  * Offers a platform to write/plug-in functionality. There are many such platforms but I could not
- * decide on a particular one to use, although for basic service lifecycle, OSGI seems proper.
+ * decide on a particular one to use, although for basic service lifecycle, package management etc, 
+ * OSGI seems proper.
  * 
  * <p>
  * What is special about these agents is that, while offering a simple platform to plug-in
