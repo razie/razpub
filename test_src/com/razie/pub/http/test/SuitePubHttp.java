@@ -12,9 +12,9 @@ import junit.framework.TestSuite;
  * 
  * @author razvanc99
  */
-public class SuiteHttp extends TestSuite {
+public class SuitePubHttp extends TestSuite {
     public static Test suite() {
-        TestSuite result = new TestSuite(SuiteHttp.class.getName());
+        TestSuite result = new TestSuite(SuitePubHttp.class.getName());
 
         result.addTestSuite(TestLightServer.class);
 

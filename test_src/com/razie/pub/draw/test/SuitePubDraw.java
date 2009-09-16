@@ -12,9 +12,9 @@ import junit.framework.TestSuite;
  * 
  * @author razvanc99
  */
-public class SuiteDraw extends TestSuite {
+public class SuitePubDraw extends TestSuite {
     public static Test suite() {
-        TestSuite result = new TestSuite(SuiteDraw.class.getName());
+        TestSuite result = new TestSuite(SuitePubDraw.class.getName());
 
         result.addTestSuite(TestDrawables.class);
         result.addTestSuite(TestContainers.class);

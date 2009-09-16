@@ -12,9 +12,9 @@ import junit.framework.TestSuite;
  * 
  * @author razvanc99
  */
-public class SuiteLightsoa extends TestSuite {
+public class SuitePubLightsoa extends TestSuite {
     public static Test suite() {
-        TestSuite result = new TestSuite(SuiteLightsoa.class.getName());
+        TestSuite result = new TestSuite(SuitePubLightsoa.class.getName());
 
         result.addTestSuite(TestLocalSoa.class);
         result.addTestSuite(TestLocalSoaAssets.class);

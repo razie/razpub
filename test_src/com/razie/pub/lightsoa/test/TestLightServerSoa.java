@@ -104,8 +104,7 @@ public class TestLightServerSoa extends TestLightBase {
      */
     public void testSoaEchoUrlPost() throws IOException, InterruptedException {
         // send echo command
-        Socket remote = new Socket("localhost", PORT);
-        HttpHelper.sendPOST(remote, "POST /lightsoa/echoservice/echo HTTP/1.1", null, "msg=samurai");
+        HttpHelper.sendPOST("localhost", PORT, "POST /lightsoa/echoservice/echo HTTP/1.1", null, "msg=samurai");
 
         // wait a bit for receiver thread to consume...
         for (long deadline = System.currentTimeMillis() + 20000; deadline > System.currentTimeMillis();) {

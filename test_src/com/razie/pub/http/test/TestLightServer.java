@@ -19,7 +19,10 @@ import com.razie.pub.comms.ActionToInvoke;
  */
 public class TestLightServer extends TestLightBase {
 
-    /** test the simple echo */
+    /** test the simple echo - this is like GET but is called 'echo' for testing of flexibility of extending protocol 
+     * 
+     * TODO that this fails when laptop not connected to any network (i.e. when commuting)- don't know why... 
+     */
     public void testSimpleEcho() throws IOException, InterruptedException {
         // start server with echo impl
         SampleEchoCmdListener echo = new SampleEchoCmdListener();

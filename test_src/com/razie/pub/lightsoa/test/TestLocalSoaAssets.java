@@ -41,7 +41,7 @@ public class TestLocalSoaAssets extends TestCase {
     public void testSampleServiceANA() {
         AttrAccess aa = new AttrAccess.Impl();
         aa.setAttr("movie", MOVIEKEY.toString());
-        Object resp = new SoaBinding(SampleAsset.class, "").invoke(new AssetKey("bibi", "cu"), "play", aa);
+        Object resp = new SoaBinding(SampleAsset2.class, "").invoke(new AssetKey("bibi", "cu"), "play", aa);
         assertTrue(MOVIEKEY.getId().equals(resp));
     }
 

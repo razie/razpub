@@ -12,9 +12,9 @@ import junit.framework.TestSuite;
  * 
  * @author razvanc99
  */
-public class SuiteAgents extends TestSuite {
+public class SuitePubAgent extends TestSuite {
     public static Test suite() {
-        TestSuite result = new TestSuite(SuiteAgents.class.getName());
+        TestSuite result = new TestSuite(SuitePubAgent.class.getName());
 
         result.addTestSuite(TestSimpleAgent.class);
 
