@@ -8,8 +8,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
 import com.razie.pub.base.log.Log;
+import com.sun.corba.se.spi.ior.MakeImmutable;
 
 /**
  * simple helper to execute windows commands
@@ -18,6 +20,9 @@ import com.razie.pub.base.log.Log;
  * 
  */
 public class WinExec {
+    final static String  QUOTES = "\"";
+    final static String  SPACE = " ";
+    
     /**
      * use this to execute a document - windows will use the proper proogram...
      * 
@@ -28,6 +33,27 @@ public class WinExec {
         execCmd("cmd.exe /C ", file);
     }
 
+    /** this is a copy/paste of Runtime.exec(String) to build the first arguments. It also adds
+     * more explicit arguments...
+     * 
+     * @param firstLine
+     * @param rest
+     * @return an array intended to be used by Runtime.exec
+     */
+    private static String[] makeArgs (String firstLine, String[] rest) {
+        if (firstLine.length() == 0)
+            throw new IllegalArgumentException("Empty command");
+
+        StringTokenizer st = new StringTokenizer(firstLine);
+        int tokens = st.countTokens();
+        String[] cmdarray = new String[st.countTokens() + (rest==null ? 0 : rest.length)];
+        for (int i = 0; st.hasMoreTokens(); i++)
+            cmdarray[i] = st.nextToken();
+        for (int j = 0; j<rest.length; j++)
+            cmdarray[tokens+j] = st.nextToken();
+        return cmdarray;
+
+    }
     /**
      * use this to execute a program with arguments, which together form a command line. When passed
      * to CMD, the arguments will be wrapped in quotes to preserve semantics.
@@ -43,11 +69,13 @@ public class WinExec {
      * @throws IOException
      */
     public static void execCmd(String program, String... args) throws IOException {
-        String cmdline = program;
-        for (String arg : args) {
-            cmdline += " \"" + arg + "\"";
-        }
+//        String cmdline = program;
+//        for (String arg : args) {
+//            cmdline += SPACE+QUOTES + arg + QUOTES;
+//        }
 
+        String[]cmdline = makeArgs (program, args);
+        
         Runtime rt = Runtime.getRuntime();
         logger.log("EXECUTE cmd: " + cmdline);
         Process proc = rt.exec(cmdline);
@@ -79,11 +107,13 @@ public class WinExec {
      * @throws IOException
      */
     public static StringBuilder execAndWait(String program, String... args) throws IOException {
-        String cmdline = program;
-        for (String arg : args) {
-            cmdline += " \"" + arg + "\"";
-        }
+//        String cmdline = program;
+//        for (String arg : args) {
+//            cmdline += SPACE+QUOTES + arg + QUOTES;
+//        }
 
+        String[]cmdline = makeArgs (program, args);
+        
         Runtime rt = Runtime.getRuntime();
         logger.log("EXECUTE win command line: " + cmdline);
         Process proc = rt.exec(cmdline);
