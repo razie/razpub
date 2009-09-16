@@ -1,4 +1,6 @@
 /**
+ * Razvan's code. Copyright 2008 based on Apache (share alike) see LICENSE.txt for details.
+ *
  * Fairly light and flexible asset/resource management framework
  * 
  * <h1>Vision</h1>
@@ -12,14 +14,14 @@
  * 
  * <h2>What about assets?</h2>
  * 
- * An asset framework concerns with how they are defined, how they are implemented and how we
- * interact with them.
+ * An asset framework concerns with how they are defined, how we interact with them and not so much
+ * about how they are implemented...
  * 
  * <h3>How they're defined</h3>
  * 
  * One must define:
  * <ul>
- * <li>the asset class (or proxy, if the asset is defined in a different environment) - use the
+ * <li>the asset class (or a proxy class, if the asset is defined in a different environment) - use the
  * SoaAsset annotation
  * <li>CRUD+query functionality - overload the AssetMgr
  * <li>methods/actions that can be invoked - both SoaAsset as well as the AssetMgr
@@ -32,7 +34,7 @@
  * unless you add a wrapper layer of intelligent objects that delegate their methods to services.
  * <p>
  * That's what this entire framework is about: providing a unified set of frameworks to allow rapid
- * and unified implementation of smart assets which then can be used and controlled remotely.
+ * and unified implementation of smart assets which then can be used and controlled remotely
  * <p>
  * This is the difference between <code>somerobotservice.move(myrobot, x, y)</code> and
  * <code>myrobot.move(x,y)</code>.
@@ -44,10 +46,16 @@
  * Why not "object-oriented" but rather "asset-oriented"? The notion of "object" is way too generic
  * and fuzzy for what we want here. Assets borrow from service the remoteness and add intelligence,
  * transparent control, and some notional presentation.
+ * <p>
+ * Why not "resource-oriented" but rather "asset-oriented"? I find that the notion of "resource" 
+ * is not exactly what people have in mind when watching a movie...who's the resource? The player 
+ * or the movie? Also, REST does not have a notion of action on resource or sending a message to a 
+ * resource and that's how we all perceive and think about the world...
  * 
  * <h2>Inventories or managers</h2>
  * <p>
- * Factories for objects are abstracted into an <b>inventory</b>, which acts as a locator for
+ * I know entity beans are dead (for good reason) but the notion of entity/home is still pervasive 
+ * and makes sense. Factories for objects are abstracted into an <b>inventory</b>, which acts as a locator for
  * assets. The assets are assumed to be intelligent, but from a generic handling perspective, the
  * AssetMgr can use inventories to manage assets. This allows you to wrap external classes and
  * present them as assets. Since the assets are supposed to be used in higher-level scripting, the
@@ -62,7 +70,7 @@
  * 
  * <h1>Assets</h1>
  * <p>
- * Assets are uniquely identified by type, key and location.
+ * Assets are uniquely identified by type, key and location: {@see AssetKey}.
  * <h1>Frameworks</h1>
  * <p>
  * The lightsoa framework provides the service abstraction, which is good for remote block of

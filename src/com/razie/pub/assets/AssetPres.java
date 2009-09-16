@@ -1,3 +1,6 @@
+/**
+ * Razvan's code. Copyright 2008 based on Apache (share alike) see LICENSE.txt for details.
+ */
 package com.razie.pub.assets;
 
 import java.util.Collection;
@@ -22,7 +25,7 @@ public abstract class AssetPres {
     }
 
     /**
-     * put a list of assets into drawable
+     * draw a list of assets into drawable
      * 
      * @param movies a collection of assets
      * @param stream the stream to draw on
