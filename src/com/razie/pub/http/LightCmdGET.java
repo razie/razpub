@@ -45,7 +45,7 @@ import com.razie.pub.webui.MutantPresentation;
  * @author razvanc99
  * 
  */
-public class LightCmdGET extends SocketCmdListener.Impl {
+public class LightCmdGET extends SocketCmdHandler.Impl {
     /**
      * overload this to implement authentication/authorization etc
      * 
@@ -126,7 +126,7 @@ public class LightCmdGET extends SocketCmdListener.Impl {
                 if (callThisOne) {
                     logger.log("HTTP_FOUND_SOA_BRIDGE: " + c.getClass().getName());
                     try {
-                        reply = c.executeCmdServer(cmd, p, cmdargs, parms, socket);
+                        reply = c.execServer(cmd, p, cmdargs, parms, socket);
                     } catch (Throwable e) {
                         logger.log("HTTP_ERR_INVOKING_SOA: ", e);
                         reply = new DrawError(e);
@@ -141,7 +141,7 @@ public class LightCmdGET extends SocketCmdListener.Impl {
     }
 
     /** main entry point, called from the Server's Receiver, when cmd is GET */
-    public Object executeCmdServer(String cmdName, String protocol, String args, Properties parms,
+    public Object execServer(String cmdName, String protocol, String args, Properties parms,
             MyServerSocket socket) throws AuthException {
         logger.trace(3, "execute cmdName=", cmdName, ", protocol=", protocol, ", args=", args);
 
@@ -183,6 +183,7 @@ public class LightCmdGET extends SocketCmdListener.Impl {
             String svc = ss[0];
 
             if (ss.length < 2) {
+                // TODO set http error code - use DrawError to get common screen?
                 throw new IllegalArgumentException(
                         "ERR_ Path must be http://host:port/PREFIX/SERVICE/METHOD - you're missing something");
             }
@@ -286,7 +287,7 @@ public class LightCmdGET extends SocketCmdListener.Impl {
         return bindings.values();
     }
 
-    public String[] getSupportedCommands() {
+    public String[] getSupportedActions() {
         return COMMANDS;
     }
 

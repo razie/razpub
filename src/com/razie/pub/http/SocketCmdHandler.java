@@ -11,7 +11,7 @@ import com.razie.pub.comms.AuthException;
 import com.razie.pub.comms.MyServerSocket;
 
 /**
- * a command listener listens to commands, executes them and returns an object, normally a Drawable
+ * a command handler executes commands and returns an object, normally a Drawable
  * that can be seen by client. This is called by the server to handle a particular command or path
  * 
  * <p>
@@ -20,7 +20,7 @@ import com.razie.pub.comms.MyServerSocket;
  * @author razvanc99
  * 
  */
-public interface SocketCmdListener {
+public interface SocketCmdHandler {
     /**
      * main callback from the server to handle a command send via the socket in the form "COMMAND
      * ARGS"
@@ -33,26 +33,38 @@ public interface SocketCmdListener {
      * @return the result of the command - or StreamedConsumedReply if the stream was filled
      * @throws AuthException
      */
-    public Object executeCmdServer(String cmdName, String protocol, String args, Properties parms,
+    public Object execServer(String cmdName, String protocol, String args, Properties parms,
             MyServerSocket socket) throws AuthException;
 
     /**
      * the convention is that the first word on the socket is the command to execute above. this is
      * a discovery of what commands are supported by a certain class
      */
-    public String[] getSupportedCommands();
+    public String[] getSupportedActions();
 
     /** simple echo listener */
-    public static abstract class Impl implements SocketCmdListener {
+    public static abstract class Impl implements SocketCmdHandler {
 
-        public Object executeCmdServer(String cmdName, String protocol, String args, Properties parms,
+        /**
+         * main callback from the server to handle a command send via the socket in the form "COMMAND
+         * ARGS"
+         * 
+         * @param cmdName the command sent in, "GET" is used in http for instance
+         * @param protocol the protocol - at this level it is not used actually
+         * @param args the arguments passed in
+         * @param parms
+         * @param socket the command was received with, normaly you have to write something back...
+         * @return the result of the command - or StreamedConsumedReply if the stream was filled
+         * @throws AuthException
+         */
+        public Object execServer(String cmdName, String protocol, String args, Properties parms,
                 MyServerSocket socket) throws AuthException {
             String m = "execute cmdName=" + cmdName + ", protocol=" + protocol + ", args=" + args;
             logger.log(m);
             return args;
         }
 
-        public abstract String[] getSupportedCommands();
+        public abstract String[] getSupportedActions();
 
         static final Log logger = Log.Factory.create("", Impl.class.getName());
     }

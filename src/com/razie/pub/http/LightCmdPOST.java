@@ -18,7 +18,7 @@ import com.razie.pub.comms.MyServerSocket;
  */
 public class LightCmdPOST extends LightCmdGET {
 
-    public Object executeCmdServer(String cmdName, String protocol, String args, Properties parms,
+    public Object execServer(String cmdName, String protocol, String args, Properties parms,
             MyServerSocket socket) throws AuthException {
         String input = "";
         try {
@@ -45,10 +45,10 @@ public class LightCmdPOST extends LightCmdGET {
                 parms.put(split[0], HttpUtils.fromUrlEncodedString(split[1]));
         }
 
-        return super.executeCmdServer(cmdName, protocol, args, parms, socket);
+        return super.execServer(cmdName, protocol, args, parms, socket);
     }
 
-    public String[] getSupportedCommands() {
+    public String[] getSupportedActions() {
         return COMMANDS;
     }
 

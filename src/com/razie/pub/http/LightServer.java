@@ -70,8 +70,12 @@ public class LightServer extends Worker {
             try {
                 listener = new ServerSocket(port);
                 break;
+            } catch (java.net.BindException be) {
+                Log.alarmThis("HTTP_ERR CANNOT bind socket - another program is using it: port=" + port+" ", be);
             } catch (IOException ioe) {
                 Log.logThis("HTTP_ERR IOException on socket listen: ", ioe);
+
+		// TODO why do i sleep here? forgot to comment...
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {
@@ -86,6 +90,9 @@ public class LightServer extends Worker {
     public void process() {
         int i = 0;
 
+            if (mainContext != null)
+                mainContext.enter();
+            
         while ((i++ < maxConnections) || (maxConnections == 0)) {
             try {
                 // i guess i have to die now...
@@ -97,7 +104,8 @@ public class LightServer extends Worker {
                 Log.logThis("HTTP_CLIENT_IP: " + server.getInetAddress().getHostAddress());
                 runReceiver(conn_c);
             } catch (IOException ioe) {
-                if (ioe.getMessage().equals("socket closed"))
+                // sockets are closed onShutdown() - don't want irrelevant exceptions in log
+                if (ioe.getMessage().equals("Socket closed"))
                     Log.logThis("socket closed...stopped listening: " + ioe.getMessage());
                 else
                     Log.logThis("IOException on socket listen: " + ioe, ioe);
@@ -121,7 +129,9 @@ public class LightServer extends Worker {
     public void shutdown() {
         super.shutdown();
         try {
-            this.listener.close();
+            // it may be null if it didn't initialize properly (socket busy) - no reason to fail shutdown...
+            if (this.listener != null)
+                this.listener.close();
         } catch (IOException ioe) {
             Log.logThis("IOException on socket close: " + ioe);
             ioe.printStackTrace();
@@ -226,12 +236,12 @@ public class LightServer extends Worker {
                 
                 Log.logThis("HTTP_CLIENT_RQ: " + cmd + " args=" + args);
 
-                for (SocketCmdListener c : server.getListeners()) {
-                    for (String s : c.getSupportedCommands()) {
+                for (SocketCmdHandler c : server.getHandlers()) {
+                    for (String s : c.getSupportedActions()) {
                         if (cmd.equals(s)) {
                             logger.trace(1, "HTTP_FOUND_LISTENER: " + c.getClass().getName());
                             try {
-                                reply = c.executeCmdServer(cmd, "", args, new Properties(), socket);
+                                reply = c.execServer(cmd, "", args, new Properties(), socket);
                             } catch (Throwable e) {
                                 logger.log("ERR_HTTP_RECEIVER_EXCEPTION: ", e);
                                 reply = HtmlRenderUtils.textToHtml(Exceptions.getStackTraceAsString(e));
@@ -258,20 +268,20 @@ public class LightServer extends Worker {
 
     static final Log logger = Log.Factory.create(Receiver.class.getSimpleName());
 
-    public void registerCmdListener(SocketCmdListener c) {
-        getListeners().add(c);
+    public void registerCmdListener(SocketCmdHandler c) {
+        getHandlers().add(c);
     }
 
-    public void removeCmdListener(SocketCmdListener c) {
-        getListeners().remove(c);
+    public void removeCmdListener(SocketCmdHandler c) {
+        getHandlers().remove(c);
     }
 
     /**
      * @return the listeners
      */
-    public List<SocketCmdListener> getListeners() {
+    public List<SocketCmdHandler> getHandlers() {
         return listeners;
     }
 
-    private List<SocketCmdListener> listeners = new ArrayList<SocketCmdListener>();
+    private List<SocketCmdHandler> listeners = new ArrayList<SocketCmdHandler>();
 }
