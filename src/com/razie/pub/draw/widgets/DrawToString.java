@@ -10,7 +10,7 @@ import com.razie.pub.draw.Renderer.Technology;
  * exceptions for instance.
  * 
  * this is useful also to avoid default formatting of strings - this will not replace a \n with <br>
- * for instance. IF you actually want that, just use HtmlRenderUtils.textToHtml(s)
+ * for instance. IF you actually want that, just use HtmlRenderUtils.textToHtml(s) or DrawText
  * 
  * @author razvanc99
  * 

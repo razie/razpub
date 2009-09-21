@@ -134,7 +134,7 @@ public class DrawTable extends StreamableContainer.Impl implements Drawable, Str
         super.close();
     }
 
-    public class MyRenderer implements ContainerRenderer {
+    public static class MyRenderer implements ContainerRenderer {
 
         public boolean canRender(Object o, Technology technology) {
             return o instanceof DrawTable;
@@ -203,6 +203,11 @@ public class DrawTable extends StreamableContainer.Impl implements Drawable, Str
 
             return "?";
         }
+        
+       static String makeTR(DrawTable list) {
+           return (list.rowColor == null ? "<tr>" : "<tr bgcolor=\"" + list.rowColor + "\">");
+       }
+
     }
 
     public void writeRow(Object o) {
@@ -210,10 +215,6 @@ public class DrawTable extends StreamableContainer.Impl implements Drawable, Str
         if (this.ownerStream != null && this.state.equals(State.OPEN)) {
             this.ownerStream.renderElement(this, o);
         }
-    }
-
-    static String makeTR(DrawTable list) {
-        return (list.rowColor == null ? "<tr>" : "<tr bgcolor=\"" + list.rowColor + "\">");
     }
 
 }

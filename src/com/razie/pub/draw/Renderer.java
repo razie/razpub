@@ -26,12 +26,13 @@ public interface Renderer<T> {
     /**
      * the return object is technology specific...it could be a swing dialog reference :) 
      * 
-     * The convention here is: the caller prepares a stream. The implementation will either use 
-     * the stream or just return an object. Note that the stream is always present! 
+     * The convention here is: the caller prepares a stream. The implementation will either use the
+     * stream or just return an object. Note that the stream is always present!
      * 
      * @param o - not null, the object to draw
-     * @param technology -  the technology to draw on
-     * @param stream - not null, a stream to draw on. Use DrawSequence if you don't know what to do and draw that.
+     * @param technology - the technology to draw on
+     * @param stream - not null, a stream to draw on. Use DrawSequence if you don't know what to do
+     *        and draw that.
      * @return null if it was drawn on the stream, a drawable object otherwise
      */
     public Object render(T o, Technology technology, DrawStream stream);
@@ -65,7 +66,7 @@ public interface Renderer<T> {
      * 
      */
     public static enum Technology {
-        TEXT, HTML, SWING, SVG, ECLIPSE, XML, JSON, UPNP, ANY
+        TEXT, HTML, SWING, SVG, ECLIPSE, XML, JSON, UPNP, ANY, RSS, MEDIA_RSS
     }
 
     /** simple renderer utils */
@@ -109,10 +110,15 @@ public interface Renderer<T> {
      * <p>
      * Note that this also extends the Renderer, so there's also a method to render everything in
      * one shot. That may or may not make sense...
+     * <p>
+     * NOTE that if you choose to stream anything, you have to stream everything. What that means is
+     * that if you choose to return "x" for the header but write the footer directly to the stream,
+     * you're in trouble... :)
      */
     public static interface ContainerRenderer extends Renderer {
         /**
-         * the return object is technology specific
+         * the return object is technology specific. NOTE that if you choose to stream anything, you
+         * have to stream everything.
          * 
          * @param o the container providing the footer
          * @param technology
@@ -121,7 +127,8 @@ public interface Renderer<T> {
         public Object renderHeader(Object o, Technology technology, DrawStream stream);
 
         /**
-         * the return object is technology specific
+         * the return object is technology specific NOTE that if you choose to stream anything, you
+         * have to stream everything.
          * 
          * @param o the container
          * @param technology
@@ -130,7 +137,8 @@ public interface Renderer<T> {
         public Object renderElement(Object container, Object element, Technology technology, DrawStream stream);
 
         /**
-         * the return object is technology specific
+         * the return object is technology specific NOTE that if you choose to stream anything, you
+         * have to stream everything.
          * 
          * @param o the container providing the footer
          * @param technology

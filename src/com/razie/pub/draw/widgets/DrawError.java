@@ -9,9 +9,10 @@ import com.razie.pub.draw.Renderer.Technology;
 
 /**
  * dedicated error object (popups, info bars etc)
- * 
+ *  
+ *  TODO set server error code when returning DrawError
+ *  
  * @author razvanc99
- * 
  */
 public class DrawError extends DrawWidget {
     String    msg;
