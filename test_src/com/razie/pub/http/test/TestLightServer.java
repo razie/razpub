@@ -25,7 +25,7 @@ public class TestLightServer extends TestLightBase {
      */
     public void testSimpleEcho() throws IOException, InterruptedException {
         // start server with echo impl
-        SampleEchoCmdListener echo = new SampleEchoCmdListener();
+        SampleEchoCmdHandler echo = new SampleEchoCmdHandler();
         server.registerCmdListener(echo);
 
             Thread.sleep(200);

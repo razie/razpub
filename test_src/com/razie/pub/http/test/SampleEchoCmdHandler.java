@@ -9,19 +9,19 @@ import java.util.Properties;
 import com.razie.pub.base.log.Log;
 import com.razie.pub.comms.AuthException;
 import com.razie.pub.comms.MyServerSocket;
-import com.razie.pub.http.SocketCmdListener;
+import com.razie.pub.http.SocketCmdHandler;
 
 /**
- * sample command listener implementing the echo command, as a simple url mapping
+ * sample command handler implementing the echo command, as a simple url mapping
  *  $
  * @author razvanc99
  * 
  */
-public class SampleEchoCmdListener extends SocketCmdListener.Impl {
+public class SampleEchoCmdHandler extends SocketCmdHandler.Impl {
     public String input = null;
 
     @Override
-    public Object executeCmdServer(String cmdName, String protocol, String args, Properties parms,
+    public Object execServer(String cmdName, String protocol, String args, Properties parms,
             MyServerSocket socket) throws AuthException {
         input = cmdName + ": " + args;
         String m = "execute cmdName=" + cmdName + ", protocol=" + protocol + ", args=" + args;
@@ -30,7 +30,7 @@ public class SampleEchoCmdListener extends SocketCmdListener.Impl {
     }
 
     @Override
-    public String[] getSupportedCommands() {
+    public String[] getSupportedActions() {
         return COMMANDS;
     }
 
