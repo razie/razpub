@@ -10,7 +10,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.MalformedURLException;
+import java.net.Socket;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
@@ -18,6 +20,8 @@ import java.util.List;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import com.razie.pub.assets.AssetLocation;
+import com.razie.pub.base.AttrAccess;
 import com.razie.pub.base.data.ByteArray;
 import com.razie.pub.base.exceptions.CommRtException;
 import com.razie.pub.base.log.Log;
@@ -33,6 +37,111 @@ import com.sun.org.apache.xerces.internal.parsers.DOMParser;
  * 
  */
 public class Comms {
+
+    /**
+     * Stream the response of a URL.
+     * 
+     * @param url can be local or remote
+     * @return a string containing the text read from the URL. can be the result of a servlet, a web
+     *         page or the contents of a local file. It's null if i couldn't read the file.
+     */
+    public static InputStream poststreamUrl(String url, AttrAccess httpArgs, String content) {
+        try {
+            InputStream in = null;
+           
+            // parse url to invoke sendPOST
+            AssetLocation temploc = new AssetLocation (url); 
+            String cmd = "POST " + url.replace(temploc.toHttp(), "")+ " HTTP/1.1";
+            
+                Socket remote =  HttpHelper.sendPOST(temploc.getHost(), Integer.decode(temploc.getPort()), 
+                        cmd, httpArgs, content);
+                in = remote.getInputStream();
+               
+                // TODO interpret the http response...error codes etc
+//                if (!resCode.endsWith("200 OK")) {
+//                    String msg = "Could not fetch data from url " + url + ", resCode=" + resCode;
+//                    logger.trace(3, msg);
+//                    CommRtException rte = new CommRtException(msg);
+//                    if (uc.getContentType().endsWith("xml")) {
+//                        DOMParser parser = new DOMParser();
+//                        try {
+//                            parser.parse(new InputSource(in));
+//                        } catch (SAXException e) {
+//                            RuntimeException iex = new CommRtException("Error while processing document at "
+//                                    + url);
+//                            iex.initCause(e);
+//                            throw iex;
+//                        }
+//                    }
+//                    throw rte;
+//                }
+            return in;
+        } catch (MalformedURLException e) {
+            RuntimeException iex = new IllegalArgumentException();
+            iex.initCause(e);
+            throw iex;
+        } catch (IOException e1) {
+            // server/node down
+            CommRtException rte = new CommRtException("Connection exception for url="+url);
+            rte.initCause(e1);
+            throw rte;
+        }
+    }
+
+    /**
+     * Stream the response of a URL.
+     * 
+     * @param url can be local or remote
+     * @return a string containing the text read from the URL. can be the result of a servlet, a web
+     *         page or the contents of a local file. It's null if i couldn't read the file.
+     */
+    public static InputStream poststreamUrl2(String url, AttrAccess httpArgs, String content) {
+        try {
+            InputStream in = null;
+                URLConnection uc = (new URL(url)).openConnection();
+                // see http://www.exampledepot.com/egs/java.net/Post.html
+                uc.setDoOutput(true);
+                
+                OutputStreamWriter wr = new OutputStreamWriter(uc.getOutputStream());
+                wr.write(content);
+                wr.flush();
+                
+                
+                logger.trace(3, "hdr: ", uc.getHeaderFields());
+                String resCode = uc.getHeaderField(0);
+                in = uc.getInputStream();
+
+
+
+                if (!resCode.endsWith("200 OK")) {
+                    String msg = "Could not fetch data from url " + url + ", resCode=" + resCode;
+                    logger.trace(3, msg);
+                    CommRtException rte = new CommRtException(msg);
+                    if (uc.getContentType().endsWith("xml")) {
+                        DOMParser parser = new DOMParser();
+                        try {
+                            parser.parse(new InputSource(in));
+                        } catch (SAXException e) {
+                            RuntimeException iex = new CommRtException("Error while processing document at "
+                                    + url);
+                            iex.initCause(e);
+                            throw iex;
+                        }
+                    }
+                    throw rte;
+                }
+            return in;
+        } catch (MalformedURLException e) {
+            RuntimeException iex = new IllegalArgumentException();
+            iex.initCause(e);
+            throw iex;
+        } catch (IOException e1) {
+            // server/node down
+            CommRtException rte = new CommRtException("Connection exception for url="+url);
+            rte.initCause(e1);
+            throw rte;
+        }
+    }
 
     /**
      * Stream the response of a URL.
@@ -128,6 +237,23 @@ public class Comms {
         return readStream(s);
     }
 
+    /**
+     * Serialize to string the response of a URL, via POST rather than GET.
+     * 
+     * @param url MUST be remotec
+     * @param httpArgs the args to be sent with the HTTP request
+     * @param content the content of the POST
+     * @return a string containing the text read from the URL. can be the result of a servlet, a web
+     *         page or the contents of a local file. It's null if i couldn't read the file.
+     */
+    public static String readUrlPOST(String url, AttrAccess httpArgs, String content) {
+        InputStream s = poststreamUrl(url, httpArgs, content);
+        if (s == null) {
+            return null;
+        }
+        return readStream(s);
+    }
+
     /** copy a stream using a simple SED like filter */
     public static void copyStreamSED(InputStream is, OutputStream fos, List<SedFilter> filters) {
         try {
@@ -152,5 +278,17 @@ public class Comms {
         }
     }
 
+    /** is this the localhost? x can be either hostname or IP, ipv4, ipv6 etc
+     * 
+     *  NOTE this is part of authorization chain
+     */
+    public static boolean isLocalhost (String x) {
+        if ("127.0.0.1".equals(x) || "0:0:0:0:0:0:0:1".equals(x) || "localhost".equals(x)) 
+            // ipv4ipv6 localhost
+            return true;
+        return false;
+        
+    }
+    
     static Log logger = Log.Factory.create(Comms.class.getName());
 }

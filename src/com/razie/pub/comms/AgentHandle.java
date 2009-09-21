@@ -22,7 +22,7 @@ public class AgentHandle extends AssetKey implements Cloneable {
 
     /** the handles keep transient peer status info, if an updater service is used */
     public static enum DeviceStatus {
-        UNKOWN, DOWN, UP
+        UNKOWN, DOWN, UP, EXCLUDED
     }
 
     public static final String    sCLASS = "RazAgent";
@@ -30,19 +30,30 @@ public class AgentHandle extends AssetKey implements Cloneable {
     public String                 hostname;
     public String                 ip;
     public String                 port;
+    public String                 localdir;
+    public String                 os;
     public transient DeviceStatus status = DeviceStatus.UNKOWN;
 
     // TODO why not use the AssetLocation?
     /** cache the url, format: "http://[ip|hostname]:port" */
     public String                 url;
 
+    /** minimum information - use it for temporary handles or small tests...you'll have to */
     public AgentHandle(String name, String hostname, String ip, String port, String url) {
+        this(name, hostname, ip, port, url, "", "");
+    }
+
+    /** full constructor */
+    public AgentHandle(String name, String hostname, String ip, String port, String url, String os,
+            String localdir) {
         super(sCLASS, name, new AssetLocation(url));
         this.name = name;
         this.hostname = hostname;
         this.ip = ip;
         this.port = port;
         this.url = url;
+        this.os = os;
+        this.localdir = localdir;
 
         // make sure port is ok...
         try {
@@ -57,16 +68,24 @@ public class AgentHandle extends AssetKey implements Cloneable {
     }
 
     public String toString() {
-        return "AgentHandle(" + name + ";" + hostname + ";" + ip + ";" + port + ";" + url + ")";
+        return "AgentHandle(" + name + ";" + hostname + ";" + ip + ";" + port + ";" + url + ";" + os + ";"
+                + localdir + ")";
     }
 
     public static AgentHandle fromString(String s) {
+        if (! s.startsWith ("AgentHandle("))
+            throw new IllegalArgumentException("String is not an AgentHandle: " + s);
+
         String ss[] = s.split("[;()]");
-        return new AgentHandle(ss[1], ss[2], ss[3], ss[4], ss[5]);
+        return new AgentHandle(ss[1], ss[2], ss[3], snull(ss,4), snull(ss,5), snull(ss,6), snull(ss,7));
+    }
+
+    private static final String snull (String[] ss, int idx) {
+        if (ss.length > idx) return ss[idx]; else return "";
     }
 
     public AgentHandle clone() {
-        return new AgentHandle(this.name, this.hostname, this.ip, this.port, this.url);
+        return new AgentHandle(this.name, this.hostname, this.ip, this.port, this.url, this.os, this.localdir);
     }
 
     public boolean equals(Object o) {
@@ -79,11 +98,11 @@ public class AgentHandle extends AssetKey implements Cloneable {
 
     public boolean isUpNow() {
         // timeout quickly
-      if (this.port.length() <= 0 ) {
-         // for now ignore those that don't run agents:
-         return false;
-      }
-      
+        if (this.port.length() <= 0) {
+            // for now ignore those that don't run agents:
+            return false;
+        }
+
         try {
             Socket server = new Socket();
             int port = Integer.parseInt(this.port);
@@ -97,7 +116,7 @@ public class AgentHandle extends AssetKey implements Cloneable {
             return false;
         }
     }
-    
+
     // public boolean isUpNow() {
     // // timeout quickly
     // try {

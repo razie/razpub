@@ -52,11 +52,13 @@ public class CommChannel {
      * this is a client requesting something
      */
     public static class SocketEndPoint extends ChannelEndPoint {
+        public java.net.InetAddress address;
         private String ip;
         private String port;
 
         public SocketEndPoint(Socket sock) {
             super();
+            this.address = sock.getInetAddress();
             this.ip = sock.getInetAddress().getHostAddress();
             this.port = String.valueOf(sock.getPort());
         }
@@ -66,6 +68,11 @@ public class CommChannel {
         @Override
         public String getPort() {
             return port;
+        }
+        
+        @Override
+        public String toString() {
+            return address.toString() + " IP=" + ip + " PORT="+port;
         }
     }
 

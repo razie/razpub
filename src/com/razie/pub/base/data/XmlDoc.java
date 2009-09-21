@@ -163,7 +163,7 @@ public class XmlDoc {
     }
 
     /**
-     * i.e. "/config/mutant/@localdir"
+     * i.e. "/config/mutant/@someattribute"
      * 
      * @param path identifies the xpath
      * @name identifies the name attribute of the element - could also be part of xpath instead
@@ -185,7 +185,7 @@ public class XmlDoc {
     }
 
     /**
-     * i.e. "/config/mutant/@localdir"
+     * i.e. "/config/mutant/@someattribute"
      * 
      * @param path identifies the xpath
      * @name identifies the name attribute of the element - could also be part of xpath instead

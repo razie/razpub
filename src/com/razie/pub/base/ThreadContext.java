@@ -103,7 +103,7 @@ public class ThreadContext extends AttrAccess.Impl {
    public static void exit(ThreadContext... old) {
       ThreadContext exited = instances.remove(Thread.currentThread());
 
-      if (old.length > 0)
+      if (old.length > 0 && old[0] != null)
          instances.put(Thread.currentThread(), old[0]);
 
       if (exited != null)

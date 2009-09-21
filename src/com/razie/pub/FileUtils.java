@@ -68,4 +68,24 @@ public class FileUtils {
             return path.substring(1);
         return path;
     }
+
+   /**
+    * extract just the filename from a given path
+    * 
+    * @param fullFileNm
+    * @return only the filename
+    */
+   public static String fileNameFromPath(String fullFileNm) {
+   	String result = "";
+   	int idx = fullFileNm.lastIndexOf("/");
+   	if (idx == -1) {
+   		idx = fullFileNm.lastIndexOf("\\");
+   	}
+   	if (idx == -1) {
+   		result = fullFileNm;
+   	} else {
+   		result = fullFileNm.substring(idx + 1);
+   	}
+   	return result;
+   }
 }

@@ -27,7 +27,10 @@ public class Agents {
     protected AgentCloud       myCloud         = null;
     public boolean             testing         = false;
     public static final String TESTHOST        = "TEST-host";
-    public static String       homeNetPrefix;
+    
+    // this is generally the local area network prefix?
+    // TODO possible security breach?
+    public static String       homeNetPrefix   = "192.168.1.";
     private AgentHandle        me              = null;
 
     public Agents(AgentCloud homeGroup, AgentHandle me) {
@@ -54,9 +57,13 @@ public class Agents {
         return instance().getMyHostNameImpl();
     }
 
-    /** @return the URL for the mentioned remote agent, in the form "http://IP:PORT" */
+    /** @return the handle for the mentioned remote agent
+     * 
+     * @param remote the name of the remote agent or "localhost" meaning me()
+     * @return
+     */
     public static AgentHandle agent(String remote) {
-        AgentHandle ah = instance().agentImpl(remote);
+        AgentHandle ah = "localhost".equals(remote) ? me() : instance().agentImpl(remote);
         return ah;
     }
 
@@ -89,7 +96,7 @@ public class Agents {
     /** TODO sync this */
     public AgentHandle agentByIpImpl(String ip) {
         for (AgentHandle a : instance().myCloud.agents().values()) {
-            if (a.ip.equals(ip)) {
+            if (a.ip.equals(ip) && ! a.status.equals(AgentHandle.DeviceStatus.EXCLUDED)) {
                 return a;
             }
         }

@@ -7,6 +7,8 @@ package com.razie.pub.assets;
 import java.util.Collection;
 import java.util.Map;
 
+import org.w3c.dom.Element;
+
 import com.razie.pub.base.ActionItem;
 import com.razie.pub.base.ScriptContext;
 import com.razie.pub.draw.Drawable;
@@ -42,6 +44,16 @@ public abstract class AssetMgr {
     /** get the supported metas*/
     public static Iterable<String> metas() {
         return impl.metasImpl();
+    }
+
+    /** TODO - does it belong here? register a new type */
+    public void register(Meta meta) {
+        throw new UnsupportedOperationException ("must implement in derived class");
+    }
+
+    /** TODO - does it belong here? register a new type */
+    public void registerFinder(Element finder) {
+        throw new UnsupportedOperationException ("must implement in derived class");
     }
 
     /** get the meta description for a certain type */

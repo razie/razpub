@@ -33,7 +33,8 @@ public class ActionItem implements Cloneable {
 
     /** most actions do not have arguments...for those that do, this contains their defs (name:type=default) */
     public AttrAccess args = null;
-    
+
+    /** A=act(ACT), C=create(PUT), R=read(GET), U=update(POST), D=delete(REMOVE) */
     public enum ActionType { A, C, R, U, D };
     public ActionType actionType = ActionType.R;
     

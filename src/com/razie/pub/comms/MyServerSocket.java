@@ -37,27 +37,13 @@ public class MyServerSocket extends CommChannel {
      * @throws AuthException
      */
     public void auth(LightAuth.PermType perm) throws AuthException {
-        LightAuth.AuthType minAuth = mapAuth(perm);
+        LightAuth.AuthType minAuth = LightAuth.mapAuth(perm);
 
         if (level.get(getAuth()) >= level.get(minAuth))
             return;
 
-        throw new AuthException();
-    }
-
-    private static LightAuth.AuthType mapAuth(LightAuth.PermType perm) {
-        switch (perm) {
-        case ADMIN:
-            return LightAuth.AuthType.INHOUSE;
-        case CONTROL:
-            return LightAuth.AuthType.SHAREDSECRET;
-        case VIEW:
-        case WRITE:
-            return LightAuth.AuthType.FRIEND;
-        case PUBLIC:
-            return LightAuth.AuthType.ANYBODY;
-        }
-        return LightAuth.AuthType.SHAREDSECRET;
+        throw new AuthException("Not enough karma: "+getAuth() + " < "+minAuth + " YOU ARE: " + this.from.toString());
+        
     }
 
     public InputStream getInputStream() throws IOException {

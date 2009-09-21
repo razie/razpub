@@ -9,7 +9,7 @@ import com.razie.pub.base.NoStatics;
 import com.razie.pub.base.log.Log;
 import com.razie.pub.http.LightCmdGET;
 import com.razie.pub.http.LightServer;
-import com.razie.pub.http.SocketCmdListener;
+import com.razie.pub.http.SocketCmdHandler;
 import com.razie.pub.lightsoa.HttpAssetSoaBinding;
 import com.razie.pub.lightsoa.HttpSoaBinding;
 
@@ -47,7 +47,7 @@ public class AgentHttpService extends AgentService {
         NoStatics.put(AgentHttpService.class, this);
 
         // the server must have a GET command for thise service...
-        for (SocketCmdListener l : server.getListeners())
+        for (SocketCmdHandler l : server.getHandlers())
             if (l instanceof LightCmdGET) {
                 cmdGET = (LightCmdGET) l;
                 break;
@@ -76,8 +76,8 @@ public class AgentHttpService extends AgentService {
         getInstance().assetBinding.register(c);
     }
 
-    public static List<SocketCmdListener> getListeners() {
-        return getInstance().server.getListeners();
+    public static List<SocketCmdHandler> getHandlers() {
+        return getInstance().server.getHandlers();
     }
 
     public static Iterable<HttpSoaBinding> getBindings() {

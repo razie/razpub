@@ -11,6 +11,7 @@ import java.net.URL;
 import com.razie.pub.FileUtils;
 import com.razie.pub.comms.AgentHandle;
 import com.razie.pub.comms.Agents;
+import com.razie.pub.comms.Comms;
 
 /**
  * the location of an asset, either a remote url like below or a directory.
@@ -61,7 +62,7 @@ public class AssetLocation implements Serializable {
     public boolean isLocal() {
         if (isMutant()) {
             return this.getHost().equals(Agents.getMyHostName()) || "local".equals(this.getHost())
-                    || "127.0.0.1".equals(this.getHost());
+                    || Comms.isLocalhost(this.getHost());
         } else {
             return this.localPath != null && this.localPath.length() > 0;
         }

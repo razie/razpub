@@ -36,6 +36,7 @@ import com.razie.pub.base.data.HttpUtils;
  * @author razvanc99
  */
 public interface AttrAccess {
+    
     /** these types MUST be supported by forms for capture, not necessarily by displays */
     public static enum AttrType {
         STRING, MEMO, SCRIPT, INT, FLOAT, DATE
@@ -97,7 +98,7 @@ public interface AttrAccess {
     public String addToUrl(String url);
 
     /** simple base implementation */
-    public class Impl implements AttrAccess {
+    static public class Impl implements AttrAccess {
         // lazy
         protected Map<String, Object>   parms = null;
         protected Map<String, AttrType> types = null;

@@ -33,6 +33,9 @@ public interface ScriptContext extends AttrAccess {
     /** TODO document */
     public void unguard(String name, String condition, String expr);
 
+    /** TODO remove */
+    public void screwscala28(String name, Object v);
+
     /** TODO document */
     public void verbose(boolean v);
 
@@ -123,5 +126,9 @@ public interface ScriptContext extends AttrAccess {
         public void verbose(boolean v) {
             this.verbose = v;
         }
+        
+    /** TODO remove */
+    public void screwscala28(String name, Object v) {super.set(name, v);}
+
     }
 }

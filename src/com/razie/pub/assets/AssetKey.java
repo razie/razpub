@@ -17,11 +17,12 @@ import com.razie.pub.base.data.HttpUtils;
  * asset-URI has this format: <code>"razie.uri:entityType:entityKey@location"</code>
  * <ul>
  * <li>type is the type of entity, should be unique among all other types. HINT: do not keep
- * defining "Movie" etc - always assume someone else did...use "JohnsonsPrick.Movie" for instance :D
+ * defining "Movie" etc - always assume someone else did...use "AlBundy.Movie" for instance :D
  * <li>key is the unique key of the given entity, unique in this location and for this type. The key
  * could be anything that doesn't have an '@' un-escaped. it could contain ':' itself like an
- * XCAP/XPATH etc, which is rather cool?
- * <li>location identifies the location of the entity: either URL or folder or a combination
+ * XCAP/XPATH etc, which is rather cool...?
+ * <li>location identifies the location of the entity: either URL or folder or a combination. 
+ * A folder implies it's on the localhost. An URL implies it's in that specific server.
  * </ul>
  * 
  * <p>
@@ -114,6 +115,11 @@ public class AssetKey implements Serializable, Cloneable {
         return HttpUtils.toUrlEncodedString(this.toString());
     }
 
+    /** we love scala - forget get/set, eh? */
+    public String        meta() { return this.type; }
+    public String        key() { return this.id; }
+    public AssetLocation location() { return this.getLocation(); }
+    
     /**
      * @param etype
      */

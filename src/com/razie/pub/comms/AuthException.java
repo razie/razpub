@@ -12,5 +12,9 @@ package com.razie.pub.comms;
  * 
  */
 public class AuthException extends RuntimeException {
+    
+    public AuthException () {}
+    
+    public AuthException (String m) { super(m);}
 
 }

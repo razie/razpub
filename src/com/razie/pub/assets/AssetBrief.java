@@ -165,18 +165,22 @@ public class AssetBrief extends AttrAccess.Impl implements AttrAccess, Reference
         AttrAccess a = new AttrAccess.Impl();
 
         a.setAttr("title", getName());
-        a.setAttr("link", "?");
+        a.setAttr("media:title", getName());
+        a.setAttr("link", "?");// TODO build page to view the item
+        a.setAttr("media:player", "?");
 
-        a.setAttr("upnp:class", "object.item.videoItem.movie");
+//        a.setAttr("upnp:class", "object.item.videoItem.movie");
         // if (series != null)
         // a.setAttr("series", getSeries().toUrlEncodedString());
 
-        a.setAttr("upnp:genre", "");
-        a.setAttr("upnp:longDescription", getLargeDesc());
-        a.setAttr("dc:description", getBriefDesc());
+//        a.setAttr("upnp:genre", "");
+        a.setAttr("description", getLargeDesc());
+        a.setAttr("media:description", getBriefDesc());
 
-        a.setAttr("upnp:storageMedium", "");
-        a.setAttr("upnp:channelName", "");
+        a.setAttr("media:category", "?");
+
+//        a.setAttr("upnp:storageMedium", "");
+//        a.setAttr("upnp:channelName", "");
 
         s += a.toXml();
 

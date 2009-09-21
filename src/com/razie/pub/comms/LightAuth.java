@@ -175,9 +175,14 @@ public class LightAuth {
         // some sort of a test???
 
         // TODO this auth is really weak anyways...
-        if (clientip.startsWith(Agents.getHomeNetPrefix()) || "127.0.0.1".equals(clientip)
+        Object debug1 = Agents.getMyHostName();
+       
+        // TODO is this correct in linux?
+        if (clientip.startsWith(Agents.getHomeNetPrefix())
                 || Agents.agent(Agents.getMyHostName()) == null
                 || clientip.equals(Agents.agent(Agents.getMyHostName()).ip)) {
+            return LightAuth.AuthType.INHOUSE;
+        } else if (Comms.isLocalhost(clientip)) {
             return LightAuth.AuthType.INHOUSE;
         } else if (false) {
             // TODO identify shared secret
@@ -187,5 +192,20 @@ public class LightAuth {
             return LightAuth.AuthType.FRIEND;
         } else
             return LightAuth.AuthType.ANYBODY;
+    }
+    
+    public static LightAuth.AuthType mapAuth(LightAuth.PermType perm) {
+        switch (perm) {
+        case ADMIN:
+            return LightAuth.AuthType.INHOUSE;
+        case CONTROL:
+            return LightAuth.AuthType.SHAREDSECRET;
+        case WRITE:
+        case VIEW:
+            return LightAuth.AuthType.FRIEND;
+        case PUBLIC:
+            return LightAuth.AuthType.ANYBODY;
+        }
+        return LightAuth.AuthType.SHAREDSECRET;
     }
 }

@@ -88,6 +88,7 @@ public class Agent {
      * register a new service with the agent - private so folks don't use funny names yet...
      */
     private synchronized void register(String name, AgentService l) {
+		Log.traceThis("REGISTERING_SERVICE: " + name);
         this.services.put(name, l);
         l.agent = this;
 
@@ -99,6 +100,8 @@ public class Agent {
             startSvc(l);
             ThreadContext.exit(old);
         }
+
+		Log.logThis("REGISTERED_SERVICE: " + name);
     }
 
     private void startSvc(AgentService svc) {

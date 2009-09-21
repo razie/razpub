@@ -14,19 +14,13 @@ import com.razie.pub.base.actions.BaseActionToInvoke;
 import com.razie.pub.draw.Drawable;
 
 /**
- * this is an instance of an action, meant to be invoked. It is prepared by someone and can be
- * executed on the spot OR presented to the user as a menu or some other invokable and invoked
- * later. It contains everything needed to invoke itself. It can be invoked in the same JVM or
- * remotely (from a web page etc).
+ * same semantics as ActionToInvike, except it is done via POST, not GET
  * 
- * it can be placed on a menu, web page, dialog as a button etc - it generally represents a menu
- * item or a button.
+ * this cannot be printed to a web page...since you can't 
  *
- * TODO we need a provider mechanism, where depending on the target - i guess - the URLs are formatted differently. So, for instance, an AssetActionToInvoke for viewing a flickr image would be formatted differently from
- * 
  * @author razvanc99
  */
-public class ActionToInvoke extends BaseActionToInvoke implements Cloneable, AttrAccess, Drawable {
+public class POSTActionToInvoke extends BaseActionToInvoke implements Cloneable, AttrAccess, Drawable {
     /**
      * constructor
      * 
@@ -35,8 +29,9 @@ public class ActionToInvoke extends BaseActionToInvoke implements Cloneable, Att
      * @param item this is the action, contains the actual command name and label to display
      * @param pairs
      */
-    public ActionToInvoke(String target, ActionItem item, Object... pairs) {
+    public POSTActionToInvoke(String target, ActionItem item, AttrAccess postArgs, Object... pairs) {
         super(target, item, pairs);
+        this.postArgs = postArgs;
     }
 
     /**
@@ -47,12 +42,14 @@ public class ActionToInvoke extends BaseActionToInvoke implements Cloneable, Att
      * @param item this is the action, contains the actual command name and label to display
      * @param pairs
      */
-    public ActionToInvoke(ActionItem item, Object... pairs) {
+    public POSTActionToInvoke(ActionItem item, AttrAccess postArgs, Object... pairs) {
         super(item, pairs);
+        this.postArgs = postArgs;
     }
 
-    public ActionToInvoke clone() {
-        return new ActionToInvoke(this.target, this.actionItem.clone(), this.toPairs());
+    // TODO clone args and postargs
+    public POSTActionToInvoke clone() {
+        return new POSTActionToInvoke(this.target, this.actionItem.clone(), this.postArgs, this.toPairs());
     }
 
     /**
@@ -86,4 +83,6 @@ public class ActionToInvoke extends BaseActionToInvoke implements Cloneable, Att
             throw new RuntimeException("while getting the command url: " + this.makeActionUrl(), e);
         }
     }
+    
+    public AttrAccess postArgs;
 }
