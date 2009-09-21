@@ -12,7 +12,7 @@ import com.razie.pub.events.EvTypes;
  * @version $Revision: 1.63 $
  * @since $Date: 2005/04/01 16:22:12 $
  */
-public class LifeEventTypes extends EvTypes {
+public class LifeEventTypes extends EvTypes.Impl {
     /**
      * Notification that the thread is starting (called before 'run' function)
      * 

@@ -212,7 +212,6 @@ public abstract class Worker implements Runnable, Being {
      * Implementing work items should check this flag before doing anything of duration and just
      * stop if the flag is true.
      * 
-     * @see com.sigma.hframe.jmt.BeingDyingRtException
      * @return true if the thread should stop...
      */
     public static boolean dying() {
@@ -232,7 +231,6 @@ public abstract class Worker implements Runnable, Being {
      * threads should check this every now and then and if true, NOT exit or return, but throw
      * BeingDyingRtException. This specific exception will not be reported...
      * 
-     * @see com.sigma.hframe.jmt.BeingDyingRtException
      * @return true if the thread should stop...
      */
     public void shutdown() {

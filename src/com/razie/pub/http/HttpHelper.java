@@ -101,26 +101,32 @@ public class HttpHelper {
     /**
      * @param
      * 
-     * @param remote socket to write to
-     * @param cmd the POST line
+     * @param hostname - remote server to write to
+     * @param port - remote port to write to
+     * @param cmd the POST line i.e. "POST /url HTTP/1.1"
      * @param httpArgs http args
-     * @param parms the content posted over
+     * @param content the content posted over
      * @throws IOException
+     * 
+     * TODO return UrlConnection or something like that...
      */
-    public static void sendPOST(Socket remote, String cmd, AttrAccess httpArgs, String parms) throws IOException {
+    public static Socket sendPOST(String hostname, Integer port, String cmd, AttrAccess httpArgs, String content) throws IOException {
+        Socket remote = new Socket(hostname, port);
         PrintStream out = new PrintStream(remote.getOutputStream());
         // this is how an http request is sent via the socket
         out.println(cmd);
         
         if (httpArgs == null)
             httpArgs = new AttrAccess.Impl();
-        httpArgs.set("Content-Length", parms.length()); 
+        httpArgs.set("Content-Length", content.length()); 
         
         for (String n : httpArgs.getPopulatedAttr())
             out.println(n + ": " + httpArgs.a(n));
         
         out.println("");
-        out.print(parms);
+        out.print(content);
+        
+        return remote;
     }
 
 }
