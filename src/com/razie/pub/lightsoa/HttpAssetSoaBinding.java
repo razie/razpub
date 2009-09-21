@@ -44,7 +44,7 @@ public class HttpAssetSoaBinding extends HttpSoaBinding {
     }
 
     @Override
-    public Object executeCmdServer(String actionName, String protocol, String cmdargs, Properties parms,
+    public Object execServer(String actionName, String protocol, String cmdargs, Properties parms,
             MyServerSocket socket) {
         AssetKey key = AssetKey.fromString(HttpUtils.fromUrlEncodedString(actionName));
 
@@ -53,9 +53,9 @@ public class HttpAssetSoaBinding extends HttpSoaBinding {
             // throw new IllegalArgumentException("ERR_HTTPSOAASSET type is not bound: " +
             // key.getType());
             // try to call a generic asset via its inventory or other injection mechanism...
-            return defaultAssetBinding.executeCmdServer(actionName, protocol, cmdargs, parms, socket);
+            return defaultAssetBinding.execServer(actionName, protocol, cmdargs, parms, socket);
         } else
-            return binding.executeCmdServer(actionName, protocol, cmdargs, parms, socket);
+            return binding.execServer(actionName, protocol, cmdargs, parms, socket);
     }
 
     /** invoke a lightsoa method on a given service */

@@ -1,7 +1,3 @@
-// ==========================================================================
-// $Id: Svc.java,v 1.63 2005/04/01 16:22:12 davidx Exp $
-// (@) Copyright Sigma Systems (Canada) Inc.
-// ==========================================================================
 package com.razie.pubstage.components;
 
 import java.lang.annotation.ElementType;
@@ -16,9 +12,6 @@ import java.lang.annotation.Target;
  * the idea is that this is a point that can be hooked up in a logical diagram and results sent
  * elsewhere...
  * 
- * @version $Revision: 1.63 $
- * @author $Author: davidx $
- * @since $Date: 2005/04/01 16:22:12 $
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target( { ElementType.METHOD })

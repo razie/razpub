@@ -1,7 +1,3 @@
-//==========================================================================
-// $Id: Svc.java,v 1.63 2005/04/01 16:22:12 davidx Exp $
-// (@) Copyright Sigma Systems (Canada) Inc.
-//==========================================================================
 package com.razie.pubstage;
 
 import com.razie.pub.base.AttrAccess;
@@ -13,9 +9,6 @@ import com.razie.pub.base.AttrAccess;
  * 
  * TODO sync file across agents
  * 
- * @version $Revision: 1.63 $
- * @author $Author: davidx $
- * @since $Date: 2005/04/01 16:22:12 $
  */
 public class UserPrefs {
 

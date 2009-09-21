@@ -122,7 +122,7 @@ public class HttpSoaBinding extends SoaBinding {
      * @param socket the server socket
      * @return
      */
-    public Object executeCmdServer(String actionName, String protocol, String cmdargs, Properties parms,
+    public Object execServer(String actionName, String protocol, String cmdargs, Properties parms,
             MyServerSocket socket) {
 
         Object otoi = this.service;
