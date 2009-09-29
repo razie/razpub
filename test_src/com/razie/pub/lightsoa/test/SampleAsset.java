@@ -1,5 +1,6 @@
 /**
- * Razvan's code. Copyright 2008 based on Apache (share alike) see LICENSE.txt for details.
+ * Razvan's public code. Copyright 2008 based on Apache license (share alike) see LICENSE.txt for
+ * details. No warranty implied nor any liabity assumed for this code.
  */
 package com.razie.pub.lightsoa.test;
 
@@ -14,7 +15,6 @@ import com.razie.pub.lightsoa.SoaStreamable;
  * fully annotated sample asset class
  * 
  * @author razvanc99
- * 
  */
 @SoaAsset(meta = "raz.test.Player", descr = "test player asset")
 public class SampleAsset {

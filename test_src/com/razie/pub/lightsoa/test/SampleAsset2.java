@@ -1,5 +1,6 @@
 /**
- * Razvan's code. Copyright 2008 based on Apache (share alike) see LICENSE.txt for details.
+ * Razvan's public code. Copyright 2008 based on Apache license (share alike) see LICENSE.txt for
+ * details. No warranty implied nor any liabity assumed for this code.
  */
 package com.razie.pub.lightsoa.test;
 
@@ -16,7 +17,6 @@ import com.razie.pub.lightsoa.SoaStreamable;
  * this is useful when the metas are not available but you can modify the asset class to add SoaMethod and avoid injection
  * 
  * @author razvanc99
- * 
  */
 public class SampleAsset2 {
     AssetKey key;

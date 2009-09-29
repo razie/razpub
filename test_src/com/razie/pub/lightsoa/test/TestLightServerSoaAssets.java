@@ -1,5 +1,6 @@
 /**
- * Razvan's code. Copyright 2008 based on Apache (share alike) see LICENSE.txt for details.
+ * Razvan's public code. Copyright 2008 based on Apache license (share alike) see LICENSE.txt for
+ * details. No warranty implied nor any liabity assumed for this code.
  */
 package com.razie.pub.lightsoa.test;
 
@@ -9,7 +10,6 @@ import java.io.InputStreamReader;
 import java.net.URL;
 
 import com.razie.pub.assets.AssetActionToInvoke;
-import com.razie.pub.assets.AssetHandle;
 import com.razie.pub.assets.AssetMgr;
 import com.razie.pub.base.ActionItem;
 import com.razie.pub.base.log.Log;
@@ -62,16 +62,6 @@ public class TestLightServerSoaAssets extends TestLightBase {
         ActionToInvoke action = new AssetActionToInvoke("http://localhost:" + PORT,
                 TestLocalSoaAssets.PLAYERKEY, new ActionItem("play"), "movie", TestLocalSoaAssets.MOVIEKEY);
         String result = (String) action.act(null);
-
-        assertTrue(result.contains(TestLocalSoaAssets.MOVIEKEY.getId()));
-    }
-
-    /**
-     */
-    public void testSoaEchoHandle() throws IOException, InterruptedException {
-        // send echo command
-        AssetHandle handle = new AssetHandle(TestLocalSoaAssets.PLAYERKEY);
-        String result = (String) handle.invoke("play", "movie", TestLocalSoaAssets.MOVIEKEY.toString());
 
         assertTrue(result.contains(TestLocalSoaAssets.MOVIEKEY.getId()));
     }
