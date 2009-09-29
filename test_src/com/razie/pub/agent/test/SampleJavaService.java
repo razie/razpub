@@ -1,6 +1,6 @@
 /**
  * Razvan's public code. Copyright 2008 based on Apache license (share alike) see LICENSE.txt for
- * details.
+ * details. No warranty implied nor any liabity assumed for this code.
  */
 package com.razie.pub.agent.test;
 
@@ -13,14 +13,9 @@ import com.razie.pub.lightsoa.SoaService;
  * sample agent service in java
  * 
  * @author razvanc
- * @version $Id$
- * 
  */
 @SoaService(name = "samplejavaservice", bindings = { "http" }, descr = "sample in java")
 public class SampleJavaService extends AgentService {
-
-    public SampleJavaService() {
-    }
 
     protected void onStartup() {
         Log.logThis("SampleJavaService onStartup()");
@@ -30,7 +25,7 @@ public class SampleJavaService extends AgentService {
         Log.logThis("SampleJavaService onShutdown()");
     }
 
-    @SoaMethod(descr = "echo", args = { "msg" })
+    @SoaMethod(descr = "echo with args", args = { "msg" })
     public String echo1(String msg) {
         return "echo1: " + msg;
     }
