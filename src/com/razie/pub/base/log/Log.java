@@ -9,10 +9,12 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import com.razie.pub.UnknownRtException;
+
 /**
  * simple log proxy - log4j is dominant but then there's the JDK's log... this gives you the freedom
- * to use one or the other...or simply recode to use your own - if you hapen to use another one...doesn't it
- * suck when you use a library which writes to stdout?
+ * to use one or the other...or simply recode to use your own - if you hapen to use another
+ * one...doesn't it suck when you use a library which writes to stdout?
  * 
  * create logs per class with the Factory. then invoke log() trace() or alarm().
  * 
@@ -25,13 +27,13 @@ import java.io.IOException;
  */
 public class Log {
 
-   private String category;
-   private String component;
-   public static String program = "dflt";
-   public static int MAXLOGS = 1000;
-   public static String[] lastLogs = new String[MAXLOGS];
-   public static int curLogLine = 0;
-   public static boolean DEBUGGING = false;
+   private String         category;
+   private String         component;
+   public static String   program    = "dflt";
+   public static int      MAXLOGS    = 1000;
+   public static String[] lastLogs   = new String[MAXLOGS];
+   public static int      curLogLine = 0;
+   public static boolean  DEBUGGING  = false;
 
    public Log(String componentNm, String categoryNm) {
       this.category = categoryNm;
@@ -138,12 +140,21 @@ public class Log {
    }
 
    public static void alarmThis(String m, Throwable... e) {
-      Factory.logger.alarm(m,e);
+      Factory.logger.alarm(m, e);
    }
-   
+
+   public static void alarmThisAndThrow(String m, Throwable... e) {
+      // TODO i don't think this should log again...since it throws it, eh?
+      Factory.logger.alarm(m, e);
+      if (e.length > 0)
+         throw new UnknownRtException(m, e[0]);
+      else
+         throw new UnknownRtException(m);
+   }
+
    /**
     * helper to turn lists/arrays/maps into strings for nice logging
-    *
+    * 
     * @param ret object to toString
     * @return either the new String or the original object if not recognized
     */
@@ -155,7 +166,7 @@ public class Log {
    /**
     * This is how you can use any underlying logging package: simply overwrite this with your own
     * factory before the thing starts (first thing in main())
-    *
+    * 
     * TODO implement proper factory pattern
     */
    public static class Factory {
