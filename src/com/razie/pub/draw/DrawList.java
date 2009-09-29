@@ -5,6 +5,7 @@
 package com.razie.pub.draw;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.json.JSONObject;
@@ -27,6 +28,21 @@ public class DrawList extends StreamableContainer.Impl implements Drawable, Stre
     public String  valign     = null;
     public String  rowColor   = null;
 
+    /** set the attributes before rendering, eh? */
+    public DrawList() {}
+    
+    /** pre-populate: set the attributes before rendering, eh? */
+    public DrawList(Object[] arr) {
+       for (Object o : arr)
+          write (o);
+    }
+    
+    /** pre-populate: set the attributes before rendering, eh? */
+    public DrawList(Collection arr) {
+       for (Object o : arr)
+          write (o);
+    }
+    
     /** shortcut to render self - don't like controllers that much */
     public Object render(Technology t, DrawStream stream) {
         return Renderer.Helper.draw(this, t, stream);

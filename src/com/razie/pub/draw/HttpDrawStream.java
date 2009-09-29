@@ -82,12 +82,14 @@ public class HttpDrawStream extends com.razie.pub.draw.DrawStream.DrawStreamWrap
         super.close();
     }
 
+    /** add a meta attribute - should be done before streaming starts */
     public void addMeta(String string) {
         if (this.metas == null)
             this.metas = new ArrayList<String>();
         this.metas.add(string);
     }
     
+    /** add an http tag - should be done before streaming starts */
     public void addHttpTag(String string) {
         if (this.httptags == null)
             this.httptags = new ArrayList<String>();
