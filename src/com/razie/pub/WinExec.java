@@ -1,6 +1,6 @@
 /**
  * Razvan's public code. Copyright 2008 based on Apache license (share alike) see LICENSE.txt for
- * details.
+ * details. No warranty implied nor any liability assumed for this code.
  */
 package com.razie.pub;
 
@@ -8,6 +8,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 import com.razie.pub.base.log.Log;
@@ -86,15 +87,10 @@ public class WinExec {
     * @throws IOException
     */
    public static StreamGobbler execCmd(String program, String... args) throws IOException {
-      // String cmdline = program;
-      // for (String arg : args) {
-      // cmdline += SPACE+QUOTES + arg + QUOTES;
-      // }
-
       String[] cmdline = makeArgs(program, args);
 
       Runtime rt = Runtime.getRuntime();
-      logger.log("EXECUTE cmd: " + cmdline.toString());
+      logger.log("EXECUTE_CMD: " + Arrays.toString(cmdline));
       Process proc = rt.exec(cmdline);
       // any error message?
       StreamGobbler errorGobbler = new StreamGobbler(proc.getErrorStream(), "ERROR", false);
