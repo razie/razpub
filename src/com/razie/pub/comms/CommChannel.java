@@ -26,7 +26,7 @@ public class CommChannel {
     public ChannelEndPoint from, to;
    
     // the current level of auth of the peer. Normally I am "to" and the peer if "from"
-    private LightAuth.AuthType auth = LightAuth.AuthType.ANYBODY;
+    protected LightAuth.AuthType auth = LightAuth.AuthType.ANYBODY;
 
     public CommChannel(AuthType ia) {
         auth = ia;

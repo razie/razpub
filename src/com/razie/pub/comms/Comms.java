@@ -150,13 +150,17 @@ public class Comms {
      * @return a string containing the text read from the URL. can be the result of a servlet, a web
      *         page or the contents of a local file. It's null if i couldn't read the file.
      */
-    public static InputStream streamUrl(String url) {
+    public static InputStream streamUrl(String url, AttrAccess... httpArgs) {
         try {
             InputStream in = null;
             if (url.startsWith("file:")) {
                 in = (new URL(url)).openStream();
             } else if (url.startsWith("http:")) {
                 URLConnection uc = (new URL(url)).openConnection();
+                if (httpArgs.length > 0 && httpArgs[0] != null) {
+                   for (String a : httpArgs[0].getPopulatedAttr())
+                      uc.setRequestProperty(a, httpArgs[0].sa(a));
+                }
                 logger.trace(3, "hdr: ", uc.getHeaderFields());
                 String resCode = uc.getHeaderField(0);
                 in = uc.getInputStream();
@@ -229,8 +233,8 @@ public class Comms {
      * @return a string containing the text read from the URL. can be the result of a servlet, a web
      *         page or the contents of a local file. It's null if i couldn't read the file.
      */
-    public static String readUrl(String url) {
-        InputStream s = streamUrl(url);
+    public static String readUrl(String url, AttrAccess... httpArgs) {
+        InputStream s = streamUrl(url, httpArgs);
         if (s == null) {
             return null;
         }

@@ -11,6 +11,8 @@ import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.razie.pub.base.AttrAccess;
+
 /**
  * a wrapper for connections (from/to clients) so i can add functionality as i please and not depend
  * on some freaky Java API
@@ -23,12 +25,15 @@ public class MyServerSocket extends CommChannel {
     public Socket server;
 
     public MyServerSocket(Socket s) {
-        super(LightAuth.singleton().iauthorize(s));
+        super(LightAuth.singleton().iauthorize(s, null, null));
         this.server = s;
         this.from = new SocketEndPoint(server);
         this.to = null;// TODO this is me...
     }
 
+    public void setHttp(String url, AttrAccess httpArgs) {
+       auth = LightAuth.singleton().iauthorize(server, url, httpArgs);
+    }
     /**
      * authorize a request on a given channel. note that this is not agnostic about the particular
      * request/action, so it's only high-level authentication, really

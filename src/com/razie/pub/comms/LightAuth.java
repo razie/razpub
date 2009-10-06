@@ -6,6 +6,8 @@ package com.razie.pub.comms;
 
 import java.net.Socket;
 
+import com.razie.pub.base.AttrAccess;
+
 /**
  * auth providers have, for me, several responsibilities - see the static methods below
  * 
@@ -95,6 +97,10 @@ public class LightAuth {
         return singleton().wrapUrlImpl(url);
     }
 
+    public AttrAccess httpSecParms (java.net.URL url) {
+       return null;
+    }
+    
     /**
      * used by server to the URL just before using it.
      * <p>
@@ -168,7 +174,7 @@ public class LightAuth {
         }
     }
 
-    public LightAuth.AuthType iauthorize(Socket socket) {
+    public LightAuth.AuthType iauthorize(Socket socket, String url, AttrAccess httpArgs) {
         String clientip = socket.getInetAddress().getHostAddress();
 
         // if Agents doesn't know myself, this should succeed, it's not a proper server but maybe
