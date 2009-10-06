@@ -71,9 +71,9 @@ public class LightServer extends Worker {
                 listener = new ServerSocket(port);
                 break;
             } catch (java.net.BindException be) {
-                Log.alarmThis("HTTP_ERR CANNOT bind socket - another program is using it: port=" + port+" ", be);
+                Log.alarmThisAndThrow("HTTP_ERR_BIND CANNOT bind socket - another program is using it: port=" + port+" ", be);
             } catch (IOException ioe) {
-                Log.logThis("HTTP_ERR IOException on socket listen: ", ioe);
+                Log.alarmThisAndThrow("HTTP_ERR IOException on socket listen: ", ioe);
 
 		// TODO why do i sleep here? forgot to comment...
                 try {
@@ -230,9 +230,10 @@ public class LightServer extends Worker {
                     args = "";
                 }
 
-                // TODO document these
+                // TODO document these - are they used anywhere?
                 httpattrs.set("lightsoa.methodname", cmd);
                 httpattrs.set("lightsoa.path", args);
+					socket.setHttp(args, httpattrs);
                 
                 Log.logThis("HTTP_CLIENT_RQ: " + cmd + " args=" + args);
 
@@ -268,11 +269,11 @@ public class LightServer extends Worker {
 
     static final Log logger = Log.Factory.create(Receiver.class.getSimpleName());
 
-    public void registerCmdListener(SocketCmdHandler c) {
+    public void registerHandler(SocketCmdHandler c) {
         getHandlers().add(c);
     }
 
-    public void removeCmdListener(SocketCmdHandler c) {
+    public void removeHandler(SocketCmdHandler c) {
         getHandlers().remove(c);
     }
 

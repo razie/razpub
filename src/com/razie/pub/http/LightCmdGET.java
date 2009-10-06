@@ -296,7 +296,7 @@ public class LightCmdGET extends SocketCmdHandler.Impl {
        MPRES.add (MutantPresentation.getInstance());
     }
     
-    static final String[]        COMMANDS = { "GET"}; // TODO "POST", "PUT", "DELETE" };
+    static final String[]        COMMANDS = { "GET"}; // TODO "PUT", "DELETE"
     static final Log             logger   = Log.Factory.create("", LightCmdGET.class.getName());
     private Map<String, HttpSoaBinding> bindings = new HashMap<String,HttpSoaBinding>();
 }
