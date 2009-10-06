@@ -6,6 +6,7 @@ package com.razie.pub.comms;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+import com.razie.pub.base.NoStaticSafe;
 import com.razie.pub.base.NoStatics;
 import com.razie.pub.base.log.Log;
 
@@ -20,11 +21,15 @@ import com.razie.pub.base.log.Log;
  * 
  * @author razvanc99
  */
+@NoStaticSafe
 public class Agents {
     /** sent by agent to all AgentServices to notify of changes of network/ip friends etc */
     public static final String evAGENTS_UPDATE = "AGENTS_UPDATE";
 
     protected AgentCloud       myCloud         = null;
+    // TODO implement this
+    public AgentCloud         homeCloud = null;
+
     public boolean             testing         = false;
     public static final String TESTHOST        = "TEST-host";
     

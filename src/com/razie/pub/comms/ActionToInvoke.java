@@ -81,7 +81,7 @@ public class ActionToInvoke extends BaseActionToInvoke implements Cloneable, Att
     public Object act(ScriptContext ctx) {
         try {
             URL url = new URL(this.makeActionUrl());
-            return Comms.readUrl(url.toExternalForm());
+            return Comms.readUrl(url.toExternalForm(), LightAuth.impl.httpSecParms(url));
         } catch (MalformedURLException e) {
             throw new RuntimeException("while getting the command url: " + this.makeActionUrl(), e);
         }

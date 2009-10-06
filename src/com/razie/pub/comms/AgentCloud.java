@@ -9,8 +9,8 @@ import java.util.Map;
 
 /**
  * a group of agents representing a logical structure, i.e. all the agents in my home (that is
- * actually a special group, the "home group". The different groups you could have/belong to are
- * equivalent, except the home group. The home group is by default the current group that is the
+ * actually a special group, the "home cloud". The different groups you could have/belong to are
+ * equivalent, except the home cloud. The home cloud is by default the current group that is the
  * target of distributed operations.
  * 
  * agent clouds are the logical unit for distributed services, including negociation, database sync
@@ -24,13 +24,15 @@ import java.util.Map;
  * @author razvanc
  */
 public class AgentCloud {
-    /** map<name,handle> */
+    /** map<name,handle> - i'm so lazy I used a synchronized map :) */
     private Map<String, AgentHandle> agents    = Collections
                                                        .synchronizedMap(new HashMap<String, AgentHandle>());
 
-    // TODO implement this
-    public static AgentCloud         homeCloud = null;
-
+    /** simple constructor with optional pre-population */
+    public AgentCloud (AgentHandle...handles) {
+       for (AgentHandle h : handles) this.put(h);
+    }
+    
     /**
      * only access is to clone the sync'd collection. The individual agents may still be modified by
      * async status updates, but as assignments are atomic should be ok

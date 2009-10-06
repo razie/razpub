@@ -39,6 +39,11 @@ public class AgentHandle extends AssetKey implements Cloneable {
     public String                 url;
 
     /** minimum information - use it for temporary handles or small tests...you'll have to */
+    public AgentHandle(String name, String hostname, String ip, String port) {
+        this(name, hostname, ip, port, "http://"+ip+":"+port, "", "");
+    }
+
+    /** minimum information - use it for temporary handles or small tests...you'll have to */
     public AgentHandle(String name, String hostname, String ip, String port, String url) {
         this(name, hostname, ip, port, url, "", "");
     }
@@ -90,7 +95,7 @@ public class AgentHandle extends AssetKey implements Cloneable {
 
     public boolean equals(Object o) {
         AgentHandle other = (AgentHandle) o;
-        if (this.name.equals(other.name) && this.hostname.equals(other.hostname)
+        if (other != null && this.name.equals(other.name) && this.hostname.equals(other.hostname)
                 && this.port.equals(other.port))
             return true;
         return false;

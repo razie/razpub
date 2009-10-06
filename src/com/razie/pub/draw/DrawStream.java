@@ -8,12 +8,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.razie.pub.base.log.Log;
 import com.razie.pub.comms.CommChannel.ChannelEndPoint;
 import com.razie.pub.draw.Renderer.Technology;
 
 /**
  * trying to setup a stream drawing framework. this could also be called DrawCanvas or panel in
  * Witcky?
+ * 
  * 
  * <p>
  * A stream is like a panel or a web page. The difference is that it will stream completed objects
@@ -66,6 +68,9 @@ public abstract class DrawStream implements DrawAccumulator {
         if (d != null) {
             elements.add(new Element(d, Element.State.WAITING));
             close(d);
+        } else  {
+           Log.logThis("WARN_STREAM_WRITE_NULL someone wanted to write a null...");
+           Log.traceThis("WARN_STREAM_WRITE_NULL stacktrace:", new RuntimeException().fillInStackTrace());
         }
     }
 
