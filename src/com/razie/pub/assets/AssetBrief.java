@@ -276,9 +276,9 @@ public class AssetBrief extends AttrAccess.Impl implements AttrAccess, Reference
             return new ServiceActionToInvoke("assets", DETAILS, "ref", getKey(), "series", this.getSeries()
                     .toString());
         } else {
-            // return new AssetActionToInvoke(getKey(), DETAILS);
+           // TODO use asset action
+//             return new AssetActionToInvoke(getKey(), DETAILS);
             return new ServiceActionToInvoke("assets", DETAILS, "ref", getKey());
-            // FIXME must use only asset stuff, no mutant specifics...
         }
     }
 
@@ -303,6 +303,13 @@ public class AssetBrief extends AttrAccess.Impl implements AttrAccess, Reference
         }
     }
 
+    /** get a full path - in case it's not an URL */
+    public String getFullPath() {
+       String fname = getFileName();
+       String path = getLocalDir() == null ? "" : getLocalDir();
+       return path + fname;
+    }
+    
     /**
      * @param fileName the fileName to set
      */

@@ -110,7 +110,7 @@ public class SSFilesRazie {
     }
 
     /**
-     * TODO add a filter for the directory name
+     * TODO SECURITY add a filter for the directory name
      * 
      * @param dir the directory to start the search in
      * @param files will add files to this list

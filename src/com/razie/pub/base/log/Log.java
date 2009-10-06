@@ -127,12 +127,20 @@ public class Log {
       return DEBUGGING;
    }
 
+   public static boolean isTraceOn() {
+      return DEBUGGING;
+   }
+
    public static void logThis(String m) {
       Factory.logger.log(m);
    }
 
    public static void traceThis(String m) {
-      Factory.logger.log(m);
+      if (Factory.logger.isTraceLevel(1)) Factory.logger.log(m);
+   }
+
+   public static void traceThis(String m, Throwable t) {
+      if (Factory.logger.isTraceLevel(1)) Factory.logger.log(m, t);
    }
 
    public static void logThis(String m, Throwable t) {

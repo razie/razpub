@@ -69,6 +69,7 @@ public class XmlDoc {
             File f = FileUtils.fileFromUrl(this.myUrl);
             long ft = f != null ? f.lastModified() : -1;
             if (ft != this.fileLastModified) {
+                Log.logThis ("RELOAD_UPDATED_XMLDB name="+name);
                 load(name, myUrl);
             }
         }

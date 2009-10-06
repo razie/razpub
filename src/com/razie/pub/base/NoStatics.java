@@ -94,7 +94,7 @@ public class NoStatics {
 	 *            the class of the static
 	 * @param o
 	 *            the instance to use in this and related threads
-	 * @return
+	 * @return the same object you put in
 	 */
 	public static Object put(Class<?> c, Object o) {
 		instance().statics.put(c, o);

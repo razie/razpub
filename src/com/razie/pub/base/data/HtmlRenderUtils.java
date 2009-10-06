@@ -5,6 +5,7 @@
 package com.razie.pub.base.data;
 
 import com.razie.pub.base.NoStatic;
+import com.razie.pub.base.NoStaticSafe;
 
 /**
  * a bunch of utilities related to rendering html content, including minimal support for themes via
@@ -17,8 +18,8 @@ import com.razie.pub.base.NoStatic;
  * all presentation but maybe we should support a them per server/service?
  * 
  * @author razvanc99
- * 
  */
+@NoStaticSafe
 public class HtmlRenderUtils {
     static NoStatic<HtmlTheme> theme = new NoStatic<HtmlTheme>("razie.theme", new DarkTheme());
     

@@ -179,7 +179,8 @@ public interface AttrAccess {
          * @parm pairs are pais of name/value, i.e. setAttr("car", "lexus") OR a Properties, OR
          *       another AttrAccess OR a Map<String,String>
          */
-        public void setAttr(Object... pairs) {
+        @SuppressWarnings("unchecked")
+      public void setAttr(Object... pairs) {
             if (pairs != null && pairs.length == 1 && pairs[0] instanceof Map) {
                 Map<String, String> m = (Map<String, String>) pairs[0];
                 for (Map.Entry<String,String> entry : m.entrySet()) {
@@ -282,7 +283,7 @@ public interface AttrAccess {
         /** TODO implement */
         public static AttrAccess fromJson(JSONObject o) {
             AttrAccess a = new Impl();
-            for (String n : o.getNames(o))
+            for (String n : JSONObject.getNames(o))
                try {
                   a.setAttr(n, o.getString(n));
                } catch (JSONException e) {
@@ -312,11 +313,15 @@ public interface AttrAccess {
                     newurl += newurl.contains("=") ? "&" : "?";
                 }
                 newurl += HttpUtils.toUrlEncodedString(a) + "="
-                        + HttpUtils.toUrlEncodedString(getAttr(a).toString());
+                        + HttpUtils.toUrlEncodedString(toStr(getAttr(a)));
             }
             return newurl;
         }
 
+        private String toStr (Object o) {
+           return o != null ? o.toString() : "";
+        }
+        
         protected boolean hasAttrType(String name) {
             return this.types != null && types.get(name) != null;
         }

@@ -74,6 +74,19 @@ public class ActionItem implements Cloneable {
 
     /**
      * @param name action name
+     * @param icon an iceon - a pic file
+     * @param label the label for this action
+     * @param tooltip
+     */
+    public ActionItem(String name, String icon, String label, String tooltip) {
+        this.name = name;
+        this.label = label;
+        this.tooltip = tooltip;
+        this.iconProp = icon;
+    }
+
+    /**
+     * @param name action name
      * @param icon an icon property - icons are supposed to be mapped via the RazIconRes class
      */
     public ActionItem(String name, String icon) {

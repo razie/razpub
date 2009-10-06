@@ -36,12 +36,14 @@ public interface AssetBase extends Referenceable {
         }
 
         public AssetKey getKey() {
-            return this.brief.getKey();
+            return this.brief == null ? null : this.brief.getKey();
         }
 
         public void setKey(AssetKey ref) {
+           if (this.brief != null) {
             this.brief.setKey(ref);
             this.brief.setName(ref.getId());
+           }
         }
     }
 }

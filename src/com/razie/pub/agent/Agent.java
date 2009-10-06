@@ -37,222 +37,233 @@ import com.razie.pubstage.comms.HtmlContents;
  * 
  */
 public class Agent {
-    private Map<String, AgentService> services    = new HashMap<String, AgentService>();
-    protected boolean                 stopped     = false;
-    protected boolean                 initialized = false;
-    protected boolean                 started     = false;
-    protected NoStatics               myStatics   = new NoStatics();
-    protected AgentHandle             myHandle    = null;
-    protected AgentCloud              homeGroup;
-    private ThreadContext             mainContext;
 
-    private final static Log          logger      = Log.Factory.create("agent", Agent.class.getSimpleName());
+   private Map<String, AgentService> services    = new HashMap<String, AgentService>();
+   protected boolean                 stopped     = false;
+   protected boolean                 initialized = false;
+   protected boolean                 started     = false;
+   protected NoStatics               myStatics   = new NoStatics();
+   protected AgentHandle             me    = null;
+   protected AgentCloud              homeCloud;
+   private ThreadContext             mainContext;
+   private final static Log          logger      = Log.Factory.create("agent", Agent.class.getSimpleName());
 
-    /** initialize agent with given info */
-    public Agent(AgentHandle myHandle, AgentCloud homeGroup) {
-        NoStatics ns = new NoStatics();
-        mainContext = new ThreadContext(ns);
-        mainContext.enter();
+   /** initialize agent with given info */
+   public Agent(AgentHandle me, AgentCloud homeCloud) {
+      this.me = me;
+      this.homeCloud = homeCloud;
+      
+      NoStatics ns = new NoStatics();
+      mainContext = new ThreadContext(ns);
+      mainContext.enter();
 
-        mainContext.setAttr("Agent", this);
-        mainContext.setAttr("NoStatics", ns);
+      mainContext.setAttr("Agent", this);
+      mainContext.setAttr("NoStatics", ns);
 
-        // initialize required static services
-        NoStatics.register(myHandle.name, ns);
+      // initialize required static services
+      NoStatics.register(me.name, ns);
 
-        if (NoStatics.get(Agents.class) == null)
-            NoStatics.put(Agents.class, new Agents(homeGroup, myHandle));
-        NoStatics.put(RazResourceLocator.class, new RazResourceManager());
+      if (NoStatics.get(Agents.class) == null)
+         NoStatics.put(Agents.class, new Agents(homeCloud, me));
 
-        this.myHandle = myHandle;
-        this.homeGroup = homeGroup;
-    }
+      if (NoStatics.get(RazResourceLocator.class) == null)
+         NoStatics.put(RazResourceLocator.class, new RazResourceManager());
+   }
 
-    /** return the instance to use for the current thread... */
-    public static Agent instance() {
-        return (Agent) ThreadContext.instance().getAttr("Agent");
-    }
+   /** return the instance to use for the current thread... */
+   public static Agent instance() {
+      return (Agent) ThreadContext.instance().getAttr("Agent");
+   }
 
-    public AgentHandle getHandle() {
-        return myHandle;
-    }
+   public AgentHandle getHandle() {
+      return me;
+   }
 
-    /**
-     * shorthand for other registerbyname: use the simple class name as service name
-     */
-    public void register(AgentService l) {
-        register(l.getClass().getSimpleName(), l);
-    }
+   /**
+    * shorthand for other registerbyname: use the simple class name as service name
+    */
+   public void register(AgentService l) {
+      register(l.getClass().getSimpleName(), l);
+   }
 
-    /**
-     * register a new service with the agent - private so folks don't use funny names yet...
-     */
-    private synchronized void register(String name, AgentService l) {
-		Log.traceThis("REGISTERING_SERVICE: " + name);
-        this.services.put(name, l);
-        l.agent = this;
+   /**
+    * register a new service with the agent - private so folks don't use funny names yet...
+    */
+   private synchronized void register(String name, AgentService l) {
+      Log.traceThis("REGISTERING_SERVICE: " + name);
+      this.services.put(name, l);
+      l.agent = this;
 
-        // delegate notifications to the post office
-        PostOffice.register(PostOffice.DFLT_LOCAL_TOPIC, l);
+      // delegate notifications to the post office
+      PostOffice.register(PostOffice.DFLT_LOCAL_TOPIC, l);
 
-        if (started && !stopped) {
-            ThreadContext old = this.mainContext.enter();
-            startSvc(l);
-            ThreadContext.exit(old);
-        }
+      if (started && !stopped) {
+         // make sure it's started in my context, since this is called by others
+         ThreadContext old = this.mainContext.enter();
+         startSvc(l);
+         ThreadContext.exit(old);
+      }
 
-		Log.logThis("REGISTERED_SERVICE: " + name);
-    }
+      Log.logThis("REGISTERED_SERVICE: " + name);
+   }
 
-    private void startSvc(AgentService svc) {
-        svc.onStartup();
+   private void startSvc(AgentService svc) {
+      svc.onStartup();
 
-        SoaService soas = svc.getClass().getAnnotation(SoaService.class);
-        if (soas != null && soas.bindings().length > 0) {
-            for (String binding : soas.bindings()) {
-                // TODO register the binding types and use them here rather than just http
-                if ("http".equals(binding)) {
-                    AgentHttpService.registerSoa(new HttpSoaBinding(svc));
-                }
+      SoaService soas = svc.getClass().getAnnotation(SoaService.class);
+      if (soas != null && soas.bindings().length > 0) {
+         for (String binding : soas.bindings()) {
+            // TODO register the binding types and use them here rather than just http
+            if ("http".equals(binding)) {
+               AgentHttpService.registerSoa(new HttpSoaBinding(svc));
             }
-        }
-    }
+         }
+      }
+   }
 
-    /**
-     * called when main() starts up but before onStartup(). Initialize all services from the
-     * configuration file
-     */
-    public synchronized void onInit() {
-        // overload this to usually register your own service on init
+   /**
+    * called when main() starts up but before onStartup(). Initialize all services from the
+    * configuration file
+    * 
+    *  overload this to usually register your own service on init
+    *  
+    *  @return this agent
+    */
+   public synchronized Agent onInit() {
+      initialized = true;
+      return this;
+   }
 
-        initialized = true;
-    }
+   /** called when main() is done initializing everything else
+    * 
+    *  @return this agent
+    */
+   public synchronized Agent onStartup() {
+      ThreadContext old = this.mainContext.enter();
 
-    /** called when main() is done initializing everything else */
-    public synchronized void onStartup() {
-        ThreadContext old = this.mainContext.enter();
+      for (AgentService s : services.values()) {
+         startSvc(s);
+      }
 
-        for (AgentService s : services.values()) {
-            startSvc(s);
-        }
+      started = true;
 
-        started = true;
+      ThreadContext.exit(old);
+      return this;
+   }
 
-        ThreadContext.exit(old);
-    }
+   /** can't be synchronized since it may wait too long to notify others */
+   public void onConnectToOtherAgent(AgentHandle remote) {
+      ThreadContext old = this.mainContext.enter();
 
-    /** can't be synchronized since it may wait too long to notify others */
-    public void onConnectToOtherAgent(AgentHandle remote) {
-        ThreadContext old = this.mainContext.enter();
+      // not me...
+      if (remote.hostname.equals(Agents.getMyHostName())) {
+         logger.log("AGENT_CONNECTED_TO_SELF - ignoring...");
+      } else {
+         for (AgentService s : copyOfServices()) {
+            s.onConnectToOtherAgent(remote);
+         }
+      }
 
-        // not me...
-        if (remote.hostname.equals(Agents.getMyHostName())) {
-            logger.log("AGENT_CONNECTED_TO_SELF - ignoring...");
-        } else {
-            for (AgentService s : copyOfServices()) {
-                s.onConnectToOtherAgent(remote);
+      ThreadContext.exit(old);
+   }
+
+   public synchronized void onShutdown() {
+      ThreadContext old = this.mainContext.enter();
+
+      stopped = true;
+      // TODO shutdown in the reverse sequence
+      for (AgentService s : services.values()) {
+         // TODO give them some time to cleanup and then kill them if they
+         // didn't stop
+         logger.log("AGENT_SHUTDOWN service: " + s.getClass().getName());
+         s.onShutdown();
+      }
+
+      ThreadContext.exit(old);
+
+      // TODO are there any threads/workers/beings i should kill?
+      logger.log("AGENT_SHUTDOWN_COMPLETE");
+   }
+
+   /** indicates if the agent has been shutdown */
+   public boolean hasStopped() {
+      return stopped;
+   }
+
+   /**
+    * main loop - will wait here until the agent is shutdown. 
+    * Call from your main() after all initialization...
+    */
+   public void keepOnTrucking() {
+      // wait for the server to die... it is the first to start and last to
+      // die
+      // note that shutdown is called from elsewhere
+      ((AgentHttpService)locateService(AgentHttpService.class.getSimpleName())).todoEncapsulateSomehowJoin();
+   }
+
+   public synchronized List<AgentService> copyOfServices() {
+      List<AgentService> ret = new ArrayList<AgentService>();
+      ret.addAll(services.values());
+      return ret;
+   }
+
+   /** locate the implementation of a given service */
+   public synchronized AgentService locateService(String name) {
+      return services.get(name);
+   }
+
+   /**
+    * notify another specific agent. Note that in order to use this, the remote agent must have the
+    * AgentHttpService initialized
+    * 
+    * @param device agent to notify
+    * @param eventId event
+    * @param args event data
+    * @return response of remote - usually meaningless
+    */
+   public String notifyOther(AgentHandle device, String eventId, Object... args) {
+      if (logger.isTraceLevel(3)) {
+         logger.trace(3, "AGENT_NOTIFIYING_OTHER: " + device + " event: " + eventId);
+      }
+
+      String srcAgentNm = Agents.getMyHostName();
+
+      // TODO if device is me call notify local directly
+      String url = "http://" + device.ip + ":" + device.port + "/mutant/control/";
+      url += "Notify?name=" + eventId + "&srcAgentNm=" + srcAgentNm;
+      url = new AttrAccess.Impl(args).addToUrl(url);
+      String otherList = (Comms.readUrl(url));
+      otherList = HtmlContents.justBody(otherList);
+
+      return otherList;
+   }
+
+   /** users can call this to send notifications to the other agents */
+   public void notifyOthers(String eventId, Object... args) {
+      // TODO add SLA, i.e. will backup and notify when others come online etc
+      String notified = "";
+      String notnotified = "";
+
+      if (logger.isTraceLevel(3)) {
+         logger.trace(3, "AGENT_NOTIFIYING_OTHERS: " + notified + " / NOTNOTIFIED: " + notnotified);
+      }
+
+      for (AgentHandle d : this.homeCloud.agents().values()) {
+         if (!d.equals(this.me)) {
+            // TODO optimize this - notify can figure out if it's up at the
+            // same time
+            if (AgentHandle.DeviceStatus.UP.equals(d.status)) {
+               notified += d.name + ":" + notifyOther(d, eventId, args) + " , ";
+            } else {
+               notnotified += d.name + " ' ";
             }
-        }
+         }
+      }
 
-        ThreadContext.exit(old);
-    }
+      logger.log("AGENT_NOTIFIED_OTHERS: " + notified + " / NOTNOTIFIED: " + notnotified);
+   }
 
-    public synchronized void onShutdown() {
-        ThreadContext old = this.mainContext.enter();
-
-        stopped = true;
-        // TODO shutdown in the reverse sequence
-        for (AgentService s : services.values()) {
-            // TODO give them some time to cleanup and then kill them if they
-            // didn't stop
-            logger.log("AGENT_SHUTDOWN service: " + s.getClass().getName());
-            s.onShutdown();
-        }
-
-        ThreadContext.exit(old);
-
-        // TODO are there any threads/workers/beings i should kill?
-        logger.log("AGENT_SHUTDOWN_COMPLETE");
-    }
-
-    /** indicates if the agent has been shutdown */
-    public boolean hasStopped() {
-        return stopped;
-    }
-
-    /**
-     * main loop - will wait here until the agent is shutdown. Call from your main() at the end
-     */
-    public void keepOnTrucking() {
-        // wait for the server to die... it is the first to start and last to
-        // die
-        // note that shutdown is called from elsewhere
-
-        // THIS normally just join()s the main server thread
-    }
-
-    public synchronized List<AgentService> copyOfServices() {
-        List<AgentService> ret = new ArrayList<AgentService>();
-        ret.addAll(services.values());
-        return ret;
-    }
-
-    /** locate the implementation of a given service */
-    public synchronized AgentService locateService(String name) {
-        return services.get(name);
-    }
-
-    /**
-     * notify another specific agent. Note that in order to use this, the remote agent must have the
-     * AgentHttpService initialized
-     * 
-     * @param device agent to notify
-     * @param eventId event
-     * @param args event data
-     * @return response of remote - usually meaningless
-     */
-    public String notifyOther(AgentHandle device, String eventId, Object... args) {
-        if (logger.isTraceLevel(3))
-            logger.trace(3, "AGENT_NOTIFIYING_OTHER: " + device + " event: " + eventId);
-
-        String srcAgentNm = Agents.getMyHostName();
-
-        // TODO if device is me call notify local directly
-        String url = "http://" + device.ip + ":" + device.port + "/mutant/control/";
-        url += "Notify?name=" + eventId + "&srcAgentNm=" + srcAgentNm;
-        url = new AttrAccess.Impl(args).addToUrl(url);
-        String otherList = (Comms.readUrl(url));
-        otherList = HtmlContents.justBody(otherList);
-
-        return otherList;
-    }
-
-    /** users can call this to send notifications to the other agents */
-    public void notifyOthers(String eventId, Object... args) {
-        // TODO add SLA, i.e. will backup and notify when others come online etc
-        String notified = "";
-        String notnotified = "";
-
-        if (logger.isTraceLevel(3))
-            logger.trace(3, "AGENT_NOTIFIYING_OTHERS: " + notified + " / NOTNOTIFIED: " + notnotified);
-
-        for (AgentHandle d : this.homeGroup.agents().values()) {
-            if (!d.equals(this.myHandle)) {
-                // TODO optimize this - notify can figure out if it's up at the
-                // same time
-                if (AgentHandle.DeviceStatus.UP.equals(d.status)) {
-                    notified += d.name + ":" + notifyOther(d, eventId, args) + " , ";
-                } else {
-                    notnotified += d.name + " ' ";
-                }
-            }
-        }
-
-        logger.log("AGENT_NOTIFIED_OTHERS: " + notified + " / NOTNOTIFIED: " + notnotified);
-    }
-
-    public ThreadContext getMainContext() {
-        return mainContext;
-    }
-
+   public ThreadContext getThreadContext() {
+      return mainContext;
+   }
 }

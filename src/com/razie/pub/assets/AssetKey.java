@@ -33,7 +33,7 @@ import com.razie.pub.base.data.HttpUtils;
  */
 @SuppressWarnings("serial")
 public class AssetKey implements Serializable, Cloneable {
-    public static final String      PREFIX = "razie.uri:";
+    public static final String      PREFIX = "razie.uri";
 
     /** don't want to keep formatting new strings every time, so we cache the last one */
     private String                  cachedUrlForm;
@@ -50,6 +50,7 @@ public class AssetKey implements Serializable, Cloneable {
     public AssetKey(String type, String id, AssetLocation appEnv) {
         this.setType(type);
         this.setId(id);
+        // TODO optimize: constant for empty AssetLocation?
         this.setLocation(appEnv == null ? new AssetLocation() : appEnv);
 
         if (id == null) {
@@ -89,7 +90,7 @@ public class AssetKey implements Serializable, Cloneable {
     @Override
     public String toString() {
         if (cachedUrlForm == null) {
-            cachedUrlForm = PREFIX + getType() + ":"
+            cachedUrlForm = PREFIX+":" + getType() + ":"
                     + (getId() == null ? "" : HttpUtils.toUrlEncodedString(getId()));
             if (getLocation() != null) {
                 cachedUrlForm += "@" + getLocation().toString();
@@ -214,7 +215,7 @@ public class AssetKey implements Serializable, Cloneable {
 
         String news;
         if (url.startsWith(PREFIX)) {
-            news = url.replace(PREFIX, "");
+            news = url.replace(PREFIX+":", "");
         } else {
             String[] map1 = url.split("://", 2);
 

@@ -24,7 +24,7 @@ public class TempUtilAgent {
    /** start an agent and mount basic services */
    public static Agent startAgent(AgentHandle h, AgentCloud g) {
       Agent agent = new Agent(h, g);
-      agent.getMainContext().enter();
+      agent.getThreadContext().enter();
       agent.onInit();
 
       LightAuth.init(new LightAuth("lightsoa"));
@@ -32,8 +32,8 @@ public class TempUtilAgent {
       // we need a server with cmdget to accept bindings for services. You
       // should do this for any
       // agent
-      LightServer server = new LightServer(Integer.parseInt(h.port), agent.getMainContext());
-      server.registerCmdListener(new LightCmdGET());
+      LightServer server = new LightServer(Integer.parseInt(h.port), agent.getThreadContext());
+      server.registerHandler(new LightCmdGET());
       agent.register(new AgentHttpService(agent, server));
 
       agent.onStartup();

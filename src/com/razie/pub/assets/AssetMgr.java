@@ -4,12 +4,10 @@
  */
 package com.razie.pub.assets;
 
-import java.util.Collection;
 import java.util.Map;
 
-import org.w3c.dom.Element;
-
 import com.razie.pub.base.ActionItem;
+import com.razie.pub.base.NoStatic;
 import com.razie.pub.base.ScriptContext;
 import com.razie.pub.draw.Drawable;
 
@@ -24,26 +22,28 @@ import com.razie.pub.draw.Drawable;
  * <p>
  * Where this is useful: it decouples the rest of the code that uses assets (clients) from the
  * actual implementation of an asset. Also, it is augmented by generic REST access to assets etc.
+ * 
+ * @author razvanc
  */
 public abstract class AssetMgr {
-    protected static AssetMgr impl;
+    protected static NoStatic<AssetMgr> impl = new NoStatic<AssetMgr> ("AssetMgr", null);
 
     public static AssetMgr instance() {
-        return impl;
+        return impl.get();
     }
 
     public static void init(AssetMgr implToUse) {
-        impl = implToUse;
+        impl.set(implToUse);
     }
 
     /** locator for assets by key */
     public static Object getAsset(AssetKey key) {
-        return impl.getAssetImpl(key);
+        return instance().getAssetImpl(key);
     }
 
     /** get the supported metas*/
     public static Iterable<String> metas() {
-        return impl.metasImpl();
+        return instance().metasImpl();
     }
 
     /** TODO - does it belong here? register a new type */
@@ -51,31 +51,26 @@ public abstract class AssetMgr {
         throw new UnsupportedOperationException ("must implement in derived class");
     }
 
-    /** TODO - does it belong here? register a new type */
-    public void registerFinder(Element finder) {
-        throw new UnsupportedOperationException ("must implement in derived class");
-    }
-
     /** get the meta description for a certain type */
     public static Meta meta(String name) {
-        return impl.metaImpl(name);
+        return instance().metaImpl(name);
     }
 
     /** a detailed description and commands for an asset */
     public static Drawable details(AssetBrief asset) {
-        return impl.detailsImpl(asset);
+        return instance().detailsImpl(asset);
     }
 
     public static ActionItem[] supportedActions(AssetKey ref) {
-        return impl.supportedActionsImpl(ref);
+        return instance().supportedActionsImpl(ref);
     }
 
     public static AssetBrief brief(AssetKey ref) {
-        return impl.briefImpl(ref);
+        return instance().briefImpl(ref);
     }
 
     public static Map<AssetKey, AssetBrief> find(String type, AssetLocation env, boolean recurse) {
-        return impl.findImpl(type, env, recurse);
+        return instance().findImpl(type, env, recurse);
     }
 
     /**
@@ -88,11 +83,11 @@ public abstract class AssetMgr {
      * @return
      */
     public static Object doAction(String action, AssetKey ref, ScriptContext ctx) {
-        return impl.doActionImpl(action, ref, ctx);
+        return instance().doActionImpl(action, ref, ctx);
     }
 
     public static AssetPres pres() {
-        return impl.presImpl();
+        return instance().presImpl();
     }
 
     protected abstract Object getAssetImpl(AssetKey key);
@@ -113,7 +108,7 @@ public abstract class AssetMgr {
     public abstract AssetPres presImpl();
 
     /**
-     * a meta-description
+     * a meta-description of an asset type
      * 
      * The inventory and asset class specs are used elsewhere...didn't bother extending...you don't
      * have to use them
@@ -125,12 +120,20 @@ public abstract class AssetMgr {
         public ActionItem   id;
         public ActionItem[] supportedActions;
 
+        /** basic constructor - the inventory/class are set automatically when registered */
+        public Meta(ActionItem id, String base) {
+            this.baseMetaname = base;
+            this.id = id;
+        }
+
+        /** a meta for assets with an inventroy */
         public Meta(ActionItem id, String base, String inventory) {
             this.baseMetaname = base;
             this.id = id;
             this.inventory = inventory;
         }
 
+        /** a meta for assets with their own class */
         public Meta(ActionItem id, String base, String assetCls, String inventory) {
             this.baseMetaname = base;
             this.id = id;
@@ -168,4 +171,5 @@ public abstract class AssetMgr {
             return b.toString();
         }
     }
+   
 }

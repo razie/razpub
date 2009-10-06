@@ -11,8 +11,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * mark a class as no-static safe. This means the class's statics are safe per
- * thread.
+ * mark a class as "no-static" safe. This means the class's statics are actually static per
+ * thread and you can use it as if it's a static.
  * 
  * @see NoStatics
  * 

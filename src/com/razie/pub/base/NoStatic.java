@@ -56,6 +56,8 @@ public class NoStatic<T> {
 				inst = (NoStatic<T>) (ThreadContext.instance().getAttr(id));
 			} else {
 				// here's the magic: clone itself for new context with new value
+			   // TODO shouldn't i clone the initialValue?
+			   // TODO explicit samples/tests for this
 				NoStatic<T> newInst = new NoStatic<T>(id, initialValue);
 				tx.setAttr(id, newInst);
 				inst = newInst;

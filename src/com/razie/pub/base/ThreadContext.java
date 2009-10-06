@@ -56,6 +56,7 @@ public class ThreadContext extends AttrAccess.Impl {
 
    static ThreadContext DFLT_CTX = new ThreadContext(null);
 
+   // these locals are cleaned upon current thread exiting the context
    List<String> locals = new ArrayList<String>();// TODO lazy
    NoStatics statics = null; // my statics
 

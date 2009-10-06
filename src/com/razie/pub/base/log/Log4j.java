@@ -125,7 +125,7 @@ public class Log4j extends Log {
     public void log(Object... o) {
         String m = "";
         for (int i = 0; i < o.length; i++)
-            m += o[i].toString();
+            m += o[i] != null ? o[i].toString() : "<NULL>";
         log4jLogger.info(m);
         addLogLine(m);
     }

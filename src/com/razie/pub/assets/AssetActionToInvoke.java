@@ -65,7 +65,7 @@ public class AssetActionToInvoke extends ActionToInvoke {
     @Override
     public Object act(ScriptContext ctx) {
         if (this.target == null || this.target.length() <= 0) {
-            return AgentHttpService.getInstance().assetBinding.invokeLocal(key, actionItem.name, this);
+            return AgentHttpService.instance().assetBinding.invokeLocal(key, actionItem.name, this);
         } else {
             try {
                 URL url = new URL(this.makeActionUrl());
