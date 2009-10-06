@@ -25,6 +25,8 @@ public class RazIconRes {
     static Properties props    = new Properties();
 
     public static void init() throws IOException {
+        if (RazIconRes.class.getClassLoader().getResource(curTheme) == null)
+           throw new IllegalStateException ("ERR_CONFIG missing resource (should be in classpath): "+curTheme);
         props.load(RazIconRes.class.getClassLoader().getResource(curTheme).openStream());
     }
 
