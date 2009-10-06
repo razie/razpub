@@ -17,12 +17,11 @@ import com.razie.pub.draw.Renderer;
 import com.razie.pub.draw.Renderer.Technology;
 
 /**
- * this will insert a paint area which is drawn later with the specified url (will be invoked during
- * paint in the client)
+ * a simple form, with an action to invoke and a set of parms to capture
  * 
- * @version $Revision: 1.63 $
- * @author $Author: davidx $
- * @since $Date: 2005/04/01 16:22:12 $
+ * will display the form and will then invoke the action, with all the parms
+ * 
+ * it only supports the GET method for now
  */
 public class DrawForm extends Drawable.DrawWidget {
 
@@ -88,3 +87,4 @@ public class DrawForm extends Drawable.DrawWidget {
         types.put(AttrType.DATE, "<input type=\"text\" name=\"RAZ.NAME\" value=\"RAZ.VALUE\" />");
     }
 }
+

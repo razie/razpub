@@ -9,9 +9,6 @@ import com.razie.pub.base.AttrAccess;
 /**
  * broadcast events to remote sources
  * 
- * @version $Revision: 1.63 $
- * @author $Author: davidx $
- * @since $Date: 2005/04/01 16:22:12 $
  */
 public class EvtRepeater implements EvListener {
     String evType[] = new String[1];
@@ -29,7 +26,7 @@ public class EvtRepeater implements EvListener {
     }
 
     public void eatThis(String srcID, String eventId, AttrAccess info) {
-        // TODO
+        // TODO implement event repeater
     }
 
     public String[] interestedIn() {
@@ -37,3 +34,4 @@ public class EvtRepeater implements EvListener {
     }
 
 }
+
