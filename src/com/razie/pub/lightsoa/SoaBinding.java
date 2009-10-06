@@ -96,11 +96,14 @@ public class SoaBinding {
         List<Object> args = new ArrayList<Object>();
         SoaMethod mdesc = toinvoke.getAnnotation(SoaMethod.class);
 
-        if (toinvoke.getAnnotation(SoaAllparms.class) != null) {
+        if (toinvoke.getAnnotation(SoaAllParms.class) != null) {
             args.add(inparms);
         } else
+           // TODO optimize this - replaceFirst - attributes should be AA in the annotation
+           // TODO use the default values as well as types?
+           // I do this because the attr are in the AA format, with type and default values
             for (String arg : mdesc.args()) {
-                args.add(inparms.getAttr(arg));
+                args.add(inparms.getAttr(arg.replaceFirst(":.*", "")));
             }
 
         if (toinvoke.getAnnotation(SoaStreamable.class) != null) {
@@ -163,7 +166,7 @@ public class SoaBinding {
         // the first argument is a stream and not in the description
         args.add(stream);
 
-        if (toinvoke.getAnnotation(SoaAllparms.class) != null) {
+        if (toinvoke.getAnnotation(SoaAllParms.class) != null) {
             args.add(inparms);
         } else
             for (String arg : mdesc.args()) {

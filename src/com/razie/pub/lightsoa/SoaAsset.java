@@ -48,15 +48,20 @@ import java.lang.annotation.Target;
 @Target( { ElementType.TYPE })
 @Inherited
 public @interface SoaAsset {
-    /** the type of the asset modelled by this class */
-    String meta();
+   /**
+    * the type of the asset modelled by this class. You can leave it null ONLY if registering with Assets.manage()
+    */
+   String meta() default "";
 
-    /** the type of the asset modelled by this class */
-    String base() default "";
+   /** the type of the asset modelled by this class */
+   String base() default "";
 
-    /** the value is a description of the asset type */
-    String descr();
+   /** the value is a description of the asset type */
+   String descr();
 
-    /** can limit the bindings */
-    String[] bindings() default {};
+   /**
+    * can limit the bindings. if mentioned, the asset will be mounted, onStart, to the respective
+    * bindings: http, upnp for now
+    */
+   String[] bindings() default {};
 }

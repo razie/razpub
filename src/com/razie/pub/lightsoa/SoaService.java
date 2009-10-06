@@ -33,8 +33,6 @@ import java.lang.annotation.Target;
  * 
  * TODO can be used to figure out name clashes, register services automatically etc
  * 
- * TODO use the bindings...currently it's not used
- * 
  * @author razvanc99
  */
 @Documented

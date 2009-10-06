@@ -56,10 +56,10 @@ import java.lang.annotation.Target;
 public @interface SoaStreamable {
     /**
      * you can define the mime type for the stream. If you leave the default, it will be set
-     * according to other criteria (protocol id etc) and will gnerally be text/html
+     * according to other criteria (protocol id etc) and will generally be text/html
      * 
      * NOTE that when you set the mime type, the stream will use TEXT technology, i.e. "toString"
-     * and will not do any special formatting anymore.
+     * and will not do any special formatting anymore, since you seem to know what you're doing :)
      */
     String streamMimeType() default "";
 }
