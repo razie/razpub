@@ -1,5 +1,6 @@
 /**
- * Razvan's code. Copyright 2008 based on Apache (share alike) see LICENSE.txt for details.
+ * Razvan's public code. Copyright 2008 based on Apache license (share alike) see LICENSE.txt for
+ * details. No warranty implied nor any liability assumed for this code.
  */
 package com.razie.pub.http.test;
 
@@ -19,7 +20,6 @@ import com.razie.pub.http.LightServer;
  * test the light server
  * 
  * @author razvanc99
- * 
  */
 public class TestLightBase extends TestCase {
     protected static LightServer server;
@@ -27,20 +27,20 @@ public class TestLightBase extends TestCase {
     protected static LightCmdGET cmdGET = new LightCmdGET();
     protected static LightCmdPOST cmdPOST = new LightCmdPOST();
 
-    static AgentHandle           me     = new AgentHandle("localhost", "localhost", "127.0.0.1", PORT
+    static AgentHandle           ME     = new AgentHandle("localhost", "localhost", "127.0.0.1", PORT
                                                 .toString(), "http://localhost:" + PORT.toString());
+    static AgentHandle           MEPLUS1     = new AgentHandle("localhost", "localhost", "127.0.0.1", String.valueOf(PORT+1), "http://localhost:" + (PORT+1));
 
     public void setUp() {
         if (server == null) {
             LightAuth.init(new LightAuth("lightsoa"));
 
-            AgentCloud group = new AgentCloud();
-            group.put(me);
-            NoStatics.put(Agents.class, new Agents(group, me));
+            AgentCloud group = new AgentCloud(ME);
+            NoStatics.put(Agents.class, new Agents(group, ME));
 
             server = new LightServer(PORT, null);
-            server.registerCmdListener(cmdGET);
-            server.registerCmdListener(cmdPOST);
+            server.registerHandler(cmdGET);
+            server.registerHandler(cmdPOST);
 
             // you can start the server in its dedicated thread or use a pool
             Thread serverThread = new Thread(server, "AgentServerThread");

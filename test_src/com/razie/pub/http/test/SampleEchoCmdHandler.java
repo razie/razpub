@@ -1,6 +1,6 @@
 /**
- * Razvan's code. 
- * Copyright 2008 based on Apache (share alike) see LICENSE.txt for details.
+ * Razvan's public code. Copyright 2008 based on Apache license (share alike) see LICENSE.txt for
+ * details. No warranty implied nor any liability assumed for this code.
  */
 package com.razie.pub.http.test;
 
@@ -13,26 +13,26 @@ import com.razie.pub.http.SocketCmdHandler;
 
 /**
  * sample command handler implementing the echo command, as a simple url mapping
- *  $
+ *
  * @author razvanc99
- * 
  */
 public class SampleEchoCmdHandler extends SocketCmdHandler.Impl {
-    public String input = null;
 
-    @Override
-    public Object execServer(String cmdName, String protocol, String args, Properties parms,
-            MyServerSocket socket) throws AuthException {
-        input = cmdName + ": " + args;
-        String m = "execute cmdName=" + cmdName + ", protocol=" + protocol + ", args=" + args;
-        Log.logThis(m);
-        return args;
-    }
+   public String input = null;
 
-    @Override
-    public String[] getSupportedActions() {
-        return COMMANDS;
-    }
+   @Override
+   public Object execServer(String cmdName, String protocol, String args, Properties parms,
+           MyServerSocket socket) throws AuthException {
+      input = cmdName + ": " + args;
+      String m = "execute cmdName=" + cmdName + ", protocol=" + protocol + ", args=" + args;
+      Log.logThis(m);
+      return args;
+   }
 
-    String[] COMMANDS = { "echo" };
+   @Override
+   public String[] getSupportedActions() {
+      return COMMANDS;
+   }
+   
+   public static final String[] COMMANDS = {"echo"};
 }

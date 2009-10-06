@@ -1,6 +1,6 @@
 /**
- * Razvan's code. 
- * Copyright 2008 based on Apache (share alike) see LICENSE.txt for details.
+ * Razvan's public code. Copyright 2008 based on Apache license (share alike) see LICENSE.txt for
+ * details. No warranty implied nor any liability assumed for this code.
  */
 package com.razie.pub.http.test;
 
@@ -11,6 +11,7 @@ import java.net.Socket;
 import com.razie.pub.base.ActionItem;
 import com.razie.pub.base.log.Log;
 import com.razie.pub.comms.ActionToInvoke;
+import com.razie.pub.comms.AgentCloud;
 
 /**
  * test the light server
@@ -19,64 +20,63 @@ import com.razie.pub.comms.ActionToInvoke;
  */
 public class TestLightServer extends TestLightBase {
 
-    /** test the simple echo - this is like GET but is called 'echo' for testing of flexibility of extending protocol 
-     * 
-     * TODO that this fails when laptop not connected to any network (i.e. when commuting)- don't know why... 
-     */
-    public void testSimpleEcho() throws IOException, InterruptedException {
-        // start server with echo impl
-        SampleEchoCmdHandler echo = new SampleEchoCmdHandler();
-        server.registerCmdListener(echo);
+   /** test the simple echo - this is like GET but is called 'echo' for testing of flexibility of extending protocol
+    *
+    * TODO that this fails when laptop not connected to any network (i.e. when commuting)- don't know why...
+    */
+   public void testSimpleEcho() throws IOException, InterruptedException {
+      // start server with echo impl
+      SampleEchoCmdHandler echo = new SampleEchoCmdHandler();
+      server.registerHandler(echo);
 
-            Thread.sleep(200);
-            
-        // send echo command
-        Socket remote = new Socket("localhost", PORT);
-        PrintStream out = new PrintStream(remote.getOutputStream());
-        out.println("echo samurai");
-        out.close();
+      Thread.sleep(200);
 
-        // wait a bit for receiver thread to consume...
-        for (long deadline = System.currentTimeMillis() + 2000; deadline > System.currentTimeMillis();) {
-            Thread.sleep(100);
-            if (echo.input != null)
-                break;
-        }
-        server.removeCmdListener(echo);
-        assertTrue("echo.input did not receive string from socket...", echo.input!=null && echo.input.contains("samurai"));
-    }
+      // send echo command
+      Socket remote = new Socket("localhost", PORT);
+      PrintStream out = new PrintStream(remote.getOutputStream());
+      out.println("echo samurai");
+      out.close();
 
-    /**
-     * test the sample server
-     */
-    public void testSampleWebServer() throws IOException, InterruptedException {
-        // start server with different port so it doesn't clash with the test server
-        // also, since it's not threaded, we have to thread it...
-        Thread runner = new Thread() {
-            public void run() {
-                SampleWebServer.start(PORT + 1);
-            }
-        };
-        // test doens't stop until the server actually died - stupid way ot test the server dying
-        // runner.setDaemon(true);
-        runner.start();
+      // wait a bit for receiver thread to consume...
+      for (long deadline = System.currentTimeMillis() + 2000; deadline > System.currentTimeMillis();) {
+         Thread.sleep(100);
+         if (echo.input != null) {
+            break;
+         }
+      }
+      server.removeHandler(echo);
+      assertTrue("echo.input did not receive string from socket...", echo.input != null && echo.input.contains("samurai"));
+   }
 
-        // give it some time to start up...
-        Thread.sleep(250);
+   /**
+    * test the sample server
+    */
+   public void testSampleWebServer() throws IOException, InterruptedException {
+      // start server with different port so it doesn't clash with the test server
+      // also, since it's not threaded, we have to thread it...
+      Thread runner = new Thread() {
 
-        // send echo command
-        ActionToInvoke action = new ActionToInvoke("http://localhost:" + (PORT + 1), new ActionItem(
-                "service/echo"), "msg", "samurai");
-        String result = (String) action.act(null);
-        assertTrue(result.contains("samurai"));
-        assertTrue(result.contains("style.css"));
+         public void run() {
+            new SampleWebServer().start(MEPLUS1, new AgentCloud(MEPLUS1));
+         }
+      };
+      // test doens't stop until the server actually died - stupid way ot test the server dying
+      // runner.setDaemon(true);
+      runner.start();
 
-        // send echo command
-        action = new ActionToInvoke("http://localhost:" + (PORT + 1), new ActionItem("service/die"));
-        result = (String) action.act(null);
+      // give it some time to start up...
+      Thread.sleep(250);
 
-        // TODO should check the server died
-    }
+      // send echo command
+      ActionToInvoke action = new ActionToInvoke(MEPLUS1.url, new ActionItem("service/echo"), "msg", "samurai");
+      String result = (String) action.act(null);
+      assertTrue(result.contains("samurai"));
+      assertTrue(result.contains("style.css"));
 
-    static final Log logger = Log.Factory.create(TestLightServer.class.getName());
+      // send echo command
+      action = new ActionToInvoke(MEPLUS1.url, new ActionItem("service/die"));
+      result = (String) action.act(null);
+
+      runner.join();
+   }
 }
