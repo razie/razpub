@@ -8,5 +8,5 @@
 	<classpathentry kind="lib" path="lib/js.jar"/>
 	<classpathentry kind="lib" path="lib/log4j-1.2.7.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/json.jar"/>
-	<classpathentry kind="output" path="out"/>
+	<classpathentry kind="output" path="bin"/>
 </classpath>
