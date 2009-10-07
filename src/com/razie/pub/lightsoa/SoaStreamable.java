@@ -61,5 +61,5 @@ public @interface SoaStreamable {
      * NOTE that when you set the mime type, the stream will use TEXT technology, i.e. "toString"
      * and will not do any special formatting anymore, since you seem to know what you're doing :)
      */
-    String streamMimeType() default "";
+    String mime() default "";
 }

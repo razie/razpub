@@ -25,7 +25,7 @@ public class DrawSequence extends DrawStream implements Drawable {
         super(Technology.ANY);
         if (objects != null) {
             for (Object o : objects) {
-                this.write(o);
+                if (o != null) this.write(o);
             }
         }
     }

@@ -3,6 +3,7 @@
  */
 package com.razie.pub.comms;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,6 +31,11 @@ public class AgentCloud {
 
     /** simple constructor with optional pre-population */
     public AgentCloud (AgentHandle...handles) {
+       for (AgentHandle h : handles) this.put(h);
+    }
+    
+    /** simple constructor with optional pre-population */
+    public AgentCloud (Iterable<AgentHandle> handles) {
        for (AgentHandle h : handles) this.put(h);
     }
     

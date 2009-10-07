@@ -71,14 +71,14 @@ public class HttpSoaBinding extends SoaBinding {
          SoaService s = (SoaService) serviceCls.getAnnotation(SoaService.class);
          if (!s.name().equals(serviceName))
             throw new IllegalArgumentException(
-                  "can't bind service not annotated with @SoaService/@SoaAsset: "
+                  "can't bind @SoaService/@SoaAsset with wrong name: " 
                         + service.getClass().getName());
       } else if (serviceCls != null && serviceCls.getAnnotation(SoaAsset.class) != null) {
          SoaAsset s = (SoaAsset) serviceCls.getAnnotation(SoaAsset.class);
          String debug = s.meta();
          if (s.meta().length() > 0 && !s.meta().equals(serviceName))
             throw new IllegalArgumentException(
-                  "can't bind service not annotated with @SoaService/@SoaAsset: "
+                  "can't bind @SoaService/@SoaAsset with wrong name: " 
                         + serviceCls.getName());
       } else {
          logger.log("WARN_HTTP_BOUND class which was not annotated: "
@@ -177,8 +177,8 @@ public class HttpSoaBinding extends SoaBinding {
 
             if (method.getAnnotation(SoaStreamable.class) != null) {
                SoaStreamable nh = method.getAnnotation(SoaStreamable.class);
-               if (nh.streamMimeType().length() > 0) {
-                  out = makeMimeDrawStream(socket, nh.streamMimeType());
+               if (nh.mime().length() > 0) {
+                  out = makeMimeDrawStream(socket, nh.mime());
                } else
                   out = makeDrawStream(socket, protocol);
                response = invokeStreamable(otoi, actionName, out, args);
