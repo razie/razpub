@@ -251,7 +251,8 @@ public class AssetLocation implements Serializable {
    public String getHost() {
       if (this.remoteUrl != null && this.remoteUrl.contains("://")) {
          String l = this.remoteUrl.split("://")[1];
-         String ipport = l.split("/", 2)[0];
+         String ipport = l.split("/", 2)[0]; // remove any uninteresting path in a URL
+         ipport = ipport.split("::", 2)[0]; // mutant://host:port::localpath
          
          // TODO is there always a port? I guess nobody would run at the default 8080...
          int colon = ipport.lastIndexOf(":");
@@ -271,6 +272,7 @@ public class AssetLocation implements Serializable {
       if (this.remoteUrl != null && this.remoteUrl.contains("://")) {
          String l = this.remoteUrl.split("://")[1];
          String ipport = l.split("/", 2)[0];
+         ipport = ipport.split("::", 2)[0]; // mutant://host:port::localpath
          
          // TODO is there always a port? I guess nobody would run at the default 8080...
          int colon = ipport.lastIndexOf(":");
