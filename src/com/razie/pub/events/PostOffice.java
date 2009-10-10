@@ -15,9 +15,7 @@ import com.razie.pub.events.RazResource.RazResourceLocator;
  * just a utility to simplify the client code as much as possible...not always optimal from a
  * runtime perspective, but...
  * 
- * @version $Revision: 1.63 $
- * @author $Author: davidx $
- * @since $Date: 2005/04/01 16:22:12 $
+ * @author razvanc
  */
 public class PostOffice implements RazResourceLocator {
     Map<String, RazDestination> destinations     = new HashMap<String, RazDestination>();

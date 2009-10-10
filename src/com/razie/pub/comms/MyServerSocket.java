@@ -18,11 +18,10 @@ import com.razie.pub.base.AttrAccess;
  * on some freaky Java API
  * 
  * @author razvanc99
- * @version $Id$
- * 
  */
 public class MyServerSocket extends CommChannel {
     public Socket server;
+    AttrAccess httpArgs;
 
     public MyServerSocket(Socket s) {
         super(LightAuth.singleton().iauthorize(s, null, null));
@@ -32,8 +31,14 @@ public class MyServerSocket extends CommChannel {
     }
 
     public void setHttp(String url, AttrAccess httpArgs) {
-       auth = LightAuth.singleton().iauthorize(server, url, httpArgs);
+       auth = LightAuth.instance().iauthorize(server, url, httpArgs);
+       this.httpArgs=httpArgs;
     }
+    
+    public AttrAccess getHttp() {
+      return this.httpArgs; 
+    }
+    
     /**
      * authorize a request on a given channel. note that this is not agnostic about the particular
      * request/action, so it's only high-level authentication, really

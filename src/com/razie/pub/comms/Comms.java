@@ -95,7 +95,7 @@ public class Comms {
      * @return a string containing the text read from the URL. can be the result of a servlet, a web
      *         page or the contents of a local file. It's null if i couldn't read the file.
      */
-    public static InputStream poststreamUrl2(String url, AttrAccess httpArgs, String content) {
+    public static InputStream xpoststreamUrl2(String url, AttrAccess httpArgs, String content) {
         try {
             InputStream in = null;
                 URLConnection uc = (new URL(url)).openConnection();

@@ -68,6 +68,7 @@ public class LightAuth {
 
    protected static LightAuth impl;
    protected String           prefix = "";
+   private static boolean           locked = false;
 
    public LightAuth(String prefix) {
       // be nice
@@ -77,7 +78,14 @@ public class LightAuth {
          this.prefix = prefix;
    }
 
+   /** @deprecated use instance() */
    protected static LightAuth singleton() {
+      if (impl == null)
+         impl = new LightAuth("");
+      return impl;
+   }
+
+   public static LightAuth instance () {
       if (impl == null)
          impl = new LightAuth("");
       return impl;
@@ -85,7 +93,13 @@ public class LightAuth {
 
    /** initialize the (for now static) AA used in this server/client */
    public static void init(LightAuth impl) {
-      LightAuth.impl = impl;
+      if (!locked)
+         LightAuth.impl = impl;
+   }
+
+   /** lock it - can't reset after this */
+   public static void lock() {
+      locked=true;
    }
 
    /**
@@ -219,4 +233,9 @@ public class LightAuth {
       }
       return LightAuth.AuthType.SHAREDSECRET;
    }
+  
+   // TODO security - make these final somehow - plugns can attack by wrapping the lightauth...
+   public String resetSecurity (String pwd) {return "NOT IMPLEMENTED";}
+   public String accept (String pwd, AgentHandle who, String pk) {return "NOT IMPLEMENTED";}
+   public String pubkey (AgentHandle who) {return "NOT IMPLEMENTED";}
 }

@@ -229,6 +229,7 @@ public class Agent {
       String srcAgentNm = Agents.getMyHostName();
 
       // TODO if device is me call notify local directly
+      //TODO use ServiceActionItemtoinvoke with lightauth
       String url = "http://" + device.ip + ":" + device.port + "/mutant/control/";
       url += "Notify?name=" + eventId + "&srcAgentNm=" + srcAgentNm;
       url = new AttrAccess.Impl(args).addToUrl(url);

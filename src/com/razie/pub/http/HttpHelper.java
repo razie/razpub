@@ -5,6 +5,7 @@
 package com.razie.pub.http;
 
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.PrintStream;
 import java.net.Socket;
 
@@ -126,6 +127,40 @@ public class HttpHelper {
         out.println("");
         out.print(content);
         
+        return remote;
+    }
+    /**
+     * @param
+     * 
+     * @param hostname - remote server to write to
+     * @param port - remote port to write to
+     * @param cmd the POST line i.e. "POST /url HTTP/1.1"
+     * @param httpArgs http args
+     * @param content the content posted over
+     * @throws IOException
+     * 
+     * TODO return UrlConnection or something like that...
+     */
+    public static Socket sendBinaryPOST(String hostname, Integer port, String cmd, AttrAccess httpArgs, Object content) throws IOException {
+        Socket remote = new Socket(hostname, port);
+        PrintStream out = new PrintStream(remote.getOutputStream());
+        // this is how an http request is sent via the socket
+        out.println(cmd);
+        
+        if (httpArgs == null)
+            httpArgs = new AttrAccess.Impl();
+        httpArgs.set("Content-Type", "application/octet-stream");
+//        httpArgs.set("Content-Length", content.length()); 
+        
+        for (String n : httpArgs.getPopulatedAttr())
+            out.println(n + ": " + httpArgs.a(n));
+        
+        out.println("");
+        
+        ObjectOutputStream oos = new ObjectOutputStream(remote.getOutputStream());
+        oos.writeObject(content);
+        oos.flush();
+ 
         return remote;
     }
 
