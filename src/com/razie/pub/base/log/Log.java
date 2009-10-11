@@ -8,6 +8,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.razie.pub.UnknownRtException;
 
@@ -147,6 +150,16 @@ public class Log {
       Factory.logger.log(m + " Exception: " + Exceptions.getStackTraceAsString(t));
    }
 
+   /** alarm this only once in this run...*/
+   public static void alarmOnce(String errorcode, String m, Throwable... e) {
+      if (! alarmedOnce.containsKey(errorcode)) {
+         Factory.logger.alarm(m, e);
+         alarmedOnce.put(errorcode, errorcode);
+      }
+   }
+
+   protected static Map<String, String> alarmedOnce = Collections.synchronizedMap(new HashMap<String, String>());
+   
    public static void alarmThis(String m, Throwable... e) {
       Factory.logger.alarm(m, e);
    }

@@ -24,7 +24,7 @@ public class MyServerSocket extends CommChannel {
     AttrAccess httpArgs;
 
     public MyServerSocket(Socket s) {
-        super(LightAuth.singleton().iauthorize(s, null, null));
+        super(LightAuth.instance().iauthorize(s, null, null));
         this.server = s;
         this.from = new SocketEndPoint(server);
         this.to = null;// TODO this is me...

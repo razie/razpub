@@ -7,6 +7,7 @@ package com.razie.pub.comms;
 import java.net.Socket;
 
 import com.razie.pub.base.AttrAccess;
+import com.razie.pub.base.log.Log;
 
 /**
  * auth providers have, for me, several responsibilities - see the static methods below
@@ -202,18 +203,19 @@ public class LightAuth {
 
       // TODO this auth is really weak anyways...
       Object debug1 = Agents.getMyHostName();
+      
+      Log.traceThis ("AUTH_RECON: LightAuth- "+clientip + " / me="+Agents.me() + " / "+debug1);
 
-      // TODO is this correct in linux?
-      if (clientip.startsWith(Agents.getHomeNetPrefix()) || Agents.agent(Agents.getMyHostName()) == null
-            || clientip.equals(Agents.agent(Agents.getMyHostName()).ip)) {
+      if (Comms.isLocalhost(clientip)) {
          return LightAuth.AuthType.INHOUSE;
-      } else if (Comms.isLocalhost(clientip)) {
+      // TODO is this correct in linux?
+      } else if (clientip.startsWith(Agents.getHomeNetPrefix()) 
+            || Agents.agent(Agents.getMyHostName()) == null  /*TODO what is this condition? */
+            || clientip.equals(Agents.me().ip)) {
          return LightAuth.AuthType.INHOUSE;
       } else if (false) {
-         // TODO identify shared secret
          return LightAuth.AuthType.SHAREDSECRET;
       } else if (false) {
-         // TODO identify friends
          return LightAuth.AuthType.FRIEND;
       } else
          return LightAuth.AuthType.ANYBODY;
@@ -233,9 +235,10 @@ public class LightAuth {
       }
       return LightAuth.AuthType.SHAREDSECRET;
    }
-  
+
+   public String toString() { return "simple LightAuth - no real security"; }
    // TODO security - make these final somehow - plugns can attack by wrapping the lightauth...
-   public String resetSecurity (String pwd) {return "NOT IMPLEMENTED";}
-   public String accept (String pwd, AgentHandle who, String pk) {return "NOT IMPLEMENTED";}
-   public String pubkey (AgentHandle who) {return "NOT IMPLEMENTED";}
+   public String resetSecurity (String pwd) {return "NOT IMPLEMENTED - you need the advanced security from valueadd package";}
+   public String accept (String pwd, AgentHandle who, String pk) {return "NOT IMPLEMENTED - you need the advanced security from valueadd package";}
+   public String pubkey (AgentHandle who) {return "NOT IMPLEMENTED - you need the advanced security from valueadd package";}
 }
