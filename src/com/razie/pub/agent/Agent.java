@@ -197,8 +197,9 @@ public class Agent {
    public void keepOnTrucking() {
       // wait for the server to die... it is the first to start and last to
       // die
-      // note that shutdown is called from elsewhere
-      ((AgentHttpService)locateService(AgentHttpService.class.getSimpleName())).todoEncapsulateSomehowJoin();
+      // note that shutdown is call0kjed from elsewhere
+      AgentHttpService ahs = ((AgentHttpService)locateService(AgentHttpService.class.getSimpleName()));
+      if (ahs != null) ahs.todoEncapsulateSomehowJoin();
    }
 
    public synchronized List<AgentService> copyOfServices() {

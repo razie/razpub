@@ -54,7 +54,7 @@ public class ThreadContext extends AttrAccess.Impl {
    private static Map<Thread, ThreadContext> instances = Collections
          .synchronizedMap(new HashMap<Thread, ThreadContext>());
 
-   static ThreadContext DFLT_CTX = new ThreadContext(null);
+   public static ThreadContext DFLT_CTX = new ThreadContext(null);
 
    // these locals are cleaned upon current thread exiting the context
    List<String> locals = new ArrayList<String>();// TODO lazy

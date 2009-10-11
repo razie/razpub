@@ -22,7 +22,9 @@ import com.razie.pub.http.LightServer;
  * @author razvanc99
  */
 public class TestLightBase extends TestCase {
-    protected static LightServer server;
+    protected LightServer server;
+    protected Thread serverThread ;
+    
     public static Integer     PORT   = 4445;
     protected static LightCmdGET cmdGET = new LightCmdGET();
     protected static LightCmdPOST cmdPOST = new LightCmdPOST();
@@ -31,8 +33,14 @@ public class TestLightBase extends TestCase {
                                                 .toString(), "http://localhost:" + PORT.toString());
     static AgentHandle           MEPLUS1     = new AgentHandle("localhost", "localhost", "127.0.0.1", String.valueOf(PORT+1), "http://localhost:" + (PORT+1));
 
+    static int setupc=0;
+    static int teardc=0;
+    
+    @Override
     public void setUp() {
         if (server == null) {
+           setupc++;
+           
             LightAuth.init(new LightAuth("lightsoa"));
 
             AgentCloud group = new AgentCloud(ME);
@@ -43,15 +51,30 @@ public class TestLightBase extends TestCase {
             server.registerHandler(cmdPOST);
 
             // you can start the server in its dedicated thread or use a pool
-            Thread serverThread = new Thread(server, "AgentServerThread");
+            serverThread = new Thread(server, "AgentServerThread");
 
             // for testing, we want it to die at the end
-            serverThread.setDaemon(true);
+            serverThread.setDaemon(false);
 
             // start the server thread...
             serverThread.start();
         }
     }
 
+    @Override
+    public void tearDown () {
+       if (server != null) {
+          teardc++;
+          server.shutdown();
+          try {
+            serverThread.join();
+         } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+         }
+          server=null;
+       }
+    }
+    
     static final Log logger = Log.Factory.create(TestLightBase.class.getName());
 }

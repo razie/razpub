@@ -11,6 +11,7 @@ import com.razie.pub.base.ScriptContext;
 import com.razie.pub.base.data.RiXmlUtils;
 import com.razie.pub.base.data.XmlDoc;
 import com.razie.pub.base.data.XmlDoc.Reg;
+import com.razie.pub.base.log.Log;
 import com.razie.pub.comms.ServiceActionToInvoke;
 import com.razie.pub.draw.DrawSequence;
 import com.razie.pub.draw.DrawTable;
@@ -63,6 +64,7 @@ public class MutantPresentation extends PageMaker {
     }
 
     protected static void refresh(String filename) {
+       if (Reg.doc(filename) != null) {
         for (Element page : XmlDoc.listEntities(Reg.doc(filename).getEntity("/config/presentation"))) {
             Object d;
             if (page.hasAttribute("code")) {
@@ -76,6 +78,7 @@ public class MutantPresentation extends PageMaker {
         singleton.setAttr("presentation", singleton);
 
         singleton.filenames.put(filename, Reg.doc(filename).fileLastModified);
+       } else Log.alarmThis ("ERROR_XMLDOCNOTFOUND: "+filename);
     }
 
     public static MutantPresentation getInstance() {
