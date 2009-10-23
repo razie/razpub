@@ -1,9 +1,10 @@
 /**
- * Razvan's code. Copyright 2008 based on Apache (share alike) see LICENSE.txt for details.
+ * Razvan's public code. Copyright 2008 based on Apache license (share alike) see LICENSE.txt for
+ * details. No warranty implied nor any liability assumed for this code.
  */
 package com.razie.pub.agent;
 
-import com.razie.pub.base.ThreadContext;
+import com.razie.pub.base.ExecutionContext;
 import com.razie.pub.comms.AgentCloud;
 import com.razie.pub.comms.AgentHandle;
 import com.razie.pub.comms.LightAuth;
@@ -24,7 +25,7 @@ public class TempUtilAgent {
    /** start an agent and mount basic services */
    public static Agent startAgent(AgentHandle h, AgentCloud g) {
       Agent agent = new Agent(h, g);
-      agent.getThreadContext().enter();
+      agent.getContext().enter();
       agent.onInit();
 
       LightAuth.init(new LightAuth("lightsoa"));
@@ -32,12 +33,12 @@ public class TempUtilAgent {
       // we need a server with cmdget to accept bindings for services. You
       // should do this for any
       // agent
-      LightServer server = new LightServer(Integer.parseInt(h.port), agent.getThreadContext());
+      LightServer server = new LightServer(Integer.parseInt(h.port), agent.getContext());
       server.registerHandler(new LightCmdGET());
       agent.register(new AgentHttpService(agent, server));
 
       agent.onStartup();
-      ThreadContext.exit();
+      ExecutionContext.exit();
       return agent;
    }
 }

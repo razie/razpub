@@ -100,7 +100,7 @@ public class HttpHelper {
     }
 
     /**
-     * @param
+     * send a POST request
      * 
      * @param hostname - remote server to write to
      * @param port - remote port to write to
@@ -109,7 +109,7 @@ public class HttpHelper {
      * @param content the content posted over
      * @throws IOException
      * 
-     * TODO return UrlConnection or something like that...
+     * TODO 2 return UrlConnection or something like that...with error codes and stuff
      */
     public static Socket sendPOST(String hostname, Integer port, String cmd, AttrAccess httpArgs, String content) throws IOException {
         Socket remote = new Socket(hostname, port);
@@ -130,7 +130,7 @@ public class HttpHelper {
         return remote;
     }
     /**
-     * @param
+     * send a POST request with binary content
      * 
      * @param hostname - remote server to write to
      * @param port - remote port to write to
@@ -139,7 +139,7 @@ public class HttpHelper {
      * @param content the content posted over
      * @throws IOException
      * 
-     * TODO return UrlConnection or something like that...
+     * TODO 2 return UrlConnection or something like that...
      */
     public static Socket sendBinaryPOST(String hostname, Integer port, String cmd, AttrAccess httpArgs, Object content) throws IOException {
         Socket remote = new Socket(hostname, port);
@@ -150,7 +150,7 @@ public class HttpHelper {
         if (httpArgs == null)
             httpArgs = new AttrAccess.Impl();
         httpArgs.set("Content-Type", "application/octet-stream");
-//        httpArgs.set("Content-Length", content.length()); 
+//TODO 2-1       httpArgs.set("Content-Length", content.length());
         
         for (String n : httpArgs.getPopulatedAttr())
             out.println(n + ": " + httpArgs.a(n));
@@ -163,5 +163,4 @@ public class HttpHelper {
  
         return remote;
     }
-
 }

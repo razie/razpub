@@ -15,7 +15,7 @@ import java.util.Properties;
 
 import com.razie.pub.base.ActionItem;
 import com.razie.pub.base.AttrAccess;
-import com.razie.pub.base.ThreadContext;
+import com.razie.pub.base.ExecutionContext;
 import com.razie.pub.base.data.HtmlRenderUtils;
 import com.razie.pub.base.log.Exceptions;
 import com.razie.pub.base.log.Log;
@@ -45,7 +45,7 @@ public class LightServer extends Worker {
     protected int           port;
     // TODO find an icon for this
     static final ActionItem ME             = new ActionItem("LightServer");
-    protected ThreadContext mainContext;
+    protected ExecutionContext mainContext;
 
     /** set this to something nonzero to limit the number of connections accepted in parallel */
     protected int           maxConnections = 0;
@@ -60,7 +60,7 @@ public class LightServer extends Worker {
      * @param soaPrefix if not null, it will call the LightSoa bindings when sees this prefix...make
      *        sure it ends in a space. An example is "GET ", see the test
      */
-    public LightServer(int port, ThreadContext mainContext) {
+    public LightServer(int port, ExecutionContext mainContext) {
         super(ME);
         this.port = port;
         this.mainContext = mainContext;
@@ -164,7 +164,7 @@ public class LightServer extends Worker {
             String input = "";
 
             try {
-                // TODO don't know why but i can't use this compliant reader...
+                // don't know why but i can't use this compliant reader...
                 // BufferedReader in = new BufferedReader(new
                 // InputStreamReader(socket.getInputStream()));
 
@@ -172,7 +172,7 @@ public class LightServer extends Worker {
                 DataInputStream in = new DataInputStream(socket.getInputStream());
                 PrintStream out = new PrintStream(socket.getOutputStream());
 
-                // TODO why do i flush empty lines?
+                // TODO 3 why do i flush empty lines?
                 // consume the input until a non-emtpty line
 				while (input == null || input.length() <= 0) {
 					input = in.readLine();
@@ -194,7 +194,7 @@ public class LightServer extends Worker {
                     rest = in.readLine();
                 }
 
-					ThreadContext.instance().setLocalAttr("httpattrs", httpattrs);
+					ExecutionContext.instance().setLocalAttr("httpattrs", httpattrs);
 					logger.trace(3, "   HTTPATTRSINPUT:\n" + httpattrs.toString());
 
                 handleInputLine(out, input, httpattrs);
@@ -210,7 +210,7 @@ public class LightServer extends Worker {
             } catch (IOException e) {
                 Log.logThis("", e);
             }
-                ThreadContext.exit();
+                ExecutionContext.exit();
             }
         }
 

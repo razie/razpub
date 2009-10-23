@@ -1,5 +1,6 @@
 /**
- * Razvan's code. Copyright 2008 based on Apache (share alike) see LICENSE.txt for details.
+ * Razvan's public code. Copyright 2008 based on Apache license (share alike) see LICENSE.txt for
+ * details. No warranty implied nor any liability assumed for this code.
  */
 package com.razie.pub.assets;
 
@@ -11,30 +12,38 @@ import com.razie.pub.draw.Drawable;
 import com.razie.pubstage.UserPrefs;
 
 /**
- * concentrates asset presentation commonalities - are actually implemented in the mutant
+ * concentrates asset presentation commonalities - gives you a chance to change that if desired...
  * 
  * to use this class thus, you need the mutant jar file
  * 
  * @author razvanc
- * 
  */
 public abstract class AssetPres {
 
-    public static AssetPres instance() {
-        return AssetMgr.pres();
-    }
+   public static AssetPres instance() {
+      return AssetMgr.pres();
+   }
 
-    /**
-     * draw a list of assets into drawable
-     * 
-     * @param movies a collection of assets
-     * @param stream the stream to draw on
-     * @param context current context for actions
-     * @param visuals visual preferences
-     * @return the resulting drawable - note that it has already been drawn on the stream, if any stream was passed in
-     */
-    public abstract Drawable toDrawable(Collection<AssetBrief> movies, DrawStream stream,
-            ContextActionFactory context, UserPrefs.AssetListVisual... visuals);
+   /**
+    * draw a list of assets into drawable
+    * 
+    * @param movies a collection of assets
+    * @param stream the stream to draw on
+    * @param context current context for actions
+    * @param visuals visual preferences
+    * @return the resulting drawable - note that it has already been drawn on the stream, if any
+    *         stream was passed in
+    */
+   public abstract Drawable toDrawable(Collection<AssetBrief> movies, DrawStream stream,
+         ContextActionFactory context, UserPrefs.AssetListVisual... visuals);
 
-    public abstract List<Drawable> makeAllButtons(AssetBrief movie, boolean drawTiny);
+   /**
+    * make all the buttons for a given asset
+    * 
+    * @param movie the asset to make buttons for
+    * @param drawTiny if true then the buttons are small for table-like list of assets. If false,
+    *        then the buttons are large for a details page.
+    * @return
+    */
+   public abstract List<Drawable> makeAllButtons(AssetBrief movie, boolean drawTiny);
 }

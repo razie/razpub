@@ -40,7 +40,7 @@ public interface RazResource {
     public static class RazResourceManager implements RazResourceLocator {
         Map<String, RazResource> resources = new HashMap<String, RazResource>();
 
-        // TODO change this to simply find the smart asset resource...
+        // TODO 3- change this to simply find the smart asset resource...
         public RazResource locate(String name) {
             return resources.get(name);
         }

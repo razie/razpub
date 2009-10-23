@@ -8,7 +8,7 @@ import junit.framework.TestCase;
 
 import com.razie.pub.base.NoStatic;
 import com.razie.pub.base.TLNoStatic;
-import com.razie.pub.base.ThreadContext;
+import com.razie.pub.base.ExecutionContext;
 
 /**
  * test the light server
@@ -16,7 +16,7 @@ import com.razie.pub.base.ThreadContext;
  * @author razvanc99
  */
 public class TestNoStatic extends TestCase {
-	ThreadContext t = new ThreadContext(null);
+	ExecutionContext t = new ExecutionContext(null);
 	static String failed = null;
 
 	// setup a static context - we test that in other threads i get differnet

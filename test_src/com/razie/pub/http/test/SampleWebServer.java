@@ -32,7 +32,7 @@ import com.razie.pub.resources.RazIconRes;
  * 
  * NOTE: there is no security whatsoever
  * 
- * TODO decouple from lightsoa - the basic server shouldn't know about lightsoa directly
+ * TODO 3-2 CODE decouple from lightsoa - the basic server shouldn't know about lightsoa directly
  * 
  * @author razvanc99
  */

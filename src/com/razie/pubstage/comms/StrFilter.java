@@ -10,7 +10,6 @@ package com.razie.pubstage.comms;
  * TODO heavy optimization needed here - i hate poltergeists
  * 
  * @author razvanc99
- * 
  */
 public abstract class StrFilter implements IStrFilter {
     /** not sure yet if i should have filterLine() and filterAll() */

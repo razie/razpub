@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.razie.pub.assets.AssetKey;
-import com.razie.pub.base.ThreadContext;
+import com.razie.pub.base.ExecutionContext;
 
 /**
  * stupid thread pool model
@@ -19,11 +19,11 @@ import com.razie.pub.base.ThreadContext;
 public class Lifegiver {
     static Map<AssetKey, Breather> beings        = new HashMap<AssetKey, Breather>();
     static Thread                  myThread;
-    static ThreadContext           threadContext = null;                             // passed at
+    static ExecutionContext           threadContext = null;                             // passed at
 
     // init
 
-    public static void init(ThreadContext tc) {
+    public static void init(ExecutionContext tc) {
         if (myThread == null) {
             threadContext = tc;
             myThread = new Thread(new Runner());

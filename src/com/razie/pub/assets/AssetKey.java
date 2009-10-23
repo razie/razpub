@@ -1,6 +1,6 @@
 /**
  * Razvan's public code. Copyright 2008 based on Apache license (share alike) see LICENSE.txt for
- * details.
+ * details. No warranty implied nor any liability assumed for this code.
  */
 package com.razie.pub.assets;
 
@@ -201,17 +201,6 @@ public class AssetKey implements Serializable, Cloneable {
      */
     public static AssetKey fromString(String inurl) {
         String url = inurl;
-
-        // sometimes the GUI will put an extra pair of < and >
-        // TODO optimize - just decrease index not constantly substring
-        while (url.endsWith(">")) {
-            url = url.substring(0, url.length() - 1);
-        }
-
-        // TODO optimize like above
-        while (url.startsWith("<")) {
-            url = url.substring(1, url.length());
-        }
 
         String news;
         if (url.startsWith(PREFIX)) {

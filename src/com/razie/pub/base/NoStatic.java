@@ -5,7 +5,7 @@
 package com.razie.pub.base;
 
 /**
- * thread local static object - ThreadLocal is easy to implement, not neccessarily to use
+ * ExecutionContext static object - ThreadLocal is easy to implement, not neccessarily to use
  * 
  * Use like
  * <code> public static NoStatic<MyClass> myStatic = new NoStatic<MyClass>("myStatic", new MyClass(...))</code>
@@ -15,7 +15,7 @@ package com.razie.pub.base;
  * <code>myStatic.setThreadValue (newValue)</code>
  * 
  * In code, access like a static, don't worry about thread:
- * <code>myStatic.value()</code>
+ * <code>myStatic.get()</code>
  * 
  * NOTE this is a fairly limited implementation - use NoStatics instead!
  * 
@@ -26,7 +26,9 @@ package com.razie.pub.base;
  * 
  * @see com.razie.pub.base.test.TestNoStatic
  * @author razvanc99
+ * @deprecated use the scala version scala.razie.NoStatic instead - this one is too limited
  */
+@Deprecated
 public class NoStatic<T> {
 	private T value;
 	private T initialValue;
@@ -48,29 +50,24 @@ public class NoStatic<T> {
 	 * it has a context...
 	 */
 	public void set(T newValue) {
-		NoStatic<T> inst = this;
-
-		ThreadContext tx = ThreadContext.instance();
-		if (tx != ThreadContext.DFLT_CTX) {
-			if (tx.isPopulated(id)) {
-				inst = (NoStatic<T>) (ThreadContext.instance().getAttr(id));
-			} else {
-				// here's the magic: clone itself for new context with new value
-			   // TODO shouldn't i clone the initialValue?
-			   // TODO explicit samples/tests for this
-				NoStatic<T> newInst = new NoStatic<T>(id, initialValue);
-				tx.setAttr(id, newInst);
-				inst = newInst;
-			}
-		}
-
+		NoStatic<T> inst = find();
 		inst.value = newValue;
 	}
 
 	private NoStatic<T> find() {
-		Object o = (ThreadContext.instance().getAttr(id));
-		if (o != null)
-			return (NoStatic<T>) o;
-		return this;
+      ExecutionContext tx = ExecutionContext.instance();
+      if (tx != ExecutionContext.DFLT_CTX) {
+         if (tx.isPopulated(id)) {
+            return (NoStatic<T>) (ExecutionContext.instance().getAttr(id));
+         } else {
+            // here's the magic: clone itself for new context with new value
+            // TODO shouldn't i clone the initialValue?
+            // TODO explicit samples/tests for this
+            NoStatic<T> newInst = new NoStatic<T>(id, initialValue);
+            tx.setAttr(id, newInst);
+            return newInst;
+         }
+      }
+      return this;
 	}
 }

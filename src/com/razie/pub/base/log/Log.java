@@ -1,6 +1,6 @@
 /**
  * Razvan's public code. Copyright 2008 based on Apache license (share alike) see LICENSE.txt for
- * details.
+ * details. No warranty implied nor any liability assumed for this code.
  */
 package com.razie.pub.base.log;
 
@@ -138,13 +138,8 @@ public class Log {
       Factory.logger.log(m);
    }
 
-   public static void traceThis(String m) {
-      if (Factory.logger.isTraceLevel(1)) Factory.logger.log(m);
-   }
-
-   public static void traceThis(String m, Throwable t) {
-      if (Factory.logger.isTraceLevel(1)) Factory.logger.log(m, t);
-   }
+   public static void traceThis(String m) { Factory.logger.trace(1, m); }
+   public static void traceThis(String m, Throwable t) { Factory.logger.trace(1, m, t); }
 
    public static void logThis(String m, Throwable t) {
       Factory.logger.log(m + " Exception: " + Exceptions.getStackTraceAsString(t));

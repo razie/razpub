@@ -9,12 +9,9 @@ import java.util.Date;
 import com.razie.pub.base.data.RangeSel;
 
 /**
- * date-time related stuff
- * 
- * TODO detailed docs
+ * easy to use scriptable for date-time related stuff. I use it to play with scripting and presentation etc
  * 
  * @author razvanc
- * 
  */
 public class TimeOfDay {
 

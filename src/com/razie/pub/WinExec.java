@@ -21,7 +21,6 @@ import com.sun.corba.se.spi.ior.MakeImmutable;
  * http://www.javaworld.com/javaworld/jw-12-2000/jw-1229-traps.html?page=1
  * 
  * @author razvanc
- * 
  */
 public class WinExec {
    final static String QUOTES = "\'";
@@ -115,7 +114,7 @@ public class WinExec {
     * 
     * Windows Example <code>execCmd("dir", "-a", "c:\\Documents and Settings\\*.*")</code>
     * 
-    * TODO don't return the entire string - stream and buffer on demand or something...
+    * TODO 3 don't return the entire string - stream and buffer on demand or something...
     * 
     * @param program - the program name, including path if needed
     * @param args - the arguments, simply are concatenated to form the command line.
@@ -127,8 +126,7 @@ public class WinExec {
       try {
          outputGobbler.join();
       } catch (InterruptedException e) {
-         // TODO Auto-generated catch block
-         e.printStackTrace();
+         Log.traceThis("WARN_ while waiting to join a cmd line gobbler: ", e);
       }
 
       return outputGobbler.result();

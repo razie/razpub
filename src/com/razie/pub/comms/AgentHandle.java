@@ -1,5 +1,6 @@
 /**
- * Razvan's code. Copyright 2008 based on Apache (share alike) see LICENSE.txt for details.
+ * Razvan's public code. Copyright 2008 based on Apache license (share alike) see LICENSE.txt for
+ * details. No warranty implied nor any liability assumed for this code.
  */
 package com.razie.pub.comms;
 
@@ -101,6 +102,11 @@ public class AgentHandle extends AssetKey implements Cloneable {
         return false;
     }
 
+    /** just a shorthand for the body */
+    public boolean isUp() {
+      return DeviceStatus.UP.equals(status);
+    }
+
     public boolean isUpNow() {
         // timeout quickly
         if (this.port.length() <= 0) {
@@ -121,20 +127,4 @@ public class AgentHandle extends AssetKey implements Cloneable {
             return false;
         }
     }
-
-    // public boolean isUpNow() {
-    // // timeout quickly
-    // try {
-    // RazClientSocket server;
-    // int port = Integer.parseInt(Agents.agent(name).port);
-    // server = new RazClientSocket(Agents.agent(name).ip, port, 250);
-    // server.close();
-    // return true;
-    // } catch (IOException e1) {
-    // return false;
-    // } catch (Exception e) {
-    // // don't care what hapened...
-    // return false;
-    // }
-    // }
 }

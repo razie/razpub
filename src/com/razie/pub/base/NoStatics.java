@@ -36,6 +36,8 @@ import java.util.Map;
  * 
  * TODO i should use ThreadLocal to implement this
  * 
+ * TODO sync the instances
+ * 
  * @author razvanc99
  */
 public class NoStatics {
@@ -54,6 +56,14 @@ public class NoStatics {
 		NoStatics s = instances.get(Thread.currentThread());
 		return s == null ? root : s;
 	}
+
+   public static void reset() {
+      instances.clear(); 
+      root.statics.clear(); 
+      // questionable: this deletes all statics - but that's a JVM reset, isn't it?
+   }
+
+   public static void resetJVM() {  ExecutionContext.resetJVM();  }
 
 	/** the current thread uses this instance - normally from a ThreadContext */
 	public static void enter(NoStatics instance) {
@@ -87,6 +97,9 @@ public class NoStatics {
 		instances.remove(Thread.currentThread());
 	}
 
+	/** this is the root context in the main thread and all threads that don't have a NoStatics */
+	public static NoStatics root () { return root; };
+
 	/**
 	 * create a static for the current thread for the given class
 	 * 
@@ -107,4 +120,11 @@ public class NoStatics {
 	public static Object get(Class<?> c) {
 		return instance().statics.get(c);
 	}
+	
+   /**
+    * same as get, but works on instance - goot for root().getLocal()
+    */
+   public Object getLocal(Class<?> c) {
+      return statics.get(c);
+   }
 }

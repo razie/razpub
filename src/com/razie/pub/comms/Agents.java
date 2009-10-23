@@ -1,5 +1,6 @@
 /**
- * Razvan's code. Copyright 2008 based on Apache (share alike) see LICENSE.txt for details.
+ * Razvan's public code. Copyright 2008 based on Apache license (share alike) see LICENSE.txt for
+ * details. No warranty implied nor any liability assumed for this code.
  */
 package com.razie.pub.comms;
 
@@ -17,7 +18,7 @@ import com.razie.pub.base.log.Log;
  * 
  * this is used with NoStatic so you use it on your thread with Agents.instance()
  * 
- * TODO monitor network and ip and update this and send event
+ * TODO 1-3 monitor network and ip and update this and send event
  * 
  * @author razvanc99
  */
@@ -68,6 +69,16 @@ public class Agents {
      * @return
      */
     public static AgentHandle agent(String remote) {
+        AgentHandle ah = "localhost".equals(remote) ? me() : instance().agentImpl(remote);
+        return ah;
+    }
+
+    /** @return the handle for the mentioned remote agent
+     * 
+     * @param remote the name of the remote agent or "localhost" meaning me()
+     * @return
+     */
+    public static AgentHandle handleOf(String remote) {
         AgentHandle ah = "localhost".equals(remote) ? me() : instance().agentImpl(remote);
         return ah;
     }

@@ -7,6 +7,8 @@ package com.razie.pub.comms;
 import java.net.Socket;
 
 import com.razie.pub.base.AttrAccess;
+import com.razie.pub.base.NoStaticSafe;
+import com.razie.pub.base.NoStatics;
 import com.razie.pub.base.log.Log;
 
 /**
@@ -24,14 +26,13 @@ import com.razie.pub.base.log.Log;
  * open a port in the firewall, I hope it would confuse any would-be attacker which just scanned
  * your port, since the mutant wouldn't say a word without the prefix.
  * 
- * TODO AA should be custom per endpoint (same agent can use other agents with different AA
+ * TODO 1-2 AA should be custom per endpoint (same agent can use other agents with different AA
  * capabilities). Also, the AA can be negociated with the endpoints. Not sure how this will hookup
  * with the comms channel framework.
  * 
- * TODO make nostaticsafe
- * 
  * @author razvanc99
  */
+@NoStaticSafe
 public class LightAuth {
    /**
     * permissions that can be assigned to objects, actions and methods. These are decoupled from the
@@ -67,9 +68,8 @@ public class LightAuth {
       ANYBODY,
    }
 
-   protected static LightAuth impl;
-   protected String           prefix = "";
-   private static boolean           locked = false;
+   protected String       prefix = "";
+   private boolean locked = false;
 
    public LightAuth(String prefix) {
       // be nice
@@ -81,26 +81,30 @@ public class LightAuth {
 
    /** @deprecated use instance() */
    protected static LightAuth singleton() {
-      if (impl == null)
-         impl = new LightAuth("");
-      return impl;
+      return instance();
    }
 
-   public static LightAuth instance () {
-      if (impl == null)
-         impl = new LightAuth("");
-      return impl;
+   public static LightAuth instance() {
+      if (NoStatics.get(LightAuth.class) == null) {
+         // try to reuse the one set in the main thread
+         if (NoStatics.root().getLocal(LightAuth.class) == null)
+            NoStatics.put(LightAuth.class, new LightAuth(""));
+         else
+            NoStatics.put(LightAuth.class, NoStatics.root().getLocal(LightAuth.class));
+      }
+      return (LightAuth) NoStatics.get(LightAuth.class);
    }
 
    /** initialize the (for now static) AA used in this server/client */
    public static void init(LightAuth impl) {
-      if (!locked)
-         LightAuth.impl = impl;
+      LightAuth i = instance();
+      if (i == null || !i.locked)
+         NoStatics.put(LightAuth.class, impl);
    }
 
    /** lock it - can't reset after this */
    public static void lock() {
-      locked=true;
+      instance().locked = true;
    }
 
    /**
@@ -115,7 +119,7 @@ public class LightAuth {
     * @return the URL to use, with AA info inserted
     */
    public static String wrapUrl(String url) {
-      return singleton().wrapUrlImpl(url);
+      return instance().wrapUrlImpl(url);
    }
 
    public AttrAccess httpSecParms(java.net.URL url) {
@@ -143,7 +147,7 @@ public class LightAuth {
     * @return the URL to process, with AA info removed
     */
    public static String unwrapUrl(String url) throws AuthException {
-      return singleton().unwrapUrlImpl(url);
+      return instance().unwrapUrlImpl(url);
    }
 
    /** default impl will just prefix the url */
@@ -195,6 +199,15 @@ public class LightAuth {
       }
    }
 
+   /**
+    * figure out authorization credentials in one request. NOTE that this basic implementation
+    * doesn't know SHAREDSECRET and FRIEND - take the valueadd option
+    * 
+    * @param socket - the socket involved in the request
+    * @param url - the url of the request
+    * @param httpArgs - args of the http request
+    * @return the auth level of the other end
+    */
    public LightAuth.AuthType iauthorize(Socket socket, String url, AttrAccess httpArgs) {
       String clientip = socket.getInetAddress().getHostAddress();
 
@@ -203,20 +216,16 @@ public class LightAuth {
 
       // TODO this auth is really weak anyways...
       Object debug1 = Agents.getMyHostName();
-      
-      Log.traceThis ("AUTH_RECON: LightAuth- "+clientip + " / me="+Agents.me() + " / "+debug1);
+
+      Log.traceThis("AUTH_RECON: LightAuth- " + clientip + " / me=" + Agents.me() + " / " + debug1);
 
       if (Comms.isLocalhost(clientip)) {
          return LightAuth.AuthType.INHOUSE;
-      // TODO is this correct in linux?
-      } else if (clientip.startsWith(Agents.getHomeNetPrefix()) 
-            || Agents.agent(Agents.getMyHostName()) == null  /*TODO what is this condition? */
+         // TODO is this correct in linux?
+      } else if (clientip.startsWith(Agents.getHomeNetPrefix())
+            || Agents.agent(Agents.getMyHostName()) == null /* TODO what is this condition? */
             || clientip.equals(Agents.me().ip)) {
          return LightAuth.AuthType.INHOUSE;
-      } else if (false) {
-         return LightAuth.AuthType.SHAREDSECRET;
-      } else if (false) {
-         return LightAuth.AuthType.FRIEND;
       } else
          return LightAuth.AuthType.ANYBODY;
    }
@@ -236,9 +245,20 @@ public class LightAuth {
       return LightAuth.AuthType.SHAREDSECRET;
    }
 
-   public String toString() { return "simple LightAuth - no real security"; }
+   public String toString() {
+      return "simple LightAuth - no real security";
+   }
+
    // TODO security - make these final somehow - plugns can attack by wrapping the lightauth...
-   public String resetSecurity (String pwd) {return "NOT IMPLEMENTED - you need the advanced security from valueadd package";}
-   public String accept (String pwd, AgentHandle who, String pk) {return "NOT IMPLEMENTED - you need the advanced security from valueadd package";}
-   public String pubkey (AgentHandle who) {return "NOT IMPLEMENTED - you need the advanced security from valueadd package";}
+   public String resetSecurity(String pwd) {
+      return "NOT IMPLEMENTED - you need the advanced security from valueadd package";
+   }
+
+   public String accept(String pwd, AgentHandle who, String pk) {
+      return "NOT IMPLEMENTED - you need the advanced security from valueadd package";
+   }
+
+   public String pubkey(AgentHandle who) {
+      return "NOT IMPLEMENTED - you need the advanced security from valueadd package";
+   }
 }

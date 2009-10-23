@@ -151,14 +151,8 @@ is divided into following sections:
         <condition property="do.depend.true">
             <istrue value="${do.depend}"/>
         </condition>
-        <condition else="" property="javac.compilerargs.jaxws" value="-Djava.endorsed.dirs='${jaxws.endorsed.dir}'">
-            <and>
-                <isset property="jaxws.endorsed.dir"/>
-                <available file="nbproject/jaxws-build.xml"/>
-            </and>
-        </condition>
         <path id="endorsed.classpath.path" path="${endorsed.classpath}"/>
-        <condition else="" property="endorsed.classpath.cmd.line.arg" value="-Xbootclasspath/p:${toString:endorsed.classpath.path}">
+        <condition else="" property="endorsed.classpath.cmd.line.arg" value="-Xbootclasspath/p:'${toString:endorsed.classpath.path}'">
             <length length="0" string="${endorsed.classpath}" when="greater"/>
         </condition>
     </target>
@@ -211,7 +205,7 @@ is divided into following sections:
                         <path path="@{classpath}"/>
                     </classpath>
                     <compilerarg line="${endorsed.classpath.cmd.line.arg}"/>
-                    <compilerarg line="${javac.compilerargs} ${javac.compilerargs.jaxws}"/>
+                    <compilerarg line="${javac.compilerargs}"/>
                     <customize/>
                 </javac>
             </sequential>

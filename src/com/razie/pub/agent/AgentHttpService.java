@@ -1,11 +1,12 @@
 /**
- * Razvan's code. Copyright 2008 based on Apache (share alike) see LICENSE.txt for details.
+ * Razvan's public code. Copyright 2008 based on Apache license (share alike) see LICENSE.txt for
+ * details. No warranty implied nor any liability assumed for this code.
  */
 package com.razie.pub.agent;
 
 import java.util.List;
 
-import com.razie.pub.assets.AssetMgr;
+import com.razie.pub.assets.Meta;
 import com.razie.pub.base.NoStaticSafe;
 import com.razie.pub.base.NoStatics;
 import com.razie.pub.base.log.Log;
@@ -33,7 +34,7 @@ public class AgentHttpService extends AgentService {
    LightServer                server;
    LightCmdGET                cmdGET       = null;
    StatusReport               status       = new StatusReport();
-   public HttpAssetSoaBinding assetBinding = null;              // TODO encapsulate properly
+   public HttpAssetSoaBinding assetBinding = null;              // TODO 3 CODE encapsulate properly
 
    /**
     * create a simple http service. NOTE that the serverToUse must have a cmdGet handler, where we
@@ -71,19 +72,29 @@ public class AgentHttpService extends AgentService {
       status.ok();
    }
 
-   /** factory stub */
+   /** NoStatic singleton */
    public static AgentHttpService instance() {
       return (AgentHttpService) NoStatics.get(AgentHttpService.class);
    }
 
+   /*
+    *  NOTE: you may want to check if there's on in your context: instance()!=null first
+    */
    public static void registerSoa(HttpSoaBinding c) {
       instance().cmdGET.registerSoa(c);
    }
 
-   public static void registerSoaAsset(Class<?> c, AssetMgr.Meta...meta) {
+   /** if meta not passed in, must be annotated with SoaAsset and have the meta set.
+    * 
+    *  NOTE: you may want to check if there's on in your context: instance()!=null first
+    */
+   public static void registerSoaAsset(Class<?> c, Meta...meta) {
       instance().assetBinding.register(c, meta);
    }
 
+   /*
+    *  NOTE: you may want to check if there's on in your context: instance()!=null first
+    */
    public static void registerHandler(SocketCmdHandler h) {
       instance().server.registerHandler(h);
    }
@@ -100,11 +111,11 @@ public class AgentHttpService extends AgentService {
       try {
          serverThread.join();
       } catch (InterruptedException e) {
-         // TODO what can I do here?
-         Log.logThis("ERR_MUTANT_INTERRUPTED");
+         Log.traceThis("WARN_MUTANT_INTERRUPTED", e);
       }
    }
 
+   @Override
    protected void onShutdown() {
       Log.logThis("AGENTWEB_SHUTDOWN");
       server.shutdown();
@@ -112,6 +123,7 @@ public class AgentHttpService extends AgentService {
       todoEncapsulateSomehowJoin();
    }
 
+   @Override
    protected void onStartup() {
       Log.logThis("AGENTWEB_STARTUP");
       serverThread = new Thread(server, "AgentServerThread");
@@ -119,6 +131,7 @@ public class AgentHttpService extends AgentService {
    }
 
    /** get status and report */
+   @Override
    public StatusReport status() {
       StatusReport res = new StatusReport(StatusReport.Status.GREEN);
       return res;

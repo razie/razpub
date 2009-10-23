@@ -198,10 +198,9 @@ public class RiXmlUtils {
          doc = docBuilder.newDocument();
 
          Element element = doc.getDocumentElement();
-         // TODO do i actually need to do this here? why?
-         if (element != null) {
+         // do i actually need to do this here? why?
+         if (element != null) 
             element.normalize();
-         }
       } catch (Throwable t) {
          t.printStackTrace();
       }

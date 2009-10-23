@@ -1,6 +1,6 @@
 /**
  * Razvan's public code. Copyright 2008 based on Apache license (share alike) see LICENSE.txt for
- * details.
+ * details. No warranty implied nor any liability assumed for this code.
  */
 package com.razie.pub.assets;
 
@@ -23,7 +23,7 @@ import com.razie.pub.comms.Comms;
  * for others it's http://host:port/url
  * 
  * <p>
- * inspired from OSS/J's application environment, highly simplified.
+ * inspired from OSS/J's application environment, highly simplified (arguably...).
  * 
  * @author razvanc99
  */
@@ -60,7 +60,9 @@ public class AssetLocation implements Serializable {
 
    /** returns true if this NewAppEnv points to a local directory */
    public boolean isLocal() {
-      if (isMutant()) {
+      if (localPath==null && remoteUrl==null)
+         return true;
+      else if (isMutant()) {
          return this.getHost().equals(Agents.getMyHostName()) || "local".equals(this.getHost())
                || Comms.isLocalhost(this.getHost());
       } else {

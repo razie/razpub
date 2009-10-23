@@ -1,6 +1,6 @@
 /**
  * Razvan's public code. Copyright 2008 based on Apache license (share alike) see LICENSE.txt for
- * details.
+ * details. No warranty implied nor any liability assumed for this code.
  */
 package com.razie.pub.assets;
 
@@ -11,7 +11,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONString;
 
-import com.razie.pub.assets.AssetMgr.Meta;
 import com.razie.pub.base.ActionItem;
 import com.razie.pub.base.AttrAccess;
 import com.razie.pub.base.data.HtmlRenderUtils;
@@ -51,7 +50,6 @@ import com.razie.pub.resources.RazIcons;
  * these are not applicable to say web assets...
  * 
  * @author razvanc99
- * 
  */
 public class AssetBrief extends AttrAccess.Impl implements AttrAccess, Referenceable, Drawable, JSONString {
 
@@ -158,7 +156,7 @@ public class AssetBrief extends AttrAccess.Impl implements AttrAccess, Reference
         return s + p + "\n</item>";
     }
 
-    // TODO
+    // TODO 1-2 setup the entire rss feed thing. implies format specs
     public String toRssMediaItem() {
         String s = "\n<item>\n";
 

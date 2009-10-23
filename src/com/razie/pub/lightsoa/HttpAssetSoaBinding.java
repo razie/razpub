@@ -12,6 +12,7 @@ import com.razie.pub.assets.AssetKey;
 import com.razie.pub.assets.AssetLocation;
 import com.razie.pub.assets.AssetMgr;
 import com.razie.pub.assets.AssetPres;
+import com.razie.pub.assets.Meta;
 import com.razie.pub.base.AttrAccess;
 import com.razie.pub.base.data.HttpUtils;
 import com.razie.pub.comms.MyServerSocket;
@@ -42,7 +43,8 @@ public class HttpAssetSoaBinding extends HttpSoaBinding {
       // now should register all asset types as listeners...
    }
 
-   public void register(Class<?> c, AssetMgr.Meta... meta) {
+   /** if meta not passed in, must be annotated with SoaAsset and have the meta set */
+   public void register(Class<?> c, Meta... meta) {
       String m = meta.length > 0 && meta[0] != null ? meta[0].id.name : ((SoaAsset) c
             .getAnnotation(SoaAsset.class)).meta();
       if (!bindings.containsKey(m))
@@ -63,7 +65,7 @@ public class HttpAssetSoaBinding extends HttpSoaBinding {
          // url is /asset/KEY/cmd
          key = AssetKey.fromString(HttpUtils.fromUrlEncodedString(actionName));
       else if (cmdargs.length() == 0) {
-         // TODO url is /asset/TYPE - by convention, list all of type
+         // url is /asset/TYPE - by convention, list all of type
          listLocal (actionName, "", true, makeDrawStream(socket, protocol));
          return new StreamConsumedReply();
       } else {

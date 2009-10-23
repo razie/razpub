@@ -87,7 +87,7 @@ public class MutantPresentation extends PageMaker {
         }
 
         // trigger refresh
-        // TODO don't trigger eery time - less often
+        // TODO 3 PERF don't trigger eery time - less often
         for (String s : singleton.filenames.keySet()) {
             Reg.doc(s);
             if (singleton.filenames.get(s) != Reg.doc(s).fileLastModified) {

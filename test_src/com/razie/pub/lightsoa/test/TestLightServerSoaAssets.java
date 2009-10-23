@@ -12,7 +12,7 @@ import java.net.URL;
 import com.razie.pub.assets.AssetActionToInvoke;
 import com.razie.pub.assets.AssetMgr;
 import com.razie.pub.base.ActionItem;
-import com.razie.pub.base.ThreadContext;
+import com.razie.pub.base.ExecutionContext;
 import com.razie.pub.base.log.Log;
 import com.razie.pub.comms.ActionToInvoke;
 import com.razie.pub.http.test.TestLightBase;
@@ -28,7 +28,7 @@ public class TestLightServerSoaAssets extends TestLightBase {
 
    public void setUp() {
       if (server == null) {
-         ThreadContext.DFLT_CTX.enter(); // this is important - someone mangles the context and it all gets fucked
+         ExecutionContext.DFLT_CTX.enter(); // this is important - someone mangles the context and it all gets fucked
          super.setUp();
 
          // initialize the main asset manager - is responsible for instantiating assets by key

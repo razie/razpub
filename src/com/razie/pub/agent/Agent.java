@@ -1,5 +1,6 @@
 /**
- * Razvan's code. Copyright 2008 based on Apache (share alike) see LICENSE.txt for details.
+ * Razvan's public code. Copyright 2008 based on Apache license (share alike) see LICENSE.txt for
+ * details. No warranty implied nor any liability assumed for this code.
  */
 package com.razie.pub.agent;
 
@@ -10,7 +11,7 @@ import java.util.Map;
 
 import com.razie.pub.base.AttrAccess;
 import com.razie.pub.base.NoStatics;
-import com.razie.pub.base.ThreadContext;
+import com.razie.pub.base.ExecutionContext;
 import com.razie.pub.base.log.Log;
 import com.razie.pub.comms.AgentCloud;
 import com.razie.pub.comms.AgentHandle;
@@ -34,7 +35,6 @@ import com.razie.pubstage.comms.HtmlContents;
  * 
  * @author razvanc
  * @version $Id$
- * 
  */
 public class Agent {
 
@@ -43,18 +43,18 @@ public class Agent {
    protected boolean                 initialized = false;
    protected boolean                 started     = false;
    protected NoStatics               myStatics   = new NoStatics();
-   protected AgentHandle             me    = null;
-   protected AgentCloud              homeCloud;
-   private ThreadContext             mainContext;
+   protected AgentHandle             me          = null;
+   public    AgentCloud              homeCloud;
+   private ExecutionContext          mainContext;
    private final static Log          logger      = Log.Factory.create("agent", Agent.class.getSimpleName());
 
    /** initialize agent with given info */
    public Agent(AgentHandle me, AgentCloud homeCloud) {
       this.me = me;
       this.homeCloud = homeCloud;
-      
+
       NoStatics ns = new NoStatics();
-      mainContext = new ThreadContext(ns);
+      mainContext = new ExecutionContext(ns);
       mainContext.enter();
 
       mainContext.setAttr("Agent", this);
@@ -72,12 +72,11 @@ public class Agent {
 
    /** return the instance to use for the current thread... */
    public static Agent instance() {
-      return (Agent) ThreadContext.instance().getAttr("Agent");
+      return (Agent) ExecutionContext.instance().getAttr("Agent");
    }
 
-   public AgentHandle getHandle() {
-      return me;
-   }
+   public AgentHandle getHandle() { return me; }
+   public AgentHandle handle() { return me; }
 
    /**
     * shorthand for other registerbyname: use the simple class name as service name
@@ -99,9 +98,9 @@ public class Agent {
 
       if (started && !stopped) {
          // make sure it's started in my context, since this is called by others
-         ThreadContext old = this.mainContext.enter();
+         ExecutionContext old = this.mainContext.enter();
          startSvc(l);
-         ThreadContext.exit(old);
+         ExecutionContext.exit(old);
       }
 
       Log.logThis("REGISTERED_SERVICE: " + name);
@@ -113,7 +112,7 @@ public class Agent {
       SoaService soas = svc.getClass().getAnnotation(SoaService.class);
       if (soas != null && soas.bindings().length > 0) {
          for (String binding : soas.bindings()) {
-            // TODO register the binding types and use them here rather than just http
+            // TODO 2-2 register the binding types and use them here rather than just http
             if ("http".equals(binding)) {
                AgentHttpService.registerSoa(new HttpSoaBinding(svc));
             }
@@ -125,21 +124,22 @@ public class Agent {
     * called when main() starts up but before onStartup(). Initialize all services from the
     * configuration file
     * 
-    *  overload this to usually register your own service on init
-    *  
-    *  @return this agent
+    * overload this to usually register your own service on init
+    * 
+    * @return this agent
     */
    public synchronized Agent onInit() {
       initialized = true;
       return this;
    }
 
-   /** called when main() is done initializing everything else
+   /**
+    * called when main() is done initializing everything else
     * 
-    *  @return this agent
+    * @return this agent
     */
    public synchronized Agent onStartup() {
-      ThreadContext old = this.mainContext.enter();
+      ExecutionContext old = this.mainContext.enter();
 
       for (AgentService s : services.values()) {
          startSvc(s);
@@ -147,13 +147,13 @@ public class Agent {
 
       started = true;
 
-      ThreadContext.exit(old);
+      ExecutionContext.exit(old);
       return this;
    }
 
    /** can't be synchronized since it may wait too long to notify others */
    public void onConnectToOtherAgent(AgentHandle remote) {
-      ThreadContext old = this.mainContext.enter();
+      ExecutionContext old = this.mainContext.enter();
 
       // not me...
       if (remote.hostname.equals(Agents.getMyHostName())) {
@@ -164,25 +164,29 @@ public class Agent {
          }
       }
 
-      ThreadContext.exit(old);
+      ExecutionContext.exit(old);
    }
 
-   public synchronized void onShutdown() {
-      ThreadContext old = this.mainContext.enter();
+   /**
+    * shutdown all services. Note that it doesn't way for background threads to finish - you should
+    * call keepOnTrucking!
+    * 
+    * @return this agent
+    */
+   public synchronized Agent onShutdown() {
+      ExecutionContext old = this.mainContext.enter();
 
       stopped = true;
-      // TODO shutdown in the reverse sequence
+      // TODO 2-1 shutdown in the reverse sequence
       for (AgentService s : services.values()) {
-         // TODO give them some time to cleanup and then kill them if they
-         // didn't stop
+         // TODO 2-2 give them some time to cleanup and then kill them if they didn't stop
          logger.log("AGENT_SHUTDOWN service: " + s.getClass().getName());
          s.onShutdown();
       }
 
-      ThreadContext.exit(old);
-
-      // TODO are there any threads/workers/beings i should kill?
-      logger.log("AGENT_SHUTDOWN_COMPLETE");
+      ExecutionContext.exit(old);
+      logger.log("AGENT_SHUTDOWN_COMPLETE - some daemons may still be alive, though - " + me);
+      return this;
    }
 
    /** indicates if the agent has been shutdown */
@@ -191,15 +195,25 @@ public class Agent {
    }
 
    /**
-    * main loop - will wait here until the agent is shutdown. 
-    * Call from your main() after all initialization...
+    * main loop - will wait here until the agent is shutdown, joining all spawned threads. Call from
+    * your main() after all initialization...
+    * 
+    * <p>
+    * This will also wait for the server to die... it is the first to start and last to die. For the
+    * server to die, note that onShutdown must be called from elsewhere.
+    * 
+    * <p>
+    * A usual sequence for unit tests is <code>a.{onShutdown(); keepOnTrucking()}</code> which will
+    * ask it to die and then will wait until it dies.
     */
-   public void keepOnTrucking() {
-      // wait for the server to die... it is the first to start and last to
-      // die
-      // note that shutdown is call0kjed from elsewhere
-      AgentHttpService ahs = ((AgentHttpService)locateService(AgentHttpService.class.getSimpleName()));
-      if (ahs != null) ahs.todoEncapsulateSomehowJoin();
+   public void join() {
+      AgentHttpService ahs = ((AgentHttpService) locateService(AgentHttpService.class.getSimpleName()));
+      // TODO 1-1 there may be some more background threads - do i need a facility for these now?.
+      // option 1 is to register daemon threads iwth the agent which will then know to wait for them
+      // - this will fxi the todoencapsulate as well
+      // see also comment THREADS in AgentService
+      if (ahs != null)
+         ahs.todoEncapsulateSomehowJoin();
    }
 
    public synchronized List<AgentService> copyOfServices() {
@@ -230,7 +244,7 @@ public class Agent {
       String srcAgentNm = Agents.getMyHostName();
 
       // TODO if device is me call notify local directly
-      //TODO use ServiceActionItemtoinvoke with lightauth
+      // TODO 1-1 use ServiceActionItemtoinvoke with lightauth
       String url = "http://" + device.ip + ":" + device.port + "/mutant/control/";
       url += "Notify?name=" + eventId + "&srcAgentNm=" + srcAgentNm;
       url = new AttrAccess.Impl(args).addToUrl(url);
@@ -252,7 +266,7 @@ public class Agent {
 
       for (AgentHandle d : this.homeCloud.agents().values()) {
          if (!d.equals(this.me)) {
-            // TODO optimize this - notify can figure out if it's up at the
+            // TODO ?- optimize this - notify can figure out if it's up at the
             // same time
             if (AgentHandle.DeviceStatus.UP.equals(d.status)) {
                notified += d.name + ":" + notifyOther(d, eventId, args) + " , ";
@@ -265,7 +279,6 @@ public class Agent {
       logger.log("AGENT_NOTIFIED_OTHERS: " + notified + " / NOTNOTIFIED: " + notnotified);
    }
 
-   public ThreadContext getThreadContext() {
-      return mainContext;
-   }
+   public ExecutionContext getContext() { return mainContext; }
+   public ExecutionContext context() { return mainContext; }
 }

@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * simple MT barrier waiting for a few threads to finish
  * 
- * TODO implement
+ * TODO 3-3 implement
  * 
  * @author razvanc99
  */

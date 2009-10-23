@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.razie.pub.base.ActionItem;
-import com.razie.pub.base.ThreadContext;
+import com.razie.pub.base.ExecutionContext;
 import com.razie.pub.base.log.Log;
 import com.razie.pub.events.PostOffice;
 
@@ -27,11 +27,11 @@ public abstract class Worker implements Runnable, Being {
 
     private ActionItem    progressCode;
     private ActionItem    me;
-    protected ThreadContext threadCtx;
+    protected ExecutionContext threadCtx;
 
     private ActionItem    SLEEPING = new ActionItem("sleeping...");
 
-    public Worker(ActionItem me, ThreadContext threadCtx) {
+    public Worker(ActionItem me, ExecutionContext threadCtx) {
         this.me = me;
         this.threadCtx = threadCtx;
     }

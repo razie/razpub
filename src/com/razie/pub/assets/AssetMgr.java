@@ -1,6 +1,6 @@
 /**
  * Razvan's public code. Copyright 2008 based on Apache license (share alike) see LICENSE.txt for
- * details.
+ * details. No warranty implied nor any liability assumed for this code.
  */
 package com.razie.pub.assets;
 
@@ -46,7 +46,7 @@ public abstract class AssetMgr {
         return instance().metasImpl();
     }
 
-    /** TODO - does it belong here? register a new type */
+    /** TODO 1-1 does it belong here? how does one generically register a new type */
     public void register(Meta meta) {
         throw new UnsupportedOperationException ("must implement in derived class");
     }
@@ -106,70 +106,5 @@ public abstract class AssetMgr {
     public abstract Map<AssetKey, AssetBrief> findImpl(String type, AssetLocation env, boolean recurse);
 
     public abstract AssetPres presImpl();
-
-    /**
-     * a meta-description of an asset type
-     * 
-     * The inventory and asset class specs are used elsewhere...didn't bother extending...you don't
-     * have to use them
-     */
-    public static class Meta {
-        public String       inventory;
-        public String       assetCls;
-        public String       baseMetaname;
-        public ActionItem   id;
-        public ActionItem[] supportedActions;
-
-        /** basic constructor - the inventory/class are set automatically when registered */
-        public Meta(ActionItem id, String base) {
-            this.baseMetaname = base;
-            this.id = id;
-        }
-
-        /** a meta for assets with an inventroy */
-        public Meta(ActionItem id, String base, String inventory) {
-            this.baseMetaname = base;
-            this.id = id;
-            this.inventory = inventory;
-        }
-
-        /** a meta for assets with their own class */
-        public Meta(ActionItem id, String base, String assetCls, String inventory) {
-            this.baseMetaname = base;
-            this.id = id;
-            this.inventory = inventory;
-            this.assetCls = assetCls;
-        }
-
-        public String toBriefXml() {
-            StringBuilder b = new StringBuilder();
-            b.append("<metaspec name=\"" + id.name + "\"");
-            b.append(" inventory=\"" + inventory + "\"");
-            if (baseMetaname != null && baseMetaname.length() > 0)
-                b.append(" base=\"" + baseMetaname + "\"");
-            b.append(">");
-           
-            b.append("</metaspec>");
-            
-            return b.toString();
-        }
-        
-        public String toDetailedXml() {
-            StringBuilder b = new StringBuilder();
-            b.append("<metaspec name=\"" + id.name + "\"");
-            b.append(" inventory=\"" + inventory + "\"");
-            if (baseMetaname != null && baseMetaname.length() > 0)
-                b.append(" base=\"" + baseMetaname + "\"");
-            b.append(">");
-
-            for (ActionItem ai : supportedActions) {
-                b.append("<action name=\""+ai.name+"\"");
-            b.append("/>");
-            }
-            b.append("</metaspec>");
-            
-            return b.toString();
-        }
-    }
    
 }

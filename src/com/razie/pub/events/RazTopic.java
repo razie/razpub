@@ -32,10 +32,10 @@ public class RazTopic extends RazDestination {
     public void send(String srcId, String eventId, Object... args) {
         AttrAccess info = null; // lazy
         synchronized (listeners) {
-            // TODO dont sync eating events
+            // TODO 3 PERF dont sync eating events
             List<WeakReference<EvListener>> list = listeners.get(eventId);
 
-            // TODO this shold be outside the sync but don't want to clone the list (poltergeist)
+            // TODO 3 PERF this shold be outside the sync but don't want to clone the list (poltergeist)
             // any ideas? Idea1: make a SyncMemDb with read/write lock in separate methods:
             // acquire(x) release(x)
             for (Iterator<WeakReference<EvListener>> i = list.iterator(); i.hasNext();) {

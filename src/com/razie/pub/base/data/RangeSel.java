@@ -6,9 +6,7 @@ package com.razie.pub.base.data;
 
 
 /**
- * date-time related stuff
- * 
- * TODO detailed docs
+ * TODO 1-1 detailed docs
  * 
  * @author razvanc
  */

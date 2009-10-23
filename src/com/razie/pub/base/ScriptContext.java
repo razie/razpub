@@ -35,14 +35,14 @@ public interface ScriptContext extends AttrAccess {
    /** remove a function */
    public void undef(String macro);
 
-   /** TODO document */
+   /** TODO 3 FUNC use guards, document */
    public void guard(String name, String condition, String expr);
 
-   /** TODO document */
+   /** TODO 3 FUNC use guards, document */
    public void unguard(String name, String condition, String expr);
 
    /** TODO remove */
-   public void screwscala28(String name, Object v);
+   public void xscrewscala28(String name, Object v);
 
    /** make execution verbose or not */
    public void verbose(boolean v);
@@ -114,7 +114,7 @@ public interface ScriptContext extends AttrAccess {
       }
 
       /**
-       * TODO use the gurads - currently i'm not using them. I think i want them to be what,
+       * TODO 3 FUNC use the guards - currently i'm not using them. I think i want them to be what,
        * rules???
        */
       public void guard(String name, String condition, String expr) {
@@ -128,13 +128,13 @@ public interface ScriptContext extends AttrAccess {
          guards.remove(name);
       }
 
-      /** TODO document */
+      /** more verbose or not? */
       public void verbose(boolean v) {
          this.verbose = v;
       }
 
       /** TODO remove */
-      public void screwscala28(String name, Object v) {
+      public void xscrewscala28(String name, Object v) {
          super.set(name, v);
       }
    }
@@ -162,7 +162,7 @@ public interface ScriptContext extends AttrAccess {
       }
 
       @Override
-      public void screwscala28(String name, Object v) {
+      public void xscrewscala28(String name, Object v) {
          throw new IllegalStateException("This context is sealed - you can't override stuff.");
       }
 

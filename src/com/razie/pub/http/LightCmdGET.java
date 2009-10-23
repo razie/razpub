@@ -280,9 +280,7 @@ public class LightCmdGET extends SocketCmdHandler.Impl {
         Log.logThis("HTTP_REMOVE_LISTENER " + c.getClass().getName());
     }
 
-    /**
-     * @return the soa bindings in use
-     */
+    /** @return the soa bindings in use */
     public Iterable<HttpSoaBinding> getBindings() {
         return bindings.values();
     }
@@ -296,7 +294,7 @@ public class LightCmdGET extends SocketCmdHandler.Impl {
        MPRES.add (MutantPresentation.getInstance());
     }
     
-    static final String[]        COMMANDS = { "GET"}; // TODO "PUT", "DELETE"
+    static final String[]        COMMANDS = { "GET"}; // TODO 2-2 FUNC implement "PUT", "DELETE"
     static final Log             logger   = Log.Factory.create("", LightCmdGET.class.getName());
     private Map<String, HttpSoaBinding> bindings = new HashMap<String,HttpSoaBinding>();
 }

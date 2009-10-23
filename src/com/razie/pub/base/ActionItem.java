@@ -16,7 +16,7 @@ import com.razie.pub.resources.RazIcons;
  * 
  * for more details, find the project razactionables and read the details there...
  * 
- * TODO implement fully, with property bundle for the labels and actions, including tooltips etc
+ * TODO 2-2 implement fully, with property bundle for the labels and actions, including tooltips etc
  * 
  * TODO the arguments are patched on...try to nice-fy via constructors maybe?
  * 

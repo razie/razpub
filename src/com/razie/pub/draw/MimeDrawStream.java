@@ -24,6 +24,19 @@ public class MimeDrawStream extends com.razie.pub.draw.DrawStream.DrawStreamWrap
         ((SimpleDrawStream)proxied).writeBytes(HttpHelper.httpHeader(HttpHelper.OK, mime).getBytes());
     }
 
+    /** switch technology of an underlying stream - NOTE I'm assuming you know what you're doing...do you???
+     * 
+     * @param stream the underlying stream to switch technology
+     * @param mime the new mime type
+     * @throws IOException
+     */
+    public MimeDrawStream(DrawStream stream, String mime, Technology t) throws IOException {
+       // get the underlying proxied stream and change its technology
+       super (stream instanceof DrawStreamWrapper ? ((DrawStreamWrapper)stream).proxied : stream);
+       proxied.switchTechnology(t);
+       ((SimpleDrawStream)proxied).writeBytes(HttpHelper.httpHeader(HttpHelper.OK, mime).getBytes());
+   }
+
     @Override
     public void close() {
     }
