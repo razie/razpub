@@ -28,7 +28,7 @@ public class TestLightBase extends TestCase {
 
    public static Integer         PORT    = 4445;
    protected static LightCmdGET  cmdGET  = new LightCmdGET();
-   protected static LightCmdPOST cmdPOST = new LightCmdPOST();
+   protected static LightCmdPOST cmdPOST = new LightCmdPOST(cmdGET);
 
    static AgentHandle            ME      = new AgentHandle("localhost", "localhost", "127.0.0.1", PORT
                                                .toString(), "http://localhost:" + PORT.toString());
