@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src"/>
+	<classpathentry excluding="com/razie/pubstage/actions/|com/razie/pubstage/components/|com/razie/pubstage/files/|com/razie/pubstage/personal/|razie/assets/pres/|razie/assetsj/|com/razie/pub/base/package-info.java|com/razie/pub/base/data/package-info.java|com/razie/pub/comms/CommSession.java|com/razie/pub/comms/POSTActionToInvoke.java|razie/assets/Tagged.scala|razie/RazUnit.scala|com/razie/pub/assets/AssetCmdInjector.scala|com/razie/pub/assets/AssetMgrScala.scala|com/razie/pub/assets/AssetMgrTrait.scala|com/razie/pub/assets/package-info.java" kind="src" path="src"/>
 	<classpathentry kind="src" path="test_src"/>
 	<classpathentry kind="lib" path="lib/bcprov-jdk16-143.jar"/>
 	<classpathentry kind="lib" path="lib/js.jar"/>
 	<classpathentry kind="lib" path="lib/json.jar"/>
 	<classpathentry kind="lib" path="lib/log4j-1.2.7.jar"/>
 	<classpathentry kind="lib" path="lib/mime-util.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/3"/>
+	<classpathentry kind="con" path="ch.epfl.lamp.sdt.launching.SCALA_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/scalacompiler"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/scalatest"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
