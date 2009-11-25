@@ -46,7 +46,7 @@ import java.util.Map;
  * 
  * @author razvanc
  */
-public class ExecutionContext extends AttrAccess.Impl {
+public class ExecutionContext extends AttrAccessImpl {
    // TODO 1-1 actually use weak refrences in this map- this probably keeps Threads from being
    // collected if one forgets to exit()
 

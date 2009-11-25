@@ -11,8 +11,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.razie.pub.assets.AssetKey;
-import com.razie.pub.assets.AssetMgr;
+import razie.assets.AssetKey;
+import razie.assets.AssetMgr;
+
+import com.razie.pub.assets.JavaAssetMgr;
 import com.razie.pub.base.AttrAccess;
 import com.razie.pub.draw.DrawStream;
 
@@ -72,7 +74,7 @@ public class SoaBinding {
 
     /** invoke a lightsoa method on a given service */
     public Object invoke(AssetKey key, String action, AttrAccess inparms) {
-        Object asset = AssetMgr.getAsset(key);
+        Object asset = JavaAssetMgr.getAsset(key);
         if (asset != null)
             return this.invoke(asset, action, inparms);
         else
@@ -133,7 +135,7 @@ public class SoaBinding {
 
     /** invoke a lightsoa method on a given service */
     public Object invokeStreamable(AssetKey key, String action, DrawStream stream, AttrAccess inparms) {
-        Object asset = AssetMgr.getAsset(key);
+        Object asset = JavaAssetMgr.getAsset(key);
         if (asset != null)
             return this.invokeStreamable(asset, action, stream, inparms);
         else

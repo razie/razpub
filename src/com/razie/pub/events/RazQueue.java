@@ -7,8 +7,8 @@ package com.razie.pub.events;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
-import com.razie.pub.assets.AssetBrief;
 import com.razie.pub.base.AttrAccess;
+import com.razie.pub.base.AttrAccessImpl;
 
 /**
  * like a jms queue
@@ -56,7 +56,7 @@ public class RazQueue extends RazDestination {
                 } else {
                     EvListener evl = l.get();
                     if (info == null)
-                        info = new AttrAccess.Impl(args);
+                        info = new AttrAccessImpl(args);
                     evl.eatThis(srcId, eventId, info);
                     repeat = false;
                 }
@@ -64,11 +64,6 @@ public class RazQueue extends RazDestination {
                 repeat = false;
             }
         }
-    }
-
-    public AssetBrief getBrief() {
-        // TODO Auto-generated method stub
-        return null;
     }
 
 }

@@ -21,6 +21,7 @@ import com.razie.pub.base.data.MimeUtils;
 import com.razie.pub.base.log.Log;
 import com.razie.pub.comms.AuthException;
 import com.razie.pub.comms.Comms;
+import com.razie.pub.comms.HttpHelper;
 import com.razie.pub.comms.LightAuth;
 import com.razie.pub.comms.MyServerSocket;
 import com.razie.pub.comms.SedFilter;

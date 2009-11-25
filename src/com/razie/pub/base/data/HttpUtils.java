@@ -12,6 +12,8 @@ import java.net.URLEncoder;
 /**
  * a bunch of http utils ?
  * 
+ * @deprecate just inline...
+ * TODO 1-1 just inline
  * @author razvanc99
  */
 public class HttpUtils {

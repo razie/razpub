@@ -6,7 +6,8 @@ package com.razie.pub.agent;
 
 import java.util.List;
 
-import com.razie.pub.assets.Meta;
+import razie.assets.Meta;
+
 import com.razie.pub.base.NoStaticSafe;
 import com.razie.pub.base.NoStatics;
 import com.razie.pub.base.log.Log;

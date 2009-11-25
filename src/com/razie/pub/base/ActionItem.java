@@ -20,6 +20,8 @@ import com.razie.pub.resources.RazIcons;
  * 
  * TODO the arguments are patched on...try to nice-fy via constructors maybe?
  * 
+ * TODO how do we generically assign permissions to these ?
+ * 
  * @author razvanc99
  * @version $Id$
  */
@@ -37,7 +39,12 @@ public class ActionItem implements Cloneable {
     /** A=act(ACT), C=create(PUT), R=read(GET), U=update(POST), D=delete(REMOVE) */
     public enum ActionType { A, C, R, U, D };
     public ActionType actionType = ActionType.R;
-    
+  
+    /** @return this */
+    public ActionItem setType (ActionType t) {
+       this.actionType = t;
+       return this;
+    }
     /**
      * overwrite the label of another action item
      * 

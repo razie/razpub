@@ -9,9 +9,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.razie.pub.base.AttrAccess;
-import com.razie.pub.base.NoStatics;
+import com.razie.pub.base.AttrAccessImpl;
 import com.razie.pub.base.ExecutionContext;
+import com.razie.pub.base.NoStatics;
 import com.razie.pub.base.log.Log;
 import com.razie.pub.comms.AgentCloud;
 import com.razie.pub.comms.AgentHandle;
@@ -247,7 +247,7 @@ public class Agent {
       // TODO 1-1 use ServiceActionItemtoinvoke with lightauth
       String url = "http://" + device.ip + ":" + device.port + "/mutant/control/";
       url += "Notify?name=" + eventId + "&srcAgentNm=" + srcAgentNm;
-      url = new AttrAccess.Impl(args).addToUrl(url);
+      url = new AttrAccessImpl(args).addToUrl(url);
       String otherList = (Comms.readUrl(url));
       otherList = HtmlContents.justBody(otherList);
 

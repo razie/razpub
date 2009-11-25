@@ -5,21 +5,21 @@
 package com.razie.pub.comms;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
-import com.razie.pub.assets.AssetKey;
-import com.razie.pub.assets.AssetLocation;
+//import razie.assets.AssetKey;
+//import razie.assets.AssetLocation;
 
 /**
  * represents a remote agent. Agent's name should normally be the same as the hostname, but do as
  * you must...
  * 
  * @author razvanc99
- * 
  */
 @SuppressWarnings("serial")
-public class AgentHandle extends AssetKey implements Cloneable {
+public class AgentHandle /*extends AssetKey*/ implements Cloneable, Serializable {
 
     /** the handles keep transient peer status info, if an updater service is used */
     public static enum DeviceStatus {
@@ -52,7 +52,7 @@ public class AgentHandle extends AssetKey implements Cloneable {
     /** full constructor */
     public AgentHandle(String name, String hostname, String ip, String port, String url, String os,
             String localdir) {
-        super(sCLASS, name, new AssetLocation(url));
+//        super(sCLASS, name, new AssetLocation(url));
         this.name = name;
         this.hostname = hostname;
         this.ip = ip;

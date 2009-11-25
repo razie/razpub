@@ -12,6 +12,7 @@ import com.razie.pub.base.AttrAccess;
 import com.razie.pub.base.ScriptContext;
 import com.razie.pub.base.actions.BaseActionToInvoke;
 import com.razie.pub.draw.Drawable;
+import com.razie.pub.resources.RazIcons;
 
 /**
  * this is an instance of an action, meant to be invoked. It is prepared by someone and can be
@@ -90,4 +91,8 @@ public class ActionToInvoke extends BaseActionToInvoke implements Cloneable, Att
          throw new RuntimeException("while getting the command url: " + this.makeActionUrl(), e);
       }
    }
+   
+   public static ActionToInvoke TODO = new ActionToInvoke(new ActionItem("internal/todo", RazIcons.UNKNOWN));
+   public static ActionToInvoke UNKNOWN = new ActionToInvoke(new ActionItem("internal/unknown", RazIcons.UNKNOWN));
+
 }

@@ -20,12 +20,12 @@ import java.util.List;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import com.razie.pub.assets.AssetLocation;
+import razie.assets.AssetLocation;
 import com.razie.pub.base.AttrAccess;
 import com.razie.pub.base.data.ByteArray;
 import com.razie.pub.base.exceptions.CommRtException;
 import com.razie.pub.base.log.Log;
-import com.razie.pub.http.HttpHelper;
+import com.razie.pub.comms.HttpHelper;
 import com.sun.org.apache.xerces.internal.parsers.DOMParser;
 
 /**

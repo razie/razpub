@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import com.razie.pub.draw.Renderer.Technology;
-import com.razie.pub.http.HttpHelper;
+import com.razie.pub.comms.HttpHelper;
 
 /**
  * a drawing stream that is plain text, but you can specify the mime type sent to the client

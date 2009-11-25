@@ -4,7 +4,7 @@
  */
 package com.razie.pub.lightsoa;
 
-import com.razie.pub.base.AttrAccess;
+import com.razie.pub.base.AttrAccessImpl;
 
 /**
  * a service call response is a set of attributes. STRONGLY suggest that the attributes be
@@ -20,7 +20,7 @@ import com.razie.pub.base.AttrAccess;
  * @author razvanc99
  * 
  */
-public class SoaResponse extends AttrAccess.Impl {
+public class SoaResponse extends AttrAccessImpl {
     /** supports a map as well */
     public SoaResponse(Object... pairs) {
         super(pairs);

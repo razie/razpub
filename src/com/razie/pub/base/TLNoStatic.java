@@ -19,6 +19,7 @@ package com.razie.pub.base;
  * 
  * @see com.razie.pub.base.test.TestNoStatic
  * @author razvanc99
+ * @deprecated use NoStatic instead - it's tied to the ExecutionContext instead of the local thread...more powerful
  */
 public class TLNoStatic<T> extends ThreadLocal {
 	private T initialValue;

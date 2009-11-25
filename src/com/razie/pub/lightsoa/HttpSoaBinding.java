@@ -7,14 +7,15 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Properties;
 
-import com.razie.pub.assets.AssetKey;
-import com.razie.pub.assets.AssetMgr;
+import razie.assets.AssetKey;
+import razie.assets.AssetKey$;
+
+import com.razie.pub.assets.JavaAssetMgr;
 import com.razie.pub.base.AttrAccess;
+import com.razie.pub.base.AttrAccessImpl;
 import com.razie.pub.base.ScriptContext;
 import com.razie.pub.base.data.HttpUtils;
 import com.razie.pub.base.log.Log;
-import com.razie.pub.comms.Agents;
-import com.razie.pub.comms.LightAuth;
 import com.razie.pub.comms.MyServerSocket;
 import com.razie.pub.draw.DrawStream;
 import com.razie.pub.draw.HttpDrawStream;
@@ -125,8 +126,8 @@ public class HttpSoaBinding extends SoaBinding {
 
       if (otoi == null) {
          // must be an asset instance
-         if (actionName.startsWith(AssetKey.PREFIX)) {
-            key = AssetKey.fromString(HttpUtils.fromUrlEncodedString(actionName));
+         if (actionName.startsWith(AssetKey$.MODULE$.PREFIX())) {
+            key = AssetKey$.MODULE$.fromString(HttpUtils.fromUrlEncodedString(actionName));
             String[] ss = cmdargs.split("/", 2);
             actionName = ss[0];
             cmdargs = ss.length > 1 ? ss[1] : null;
@@ -138,7 +139,7 @@ public class HttpSoaBinding extends SoaBinding {
             cmdargs = ss.length > 2 ? ss[2] : null;
          }
 
-         otoi = AssetMgr.getAsset(key);
+         otoi = JavaAssetMgr.getAsset(key);
       }
 
       if (otoi == null) {
@@ -154,7 +155,7 @@ public class HttpSoaBinding extends SoaBinding {
          logger.log("HTTP_SOA_delegateTo_AssetMgr.doAction: " + actionName + ": ");
          ScriptContext ctx = new ScriptContext.Impl(ScriptContext.Impl.global());
          ctx.setAttr(parms);
-         response = AssetMgr.doAction(actionName, key, ctx);
+         response = JavaAssetMgr.doAction(actionName, key, ctx);
       } else {
          if (methods.containsKey(actionName)) {
             method = methods.get(actionName);
@@ -168,7 +169,7 @@ public class HttpSoaBinding extends SoaBinding {
          if (method != null) {
             logger.log("HTTP_SOA_" + actionName + ": ");
 
-            AttrAccess args = new AttrAccess.Impl(parms);
+            AttrAccess args = new AttrAccessImpl(parms);
 
             // setup the parms
             SoaMethod mdesc = method.getAnnotation(SoaMethod.class);
@@ -244,7 +245,7 @@ public class HttpSoaBinding extends SoaBinding {
 
    public String toString() {
       return this.serviceName + " : "
-            + (this.service == null ? "NULL SERVICE" : this.service.getClass().getName());
+            + (this.service == null ? "NULL SERVICE - probably the asset service?" : this.service.getClass().getName());
    }
 
    private static final Log logger = Log.Factory.create("http", HttpSoaBinding.class.getName());

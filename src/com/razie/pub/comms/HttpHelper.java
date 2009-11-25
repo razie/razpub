@@ -2,7 +2,7 @@
  * Razvan's public code. 
  * Copyright 2008 based on Apache license (share alike) see LICENSE.txt for details.
  */
-package com.razie.pub.http;
+package com.razie.pub.comms;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -10,6 +10,7 @@ import java.io.PrintStream;
 import java.net.Socket;
 
 import com.razie.pub.base.AttrAccess;
+import com.razie.pub.base.AttrAccessImpl;
 import com.razie.pub.base.data.HtmlRenderUtils;
 
 /** basic http utilities
@@ -118,7 +119,7 @@ public class HttpHelper {
         out.println(cmd);
         
         if (httpArgs == null)
-            httpArgs = new AttrAccess.Impl();
+            httpArgs = new AttrAccessImpl();
         httpArgs.set("Content-Length", content.length()); 
         
         for (String n : httpArgs.getPopulatedAttr())
@@ -148,7 +149,7 @@ public class HttpHelper {
         out.println(cmd);
         
         if (httpArgs == null)
-            httpArgs = new AttrAccess.Impl();
+            httpArgs = new AttrAccessImpl();
         httpArgs.set("Content-Type", "application/octet-stream");
 //TODO 2-1       httpArgs.set("Content-Length", content.length());
         

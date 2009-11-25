@@ -6,9 +6,11 @@ package com.razie.pub.events;
 
 import java.lang.ref.WeakReference;
 
-import com.razie.pub.assets.AssetBase;
-import com.razie.pub.assets.AssetBrief;
-import com.razie.pub.assets.AssetKey;
+import razie.assets.AssetBase;
+import razie.assets.AssetBaseImpl;
+import razie.assets.AssetKey;
+import razie.assets.AssetBriefImpl;
+
 import com.razie.pub.base.ActionItem;
 import com.razie.pub.base.data.MemDb;
 
@@ -19,7 +21,7 @@ import com.razie.pub.base.data.MemDb;
  * @author $Author: davidx $
  * @since $Date: 2005/04/01 16:22:12 $
  */
-public abstract class RazDestination extends AssetBase.Impl implements RazResource, AssetBase {
+public abstract class RazDestination extends AssetBaseImpl implements RazResource, AssetBase {
     public static final String                sCLASS    = "MsgDestination.razie";
     public static final ActionItem            META      = new ActionItem(sCLASS,
                                                                 "/mutant/pics/IceAgeScrat.png");
@@ -36,7 +38,7 @@ public abstract class RazDestination extends AssetBase.Impl implements RazResour
     };
 
     protected RazDestination(String name, boolean distributed, QOS qos) {
-        super(new AssetBrief());
+        super(new AssetBriefImpl());
         this.resName = name;
         this.setKey(new AssetKey(sCLASS, resName));
         this.distributed = distributed;

@@ -47,7 +47,7 @@ public class TimeOfDay {
     static String[] TAGS   = { "time" };
 
     int[][]         rangei = { { 0, 6 }, { 7, 11 }, { 12, 19 }, { 20, 23 } };
-    String[]        values = { "night", "morning", "day", "evening" };
+    public static String[]        values = { "night", "morning", "day", "evening" };
     String          dflt   = "?";
 
     ActionItem[]    aivalues;

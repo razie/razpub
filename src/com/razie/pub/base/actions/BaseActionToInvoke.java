@@ -6,6 +6,7 @@ package com.razie.pub.base.actions;
 
 import com.razie.pub.base.ActionItem;
 import com.razie.pub.base.AttrAccess;
+import com.razie.pub.base.AttrAccessImpl;
 import com.razie.pub.comms.Agents;
 import com.razie.pub.draw.DrawStream;
 import com.razie.pub.draw.Drawable;
@@ -35,7 +36,7 @@ import com.razie.pub.draw.widgets.NavLink;
  * 
  * @author razvanc99
  */
-public abstract class BaseActionToInvoke extends AttrAccess.Impl implements IActionable, AttrAccess, Drawable {
+public abstract class BaseActionToInvoke extends AttrAccessImpl implements IActionable, AttrAccess, Drawable {
     /** this is the action, contains the actual command name and label to display */
     public ActionItem actionItem;
 

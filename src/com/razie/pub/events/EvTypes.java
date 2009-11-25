@@ -5,7 +5,7 @@
 package com.razie.pub.events;
 
 import com.razie.pub.base.AttrAccess;
-import java.util.Map;
+import com.razie.pub.base.AttrAccessImpl;
 
 /**
  * all event types must derive from here - easy way to find all event types in a large distributed system
@@ -21,7 +21,7 @@ public interface EvTypes {
            protected AttrAccess aa;
 
            public AttrAccess getAttributes() {
-                   if (aa == null) aa=new AttrAccess.Impl();
+                   if (aa == null) aa=new AttrAccessImpl();
                    return aa;
            }
 

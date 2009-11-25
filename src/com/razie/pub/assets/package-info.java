@@ -3,6 +3,11 @@
  *
  * Fairly light and flexible asset/resource management framework
  * 
+ * <h1>Overview</h1>
+ * <p>There's a flurry of patterns and styles out there trying to simplify programming. The domain and model-oriented ones make the most sense. There are yet others that deal with the presentation (naked objects) in a similar manner.
+ * 
+ * <p>This is my attempt at covering this field, as I strongly believe that this is the way to go and that all applications should be built this way.
+ * 
  * <h1>Vision</h1>
  * <p>
  * There are assets and resources all over the place, like movies, devices, a running windows

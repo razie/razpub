@@ -75,7 +75,7 @@ public interface Renderer<T> {
         private static IndexedMemDb<Class, Technology, Renderer> renderers = new IndexedMemDb<Class, Technology, Renderer>();
 
         /** overwrite or define a new renderer for a drawable class and technology combination */
-        public void register(Class c, Technology t, Renderer r) {
+        public void register(Class<? extends Drawable> c, Technology t, Renderer r) {
             renderers.put(c, t, r);
         }
 
@@ -115,7 +115,7 @@ public interface Renderer<T> {
      * that if you choose to return "x" for the header but write the footer directly to the stream,
      * you're in trouble... :)
      */
-    public static interface ContainerRenderer extends Renderer {
+    public static interface ContainerRenderer extends Renderer<Object> {
         /**
          * the return object is technology specific. NOTE that if you choose to stream anything, you
          * have to stream everything.

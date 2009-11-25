@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.razie.pub.base.AttrAccess;
+import com.razie.pub.base.AttrAccessImpl;
 
 /**
  * a topic sends each message to all listeners
@@ -42,7 +43,7 @@ public class RazTopic extends RazDestination {
                 EvListener l = i.next().get();
                 if (l != null) {
                     if (info == null)
-                        info = new AttrAccess.Impl(args);
+                        info = new AttrAccessImpl(args);
                     l.eatThis(srcId, eventId, info);
                 } else
                     // garbage collection...
@@ -58,7 +59,7 @@ public class RazTopic extends RazDestination {
                 EvListener l = i.next().get();
                 if (l != null) {
                     if (info == null)
-                        info = new AttrAccess.Impl(args);
+                        info = new AttrAccessImpl(args);
                     l.eatThis(srcId, eventId, info);
                 } else
                     // garbage collection...

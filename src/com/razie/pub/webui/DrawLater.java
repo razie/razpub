@@ -2,7 +2,7 @@
  * Razvan's public code. Copyright 2008 based on Apache license (share alike) see LICENSE.txt for
  * details.
  */
-package com.razie.pub.draw.widgets;
+package com.razie.pub.webui;
 
 import com.razie.pub.comms.ActionToInvoke;
 import com.razie.pub.draw.DrawStream;

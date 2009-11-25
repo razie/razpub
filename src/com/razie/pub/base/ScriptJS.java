@@ -4,12 +4,11 @@
  */
 package com.razie.pub.base;
 
-import java.io.IOException;
-import java.net.URL;
+import org.mozilla.javascript.Context;
+import org.mozilla.javascript.Scriptable;
+import org.mozilla.javascript.ScriptableObject;
+import org.mozilla.javascript.Wrapper;
 
-import org.mozilla.javascript.*;
-
-import com.razie.pub.comms.Comms;
 
 /**
  * running javascripts
@@ -25,15 +24,6 @@ import com.razie.pub.comms.Comms;
 public class ScriptJS implements RazScript {
 
     private String script;
-
-    /** use this for remote, files and classpath scripts */
-    public ScriptJS(URL sfile) {
-        try {
-            this.setScript(Comms.readStream(sfile.openStream()));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     /** build from script string */
     public ScriptJS(String s) {
@@ -110,21 +100,5 @@ public class ScriptJS implements RazScript {
             Context.exit();
         }
         return result;
-    }
-
-    public static void main(String[] argv) {
-        String script = "x = 'abc'; y = 3; function f(x){return x+1} f(7)";
-        ScriptJS js = new ScriptJS(script);
-        System.out.println(js.eval(new ScriptContext.Impl()));
-
-        script = "TimeOfDay.value()";
-        js = new ScriptJS(script);
-        ScriptContext ctx = new ScriptContext.Impl();
-        ctx.setAttr("TimeOfDay", new TimeOfDay());
-        System.out.println(js.eval(ctx));
-
-        // script = "com.razie.playground.things.TimeOfDay.calcvalue()";
-        // js = new JavaScript(script);
-        // System.out.println(js.run(new ScriptContext.Impl()));
     }
 }

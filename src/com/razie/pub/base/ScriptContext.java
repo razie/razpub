@@ -30,10 +30,10 @@ public interface ScriptContext extends AttrAccess {
     * 
     * DO NOT forget to seal a context before passing it to untrusted plugins
     */
-   public void def(String fun, String expr);
+   public void define(String fun, String expr);
 
    /** remove a function */
-   public void undef(String macro);
+   public void undefine(String macro);
 
    /** TODO 3 FUNC use guards, document */
    public void guard(String name, String condition, String expr);
@@ -64,7 +64,7 @@ public interface ScriptContext extends AttrAccess {
          this((ScriptContext) null);
       };
 
-      public Impl(AttrAccess.Impl aa) {
+      public Impl(AttrAccessImpl aa) {
          this(null, aa);
       };
 
@@ -77,7 +77,7 @@ public interface ScriptContext extends AttrAccess {
          super(parent);
       };
 
-      public Impl(ScriptContext parent, AttrAccess.Impl aa) {
+      public Impl(ScriptContext parent, AttrAccessImpl aa) {
          super(parent);
          this.parms = aa.parms;
       };
@@ -89,6 +89,7 @@ public interface ScriptContext extends AttrAccess {
 
       public Object getAttr(String name) {
          if (macros.containsKey(name)) {
+            // TODO 3-1 cache these pre-compiled macros
             return ScriptFactory.make(null, macros.get(name)).eval(this);
          }
          return super.getAttr(name);
@@ -101,7 +102,7 @@ public interface ScriptContext extends AttrAccess {
       /**
        * DO NOT forget to seal a context before passing it to untrusted plugins
        */
-      public void def(String macro, String expr) {
+      public void define(String macro, String expr) {
          macros.put(macro, expr);
       }
 
@@ -109,7 +110,7 @@ public interface ScriptContext extends AttrAccess {
        * reset all overloads of a parm DO NOT forget to seal a context before passing it to
        * untrusted plugins
        */
-      public void undef(String macro) {
+      public void undefine(String macro) {
          macros.remove(macro);
       }
 
@@ -152,7 +153,7 @@ public interface ScriptContext extends AttrAccess {
       }
 
       @Override
-      public void def(String fun, String expr) {
+      public void define(String fun, String expr) {
          throw new IllegalStateException("This context is sealed - you can't override stuff.");
       }
 
@@ -167,7 +168,7 @@ public interface ScriptContext extends AttrAccess {
       }
 
       @Override
-      public void undef(String macro) {
+      public void undefine(String macro) {
          throw new IllegalStateException("This context is sealed - you can't override stuff.");
       }
 

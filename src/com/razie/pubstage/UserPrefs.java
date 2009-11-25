@@ -1,6 +1,7 @@
 package com.razie.pubstage;
 
 import com.razie.pub.base.AttrAccess;
+import com.razie.pub.base.AttrAccessImpl;
 
 /**
  * store user preferences
@@ -56,7 +57,7 @@ public class UserPrefs {
         this.parms.setAttr(name, value);
     }
 
-    AttrAccess              parms        = new AttrAccess.Impl();
+    AttrAccess              parms        = new AttrAccessImpl();
 
     static final String[][] defaults     = { { "listvisual", AssetListVisual.LIST.toString() },
             { "listvisual.Movie", AssetListVisual.BRIEFLIST.toString() },

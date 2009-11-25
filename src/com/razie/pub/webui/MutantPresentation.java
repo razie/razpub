@@ -7,6 +7,7 @@ import org.w3c.dom.Element;
 
 import com.razie.pub.base.ActionItem;
 import com.razie.pub.base.AttrAccess;
+import com.razie.pub.base.AttrAccessImpl;
 import com.razie.pub.base.ScriptContext;
 import com.razie.pub.base.data.RiXmlUtils;
 import com.razie.pub.base.data.XmlDoc;
@@ -34,7 +35,7 @@ public class MutantPresentation extends PageMaker {
 
     private static MutantPresentation singleton;
     private long                      lastModified;
-    private AttrAccess                pages     = new AttrAccess.Impl();
+    private AttrAccess                pages     = new AttrAccessImpl();
     // name,toRefresh
     private Map<String, Long>         filenames = new HashMap<String, Long>();
 

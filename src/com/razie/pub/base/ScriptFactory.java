@@ -11,7 +11,6 @@ package com.razie.pub.base;
  * 
  * @author razvanc
  */
-@Factory
 public class ScriptFactory {
     public static ScriptFactory singleton = new ScriptFactory();
 

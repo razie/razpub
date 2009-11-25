@@ -3,7 +3,7 @@ package com.razie.pubstage.life;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.razie.pub.assets.AssetKey;
+import razie.assets.AssetKey;
 import com.razie.pub.base.ExecutionContext;
 
 /**

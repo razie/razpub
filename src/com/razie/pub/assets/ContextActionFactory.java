@@ -6,7 +6,7 @@ package com.razie.pub.assets;
 
 import java.util.List;
 
-import com.razie.pub.assets.AssetKey;
+import razie.assets.AssetKey;
 import com.razie.pub.comms.ActionToInvoke;
 
 /**

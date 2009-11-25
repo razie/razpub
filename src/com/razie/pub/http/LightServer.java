@@ -15,6 +15,7 @@ import java.util.Properties;
 
 import com.razie.pub.base.ActionItem;
 import com.razie.pub.base.AttrAccess;
+import com.razie.pub.base.AttrAccessImpl;
 import com.razie.pub.base.ExecutionContext;
 import com.razie.pub.base.data.HtmlRenderUtils;
 import com.razie.pub.base.log.Exceptions;
@@ -187,7 +188,7 @@ public class LightServer extends Worker {
                 // finish reading the input stream until there's nothing else...this will get
                 // the entire command
                 String rest = in.readLine();
-                AttrAccess httpattrs = new AttrAccess.Impl();
+                AttrAccess httpattrs = new AttrAccessImpl();
                 while (rest != null && rest.length() > 0) {
                    String s[] = rest.split(": ");
                    httpattrs.setAttr(s[0], s[1]);

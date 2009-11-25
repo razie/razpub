@@ -26,7 +26,7 @@ package com.razie.pub.base;
  * 
  * @see com.razie.pub.base.test.TestNoStatic
  * @author razvanc99
- * @deprecated use the scala version scala.razie.NoStatic instead - this one is too limited
+ * @deprecated use the scala version razie.NoStatic instead - this one is too limited
  */
 @Deprecated
 public class NoStatic<T> {

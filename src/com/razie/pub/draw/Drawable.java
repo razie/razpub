@@ -55,6 +55,7 @@ public interface Drawable {
      */
     public Object render(Technology t, DrawStream stream);
 
+    /** use this for "draw me later" kind of widget */
     public static abstract class DrawWidget implements Drawable {
         public Drawable makeDrawable() {
             return this;

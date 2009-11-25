@@ -9,7 +9,7 @@ import java.io.OutputStream;
 
 import com.razie.pub.comms.MyServerSocket;
 import com.razie.pub.draw.Renderer.Technology;
-import com.razie.pub.http.HttpHelper;
+import com.razie.pub.comms.HttpHelper;
 
 /**
  * a drawing stream to an http client (plain old web). Will render objects in the html and wrap in

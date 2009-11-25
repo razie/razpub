@@ -7,12 +7,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-import com.razie.pub.assets.AssetBrief;
-import com.razie.pub.assets.AssetKey;
-import com.razie.pub.assets.AssetLocation;
-import com.razie.pub.assets.AssetMgr;
-import com.razie.pub.assets.AssetPres;
-import com.razie.pub.assets.Meta;
+import razie.assets.*;
+
+import razie.assets.AssetPres;
+import com.razie.pub.assets.JavaAssetMgr;
 import com.razie.pub.base.AttrAccess;
 import com.razie.pub.base.data.HttpUtils;
 import com.razie.pub.comms.MyServerSocket;
@@ -45,7 +43,7 @@ public class HttpAssetSoaBinding extends HttpSoaBinding {
 
    /** if meta not passed in, must be annotated with SoaAsset and have the meta set */
    public void register(Class<?> c, Meta... meta) {
-      String m = meta.length > 0 && meta[0] != null ? meta[0].id.name : ((SoaAsset) c
+      String m = meta.length > 0 && meta[0] != null ? meta[0].getId().name : ((SoaAsset) c
             .getAnnotation(SoaAsset.class)).meta();
       if (!bindings.containsKey(m))
          bindings.put(m, new HttpSoaBinding(c, m));
@@ -61,9 +59,9 @@ public class HttpAssetSoaBinding extends HttpSoaBinding {
       // two ways to specify an asset: /asset/TYPE/KEY/ (localassets) or /asset/razie.uri....(local
       // and remote)
       AssetKey key = null;
-      if (actionName.startsWith(AssetKey.PREFIX))
+      if (actionName.startsWith(AssetKey$.MODULE$.PREFIX()))
          // url is /asset/KEY/cmd
-         key = AssetKey.fromString(HttpUtils.fromUrlEncodedString(actionName));
+         key = AssetKey$.MODULE$.fromString(HttpUtils.fromUrlEncodedString(actionName));
       else if (cmdargs.length() == 0) {
          // url is /asset/TYPE - by convention, list all of type
          listLocal (actionName, "", true, makeDrawStream(socket, protocol));
@@ -86,14 +84,14 @@ public class HttpAssetSoaBinding extends HttpSoaBinding {
 
    /** list some assets directly to the output stream */
    public static void listLocal(String ttype, String location, boolean recurse, DrawStream out) {
-      AssetLocation env = AssetLocation.mutantEnv(location);
+      AssetLocation env = AssetLocation$.MODULE$.mutantEnv(location);
 
-      Map<AssetKey, AssetBrief> movies = AssetMgr.find(ttype, env, recurse);
+      AssetMap movies = JavaAssetMgr.find(ttype, env, recurse);
 
       if (Technology.TEXT.equals(out.getTechnology())) {
          out.write(movies.toString());
       } else {
-         AssetPres.instance().toDrawable(movies.values(), out, null);
+         JavaAssetMgr.pres().toDrawable(movies.jvalues(), out, null);
       }
    }
 
