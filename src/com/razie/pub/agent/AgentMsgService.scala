@@ -57,11 +57,14 @@ class AgentMsgService extends AgentService {
  * the same time. 
  * GOOD LUCK! */
 trait AgentMsgHandler {
-   def receive (msg:Any) : Any
-   def receiveRemote (from:AgentHandle, msg:Any) : Any = receive (msg)
+   def receiveRemote (from:AgentHandle, msg:Any) : Any 
 }
 
-class AgentMsg(val msg:Any) extends Serializable
+class AgentMsg(val msg:Any) extends Serializable {
+   def sendTo (to:AgentHandle) = AgentMsg.isend (to, this)
+   def sendTo (to:String) = AgentMsg.isend (to, this)
+}
+
 case class AssetMsg (key:AssetKey, override msg:Any) extends AgentMsg (msg) 
 case class ServiceMsg (service:String, override msg:Any) extends AgentMsg  (msg) 
 
@@ -70,7 +73,10 @@ case class AgentMsgEnvelope (from:AgentHandle, to:AgentHandle, msg:AgentMsg)
 object AgentMsg {
    def sendTo (to:AgentHandle, key:AssetKey, msg:Any) = isend (to, new AssetMsg(key, msg))
    def sendTo (to:AgentHandle, service:String, msg:Any) = isend (to, new ServiceMsg(service, msg))
+   def sendTo (to:String, key:AssetKey, msg:Any) = isend (to, new AssetMsg(key, msg))
+   def sendTo (to:String, service:String, msg:Any) = isend (to, new ServiceMsg(service, msg))
    
+   // TODO optimize sending to local
    def isend (to:AgentHandle, m:AgentMsg) : String = {
       val httpArgs = new AttrAccessImpl() 
       val cmd = "POST /mutant/msg/receive HTTP/1.1"
@@ -81,4 +87,8 @@ object AgentMsg {
       socket.close()
       resp
    }
+   
+   def isend (to:String, m:AgentMsg) =  
+      for (a <- Agents.homeCloud.agents.values if (a.name matches (to))) yield isend (_, m)
 }
+
