@@ -37,13 +37,13 @@ class AgentMsgService extends AgentService {
 		m match {
 			case AssetMsg (key, o) => 
 			   razie.Asset(key).resolveIfLocal match {
-			      case h : AgentMsgHandler => h.receiveRemote (from, o)
+			      case h : AgentMsgHandler => h.receive(from, o)
 			      case _ => 
 			         razie.Log.alarmThis ("ERR_MSGASSET could not resolve local asset for message target: " + key)
    			}
 			case ServiceMsg (service, o) =>  
 			   Agent.instance().locateService(service) match {
-               case h : AgentMsgHandler => h.receiveRemote (from, o)
+               case h : AgentMsgHandler => h.receive(from, o)
                case _ => 
                   razie.Log.alarmThis ("ERR_MSGSERVICE could not resolve local service for message target: " + service)
             }
@@ -57,7 +57,8 @@ class AgentMsgService extends AgentService {
  * the same time. 
  * GOOD LUCK! */
 trait AgentMsgHandler {
-   def receiveRemote (from:AgentHandle, msg:Any) : Any 
+   /** if it's 'from' local agent, it most likely is a plain call, not serialized */
+   def receive (from:AgentHandle, msg:Any) : Any 
 }
 
 class AgentMsg(val msg:Any) extends Serializable {
@@ -88,7 +89,7 @@ object AgentMsg {
       resp
    }
    
-   def isend (to:String, m:AgentMsg) =  
-      for (a <- Agents.homeCloud.agents.values if (a.name matches (to))) yield isend (_, m)
+   def isend (to:String, m:AgentMsg) : Iterable[String] =  
+      for (a <- RJS apply Agents.homeCloud.agents.values; if (a.name matches (to))) yield isend (a, m)
 }
 
