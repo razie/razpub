@@ -74,9 +74,13 @@ public class AgentHandle /*extends AssetKey*/ implements Cloneable, Serializable
     }
 
     public String toString() {
-        return "AgentHandle(" + name + ";" + hostname + ";" + ip + ";" + port + ";" + url + ";" + os + ";"
-                + localdir + ")";
-    }
+       return "AgentHandle(" + name + ";" + hostname + ";" + ip + ";" + port + ";" + url + ";" + os + ";"
+               + localdir + ")";
+   }
+
+    public String toSimpleString() {
+       return name + "(" + url + ")";
+   }
 
     public static AgentHandle fromString(String s) {
         if (! s.startsWith ("AgentHandle("))
