@@ -14,7 +14,7 @@ import java.net.URL;
 import com.razie.pub.base.ActionItem;
 import com.razie.pub.base.log.Log;
 import com.razie.pub.comms.ActionToInvoke;
-import com.razie.pub.http.HttpHelper;
+import com.razie.pub.comms.HttpHelper;
 import com.razie.pub.http.test.TestLightBase;
 import com.razie.pub.lightsoa.HttpSoaBinding;
 

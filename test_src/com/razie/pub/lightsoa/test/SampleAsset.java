@@ -4,7 +4,12 @@
  */
 package com.razie.pub.lightsoa.test;
 
-import com.razie.pub.assets.AssetKey;
+import razie.assets.AssetBase;
+import razie.assets.AssetKey;
+import razie.assets.HasMeta;
+import razie.assets.MetaSpec;
+import razie.assets.Referenceable;
+
 import com.razie.pub.draw.DrawStream;
 import com.razie.pub.lightsoa.SoaAsset;
 import com.razie.pub.lightsoa.SoaMethod;
@@ -17,13 +22,15 @@ import com.razie.pub.lightsoa.SoaStreamable;
  * @author razvanc99
  */
 @SoaAsset(meta = "raz.test.Player", descr = "test player asset")
-public class SampleAsset {
+public class SampleAsset implements AssetBase, Referenceable, HasMeta {
     AssetKey key;
 
-    public SampleAsset(AssetKey key) {
-        this.key = key;
+    public SampleAsset(String k) {
+        key = new AssetKey ("raz.test.Player", k);
     }
 
+   public MetaSpec metaSpec () { return new MetaSpec ("raz.test.Player"); }
+   
     @SoaMethod(descr = "play a movie", args = { "movie" })
     public String play(String movie) {
         AssetKey key = AssetKey.fromString(movie);
@@ -49,5 +56,26 @@ public class SampleAsset {
     public void concatenateStream(DrawStream out, String parm1, String parm2) {
         out.write(parm1 + parm2);
     }
+
+   @Override
+   public razie.assets.AssetBrief brief() {
+      return null;
+   }
+
+   @Override
+   public razie.assets.AssetBrief getBrief() {
+      return null;
+   }
+
+   @Override
+   public AssetKey getKey() {
+      return key;
+   }
+
+   @Override
+   public AssetKey key() {
+      // TODO Auto-generated method stub
+      return key;
+   }
 
 }

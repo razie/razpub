@@ -9,8 +9,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 
-import com.razie.pub.assets.AssetActionToInvoke;
-import com.razie.pub.assets.AssetMgr;
+import razie.JAS;
+
+import com.razie.pub.assets.JavaAssetMgr;
 import com.razie.pub.base.ActionItem;
 import com.razie.pub.base.ExecutionContext;
 import com.razie.pub.base.log.Log;
@@ -32,7 +33,9 @@ public class TestLightServerSoaAssets extends TestLightBase {
          super.setUp();
 
          // initialize the main asset manager - is responsible for instantiating assets by key
-         AssetMgr.init(new SampleAssetMgr());
+         JavaAssetMgr.init(new razie.assets.InventoryAssetMgr());
+         JAS.manage(new SampleAsset("1")); 
+         JAS.manage (new SampleAsset2("2")); 
 
          HttpAssetSoaBinding soa = new HttpAssetSoaBinding();
 
@@ -63,8 +66,9 @@ public class TestLightServerSoaAssets extends TestLightBase {
      */
    public void testSoaEchoAction() throws IOException, InterruptedException {
       // send echo command
-      ActionToInvoke action = new AssetActionToInvoke("http://localhost:" + PORT,
-            TestLocalSoaAssets.PLAYERKEY, new ActionItem("play"), "movie", TestLocalSoaAssets.MOVIEKEY);
+      ActionToInvoke action = razie.JAS.aati("http://localhost:" + PORT,
+            TestLocalSoaAssets.PLAYERKEY, new ActionItem("play"), 
+            "movie", TestLocalSoaAssets.MOVIEKEY);
       String result = (String) action.act(null);
 
       assertTrue(result.contains(TestLocalSoaAssets.MOVIEKEY.getId()));

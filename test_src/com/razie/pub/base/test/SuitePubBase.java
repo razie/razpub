@@ -21,6 +21,7 @@ public class SuitePubBase extends TestSuite {
       result.addTestSuite(com.razie.pub.base.test.TestJason.class);
       result.addTestSuite(com.razie.pub.base.test.TestLastLog.class);
       result.addTestSuite(com.razie.pub.base.test.TestNoStatic.class);
+      result.addTestSuite(com.razie.pub.base.test.TestScripting.class);
 
       return result;
    }

@@ -7,6 +7,7 @@ package com.razie.pub.base.test;
 import junit.framework.TestCase;
 
 import com.razie.pub.base.AttrAccess;
+import com.razie.pub.base.AttrAccessImpl;
 
 /**
  * test the attr implementation
@@ -16,20 +17,20 @@ import com.razie.pub.base.AttrAccess;
 public class TestAttr extends TestCase {
 
     public void testStringDefn() throws InterruptedException {
-        AttrAccess aa = new AttrAccess.Impl();
+        AttrAccess aa = new AttrAccessImpl();
         aa.setAttr("attr1", "val1");
         check(aa, 1);
     }
 
     public void testSimpleDefn() throws InterruptedException {
-        AttrAccess aa = new AttrAccess.Impl();
+        AttrAccess aa = new AttrAccessImpl();
         aa.setAttr("attr1:string", "val1");
         aa.setAttr("attr2:int", "2");
         check(aa, 2);
     }
 
     public void testEscapedDefn() throws InterruptedException {
-        AttrAccess aa = new AttrAccess.Impl();
+        AttrAccess aa = new AttrAccessImpl();
         aa.setAttr("attr1\\:string", "val1");
         aa.setAttr("attr2\\:string:int", "2");
         assertTrue(aa.isPopulated("attr1:string"));
@@ -37,17 +38,17 @@ public class TestAttr extends TestCase {
     }
 
     public void testComplexDefn() throws InterruptedException {
-        AttrAccess aa = new AttrAccess.Impl("attr1:string", "val1", "attr2:int", "2");
+        AttrAccess aa = new AttrAccessImpl("attr1:string", "val1", "attr2:int", "2");
         check(aa, 2);
     }
 
     public void testOneLineDefn() throws InterruptedException {
-        AttrAccess aa = new AttrAccess.Impl("attr1:string=val1,attr2:int=2");
+        AttrAccess aa = new AttrAccessImpl("attr1:string=val1,attr2:int=2");
         check(aa, 2);
     }
 
     public void testOneLine2Defn() throws InterruptedException {
-        AttrAccess aa = new AttrAccess.Impl("attr1=val1,attr2:int=2");
+        AttrAccess aa = new AttrAccessImpl("attr1=val1,attr2:int=2");
         check(aa, 2);
     }
 

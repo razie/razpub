@@ -6,6 +6,7 @@
 package com.razie.pub.events.test;
 
 import com.razie.pub.base.AttrAccess;
+import com.razie.pub.base.AttrAccessImpl;
 import com.razie.pub.events.EvListener;
 
 /**
@@ -20,7 +21,7 @@ public class SampleListener implements EvListener {
     int        count     = 0;
 
     public SampleListener(String ev, Object... parms) {
-        aa = new AttrAccess.Impl(parms);
+        aa = new AttrAccessImpl(parms);
         this.ev=ev;
     }
 

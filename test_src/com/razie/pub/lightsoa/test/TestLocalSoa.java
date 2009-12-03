@@ -12,6 +12,7 @@ import java.util.Properties;
 import junit.framework.TestCase;
 
 import com.razie.pub.base.AttrAccess;
+import com.razie.pub.base.AttrAccessImpl;
 import com.razie.pub.base.log.Log;
 import com.razie.pub.comms.LightAuth;
 import com.razie.pub.draw.DrawStream;
@@ -28,7 +29,7 @@ public class TestLocalSoa extends TestCase {
     }
 
     public void testSampleService() {
-        AttrAccess aa = new AttrAccess.Impl();
+        AttrAccess aa = new AttrAccessImpl();
         aa.setAttr("parm1", "a");
         aa.setAttr("parm2", "b");
         SoaResponse resp = (SoaResponse) new SoaBinding(new SampleService(), "").invoke("concatenate", aa);
@@ -37,7 +38,7 @@ public class TestLocalSoa extends TestCase {
 
     public void testSampleService2() {
         SoaResponse resp = (SoaResponse) new SoaBinding(new SampleService(), "").invoke("concatenate",
-                new AttrAccess.Impl("parm1", "a", "parm2", "b"));
+                new AttrAccessImpl("parm1", "a", "parm2", "b"));
         assertTrue("ab".equals(resp.getAttr("Result")));
     }
 
@@ -46,7 +47,7 @@ public class TestLocalSoa extends TestCase {
         aa.setProperty("parm1", "a");
         aa.setProperty("parm2", "b");
         SoaResponse resp = (SoaResponse) new SoaBinding(new SampleService(), "").invoke("concatenate",
-                new AttrAccess.Impl(aa));
+                new AttrAccessImpl(aa));
         assertTrue("ab".equals(resp.getAttr("Result")));
     }
 
@@ -55,7 +56,7 @@ public class TestLocalSoa extends TestCase {
         aa.put("parm1", "a");
         aa.put("parm2", "b");
         SoaResponse resp = (SoaResponse) new SoaBinding(new SampleService(), "").invoke("concatenate",
-                new AttrAccess.Impl(aa));
+                new AttrAccessImpl(aa));
         assertTrue("ab".equals(resp.getAttr("Result")));
     }
 
@@ -65,13 +66,13 @@ public class TestLocalSoa extends TestCase {
         aa.put("parm2", "b");
         DrawStream out = new SimpleDrawStream();
         new SoaBinding(new SampleService(), "").invokeStreamable("concatenateStream", out,
-                new AttrAccess.Impl(aa));
+                new AttrAccessImpl(aa));
         assertTrue("ab".equals(out.toString()));
     }
 
     public void testVoids() {
         SoaResponse resp = (SoaResponse) new SoaBinding(new SampleService(), "").invoke("doNothing",
-                new AttrAccess.Impl("parm1", "a", "parm2", "b"));
+                new AttrAccessImpl("parm1", "a", "parm2", "b"));
     }
 
     static final Log logger = Log.Factory.create(TestLocalSoa.class.getName());
