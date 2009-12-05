@@ -48,10 +48,10 @@ public class HtmlContents extends StrCommStream {
      * @return cut out all known headers and tags, try to get just the body contents
      */
     public static String justBody(String document) {
+       // TODO 3-2 optimize this...one single sed cmd
         String s = document.replaceAll("<html>", "").replaceAll("</html>", "").replaceAll("<body[^>]*>", "")
                 .replaceAll("</body>", "");
         s = s.replaceFirst("<head>.*</head>", "");
         return s;
     }
-    
 }
