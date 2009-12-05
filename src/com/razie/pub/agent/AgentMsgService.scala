@@ -62,8 +62,11 @@ trait AgentMsgHandler {
 }
 
 class AgentMsg(val msg:Any) extends Serializable {
+   /** send this message to another specified agent */
    def sendTo (to:AgentHandle) = AgentMsg.isend (to, this)
-   def sendTo (to:String) = AgentMsg.isend (to, this)
+   
+   /** send this message to a set of agents, which are now up and their name matches the given regexp */
+   def sendTo (nameMatches:String) = AgentMsg.isend (nameMatches, this)
 }
 
 case class AssetMsg (key:AssetKey, override msg:Any) extends AgentMsg (msg) 
@@ -77,16 +80,18 @@ object AgentMsg {
    def sendTo (to:String, key:AssetKey, msg:Any) = isend (to, new AssetMsg(key, msg))
    def sendTo (to:String, service:String, msg:Any) = isend (to, new ServiceMsg(service, msg))
    
-   // TODO optimize sending to local
+   // TODO 3-1 optimize sending to local
    def isend (to:AgentHandle, m:AgentMsg) : String = {
       val httpArgs = new AttrAccessImpl() 
       val cmd = "POST /mutant/msg/receive HTTP/1.1"
-      
+     
+      // TODO 3-1 use nicer stream support - that's why i wrote the freaking thing, right?
+      // TODO 3-2 the response should be stripped of http stuff...use a standard POST mechanism please
       val socket = HttpHelper.sendBinaryPOST(to.hostname, Integer.parseInt(to.port), cmd, httpArgs, new AgentMsgEnvelope (Agents.me, to, m)) 
    
       val resp = Comms.readStream (socket.getInputStream())
       socket.close()
-      resp
+      com.razie.pubstage.comms.HtmlContents.justBody (resp)
    }
    
    def isend (to:String, m:AgentMsg) : Iterable[String] =  
