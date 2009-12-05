@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry excluding="com/razie/pubstage/actions/|com/razie/pubstage/components/|com/razie/pubstage/files/|com/razie/pubstage/personal/|razie/assets/pres/|razie/assetsj/|com/razie/pub/base/package-info.java|com/razie/pub/base/data/package-info.java|com/razie/pub/comms/CommSession.java|com/razie/pub/comms/POSTActionToInvoke.java|razie/assets/Tagged.scala|razie/RazUnit.scala|com/razie/pub/assets/AssetCmdInjector.scala|com/razie/pub/assets/AssetMgrScala.scala|com/razie/pub/assets/AssetMgrTrait.scala|com/razie/pub/assets/package-info.java" kind="src" path="src"/>
+	<classpathentry excluding="com/razie/pubstage/actions/|com/razie/pubstage/components/|com/razie/pubstage/files/|com/razie/pubstage/personal/|razie/assetsj/|com/razie/pub/base/package-info.java|com/razie/pub/base/data/package-info.java|com/razie/pub/comms/CommSession.java|com/razie/pub/comms/POSTActionToInvoke.java|razie/assets/Tagged.scala|razie/RazUnit.scala|com/razie/pub/assets/AssetCmdInjector.scala|com/razie/pub/assets/AssetMgrScala.scala|com/razie/pub/assets/AssetMgrTrait.scala|com/razie/pub/assets/package-info.java|razie/assets/pres/ScalaAssetPres.scala|razie/assets/pres/TempAssetPres.java" kind="src" path="src"/>
 	<classpathentry kind="src" path="test_src"/>
 	<classpathentry kind="lib" path="lib/bcprov-jdk16-143.jar"/>
 	<classpathentry kind="lib" path="lib/js.jar"/>
