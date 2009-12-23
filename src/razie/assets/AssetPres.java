@@ -10,7 +10,7 @@ import java.util.List;
 import com.razie.pub.assets.ContextActionFactory;
 import com.razie.pub.draw.DrawStream;
 import com.razie.pub.draw.Drawable;
-import com.razie.pubstage.UserPrefs;
+import com.razie.pubstage.AssetListVisual;
 
 /**
  * concentrates asset presentation commonalities - gives you a chance to change that if desired...
@@ -32,7 +32,7 @@ public abstract class AssetPres {
     *         stream was passed in
     */
    public abstract Drawable toDrawable(Iterable<AssetBrief> movies, DrawStream stream,
-         ContextActionFactory context, UserPrefs.AssetListVisual... visuals);
+         ContextActionFactory context, AssetListVisual... visuals);
 
    /**
     * make all the buttons for a given asset

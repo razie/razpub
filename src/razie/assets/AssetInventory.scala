@@ -23,7 +23,7 @@ import razie.assets._
  */
 trait AssetInventory {
     /** get an asset by key - it should normally be an AssetBase */
-    def getAsset(key : AssetKey) : AnyRef 
+    def getAsset(key : AssetKey) : AnyRef
 
     /**
      * get/make the brief for an asset given its key. The idea around briefs is that I don't always

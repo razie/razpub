@@ -16,6 +16,22 @@ import scala.collection._
  * asset-URI has this format: <code>"razie.uri:entityType:entityKey@location"</code>
  * <p>
  * asset-context URI has this format: <code>"razie.puri:entityType:entityKey@location&context"</code>
+ *
+ * When the asset support framework is used, this key can have this other form:
+ * <p>
+ * REST asset-URI has this format: <code>"http://SERVER:PORT/asset/entityType/entityKey"</code>
+ * <p>
+ * REST asset-URI has this format: <code>"http://SERVER:PORT/asset/KEY-ENCODED"</code>
+ * <p>
+ * OR: REST asset-URI has this format: <code>"http://SERVER:PORT/asset/entityType/entityKey?context"</code>
+ * 
+ * Actions can be invoked like so
+ * <p>
+ * REST action asset-URI has this format: <code>"http://SERVER:PORT/asset/entityType/entityKey/action?args"</code>
+ * <p>
+ * REST asset-URI has this format: <code>"http://SERVER:PORT/asset/KEY-ENCODED/action&args"</code>
+ * <p>
+ * OR: REST asset-URI has this format: <code>"http://SERVER:PORT/asset/entityType/entityKey?context"</code>
  * 
  * <ul>
  * <li>type is the type of entity, should be unique among all other types. HINT: do not keep
@@ -38,7 +54,6 @@ class AssetKey (_meta:String, _id:String, _loc:AssetLocation) {
    val meta:String = _meta
    val id:String = if (_id == null) AssetKey.uid() else _id
    val loc:AssetLocation = if(_loc == null) AssetLocation.LOCAL else _loc
-   // TODO optimize: constant for empty AssetLocation?
    
    def this (_meta:String, _id:String) = this (_meta, _id, null)
    def this (_meta:String) = this (_meta, AssetKey.uid, null)
@@ -62,28 +77,26 @@ class AssetKey (_meta:String, _id:String, _loc:AssetLocation) {
     /** short descriptive string */
     override def toString = 
        AssetKey.PREFIX+":" + meta + ":" + (if(id == null ) "" else java.net.URLEncoder.encode(id, "UTF-8")) + (if (loc == null || AssetLocation.LOCAL.equals(loc)) "" else ("@" + loc.toString()))
-//       AssetKey.PREFIX+":" + meta + ":" + (if(id == null ) "" else HttpUtils.toUrlEncodedString(id)) + (if (loc == null) "" else ("@" + loc.toString()))
 
     /**
      * Use this method to get a string that is safe to use in a URL. Note that whenever the string
      * is encoded when you want to use it it must be decoded with fromUrlEncodedString(String).
      */
-    def toUrlEncodedString : String = //HttpUtils.toUrlEncodedString(this.toString());
+    def toUrlEncodedString : String = 
             java.net.URLEncoder.encode(toString, "UTF-8")
-
 }
 
 object AssetKey {
    def PREFIX = "razie.uri"
    def PREFIXP = "razie.puri"
    
+    /** to allocate next UID...this should be done better */
+    private var seqNum : Int = 1;
+
     /**
      * just a simple UID implementation, to fake IDs for objects that don't have them.
      */
     def uid() =  "Uid-" + {seqNum+=1; seqNum} + "-" + String.valueOf(System.currentTimeMillis());
-
-    /** to allocate next UID...this should be done better */
-    private var seqNum : Int = 1;
 
     /**
      * make up from an entity-URI. see class javadocs for details on URI
@@ -114,9 +127,9 @@ object AssetKey {
                 val map3 = map2(1).split("@", 2);
                 if (map3.length > 1) {
                    // i have an appEnv
-                   if (map3(1).contains ("?")) {
+                   if (map3(1).contains ("@@")) {
                       // i have a context
-                      val map4 = map3(1).split("?", 2);
+                      val map4 = map3(1).split("@@", 2);
                        return new AssetCtxKey(map2(0), decode(map3(0)), new AssetLocation(
                                map4(0)), new AssetContext (razie.AA(map4(1))));
                    } else 
@@ -146,27 +159,42 @@ object AssetKey {
     
    def decode (s:String) = java.net.URLDecoder.decode(s, "UTF-8")
             
-    implicit def toac (a : AttrAccess) : AssetContext = new AssetContext (a)
+//   implicit def toac (a : AttrAccess) : AssetContext = new AssetContext (a)
 }
 
-/**TODO blurb about contexts */
-class AssetContext (val attrs : AttrAccess) {
+/** Context is an important notion. see detailed blurb on our wiki.homecloud.ca
+ * 
+ * <p>Basically, a reference to an entity can contain the context in which it was made. The same 
+ * entity may do or mean different things depending on its context.
+ * 
+ * <p>Recommend this be used sparingly.
+ */
+class AssetContext (val name:String, val attrs : AttrAccess) {
 //   val assocs : List[AssetAssoc]   
+   // TODO 1-1 lazy map
    val env : mutable.Map[String, AssetKey] = new mutable.HashMap[String,AssetKey]()   // (role, who)
-   
-   def this () = this (null) // maybe EMPTY?
+
+   if (attrs != null)
+      (razie.RJS apply attrs.getPopulatedAttr).filter(_.startsWith(AssetKey.ROLE)).foreach (
+             x => env.put(x.replaceFirst(AssetKey.ROLE, ""), AssetKey.fromString(attrs.sa(x)))
+   )
+      
+   def this () = this ("", AttrAccess.EMPTY) // maybe EMPTY?
+   def this (a:AttrAccess) = this ({a.sa ("ctx.name")}, a) 
    
    def sa (name:String) : String = attrs.sa(name)
    def role(name:String) : AssetKey = env(name)
    def role(name:String, who:AssetKey) : AssetContext = {env.put(name, who); this}
 
    override def toString : String = 
-      (for (k <- env.keySet) yield "role."+k+env(k).toString).mkString("&")+attrs.toString
+      "ctx.name="+name+"&"+(for (k <- env.keySet) yield "role."+k+env(k).toString).mkString("&")+attrs.toString
 }
 
-/**TODO blurb about contexts */
+   // TODO 3-1 complete the asset context key implementation and test
+
+/** this type of key is used when an asset is in context */
 class AssetCtxKey (_meta:String, _id:String, _loc:AssetLocation, val ctx:AssetContext) extends AssetKey (_meta, _id, _loc) {
     /** short descriptive string */
     override def toString = 
-       AssetKey.PREFIXP+":" + meta + ":" + (if(id == null ) "" else java.net.URLEncoder.encode(id, "UTF-8")) + (if (loc == null) "" else ("@" + loc.toString())) + "&"
+       AssetKey.PREFIXP+":" + meta + ":" + (if(id == null ) "" else java.net.URLEncoder.encode(id, "UTF-8")) + (if (loc == null) "" else ("@" + loc.toString())) + ( if (ctx == null) "" else ("@@" + ctx.toString))
 }

@@ -16,7 +16,7 @@ import com.razie.pub.comms.Comms;
 /**
  * the location of an asset, either a remote url like below or a directory.
  * 
- * a location is always on the form: protocol://host:portPATH
+ * a location is always on the form: protocol://host:port/PATH
  * 
  * for mutant, the format is mutant://host:port::PATH
  * 
@@ -25,11 +25,13 @@ import com.razie.pub.comms.Comms;
  * <p>
  * inspired from OSS/J's application environment, highly simplified (arguably...).
  * 
+ * TODO 3-2 PERF parse only on demand and lazy store after parsing
+ * 
  * @author razvanc99
  */
 class AssetLocation (o:String) {
-   
-   val (remoteUrl, localPath) = setURL(o)
+   private val orig = o   
+   private val (iRemoteUrl, iLocalPath) = setURL(o)
 
    def getHost() = host // TODO inine
    def getPort() = port // TODO inine
@@ -38,18 +40,19 @@ class AssetLocation (o:String) {
    def port = hostport._2
   
    /** points to a mutant location */
-   def isMutant = this.remoteUrl != null && this.remoteUrl.startsWith("mutant://")
+   def isMutant = 
+      this.iRemoteUrl != null && (this.iRemoteUrl.startsWith("mutant://") || this.iRemoteUrl.contains("::"))
 
    /** returns true if this NewAppEnv points to a local directory */
    def isLocal () = 
-      if (localPath==null && remoteUrl==null)
+      if (iLocalPath==null && iRemoteUrl==null)
          true
       else if (isMutant) {
          val h = this.host
          if (h.equals(Agents.getMyHostName()) || "local".equals(h)
                || Comms.isLocalhost(h)) true else false
       } else {
-         this.localPath != null && this.localPath.length() > 0;
+         this.iLocalPath != null && this.iLocalPath.length() > 0;
       }
 
    /** returns true if this points to a remote server */
@@ -57,21 +60,21 @@ class AssetLocation (o:String) {
       if (isMutant) {
          !isLocal;
       } else {
-         this.remoteUrl != null && this.remoteUrl.length() > 0;
+         this.iRemoteUrl != null && this.iRemoteUrl.length() > 0;
       }
 
    override def toString = 
-      if (this.remoteUrl != null ) this.remoteUrl else this.localPath;
+      if (this.iRemoteUrl != null ) this.iRemoteUrl else this.iLocalPath;
 
    /**
-    * make an http URL, if remote. Normally the remote reference is in Weblogic's t3:// format. This
-    * will convert it to http://
+    * make an http URL, if remote. the remote reference could use other protocols, like mutant://
+    * and this will convert it to http://
     */
    def toHttp () = 
       if (isMutant) {
          "http://" + this.host + ":" + this.port;
       } else
-      this.remoteUrl;
+      this.iRemoteUrl;
 
    /** smart setting of the actual URL */
    private[this] def setURL(url:String ) : (String,String) = {
@@ -107,15 +110,22 @@ class AssetLocation (o:String) {
       (ru, lp)
    }
 
-   def getLocalPath () : String = 
-      if (this.remoteUrl != null) {
-         if (this.remoteUrl.contains("::")) {
-            val sp = this.remoteUrl.split("::");
+   def localPath : String = getLocalPath
+   def getLocalPath () : String = {
+     val p = 
+      if (this.iRemoteUrl != null) {
+         if (this.iRemoteUrl.contains("::")) {
+            val sp = this.iRemoteUrl.split("::");
             if (sp.length > 1 ) sp(1) else null
-         }
+         } else
          null;
       } else
-         this.localPath;
+         this.iLocalPath;
+     
+     if (p != null && ! p.endsWith("/")) 
+        p+"/"
+        else p
+   }
 
    /** will get canonic path unless the path is in the classpath */
    private[this] def setLocalPath(lp:String ) : String = {
@@ -133,8 +143,8 @@ class AssetLocation (o:String) {
 //      final int PRIME = 31;
       // int result = super.hashCode();
       var result = 1;
-      result = 31 * result + (if(localPath == null)  0 else localPath.hashCode());
-      result = 31 * result + (if(remoteUrl == null)  0 else remoteUrl.hashCode());
+      result = 31 * result + (if(iLocalPath == null)  0 else iLocalPath.hashCode());
+      result = 31 * result + (if(iRemoteUrl == null)  0 else iRemoteUrl.hashCode());
       result;
    }
 
@@ -144,12 +154,12 @@ class AssetLocation (o:String) {
 
       try {
          if (this.isLocal) {
-            val f = new File(this.localPath);
+            val f = new File(this.iLocalPath);
             if (f.exists()) {
                url = f.getCanonicalFile().toURL();
             }
          } else {
-            url = new URL(this.remoteUrl);
+            url = new URL(this.iRemoteUrl);
          }
       } catch {
          case e:Exception => throw new IllegalStateException("can't turn into URL, NewAppEnv=" + this.toString(), e);
@@ -167,16 +177,16 @@ class AssetLocation (o:String) {
       try {
          if (this.isLocal) {
             // treat classpath url's differently
-            if (this.localPath.startsWith("jar:")) {
-               url = new URL(this.localPath + fileName);
+            if (this.iLocalPath.startsWith("jar:")) {
+               url = new URL(this.iLocalPath + fileName);
             } else {
-               val f = new File(this.localPath + fileName);
+               val f = new File(this.iLocalPath + fileName);
                if (f.exists()) {
                   url = f.getCanonicalFile().toURL();
                }
             }
          } else {
-            url = new URL(this.remoteUrl);
+            url = new URL(this.iRemoteUrl);
          }
       } catch {
          case e:Exception =>
@@ -195,26 +205,26 @@ class AssetLocation (o:String) {
       if (obj == null)
          return false;
       val other = obj.asInstanceOf[AssetLocation]
-      if (localPath == null) {
-         if (other.localPath != null)
+      if (iLocalPath == null) {
+         if (other.iLocalPath != null)
             return false;
-      } else if (!localPath.equals(other.localPath))
+      } else if (!iLocalPath.equals(other.iLocalPath))
          return false;
-      if (remoteUrl == null) {
-         if (other.remoteUrl != null)
+      if (iRemoteUrl == null) {
+         if (other.iRemoteUrl != null)
             return false;
-      } else if (!remoteUrl.equals(other.remoteUrl))
+      } else if (!iRemoteUrl.equals(other.iRemoteUrl))
          return false;
       true;
    }
 
    private def hostport : (String,String) = {
-      if (this.remoteUrl != null && this.remoteUrl.contains("://")) {
-         val l = this.remoteUrl.split("://")(1);
+      if (this.iRemoteUrl != null && this.iRemoteUrl.contains("://")) {
+         val l = this.iRemoteUrl.split("://")(1);
          var ipport = l.split("/", 2)(0); // remove any uninteresting path in a URL
          ipport = ipport.split("::", 2)(0); // mutant://host:port::localpath
          
-         // TODO is there always a port? I guess nobody would run at the default 8080...
+         // is there always a port? OR run at the default 8080...
          val colon = ipport.lastIndexOf(":");
 
          if (colon > 0) {
@@ -223,7 +233,7 @@ class AssetLocation (o:String) {
             (srcIp, port)
          }
          else 
-            (Agents.getMyHostName(), Agents.me().port) // default to my port
+            (ipport, "8080")
       }
       else 
             (Agents.getMyHostName(), Agents.me().port) // default to my port
@@ -231,8 +241,8 @@ class AssetLocation (o:String) {
    }
 
    def protocol :String = 
-      if (this.remoteUrl != null && this.remoteUrl.contains("://")) {
-         this.remoteUrl.split("://")(0);
+      if (this.iRemoteUrl != null && this.iRemoteUrl.contains("://")) {
+         this.iRemoteUrl.split("://")(0);
       } else
       null;
 

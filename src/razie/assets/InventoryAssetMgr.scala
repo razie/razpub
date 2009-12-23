@@ -67,8 +67,8 @@ class InventoryAssetMgr extends AssetMgr (null) {
    override def doAction(cmd:String, ref:AssetKey, ctx:ScriptContext) = 
       findInventory(ref.meta).doAction(cmd, ref, ctx)
       
-//   val pres : AssetPres          = new razie.assets.pres.ScalaAssetPres();
-   val pres : AssetPres          = null
+   val pres : AssetPres          = new razie.assets.pres.TempAssetPres();
+//   val pres : AssetPres          = null
 //   def pres () : com.razie.pub.assets.AssetPres =  pres;
    
    def instance() : InventoryAssetMgr = AssetMgr.instance().asInstanceOf[InventoryAssetMgr]
@@ -163,11 +163,11 @@ class ProxyInventory extends AssetInventory {
       case _ => null
    }
       
-   override def getAsset(ref:AssetKey ) = assets.get(ref) match {
+   override def getAsset(ref:AssetKey ):AnyRef = assets.get(ref) match {
       case Some(a) => a
       case _ => null
    }
-
+   
    override def getDetails(brief:AssetBrief ) = getAsset(brief.key) match {
 //      case a:AssetImpl => a.paint(new ScriptContext.Impl(ScriptContext.Impl.global()))
       case _ => brief

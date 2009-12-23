@@ -10,17 +10,24 @@ import com.razie.pub.draw.Drawable
 
 /** the default asset mgr is the InventoryAssetMgr */
 object AssetMgr extends AssetMgr (null) {
-   protected var impl = new NoStatic[AssetMgr] ("NewAssetMgr", null);
+   protected var impl = new razie.NoStatic[AssetMgr] ("NewAssetMgr", {
+      new FullAssetMgr
+   } );
 
-   def instance() : AssetMgr = impl.get() match {
-      case a:AssetMgr => a
-      case _ => init (new FullAssetMgr())
-      }
+   def instance() : AssetMgr = impl.get //if (impl.get != null) impl.get else init (new FullAssetMgr())
       
-   def init (delegate : AssetMgr) : AssetMgr = { impl.set(delegate); delegate }
+   def init (delegate : AssetMgr) : AssetMgr = { 
+      impl.set(delegate); 
+      delegate 
+   }
    
    protected override def proxy : AssetInventory = impl.get
 
+//  def getOrElse (key: AssetKey, default: => AnyRef): AnyRef = instance.getAsset(key) match {
+//    case Some(v) => v
+//    case None => default 
+//  }
+   
    /** get the meta description for a certain type */
    override def meta (name:String) : Option[Meta] = instance.meta(name)
    
@@ -31,13 +38,13 @@ object AssetMgr extends AssetMgr (null) {
 
    override def pres () : AssetPres = instance.pres()
    
-     val NOACTIONS = Array[ActionItem]()
+   val NOACTIONS = Array[ActionItem]()
 }
 
 /** an AssetMgr is just a proxy to the actual implementation, which you must init() in your main() */
 abstract class AssetMgr (actual:AssetMgr) extends InvProxy (actual) {
 
-   override def getAsset(key : AssetKey) : AnyRef = proxy.getAsset(key)
+   override def getAsset(key : AssetKey) = proxy.getAsset(key)
    
    /** get the meta description for a certain type */
    def getMeta (name:String) : Meta = meta(name) match {
@@ -67,7 +74,7 @@ class InvProxy (var iproxy:AssetInventory) extends AssetInventory {
    def init (delegate : AssetInventory) = iproxy=delegate
    
    /** get an asset by key - it should normally be AssetBase or SdkAsset */
-   def getAsset(key : AssetKey) : AnyRef = proxy.getAsset(key)
+   def getAsset(key : AssetKey) = proxy.getAsset(key)
 
     /**
      * get/make the brief for an asset given its key. The idea around briefs is that I don't always

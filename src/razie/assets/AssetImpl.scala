@@ -19,7 +19,7 @@ import com.razie.pub.draw.widgets.NavButton;
  * @author razvanc
  */
 class AssetImpl (b : AssetBrief) extends AssetBaseImpl(b) with Drawable {
-   var nkey : AssetKey = null
+   var nkey : AssetKey = super.key
 
    override def key = nkey
    def key_= (k:AssetKey) = setKey (k)
@@ -75,8 +75,8 @@ class AssetImpl (b : AssetBrief) extends AssetBaseImpl(b) with Drawable {
 
       horiz.write(new ABDrawable (movie, DetailLevel.FULL))
 
-      // for (Object a : AssetPres.instance().makeAllButtons(movie, false))
-      // actions.write(a);
+       for (a <- razie.RJS apply AssetMgr.pres().makeAllButtons(movie, false))
+          actions.write(a)
 
       // add more links...
       val moreActions = new DrawList();

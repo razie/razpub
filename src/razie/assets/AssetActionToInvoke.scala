@@ -64,6 +64,7 @@ class AssetActionToInvoke (target:String , protected val key:AssetKey , item:Act
         }
     }
 
+    // http://SER:PORT/asset/KEY/action?parms
     override def makeActionUrl() : String = {
         var url = if (target.endsWith("/") ) target else target + "/"
         url += "asset/" + key.toUrlEncodedString + "/";
