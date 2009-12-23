@@ -28,6 +28,10 @@ public class SuitePub extends TestSuite {
         result.addTest(SuitePubHttp.suite());
         result.addTest(SuitePubLightsoa.suite());
         result.addTest(SuitePubAgent.suite());
+        
+        result.addTest(new razie.assets.test.SuiteAssets());
+
+        result.addTestSuite(TestScalaLessons.class);
 
         return result;
     }
