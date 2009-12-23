@@ -42,10 +42,13 @@ public interface AttrAccess {
       STRING, MEMO, SCRIPT, INT, FLOAT, DATE
    };
 
-   /** @return the value of the named attribute */
+   // TODO 3-2 protect this against idiot code
+   public static AttrAccess EMPTY = new AttrAccessImpl();
+   
+   /** @return the value of the named attribute or null */
    public Object getAttr(String name);
 
-   /** I'm really starting to hate typing... */
+   /** I'm really starting to hate typing... shortcut for getAttr */
    public Object a(String name);
 
    /** most of the time they're just strings - i'll typecast here... this is a() typcast to String */

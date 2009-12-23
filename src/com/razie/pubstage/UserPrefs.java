@@ -13,10 +13,6 @@ import com.razie.pub.base.AttrAccessImpl;
  */
 public class UserPrefs {
 
-    public static enum AssetListVisual {
-        BRIEFLIST, LIST, DETAILS
-    }
-
     private static UserPrefs singleton;
 
     public static UserPrefs getInstance() {

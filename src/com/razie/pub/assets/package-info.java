@@ -1,5 +1,5 @@
 /**
- * Razvan's code. Copyright 2008 based on Apache (share alike) see LICENSE.txt for details.
+ * Razvan's public code. Copyright 2008 based on Apache (share alike) see LICENSE.txt for details.
  *
  * Fairly light and flexible asset/resource management framework
  * 
@@ -83,8 +83,9 @@
  * 
  * <h1>REST</h1>
  * <p>
- * Assets lend themselves well to the REST programming. Same as resources, slight semantic
- * difference.
+ * Assets lend themselves well to the REST principles. Same as resources, slight semantic
+ * difference. The biggest difference is that one can act on assets, which makes them more suitable
+ * for use by humans :)
  * 
  * 
  * STATE: post-concept, changes but not often

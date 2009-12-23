@@ -122,6 +122,12 @@ public class Log4j extends Log {
         return msg;
     }
 
+    public void alarm(String o, Throwable... e) {
+       String m = o + (e.length <= 0 ? "" : Exceptions.getStackTraceAsString(e[0]));
+       log4jLogger.fatal(m);
+       addLogLine(m);
+    }
+
     public void log(Object... o) {
         String m = "";
         for (int i = 0; i < o.length; i++)

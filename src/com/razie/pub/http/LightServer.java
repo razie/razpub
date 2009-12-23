@@ -285,5 +285,6 @@ public class LightServer extends Worker {
         return listeners;
     }
 
+    // TODO 2-2 make MTSafe - there's java.util.ConcurrentModificationException on this...during startup
     private List<SocketCmdHandler> listeners = new ArrayList<SocketCmdHandler>();
 }
