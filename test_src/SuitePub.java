@@ -22,6 +22,8 @@ public class SuitePub extends TestSuite {
     public static Test suite() {
         TestSuite result = new TestSuite(SuitePub.class.getName());
 
+        result.addTest(new SuiteRazie());
+        
         result.addTest(SuitePubBase.suite());
         result.addTest(SuitePubDraw.suite());
         result.addTest(SuitePubEvents.suite());
@@ -31,7 +33,7 @@ public class SuitePub extends TestSuite {
         
         result.addTest(new razie.assets.test.SuiteAssets());
 
-        result.addTestSuite(TestScalaLessons.class);
+        result.addTestSuite(ScalaLessonsTest.class);
 
         return result;
     }

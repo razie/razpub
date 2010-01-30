@@ -12,8 +12,8 @@ import com.razie.pub.base.log.Log;
 import com.razie.pub.draw.DrawList;
 import com.razie.pub.draw.DrawStream;
 import com.razie.pub.draw.DrawTable;
-import com.razie.pub.draw.Renderer;
 import com.razie.pub.draw.SimpleDrawStream;
+import com.razie.pub.draw.Technology;
 
 public class TestContainers extends TestCase {
 
@@ -21,7 +21,7 @@ public class TestContainers extends TestCase {
     }
 
     public void testWriteList() throws IOException {
-        DrawStream stream = new SimpleDrawStream(Renderer.Technology.HTML);
+        DrawStream stream = new SimpleDrawStream(Technology.HTML);
         DrawList list = new DrawList();
         list.write("11");
         list.write("22");
@@ -32,7 +32,7 @@ public class TestContainers extends TestCase {
     }
 
     public void testWriteTable() throws IOException {
-        DrawStream stream = new SimpleDrawStream(Renderer.Technology.HTML);
+        DrawStream stream = new SimpleDrawStream(Technology.HTML);
         DrawTable list = new DrawTable(0, 2);
         list.write("11");
         list.write("22");
@@ -43,7 +43,7 @@ public class TestContainers extends TestCase {
     }
 
     public void testStreamList() throws IOException {
-        DrawStream stream = new SimpleDrawStream(Renderer.Technology.HTML);
+        DrawStream stream = new SimpleDrawStream(Technology.HTML);
         DrawList list = new DrawList();
         stream.open(list);
         String s = stream.toString();
@@ -58,7 +58,7 @@ public class TestContainers extends TestCase {
     }
 
     public void testStreamTable() throws IOException {
-        DrawStream stream = new SimpleDrawStream(Renderer.Technology.HTML);
+        DrawStream stream = new SimpleDrawStream(Technology.HTML);
         DrawTable list = new DrawTable(0, 2);
         stream.open(list);
         String s = stream.toString();
@@ -73,7 +73,7 @@ public class TestContainers extends TestCase {
     }
 
     public void testStreamTableWithExactCols() throws IOException {
-        DrawStream stream = new SimpleDrawStream(Renderer.Technology.HTML);
+        DrawStream stream = new SimpleDrawStream(Technology.HTML);
         DrawTable list = new DrawTable(0, 2);
         stream.open(list);
         String s = stream.toString();

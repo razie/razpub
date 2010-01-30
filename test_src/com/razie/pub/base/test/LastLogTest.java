@@ -8,7 +8,7 @@ import junit.framework.TestCase;
 
 import com.razie.pub.base.log.Log;
 
-public class TestLastLog extends TestCase {
+public class LastLogTest extends TestCase {
     public static void testA1() {
         for (int i = 0; i < 50; i++)
             Log.logThis("log line " + i);

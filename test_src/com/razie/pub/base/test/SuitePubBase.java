@@ -17,12 +17,13 @@ public class SuitePubBase extends TestSuite {
    public static Test suite() {
       TestSuite result = new TestSuite(SuitePubBase.class.getName());
 
-      result.addTestSuite(com.razie.pub.base.test.TestAttr.class);
-      result.addTestSuite(com.razie.pub.base.test.TestJason.class);
-      result.addTestSuite(com.razie.pub.base.test.TestLastLog.class);
+      result.addTestSuite(com.razie.pub.base.test.AttrAccessTest.class);
+      result.addTestSuite(com.razie.pub.base.test.ScalaAttrAccessTest.class);
+      result.addTestSuite(com.razie.pub.base.test.JasonTest.class);
+      result.addTestSuite(com.razie.pub.base.test.LastLogTest.class);
       result.addTestSuite(com.razie.pub.base.test.TestNoStatic.class);
-      result.addTestSuite(com.razie.pub.base.test.TestScripting.class);
-
+      result.addTestSuite(com.razie.pub.base.test.ScriptingTest.class);
+      
       return result;
    }
 }

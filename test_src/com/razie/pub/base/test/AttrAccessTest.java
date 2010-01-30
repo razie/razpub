@@ -14,7 +14,7 @@ import com.razie.pub.base.AttrAccessImpl;
  * 
  * @author razvanc99
  */
-public class TestAttr extends TestCase {
+public class AttrAccessTest extends TestCase {
 
     public void testStringDefn() throws InterruptedException {
         AttrAccess aa = new AttrAccessImpl();
@@ -51,7 +51,7 @@ public class TestAttr extends TestCase {
         AttrAccess aa = new AttrAccessImpl("attr1=val1,attr2:int=2");
         check(aa, 2);
     }
-
+    
     private void check(AttrAccess aa, int howmuch) {
         assertTrue(aa.isPopulated("attr1"));
 

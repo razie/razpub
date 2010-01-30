@@ -12,7 +12,7 @@ import com.razie.pub.base.ScriptContext;
 import com.razie.pub.base.ScriptJS;
 import com.razie.pub.base.TimeOfDay;
 
-public class TestScripting extends TestCase {
+public class ScriptingTest extends TestCase {
 
    @Override
    public void setUp() {

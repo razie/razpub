@@ -11,7 +11,7 @@ import com.razie.pub.draw.DrawSequence;
 import com.razie.pub.draw.DrawStream;
 import com.razie.pub.draw.Drawable;
 import com.razie.pub.draw.Renderer;
-import com.razie.pub.draw.Renderer.Technology;
+import com.razie.pub.draw.Technology;
 import com.razie.pub.draw.widgets.DrawError;
 import com.razie.pub.draw.widgets.DrawForm;
 import com.razie.pub.draw.widgets.DrawSelection;

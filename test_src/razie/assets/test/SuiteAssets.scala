@@ -17,6 +17,8 @@ class SuiteAssets () extends junit.framework.TestSuite(classOf[XNada]) {
   // this is where you list the tests...
    addTestSuite(classOf[razie.assets.test.TestAssetKey])
    addTestSuite(classOf[razie.assets.test.TestAssetHandle])
+//   addTestSuite(classOf[razie.assets.test.TestMetas])
+   addTestSuite(classOf[razie.assets.test.TestXpAssets])
    
    def test1() = 
      // don't touch this line

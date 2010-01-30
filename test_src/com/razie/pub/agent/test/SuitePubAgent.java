@@ -16,7 +16,7 @@ public class SuitePubAgent extends TestSuite {
     public static Test suite() {
         TestSuite result = new TestSuite(SuitePubAgent.class.getName());
 
-        result.addTestSuite(TestSimpleAgent.class);
+        result.addTestSuite(SimpleAgentTest.class);
 
         return result;
     }

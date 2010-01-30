@@ -7,7 +7,7 @@ package com.razie.pub.draw.test;
 import junit.framework.TestCase;
 
 import com.razie.pub.base.log.Log;
-import com.razie.pub.draw.Renderer;
+import com.razie.pub.draw.Technology;
 import com.razie.pub.draw.widgets.DrawError;
 import com.razie.pub.draw.widgets.DrawToString;
 
@@ -18,7 +18,7 @@ public class TestDrawables extends TestCase {
 
     public void testToString() {
         // nasty way to get "13"... :))
-        String s = (String) new DrawToString(new Integer(13)).render(Renderer.Technology.ANY, null);
+        String s = (String) new DrawToString(new Integer(13)).render(Technology.ANY, null);
         assertTrue("13".equals(s));
     }
 
@@ -28,7 +28,7 @@ public class TestDrawables extends TestCase {
             if ("gg".equals(s))
                 throw new IllegalArgumentException("you'd wish...");
         } catch (Exception e) {
-            String s = (String) new DrawError(e).render(Renderer.Technology.ANY, null);
+            String s = (String) new DrawError(e).render(Technology.ANY, null);
             assertTrue(s.contains("IllegalArgumentException"));
             return;
         }

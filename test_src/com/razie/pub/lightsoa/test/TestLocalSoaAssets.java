@@ -16,6 +16,7 @@ import razie.assets.AssetKey;
 import com.razie.pub.assets.JavaAssetMgr;
 import com.razie.pub.base.AttrAccess;
 import com.razie.pub.base.AttrAccessImpl;
+import com.razie.pub.base.NoStatics;
 import com.razie.pub.base.log.Log;
 import com.razie.pub.comms.LightAuth;
 import com.razie.pub.draw.DrawStream;
@@ -30,6 +31,7 @@ public class TestLocalSoaAssets extends TestCase {
    public static AssetKey MOVIEKEY = new AssetKey("raz.test.Movie", "2");
 
    public void setUp() {
+      NoStatics.resetJVM();
       JavaAssetMgr.init(new razie.assets.InventoryAssetMgr());
      JAS.manage(new SampleAsset("1")); 
      JAS.manage (new SampleAsset2("2")); 

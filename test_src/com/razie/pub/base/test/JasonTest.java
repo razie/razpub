@@ -14,7 +14,7 @@ import org.json.JSONObject;
 
 import com.razie.pub.base.data.Pair;
 
-public class TestJason extends TestCase {
+public class JasonTest extends TestCase {
 
    @Override
    public void setUp() {

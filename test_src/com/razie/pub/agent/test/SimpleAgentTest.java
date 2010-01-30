@@ -21,7 +21,7 @@ import com.razie.pub.comms.ServiceActionToInvoke;
  * 
  * @author razvanc99
  */
-public class TestSimpleAgent extends TestCase {
+public class SimpleAgentTest extends TestCase {
 
    static AgentHandle me = TempUtilAgent.me;
    static AgentHandle other = TempUtilAgent.other;
@@ -59,5 +59,5 @@ public class TestSimpleAgent extends TestCase {
 
       Thread.sleep(500);
    }
-   static final Log logger = Log.Factory.create(TestSimpleAgent.class.getName());
+   static final Log logger = Log.Factory.create(SimpleAgentTest.class.getName());
 }
