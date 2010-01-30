@@ -12,7 +12,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import com.razie.pub.base.ActionItem;
-import com.razie.pub.http.SoaNotHtml;
+import com.razie.pub.comms.PermType;
 
 /**
  * See SoaMethod - this is a sink for any other url the sink must have all args and the first arg is
@@ -38,7 +38,7 @@ public @interface SoaMethodSink {
      * if defined, put here the permission to check - the framework will check the current
      * connection and user for this permission and throw AuthException if not permitted
      */
-    PermType perm() default PermType.ANYBODY;
+    PermType perm() default PermType.WRITE;
 
     /**
      * action type may dictate if it's ACT/GET/POST/PUT/DELETE
@@ -46,26 +46,4 @@ public @interface SoaMethodSink {
      * TODO did i actually end up using this?
      */
     ActionItem.ActionType actionType() default ActionItem.ActionType.A;
-
-    /**
-     * permissions
-     * 
-     * TODO need mapping to the AUTH types
-     */
-    enum PermType {
-        /** highest permission: includes upgrades and code changes */
-        ADMIN, /** allows control of play/preferences etc */
-        CONTROL, /** just query and view */
-        VIEW, /** what you want anybody to be able to do */
-        ANYBODY
-    }
-
-    /** auth types */
-    enum AuthType {
-        ANYBODY, FRIEND,
-        /** shared same secret anywhere */
-        SHAREDSECRET,
-        /** only in-house */
-        INHOUSE
-    }
 }

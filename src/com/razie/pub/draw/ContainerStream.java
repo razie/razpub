@@ -4,7 +4,6 @@
  */
 package com.razie.pub.draw;
 
-import com.razie.pub.draw.Renderer.Technology;
 
 /**
  * just wrap a container and present it as a stream - this is to separate model logic from

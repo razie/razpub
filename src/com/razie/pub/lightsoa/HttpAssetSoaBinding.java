@@ -15,7 +15,7 @@ import com.razie.pub.base.AttrAccess;
 import com.razie.pub.base.data.HttpUtils;
 import com.razie.pub.comms.MyServerSocket;
 import com.razie.pub.draw.DrawStream;
-import com.razie.pub.draw.Renderer.Technology;
+import com.razie.pub.draw.Technology;
 import com.razie.pub.http.StreamConsumedReply;
 
 /**

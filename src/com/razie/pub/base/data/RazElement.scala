@@ -4,8 +4,6 @@
  */
 package com.razie.pub.base.data
 
-import com.razie.pub.base.data._
-
 import org.w3c.dom._
 
 // TODO need to optimize these - i convert to RazE stuff all the time, no caching - should use a map for caching? is that useful?
@@ -60,9 +58,9 @@ trait RazElement {
 /** simplify xpath access to dom. conversions in RJX  */
 class RazElementJava (val e:org.w3c.dom.Element) extends RazElement {
 
-   def a (name:String) : String = e.getAttribute (name)
+   override def a (name:String) : String = e.getAttribute (name)
   
-   def ha (name:String) = e.hasAttribute (name)
+   override def ha (name:String) = e.hasAttribute (name)
   
    /**
     * i.e. "/config/mutant/@someattribute"
@@ -72,8 +70,20 @@ class RazElementJava (val e:org.w3c.dom.Element) extends RazElement {
     * @return never null
     */
    def xpa (path:String) : String = XmlDoc.getAttr (e, path)
-  
-   def xpe (path:String) : RazElement = XmlDoc.getEntity (e, path)
+
+   // TODO 3-2 optimize...not sure how...
+   def xpe (path:String) : RazElement = new RazElementJava(XmlDoc.getEntity (e, path))
+    /**
+     * get a specific element, by "name"
+     * 
+     * @param path identifies the xpath
+     * @name identifies the name attribute of the element - could also be part of xpath instead
+     * @return never null
+     */
+//    public static Element getEntity(Element e, String path) {
+//        return (Element) RiXmlUtils.getNode(e, path, null);
+//    }
+
   
    def xpl (path:String) : List[RazElement] = {
 //      val l = XmlDoc.listEntities (e, path)

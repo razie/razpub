@@ -4,24 +4,9 @@
  */
 package com.razie.pub.draw
 
-import com.razie.pub.draw.Renderer.Technology
+import com.razie.pub.draw.Technology
 import com.razie.pub.draw.DrawTable.MyRenderer
 import com.razie.pub.base.AttrAccess
-
-object DrawTableScala {
-//   implicit def dttos (d:DrawTable):DrawTableScala = new DrawTableScala
-
-   def asTable (o:Iterable[AttrAccess]) : DrawTable = {
-      val table = new DrawTableScala()
-      val whatamess:Iterable[String]= scala.collection.JavaConversions.asIterable(o.head.getPopulatedAttr)
-      table.headers = whatamess
-      table.prefCols = whatamess.size
-
-      for (x <- o; a <- table.headers) table.write (x.a(a))
-             
-      table
-   }
-}
 
 /** enhanced DrawTable
  * 

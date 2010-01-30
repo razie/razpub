@@ -46,7 +46,7 @@ public class MyServerSocket extends CommChannel {
      * @param perm
      * @throws AuthException
      */
-    public void auth(LightAuth.PermType perm) throws AuthException {
+    public void auth(PermType perm) throws AuthException {
         LightAuth.AuthType minAuth = LightAuth.mapAuth(perm);
 
         if (level.get(getAuth()) >= level.get(minAuth))

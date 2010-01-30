@@ -12,7 +12,6 @@ import org.json.JSONObject;
 
 import com.razie.pub.draw.DrawStream.Element.State;
 import com.razie.pub.draw.Renderer.ContainerRenderer;
-import com.razie.pub.draw.Renderer.Technology;
 
 /**
  * a drawable list of objects. objects must implement Drawable or else we'll use toString()

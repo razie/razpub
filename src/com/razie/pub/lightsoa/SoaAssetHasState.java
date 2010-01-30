@@ -24,6 +24,7 @@ import java.lang.annotation.Target;
  * you can persist the assets in the agentdb, by convention use agent/assets/ASSETTYPE/instance and
  * make sure there's a key attribute
  * 
+ * TODO implement/use
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)

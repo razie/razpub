@@ -1,7 +1,7 @@
 package com.razie.pub.draw
 
 import com.razie.pub.draw.Renderer
-import com.razie.pub.draw.Renderer.Technology
+import com.razie.pub.draw.Technology
 import com.razie.pub.base.ScriptContext
 
 /** this is a context-aware drawable 

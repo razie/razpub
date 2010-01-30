@@ -19,9 +19,10 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import com.razie.pub.FileUtils;
 import com.razie.pub.base.log.Log;
-import com.razie.pubstage.data.StrucList;
-import com.razie.pubstage.data.StrucTree;
-import com.razie.pubstage.data.Structure;
+import com.razie.pubstage.data.JStrucList;
+import com.razie.pubstage.data.JStrucTree;
+import com.razie.pubstage.data.JStructure;
+import com.razie.pubstage.data.TreeImplNode;
 import com.razie.pubstage.life.BeingDyingRtException;
 import com.razie.pubstage.life.Worker;
 
@@ -43,9 +44,9 @@ public class SSFilesRazie {
      * @return a list of xml file names in the given path with the given mask, having the root tag
      *         and root attribute matching an expression. It may be empty but not null
      */
-    public static StrucList<File> listFiles(String start, FileFilter filter, boolean recurse,
+    public static JStrucList<File> listFiles(String start, FileFilter filter, boolean recurse,
             FileFoundCback... cback) {
-        StrucList<File> l = new StrucList.Impl<File>(null);
+        JStrucList<File> l = new JStrucList.Impl<File>(null);
 
         ifindFiles(start, l, filter, recurse, cback);
 
@@ -59,9 +60,9 @@ public class SSFilesRazie {
      * @return a list of xml file names in the given path with the given mask, having the root tag
      *         and root attribute matching an expression. It may be empty but not null
      */
-    public static StrucTree<File> treeFiles(String start, FileFilter filter, boolean recurse,
+    public static JStrucTree<File> treeFiles(String start, FileFilter filter, boolean recurse,
             FileFoundCback... cback) {
-        StrucTree<File> l = new StrucTree.ImplNode<File>(null);
+        JStrucTree<File> l = new JStrucTree.ImplNode<File>(null);
 
         ifindFiles(start, l, filter, recurse, cback);
 
@@ -75,7 +76,7 @@ public class SSFilesRazie {
      * @return a list of xml file names in the given path with the given mask, having the root tag
      *         and root attribute matching an expression. It may be empty but not null
      */
-    public static void ifindFiles(String start, Structure<File> l, FileFilter filter, boolean recurse,
+    public static void ifindFiles(String start, JStructure<File> l, FileFilter filter, boolean recurse,
             FileFoundCback... cback) {
         if (start == null)
             return;
@@ -87,22 +88,22 @@ public class SSFilesRazie {
 
         File f = new File(dir);
 
-        if (f.isDirectory() && l instanceof StrucTree)
-            ((StrucTree.ImplNode<File>) l).setContents(f);
+        if (f.isDirectory() && l instanceof JStrucTree)
+            ((JStrucTree.ImplNode<File>) l).setContents(f);
 
         findFiles(f, l, filter, recurse, 2, 100, cback);
 
         Log.logThis(l.toString());
     }
 
-    private static Structure<File> add(Structure<File> l, File f, boolean isDirectory) {
-        if (l instanceof StrucTree) {
+    private static JStructure<File> add(JStructure<File> l, File f, boolean isDirectory) {
+        if (l instanceof JStrucTree) {
             if (isDirectory)
-                return ((StrucTree.ImplNode<File>) l).addNode(f);
+                return ((JStrucTree.ImplNode<File>) l).addNode(f);
             else
-                ((StrucTree.ImplNode<File>) l).addLeaf(f);
+                ((JStrucTree.ImplNode<File>) l).addLeaf(f);
         } else if (!isDirectory) {
-            StrucList.Impl<File> tree = (StrucList.Impl<File>) l;
+            JStrucList.Impl<File> tree = (JStrucList.Impl<File>) l;
             tree.add(f);
             return tree;
         } else return l;
@@ -117,7 +118,7 @@ public class SSFilesRazie {
      * @param filter the filter for files
      * @param recurse if true will search recursively
      */
-    public static void findFiles(File dir, Structure<File> files, FileFilter filter, boolean recurse,
+    public static void findFiles(File dir, JStructure<File> files, FileFilter filter, boolean recurse,
             int min, int max, FileFoundCback... cback) {
 
         if (Worker.dying()) {

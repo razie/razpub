@@ -10,7 +10,6 @@ import java.util.List;
 
 import com.razie.pub.base.log.Log;
 import com.razie.pub.comms.CommChannel.ChannelEndPoint;
-import com.razie.pub.draw.Renderer.Technology;
 
 /**
  * trying to setup a stream drawing framework. this could also be called DrawCanvas or panel in

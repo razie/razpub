@@ -155,10 +155,12 @@ public class Log {
 
    protected static Map<String, String> alarmedOnce = Collections.synchronizedMap(new HashMap<String, String>());
    
+   /** alarm this */
    public static void alarmThis(String m, Throwable... e) {
       Factory.logger.alarm(m, e);
    }
 
+   /** alarm this and throw a new RT exception with the message and the cause */
    public static void alarmThisAndThrow(String m, Throwable... e) {
       // TODO i don't think this should log again...since it throws it, eh?
       Factory.logger.alarm(m, e);

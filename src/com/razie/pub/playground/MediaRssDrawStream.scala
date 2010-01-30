@@ -10,7 +10,7 @@ import java.io.IOException;
 import com.razie.pub.draw.DrawStream;
 import com.razie.pub.draw.Renderer;
 import com.razie.pub.draw.SimpleDrawStream;
-import com.razie.pub.draw.Renderer.Technology;
+import com.razie.pub.draw.Technology;
 
 /**
  * TODO 2-2 complete and use

@@ -49,7 +49,8 @@ public class LightServer extends Worker {
     protected ExecutionContext mainContext;
 
     /** set this to something nonzero to limit the number of connections accepted in parallel */
-    protected int           maxConnections = 0;
+    protected int           maxConnections = 20;
+    protected int           currConnections = 0;
 
     ServerSocket            listener;
 
@@ -89,13 +90,16 @@ public class LightServer extends Worker {
 
     // Listen for incoming connections and handle them
     public void process() {
-        int i = 0;
 
             if (mainContext != null)
                 mainContext.enter();
             
-        while ((i++ < maxConnections) || (maxConnections == 0)) {
+        while ((currConnections < maxConnections) || (maxConnections == 0)) {
             try {
+               synchronized (this) {
+               currConnections++;
+               }
+               
                 // i guess i have to die now...
                 if (listener.isClosed()) {
                     return;
@@ -158,7 +162,15 @@ public class LightServer extends Worker {
             this.socket = socket;
         }
 
+        @Override
         public void run() {
+           receive();
+           synchronized (server) {
+           server.currConnections--;
+           }
+        }
+        
+        public void receive() {
             if (mainContext != null)
                 mainContext.enter();
 
@@ -260,7 +272,7 @@ public class LightServer extends Worker {
                 if (!(reply instanceof StreamConsumedReply))
                     out.print(reply);
                 // out.println(reply);
-                Log.logThis("HTTP_CLIENT_SERVED");
+                Log.traceThis("HTTP_CLIENT_SERVED");
             } else {
                 logger.trace(3, "command listener returned nothing...");
             }
@@ -271,11 +283,15 @@ public class LightServer extends Worker {
     static final Log logger = Log.Factory.create(Receiver.class.getSimpleName());
 
     public void registerHandler(SocketCmdHandler c) {
+       synchronized (this) {
         getHandlers().add(c);
+       }
     }
 
     public void removeHandler(SocketCmdHandler c) {
+       synchronized (this) {
         getHandlers().remove(c);
+       }
     }
 
     /**

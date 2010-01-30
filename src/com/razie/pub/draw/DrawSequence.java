@@ -5,7 +5,6 @@
 package com.razie.pub.draw;
 
 import com.razie.pub.draw.Renderer.ContainerRenderer;
-import com.razie.pub.draw.Renderer.Technology;
 
 /**
  * a drawable sequence of objects. Objects must implement Drawable or else we'll use toString()

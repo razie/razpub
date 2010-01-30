@@ -16,6 +16,7 @@ import razie.assets.AssetMgr;
 
 import com.razie.pub.assets.JavaAssetMgr;
 import com.razie.pub.base.AttrAccess;
+import com.razie.pub.base.log.Log;
 import com.razie.pub.draw.DrawStream;
 
 /**
@@ -117,8 +118,10 @@ public class SoaBinding {
         try {
             res = toinvoke.invoke(target, args.toArray());
         } catch (Exception e) {
-            throw new RuntimeException("ERR_INVOKING_SOA " + mdesc.toString() + "\n ARGS: "
+           Log.alarmThisAndThrow("ERR_INVOKING_SOA " + mdesc.toString() + "\n ARGS: "
                     + inparms.toString(), e);
+//            throw new RuntimeException("ERR_INVOKING_SOA " + mdesc.toString() + "\n ARGS: "
+//                    + inparms.toString(), e);
         }
 
         // so void methods don't need to do anything...

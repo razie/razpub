@@ -19,6 +19,7 @@ import com.razie.pub.draw.DrawTable;
 import com.razie.pub.draw.Drawable;
 import com.razie.pub.draw.DrawableSource;
 import com.razie.pub.draw.Renderer;
+import com.razie.pub.draw.Technology;
 import com.razie.pub.draw.widgets.DrawScript;
 
 /**
@@ -154,7 +155,7 @@ public class MutantPresentation extends PageMaker {
 
     public String page(String name) {
         Object o = pages.isPopulated(name) ? pages.getAttr(name) : pages.getAttr(name.replace(".", "_"));
-        String line = (String) Renderer.Helper.draw(o, Renderer.Technology.HTML, null);
+        String line = (String) Renderer.Helper.draw(o, Technology.HTML, null);
         return line;
     }
 }

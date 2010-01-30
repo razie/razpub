@@ -5,9 +5,9 @@ import com.razie.pub.base._
 /** simple registry for XML tag processors */
 @NoStaticSafe
 object XmlConfigProcessors {
-   def inst () = NoStaticS.get[XmlConfigProcessors] match {
+   def inst () = razie.NoStaticS.get[XmlConfigProcessors] match {
          case Some (p) => p
-         case None => NoStaticS.put[XmlConfigProcessors](new XmlConfigProcessors)
+         case None => razie.NoStaticS.put[XmlConfigProcessors](new XmlConfigProcessors)
       }
                                                                          
    def put (tag:String, processor:XmlConfigProcessor) = inst.map.put (tag, processor)      

@@ -60,11 +60,6 @@ public abstract class JavaAssetMgr {
         return instance().getMeta(name);
     }
 
-    /** a detailed description and commands for an asset */
-    public static Drawable details(AssetBrief asset) {
-        return instance().getDetails(asset);
-    }
-
     public static ActionItem[] supportedActions(AssetKey ref) {
         return instance().getSupportedActions(ref);
     }

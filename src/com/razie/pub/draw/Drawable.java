@@ -4,7 +4,8 @@
  */
 package com.razie.pub.draw;
 
-import com.razie.pub.draw.Renderer.Technology;
+import com.razie.pub.comms.ActionToInvoke;
+import com.razie.pub.comms.ServiceActionToInvoke;
 
 /**
  * basic drawable objects, which are rendered by Renderers for different technologies
@@ -33,51 +34,62 @@ import com.razie.pub.draw.Renderer.Technology;
  * and actions/commands back to the model element). Controllers are optional for managing
  * interaction (there is a defualt controller).
  * 
- * TODO Also NOTE that most of the above is to do 
+ * TODO Also NOTE that most of the above is to do
  * 
  * @author razvanc99
  * 
  */
 public interface Drawable {
-    @SuppressWarnings("unchecked")
-    public Renderer getRenderer(Renderer.Technology technology);
+   // TODO 1-2 get rid of this method and have everyone render oneself
+   @SuppressWarnings("unchecked")
+   public Renderer getRenderer(Technology technology);
 
-    /** shortcut to render self - don't like controllers that much 
-     * 
-     * the return object is technology specific...it could be a swing dialog reference :) 
-     * 
-     * The convention here is: the caller prepares a stream. The implementation will either use 
-     * the stream or just return an object. Note that the stream is always present! 
-     * 
-     * @param technology -  the technology to draw in
-     * @param stream - not null, a stream to draw to
-     * @return null if it was drawn on the stream, a drawable object otherwise
-     */
-    public Object render(Technology t, DrawStream stream);
+   /**
+    * shortcut to render self - don't like controllers that much
+    * 
+    * the return object is technology specific...it could be a swing dialog reference :)
+    * 
+    * The convention here is: the caller prepares a stream. The implementation will either use the
+    * stream or just return an object. Note that the stream is always present!
+    * 
+    * @param technology - the technology to draw in
+    * @param stream - not null, a stream to draw to
+    * @return null if it was drawn on the stream, a drawable object otherwise
+    */
+   public Object render(Technology t, DrawStream stream);
 
-    /** use this for "draw me later" kind of widget */
-    public static abstract class DrawWidget implements Drawable {
-        public Drawable makeDrawable() {
-            return this;
-        }
+   /** use this for "draw me later" kind of widget */
+   public static abstract class DrawWidget implements Drawable {
+      public Drawable makeDrawable() {
+         return this;
+      }
 
-        /** shortcut to render self - don't like controllers that much */
-        public Object render(Technology t, DrawStream stream) {
-            return Renderer.Helper.draw(this, t, stream);
-        }
-    }
-    
-    /** Use this for model drawables that just use widgets, see SampleDrawable */
-    public static class DefaultRenderer implements Renderer<Drawable> {
-        // no state, MT-safe
-        public static DefaultRenderer singleton = new DefaultRenderer();
+      /** shortcut to render self - don't like controllers that much */
+      public Object render(Technology t, DrawStream stream) {
+         return Renderer.Helper.draw(this, t, stream);
+      }
+   }
 
-        public boolean canRender(Drawable o, Technology technology) {
-            return true;
-        }
+   /** Use this for model drawables that just use widgets, see SampleDrawable */
+   public static class DefaultRenderer implements Renderer<Drawable> {
+      // no state, MT-safe
+      public static DefaultRenderer singleton = new DefaultRenderer();
 
-        public Object render(Drawable o, Technology technology, DrawStream stream) {
-            return o.render(technology, stream);
-        }
-    }
+      public boolean canRender(Drawable o, Technology technology) {
+         return true;
+      }
+
+      public Object render(Drawable o, Technology technology, DrawStream stream) {
+         return o.render(technology, stream);
+      }
+   }
+
+   /** use this for "draw me later" kind of widget */
+   public static abstract class Simple implements Drawable {
+      @SuppressWarnings("unchecked")
+      public Renderer getRenderer(Technology technology) {
+         return DefaultRenderer.singleton;
+      }
+   }
+
 }

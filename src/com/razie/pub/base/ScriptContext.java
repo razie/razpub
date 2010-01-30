@@ -194,6 +194,11 @@ public interface ScriptContext extends AttrAccess {
       }
 
       @Override
+      public Object getOrElse(String name, Object dflt) {
+         return wrapped.getOrElse(name, dflt);
+      }
+
+      @Override
       public Object getAttr(String name) {
          return wrapped.getAttr(name);
       }
@@ -220,6 +225,11 @@ public interface ScriptContext extends AttrAccess {
 
       @Override
       public void set(String name, Object value) {
+         throw new IllegalStateException("This context is sealed - you can't override stuff.");
+      }
+
+      @Override
+      public void set(String name, Object value, AttrType t) {
          throw new IllegalStateException("This context is sealed - you can't override stuff.");
       }
 

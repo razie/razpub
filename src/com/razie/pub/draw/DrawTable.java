@@ -10,7 +10,6 @@ import java.util.List;
 
 import com.razie.pub.draw.DrawStream.Element.State;
 import com.razie.pub.draw.Renderer.ContainerRenderer;
-import com.razie.pub.draw.Renderer.Technology;
 
 /**
  * a drawable table of rows of lists. objects must implement Drawable or else we'll use toString()

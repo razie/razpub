@@ -37,9 +37,6 @@ public interface JavaAssetInventory extends razie.assets.AssetInventory {
 
     public ActionItem[] getSupportedActions(AssetKey ref);
 
-    /** get some extra details about an asset */
-    public Drawable getDetails(AssetBrief asset);
-    
     /** initialize this instance for use with this Meta */
     public void init (Meta meta);
 

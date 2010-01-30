@@ -25,7 +25,7 @@ import com.razie.pub.comms.HttpHelper;
 import com.razie.pub.comms.LightAuth;
 import com.razie.pub.comms.MyServerSocket;
 import com.razie.pub.comms.SedFilter;
-import com.razie.pub.draw.Renderer.Technology;
+import com.razie.pub.draw.Technology;
 import com.razie.pub.draw.widgets.DrawError;
 import com.razie.pub.lightsoa.HttpSoaBinding;
 import com.razie.pub.webui.MutantPresentation;
@@ -125,7 +125,7 @@ public class LightCmdGET extends SocketCmdHandler.Impl {
 //                    }
 
                 if (callThisOne) {
-                    logger.log("HTTP_FOUND_SOA_BRIDGE: " + c.getClass().getName());
+                    logger.trace(1, "HTTP_FOUND_SOA_BRIDGE: " + c.getClass().getName());
                     try {
                         reply = c.execServer(cmd, p, cmdargs, parms, socket);
                     } catch (Throwable e) {

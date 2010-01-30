@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import com.razie.pub.draw.Renderer.ContainerRenderer;
-import com.razie.pub.draw.Renderer.Technology;
 
 /**
  * simple stream to write in any technology to an output stream. Just translates from Draw to java

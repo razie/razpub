@@ -48,6 +48,9 @@ public interface AttrAccess {
    /** @return the value of the named attribute or null */
    public Object getAttr(String name);
 
+   /** @return the value of the named attribute or null */
+   public Object getOrElse(String name, Object dflt);
+   
    /** I'm really starting to hate typing... shortcut for getAttr */
    public Object a(String name);
 
@@ -56,6 +59,9 @@ public interface AttrAccess {
 
    /** set the value of the named attribute + the name can be of the form name:type */
    public void set(String name, Object value);
+   
+   /** set the value of the named attribute + the name can be of the form name:type */
+   public void set(String name, Object value, AttrType t);
 
    /** set the value of the named attribute + the name can be of the form name:type */
    public void setAttr(String name, Object value);

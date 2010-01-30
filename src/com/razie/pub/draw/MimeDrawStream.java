@@ -7,7 +7,6 @@ package com.razie.pub.draw;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import com.razie.pub.draw.Renderer.Technology;
 import com.razie.pub.comms.HttpHelper;
 
 /**

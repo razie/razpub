@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 
 import com.razie.pub.base.ActionItem;
 import com.razie.pub.base.AttrAccess;
-import com.razie.pub.comms.LightAuth;
+import com.razie.pub.comms.PermType;
 import com.razie.pub.http.SoaNotHtml;
 
 /**
@@ -72,7 +72,7 @@ public @interface SoaMethod {
     * if defined, put here the permission to check - the framework will check the current connection
     * and user for this permission and throw AuthException if not permitted
     */
-   LightAuth.PermType perm() default LightAuth.PermType.WRITE;
+   PermType perm() default PermType.WRITE;
 
    /**
     * action type may dictate if it's ACT/GET/POST/PUT/DELETE

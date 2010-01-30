@@ -22,7 +22,7 @@ import com.razie.pub.draw.HttpDrawStream;
 import com.razie.pub.draw.JsonDrawStream;
 import com.razie.pub.draw.MimeDrawStream;
 import com.razie.pub.draw.SimpleDrawStream;
-import com.razie.pub.draw.Renderer.Technology;
+import com.razie.pub.draw.Technology;
 import com.razie.pub.http.SoaNotHtml;
 import com.razie.pub.http.StreamConsumedReply;
 
@@ -143,16 +143,18 @@ public class HttpSoaBinding extends SoaBinding {
       }
 
       if (otoi == null) {
-         logger.log("HTTP_SOA_ASSETNOTFOUND: " + key);
+         logger.trace(1, "HTTP_SOA_ASSETNOTFOUND: " + key);
          return "HTTP_SOA_ASSETNOTFOUND: " + key;
       }
 
       Object response = null;
       DrawStream out = null;
 
+      if (true) response = "dudu";
+      else
       if (methods.size() <= 0) {
          // didn't find it but there's no methods for this anyhow...
-         logger.log("HTTP_SOA_delegateTo_AssetMgr.doAction: " + actionName + ": ");
+         logger.trace(1, "HTTP_SOA_delegateTo_AssetMgr.doAction: " + actionName + ": ");
          ScriptContext ctx = new ScriptContext.Impl(ScriptContext.Impl.global());
          ctx.setAttr(parms);
          response = JavaAssetMgr.doAction(actionName, key, ctx);
@@ -167,7 +169,7 @@ public class HttpSoaBinding extends SoaBinding {
          }
 
          if (method != null) {
-            logger.log("HTTP_SOA_" + actionName + ": ");
+            logger.trace(1, "HTTP_SOA_" + actionName + ": ");
 
             AttrAccess args = new AttrAccessImpl(parms);
 

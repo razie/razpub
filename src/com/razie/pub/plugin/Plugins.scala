@@ -12,6 +12,7 @@ import com.razie.pub.base._
 import com.razie.pub.assets._
 import com.razie.pub.base.log._
 import com.razie.pub.cfg._
+import razie.assets._
 
 /** simple&stupid plugin management */
 object Plugins {
@@ -36,17 +37,17 @@ object Plugins {
       // 2. load config
 	    	
       for (meta <- razie.RJX(doc) xpl "/plugin/metaspecs/metaspec") {
-         razie.Metas.add(razie.Meta.fromXml (meta))
+         razie.Metas.add(Meta.fromXml (meta))
          
          for (ma <- meta xpl "metaassoc")
-            razie.Metas.addAssoc (razie.MetaAssoc.fromXml (ma, meta));
+            razie.Metas.addAssoc (MetaAssoc.fromXml (ma, meta));
       }
       
       for (ma <- razie.RJX(doc) xpl "/plugin/metaspecs/metaassoc")
-         razie.Metas.addAssoc (razie.MetaAssoc.fromXml (ma));
+         razie.Metas.addAssoc (MetaAssoc.fromXml (ma));
        
       // initialize asset finders and players...
-      for (e <- razie.RJS(doc.listEntities("/plugin/assetfinders/assetfinder")))
+      for (e <- razie.M (doc.listEntities("/plugin/assetfinders/assetfinder")))
          XmlConfigProcessors.eat (e)
 	         
       val classname = razie.RJX apply doc xpa "/plugin/@classname"
