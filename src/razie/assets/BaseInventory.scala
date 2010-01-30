@@ -41,7 +41,6 @@ abstract class BaseInventory extends AssetInventory {
       list.write(new NavButton(ActionItem.WARN, ""));
       list.write("Confirm deletion below or click BACK...");
 //      val ati = new AssetActionToInvoke(ref, AssetBrief.DELETE);
-//      val ati = new EntityAction(AssetBrief.DELETE, ref);
 //      ati.set("confirmed", "yes");
 //      laati.ti.ist.write(ati);
       list;
@@ -65,4 +64,5 @@ abstract class BaseInventory extends AssetInventory {
             throw new IllegalArgumentException ("I only support AllOfType queries right now")
       }
 
+   override def init(meta:Meta ) = { /* nothing to init */ }
 }

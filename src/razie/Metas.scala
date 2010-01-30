@@ -18,6 +18,7 @@ import razie.assets._
  */
 object Metas {
    /** get a meta by name */
+   def apply (name:String) = AssetMgr.meta(name)
    def meta (name:String) : Meta = AssetMgr.meta(name) match {
       case m:Meta => m
       case _ => throw new IllegalArgumentException ("ERR_PROG Meta not found: " + name)
@@ -51,43 +52,3 @@ object Metas {
          {new collection.mutable.ListBuffer[MetaAssoc] ()} )
 }
 
-trait SimpleXml {
-   def ax (e:Element, name:String, dflt:String="") = 
-      if (e.hasAttribute (name)) e.getAttribute(name) else dflt
-
-   def a (e:RazElement, name:String, dflt:String="") = 
-      if (e.ha(name)) e.a(name) else dflt
-}
-
-object Meta extends SimpleXml {
-   def fromXml (e:RazElement) =
-      new Meta(
-            razie.AI cmdicon (a(e, "name"), a(e, "icon")), 
-            "", a(e, "inventory"))
-}
-
-object MetaAssoc  extends SimpleXml {
-   /** when defined by itself */
-   def fromXml (e:RazElement) =
-      new MetaAssoc (
-            name = a(e,"name"),
-            aEnd = a(e,"aEnd"),
-            zEnd = a(e, "zEnd"),
-            stereotype = a(e, "stereotype", "assoc"), 
-            card = a(e, "aCard", "0-n"), 
-            aRole = a(e, "aRole"), 
-            zRole = a(e, "zRole")
-            )
-   
-   /** when defined under a meta parent tag, which is the "aEnd" */
-   def fromXml (e:RazElement, m:RazElement) =
-      new MetaAssoc (
-            name = a(e, "name"),
-            aEnd = a(e,"aEnd", a(m, "name")),
-            zEnd = a(e, "zEnd"),
-            stereotype = a(e, "stereotype", "assoc"), 
-            card = a(e, "aCard", "0-n"), 
-            aRole = a(e, "aRole"), 
-            zRole = a(e, "zRole")
-            )
-}

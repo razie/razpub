@@ -4,21 +4,15 @@
  */
 package razie.assets
 
+import razie._
 import com.razie.pub.base.data._
 import com.razie.pub.assets._
 import com.razie.pub.base._
 import com.razie.pub.base.data._
 import razie.assets._
 
-/** root for asset queries */
-object AROOT {
-}
-
-// TODO finish implementation of assets xpath
-// TODO finish scala callbacks for XP.
-
 /** this resolves assets with the /x/y/z format. it's stateless so it's a singleton */
-class XpAssetsSolver extends XqSolver[AssetBase,AssetBase] {
+object XpAssetsSolver extends XpSolver[AssetBase,AssetBase] {
    override def getNext[T>:AssetBase,U>:AssetBase](o:(T,U),tag:String, assoc:String) : Iterable[(T,U)]={
       if (o._1 == AROOT || o._1 == null) {
          // starting point
@@ -55,6 +49,11 @@ class XpAssetsSolver extends XqSolver[AssetBase,AssetBase] {
       case Some(s) => s
    }
 
-   override def reduce[T>:AssetBase,U>:AssetBase] (o:Iterable[(T,U)],cond:XqCond) : Iterable[(T,U)] =
+   override def reduce[T>:AssetBase,U>:AssetBase] (o:Iterable[(T,U)],cond:XpCond) : Iterable[(T,U)] =
       if (cond == null) o else o.filter(x => cond.passes(x._1, this))
 }
+
+/** root for asset queries */
+private object AROOT {
+}
+

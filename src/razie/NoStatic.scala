@@ -5,6 +5,7 @@
 package razie
 
 import com.razie.pub.base.ExecutionContext
+import com.razie.pub.base.NoStatics
 
 object NoStatic {
    /** this will cleanup all the execution contexts in this JVM...as if you'd kill and restart the JVM */
@@ -33,19 +34,20 @@ object NoStatic {
  * @see com.razie.pub.base.test.TestNoStatic
  * @author razvanc99
  */
-class NoStatic[T] (val id:String, initialValue : => T) {
-   private var value : T = initialValue
+class NoStatic[T>:Null<:AnyRef] (val id:String, initialValue : => T) {
+   private var _value : T = null
 
-   def get = find.value
-   def apply() = find.value
+   private def value = if (_value == null) set (initialValue) else _value
+   def get = thisThreads.value
+   def apply() = thisThreads.value
 
    /**
     * here's the tricky part... will set only on the particular thread ... IF
     * it has a context...
     */
-   def set(newValue:T) : T = { find.value = newValue; newValue }
+   def set(newValue:T) : T = { thisThreads._value = newValue; newValue }
 
-   def find : NoStatic[T] = {
+   private def thisThreads : NoStatic[T] = {
       val tx = ExecutionContext.instance();
       
       if (tx.isPopulated(id)) {
@@ -56,7 +58,8 @@ class NoStatic[T] (val id:String, initialValue : => T) {
          val newInst = 
             if (tx == ExecutionContext.DFLT_CTX) { 
                // resetJVM was performed
-               this.value=initialValue; 
+//               this._value=initialValue; 
+               this._value=null
                this 
                } 
             else new NoStatic[T](id, initialValue)
@@ -64,4 +67,26 @@ class NoStatic[T] (val id:String, initialValue : => T) {
          newInst
       }
    }
+}
+
+/** TODO 1-1 copy NoStatics docs here and ditch old one? */
+object NoStaticS {
+   /**
+    * create a static for the current thread for the given class
+    * 
+    * @param o
+    *            the instance to use in this and related threads
+    * @return the same object you put in
+    */
+   def put[A] (o:A)(implicit m:scala.reflect.Manifest[A]) : A = 
+      NoStatics.put(m.erasure, o).asInstanceOf[A]
+
+   /**
+    * get the instance/static for this thread of the given class on this thread
+    */
+   def get[A](implicit m:scala.reflect.Manifest[A]) : Option[A] = {
+      val cl = NoStatics.get(m.erasure)
+      if (cl != null) Some(cl.asInstanceOf[A]) else None
+   }
+
 }

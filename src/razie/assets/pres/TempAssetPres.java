@@ -18,7 +18,6 @@ import razie.assets.AssetBrief;
 import razie.assets.AssetPres;
 import razie.assets.Meta;
 
-import com.razie.pub.assets.ContextActionFactory;
 import com.razie.pub.assets.JavaAssetMgr;
 import com.razie.pub.base.ActionItem;
 import com.razie.pub.comms.ActionToInvoke;
@@ -57,7 +56,7 @@ public class TempAssetPres extends AssetPres {
     *         passed in
     */
    @Override
-   public Drawable toDrawable(Iterable<AssetBrief> movies, DrawStream stream, ContextActionFactory context,
+   public Drawable toDrawable(Iterable<AssetBrief> movies, DrawStream stream, razie.assets.Affordance context,
          AssetListVisual... visuals) {
       AssetListVisual visual = AssetListVisual.LIST;
 
@@ -111,7 +110,7 @@ public class TempAssetPres extends AssetPres {
                   entry.write(a);
 
                if (context != null) {
-                  List<ActionToInvoke> atil = context.make(movie.getKey());
+                  ActionToInvoke[] atil = context.make(movie.getKey(), null);
                   for (ActionToInvoke ati : atil) {
                      ati.drawTiny = visual.equals(AssetListVisual.BRIEFLIST);
                      entry.write(ati);
@@ -155,7 +154,6 @@ public class TempAssetPres extends AssetPres {
          } else if ("stream".equals(ai.name)) {
             l.add(SdkAssetBrief.makePlayButtonStreamed(movie, drawTiny));
          } else {
-//            ActionToInvoke ati = new EntityAction(ai, movie.getKey());
             ActionToInvoke ati = new AssetActionToInvoke(movie.getKey(), ai);
             ati.drawTiny = drawTiny;
             l.add(ati);

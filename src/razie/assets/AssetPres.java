@@ -7,7 +7,6 @@ package razie.assets;
 import java.util.List;
 
 
-import com.razie.pub.assets.ContextActionFactory;
 import com.razie.pub.draw.DrawStream;
 import com.razie.pub.draw.Drawable;
 import com.razie.pubstage.AssetListVisual;
@@ -32,7 +31,7 @@ public abstract class AssetPres {
     *         stream was passed in
     */
    public abstract Drawable toDrawable(Iterable<AssetBrief> movies, DrawStream stream,
-         ContextActionFactory context, AssetListVisual... visuals);
+         razie.assets.Affordance context, AssetListVisual... visuals);
 
    /**
     * make all the buttons for a given asset

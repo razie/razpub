@@ -38,8 +38,7 @@ class AssetHandle (val key:AssetKey) extends AssetBase {
       actual=a
    }
 
-   def brief = if (isResolved) actual.getBrief() else AssetMgr.getBrief(key)
-   def details = AssetMgr.getDetails (brief)
+   def brief = if (isResolved) actual.brief else AssetMgr.getBrief(key)
    def supportedActions = AssetMgr.getSupportedActions (key)
    
    def resolve = if (actual == null) AssetMgr.getAsset(key) else actual

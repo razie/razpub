@@ -10,7 +10,7 @@ import com.razie.pub.base.ScriptContext;
 import com.razie.pub.comms.Agents;
 import com.razie.pub.draw._
 import com.razie.pub.draw.Renderer;
-import com.razie.pub.draw.Renderer.Technology;
+import com.razie.pub.draw.Technology;
 import com.razie.pub.draw.widgets.NavButton;
 
 /**
@@ -18,7 +18,7 @@ import com.razie.pub.draw.widgets.NavButton;
  * 
  * @author razvanc
  */
-class AssetImpl (b : AssetBrief) extends AssetBaseImpl(b) with Drawable {
+class AssetImpl (b : AssetBrief) extends AssetBaseImpl(b) with DrawAsset {
    var nkey : AssetKey = super.key
 
    override def key = nkey
@@ -47,12 +47,31 @@ class AssetImpl (b : AssetBrief) extends AssetBaseImpl(b) with Drawable {
    }
 
    override def getKey() : AssetKey = if (this.nkey  == null) super.getKey() else this.nkey
+}
+
+/**
+ * mix in this to get default painting. Any asset would have implemented the getBrief method
+ * 
+ * @author razvanc
+ */
+trait DrawAsset extends AssetBase with Drawable {
 
    override def getRenderer(t:Technology ) : Renderer[Drawable] = 
       Drawable.DefaultRenderer.singleton;
 
-   override def render(t:Technology , stream:DrawStream ) : AnyRef = {
-      val movie = getBrief();
+   override def render(t:Technology , stream:DrawStream ) : AnyRef = 
+      DrawAsset_.render (this, t, stream)
+}
+
+/**
+ * this is the defalut paint for any asset with a brief
+ * 
+ * @author razvanc
+ */
+object DrawAsset_ {
+
+   def render(who:{def getBrief() : AssetBrief}, t:Technology , stream:DrawStream ) : AnyRef = {
+      val movie = who.getBrief
 
 //      if (ctx.isPopulated("series"))
 //         movie.setSeries((AssetKey) ctx.getAttr("series"));
@@ -62,6 +81,7 @@ class AssetImpl (b : AssetBrief) extends AssetBaseImpl(b) with Drawable {
          case m : FileAssetBrief => if (m.localDir != null && m.localDir.startsWith("/")) {
             m.localDir = "/" + m.localDir
          }
+         case _ =>
       }
 
       val vert = new DrawList();
@@ -75,7 +95,7 @@ class AssetImpl (b : AssetBrief) extends AssetBaseImpl(b) with Drawable {
 
       horiz.write(new ABDrawable (movie, DetailLevel.FULL))
 
-       for (a <- razie.RJS apply AssetMgr.pres().makeAllButtons(movie, false))
+       for (a <- razie.M apply AssetMgr.pres().makeAllButtons(movie, false))
           actions.write(a)
 
       // add more links...
@@ -87,6 +107,7 @@ class AssetImpl (b : AssetBrief) extends AssetBaseImpl(b) with Drawable {
       movie match {
          case m : FileAssetBrief => 
       moreActions.write(new NavButton(new ActionItem("savejpg"), Agents.me.url + "/mutant/cmd" + "/saveJpg/" + "Movie/" + m.localDir + movie.getKey().getId() + "&"));
+         case _ =>
       }
 
       // vert2.write(movie);
@@ -96,8 +117,6 @@ class AssetImpl (b : AssetBrief) extends AssetBaseImpl(b) with Drawable {
       vert.write(horiz);
       vert.write(moreActions);
 
-      val moreDetails = AssetMgr.getDetails(movie);
-      new DrawSequence(vert, moreDetails);
+      vert
    }
-
 }

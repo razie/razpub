@@ -30,8 +30,9 @@ import com.razie.pub.comms.Comms;
  * @author razvanc99
  */
 class AssetLocation (o:String) {
-   private val orig = o   
    private val (iRemoteUrl, iLocalPath) = setURL(o)
+   
+//   def gloc = new razie.GLoc (iRemoteUrl, iLocalPath)
 
    def getHost() = host // TODO inine
    def getPort() = port // TODO inine
@@ -103,9 +104,9 @@ class AssetLocation (o:String) {
          }
 
          // TODO not sure why i do this
-         if (!isMutant && ru != null && ru.endsWith("/")) {
-            ru = ru.substring(0, ru.length() - 1);
-         }
+//         if (!isMutant && ru != null && ru.endsWith("/")) {
+//            ru = ru.substring(0, ru.length() - 1);
+//         }
       }
       (ru, lp)
    }

@@ -39,7 +39,7 @@ class InventoryAssetMgr extends AssetMgr (null) {
    override def getAsset(ref:AssetKey ) = {
       findInventory(ref.getType()).getAsset(ref) match {
          case a:AssetBase => a
-         case o:Any => throw new IllegalArgumentException("ERR_ASSET_INV inventories should return SdkAsset(s)...this returned " + o.getClass().getName());
+         case o:Any => error("ERR_ASSET_INV inventories should return SdkAsset(s)...this returned " + o.getClass().getName())
       }
    }
 
@@ -50,12 +50,8 @@ class InventoryAssetMgr extends AssetMgr (null) {
       criteria match {
          case WithMeta (meta) =>
             findInventory(meta).query(criteria, env, recurse, ret)
-         case _ => 
-            throw new IllegalArgumentException ("I only support WithMeta queries right now")
+         case _ => error ("I only support WithMeta queries right now")
       }
-
-   override def getDetails(brief:AssetBrief ) =
-      findInventory(brief.getKey().getType()).getDetails(brief);
 
    override def getSupportedActions(ref:AssetKey ) =
       findInventory(ref.getType()).getSupportedActions(ref) match {
@@ -111,15 +107,12 @@ class InventoryAssetMgr extends AssetMgr (null) {
       return proxyInv;
    }
 
-   def hasInventory(meta:String )  = invByMeta.get(meta) != null;
+   def hasInventory(meta:String )  = invByMeta.get(meta).isDefined
 
    def findInventory(meta:String) :AssetInventory = 
       invByMeta.get(meta) match {
       case Some(s) => s
-      case None =>  {
-         razie.Log.alarmThis("ERR_ASSET_INV cannot find inventory for meta: " + meta);
-         null
-      }
+      case None => error("ERR_ASSET_INV cannot find inventory for meta: " + meta)
    }
 }
 
@@ -168,23 +161,9 @@ class ProxyInventory extends AssetInventory {
       case _ => null
    }
    
-   override def getDetails(brief:AssetBrief ) = getAsset(brief.key) match {
-//      case a:AssetImpl => a.paint(new ScriptContext.Impl(ScriptContext.Impl.global()))
-      case _ => brief
-   }
+   override def doAction(cmd:String , ref:AssetKey , ctx:ScriptContext ) = null
 
-      // TODO Auto-generated method stub
-
-   override def doAction(cmd:String , ref:AssetKey , ctx:ScriptContext ) =
-      cmd match {
-//      case "details" => AssetMgr.getAsset(ref) match {
-//         case a:AssetImpl => amovie.paint(if (ctx != null ) ctx else new ScriptContext.Impl(ScriptContext.Impl.global()))
-//         case _ => null
-//         }
-      case _ => null
-    }
-
-   override def getSupportedActions(ref:AssetKey ) : Array[ActionItem] = null
+   override def getSupportedActions(ref:AssetKey ) : Array[ActionItem] = Array()
       // TODO Auto-generated method stub
 
    override def init(meta:Meta ) = { /* nothing to init */ }

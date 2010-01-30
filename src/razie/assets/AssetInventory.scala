@@ -36,9 +36,6 @@ trait AssetInventory {
 
     def getSupportedActions(key : AssetKey) : Array[ActionItem]
 
-    /** get some extra details about an asset - default will just render the brief */
-    def getDetails(brief : AssetBrief) : Drawable 
-    
     /** initialize this instance for use with this Meta - note that these metas would 
      * have been registered as supported by this inventory, otherwise throw some exception */
     def init (meta : Meta) : Unit
@@ -47,6 +44,7 @@ trait AssetInventory {
     def query(criteria:QueryCriteria, env:AssetLocation , recurse:Boolean , toUse:AssetMap) : AssetMap
     
     /** queries can run in the background, they are multithreaded safe etc */
+    // TODO remove
     def queryAll(meta:String, env:AssetLocation , recurse:Boolean , toUse:AssetMap) : AssetMap
 }
 
@@ -61,6 +59,7 @@ class AssetMap {
   /** when you use these methods, it will strictify this - i.e. wait for all to be collected and then transform to a map - blocking call */
   def toMap : scala.collection.mutable.Map[AssetKey,AssetBrief] = m
 //  def toJavaMap : java.util.Map[AssetKey,AssetBrief] = razie.RSJ apply m
+  
 }
 
 trait QueryCriteria {
@@ -69,6 +68,8 @@ trait QueryCriteria {
 
 class QueryBase extends QueryCriteria {} 
 case class WithMeta (meta:String) extends QueryBase
+/** this is the only mandatory query */
 case class AllOfType (override meta:String) extends WithMeta (meta) { override def isAll=true }
 case class ByAttributes (override meta:String, attrs:razie.AA) extends WithMeta (meta)
+case class ByAssoc (startFrom:AssetKey, assoc:String) extends QueryCriteria
 

@@ -86,9 +86,67 @@ class AssetKey (_meta:String, _id:String, _loc:AssetLocation) {
             java.net.URLEncoder.encode(toString, "UTF-8")
 }
 
+/**
+ * Each entity/asset has a unique key, which identifies the asset's type, id and location. Borrowed
+ * from OSS/J's ManagedEntityKey (type, key, location), this is lighter and designed to pass through
+ * URLs and be easily managed as a string form.
+ * 
+ * <p>
+ * asset-URI has this format: <code>"razie.uri:entityType:entityKey@location"</code>
+ * <p>
+ * asset-context URI has this format: <code>"razie.puri:entityType:entityKey@location&context"</code>
+ *
+ * When the asset support framework is used, this key can have this other form:
+ * <p>
+ * REST asset-URI has this format: <code>"http://SERVER:PORT/asset/entityType/entityKey"</code>
+ * <p>
+ * REST asset-URI has this format: <code>"http://SERVER:PORT/asset/KEY-ENCODED"</code>
+ * <p>
+ * OR: REST asset-URI has this format: <code>"http://SERVER:PORT/asset/entityType/entityKey?context"</code>
+ * 
+ * Actions can be invoked like so
+ * <p>
+ * REST action asset-URI has this format: <code>"http://SERVER:PORT/asset/entityType/entityKey/action?args"</code>
+ * <p>
+ * REST asset-URI has this format: <code>"http://SERVER:PORT/asset/KEY-ENCODED/action&args"</code>
+ * <p>
+ * OR: REST asset-URI has this format: <code>"http://SERVER:PORT/asset/entityType/entityKey?context"</code>
+ * 
+ * <ul>
+ * <li>type is the type of entity, should be unique among all other types. HINT: do not keep
+ * defining "Movie" etc - always assume someone else did...use "AlBundy.Movie" for instance :D
+ * <li>key is the unique key of the given entity, unique in this location and for this type. The key
+ * could be anything that doesn't have an '@' un-escaped. it could contain ':' itself like an
+ * XCAP/XPATH etc, which is rather cool...?
+ * <li>location identifies the location of the entity: either URL or folder or a combination. 
+ * A folder implies it's on the localhost. An URL implies it's in that specific server.
+ * </ul>
+ * 
+ * <p>
+ * Keys must have at least type. By convention, if the key is missing, the key refers to all
+ * entities of the given type.
+ * 
+ * @author razvanc99
+ */
+////class AssetKey (_meta:String, _id:String, val loc:AssetLocation) extends razie.GRef (_meta, _id, loc.gloc) {
+//class AssetKey (_meta:String, _id:String, val loc:AssetLocation) extends razie.GRef (_meta, _id, loc.gloc) {
+////   override val loc = new AssetLocation (super.loc)
+//   
+//   def this (_meta:String, _id:String) = this (_meta, _id, null)
+//   def this (_meta:String) = this (_meta, razie.G.uid, null)
+//
+//   // these have to be functions rather than vars for existing java code...
+//   def getMeta() = meta
+//   def getId() = id
+//   def getLoc() = loc
+//   
+//   // TODO 1-1 inline
+//   def getType() = meta
+//   def getLocation() = loc
+//}
+
 object AssetKey {
    def PREFIX = "razie.uri"
-   def PREFIXP = "razie.puri"
    
     /** to allocate next UID...this should be done better */
     private var seqNum : Int = 1;
@@ -109,8 +167,8 @@ object AssetKey {
         var url = inurl;
 
         var news:String="";
-        if (url.startsWith(PREFIX)) {
-            news = url.replace(PREFIX+":", "");
+        if (url.startsWith(AssetKey.PREFIX)) {
+            news = url.replace(AssetKey.PREFIX+":", "");
         } else {
             val map1 = url.split("://", 2);
 
@@ -149,13 +207,13 @@ object AssetKey {
 
     val ROLE = "role."
        
-    def ctx (s:String) = {
-       val ac = new AssetContext (razie.AA(s))
-       for (x <- razie.RJS apply ac.attrs.getPopulatedAttr)
-          if (x.startsWith(ROLE))
-             ac.env.put(x.replaceFirst(ROLE, ""), fromString(ac.attrs.sa(x)))
-//       ac.attrs.foreach ((x,y) => if (x.startsWith(ROLE)) ac.env.put(x.replaceFirst(ROLE, ""), fromString(y)))
-    }
+//    def ctx (s:String) = {
+//       val ac = new AssetContext (razie.AA(s))
+//       for (x <- razie.RJS apply ac.attrs.getPopulatedAttr)
+//          if (x.startsWith(ROLE))
+//             ac.env.put(x.replaceFirst(ROLE, ""), fromString(ac.attrs.sa(x)))
+////       ac.attrs.foreach ((x,y) => if (x.startsWith(ROLE)) ac.env.put(x.replaceFirst(ROLE, ""), fromString(y)))
+//    }
     
    def decode (s:String) = java.net.URLDecoder.decode(s, "UTF-8")
             
@@ -172,22 +230,37 @@ object AssetKey {
 class AssetContext (val name:String, val attrs : AttrAccess) {
 //   val assocs : List[AssetAssoc]   
    // TODO 1-1 lazy map
-   val env : mutable.Map[String, AssetKey] = new mutable.HashMap[String,AssetKey]()   // (role, who)
 
-   if (attrs != null)
-      (razie.RJS apply attrs.getPopulatedAttr).filter(_.startsWith(AssetKey.ROLE)).foreach (
-             x => env.put(x.replaceFirst(AssetKey.ROLE, ""), AssetKey.fromString(attrs.sa(x)))
-   )
+//   if (attrs != null)
+//      (razie.RJS apply attrs.getPopulatedAttr).filter(_.startsWith(AssetKey.ROLE)).foreach (
+//             x => env.put(x.replaceFirst(AssetKey.ROLE, ""), AssetKey.fromString(AssetKey.decode(attrs.sa(x))))
+//   )
       
    def this () = this ("", AttrAccess.EMPTY) // maybe EMPTY?
    def this (a:AttrAccess) = this ({a.sa ("ctx.name")}, a) 
    
+   // cleanup
+   
    def sa (name:String) : String = attrs.sa(name)
-   def role(name:String) : AssetKey = env(name)
-   def role(name:String, who:AssetKey) : AssetContext = {env.put(name, who); this}
+   def role(name:String) : AssetKey = attrs.sa (AssetKey.ROLE+name) match {
+      case s:String => AssetKey.fromString(AssetKey.decode(s))
+      case null => null
+   }
+   def role(name:String, who:AssetKey) : AssetContext = {
+      attrs.set(AssetKey.ROLE+name, who.toUrlEncodedString)
+      this
+      }
 
-   override def toString : String = 
-      "ctx.name="+name+"&"+(for (k <- env.keySet) yield "role."+k+env(k).toString).mkString("&")+attrs.toString
+   override def toString : String = {
+      attrs.set ("ctx.name", name)
+      attrs.addToUrl("")
+   }
+
+    override def equals(o:Any):Boolean = o match {
+       case r : AssetContext =>  false // TODO 2-1 implement
+       case _ => false
+    }
+
 }
 
    // TODO 3-1 complete the asset context key implementation and test
@@ -196,5 +269,12 @@ class AssetContext (val name:String, val attrs : AttrAccess) {
 class AssetCtxKey (_meta:String, _id:String, _loc:AssetLocation, val ctx:AssetContext) extends AssetKey (_meta, _id, _loc) {
     /** short descriptive string */
     override def toString = 
-       AssetKey.PREFIXP+":" + meta + ":" + (if(id == null ) "" else java.net.URLEncoder.encode(id, "UTF-8")) + (if (loc == null) "" else ("@" + loc.toString())) + ( if (ctx == null) "" else ("@@" + ctx.toString))
+       AssetKey.PREFIX+":" + meta + ":" + (if(id == null ) "" else java.net.URLEncoder.encode(id, "UTF-8")) + (if (loc == null) "" else ("@" + loc.toString())) + ( if (ctx == null) "" else ("@@" + ctx.toString))
+
+    // NOTE that for now i ignore the context... it is an interesting question wether the context should be ignored...
+    override def equals(o:Any):Boolean = o match {
+//       case r : AssetCtxKey => super.equals(o) && r.ctx .equals(ctx)
+       case r : AssetKey => super.equals(o) 
+       case _ => false
+    }
 }

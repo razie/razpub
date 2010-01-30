@@ -25,14 +25,22 @@ import com.razie.pub.draw.DrawList;
 import com.razie.pub.draw.DrawStream;
 import com.razie.pub.draw.Drawable;
 import com.razie.pub.draw.Renderer;
-import com.razie.pub.draw.Renderer.Technology;
+import com.razie.pub.draw.Technology;
 import com.razie.pub.resources.RazIconRes;
 import com.razie.pub.resources.RazIcons;
 
+object NoAssetBrief extends AssetBriefImpl (new AssetKey("Unknown", "Unknown")) {}
 
 class AssetBriefImpl (var key : AssetKey) extends AttrAccessImpl with AssetBrief { 
 
    def this () = this (null)
+  
+   def this (key:AssetKey, name:String, icon:String, briefDesc:String) = {
+      this (key)
+      this.name=name
+      this.icon=icon
+      this.briefDesc=briefDesc
+   }
    
    override def getKey() = this.key 
    def setKey(k:AssetKey ) = this.key = k
@@ -49,7 +57,7 @@ class AssetBriefImpl (var key : AssetKey) extends AttrAccessImpl with AssetBrief
       a;
    }
 
-   override def toString = toAA.toString
+//   override def toString = toAA.toString
 
    def toJSONString =  toAA.toJson(new JSONObject()).toString()
    
@@ -88,7 +96,7 @@ class FileAssetBriefImpl extends AssetBriefImpl with FileAssetBrief {
       val a = new AttrAccessImpl();
 
       a.set("dc\\:title", getName());
-      a.set("upnp\\:class", AssetBrief.upnptypes.get(getKey().getType()));
+      a.set("upnp\\:class", AssetBrief.upnptypes.get(getKey().getType()).getOrElse("UNKNOWN type: "+getKey().getType()));
       // if (series != null)
       // a.setAttr("series", getSeries().toUrlEncodedString());
 
@@ -198,7 +206,7 @@ class ABRender (val detailLevel:DetailLevel) extends Renderer[AnyRef] {
             // IF full details, then print all buttons inside:
             if (detailLevel.equals(DetailLevel.FULL)) {
                 val l = new DrawList();
-                for (a <- razie.RJS apply AssetMgr.pres().makeAllButtons(b, false))
+                for (a <- razie.M apply AssetMgr.pres().makeAllButtons(b, false))
                     l.write(a);
 
                 s += l.render(Technology.HTML, null);
@@ -213,3 +221,44 @@ class ABRender (val detailLevel:DetailLevel) extends Renderer[AnyRef] {
         }
 
 }
+
+
+//   // TODO 1-2 setup the entire rss feed thing. implies format specs
+//   public String toRssMediaItem() {
+//       String s = "\n<item>\n";
+//
+//       AttrAccess a = new AttrAccessImpl();
+//
+//       a.setAttr("title", getName());
+//       a.setAttr("media:title", getName());
+//       a.setAttr("link", "?");// TODO build page to view the item
+//       a.setAttr("media:player", "?");
+//
+////       a.setAttr("upnp:class", "object.item.videoItem.movie");
+//       // if (series != null)
+//       // a.setAttr("series", getSeries().toUrlEncodedString());
+//
+////       a.setAttr("upnp:genre", "");
+//       a.setAttr("description", getLargeDesc());
+//       a.setAttr("media:description", getBriefDesc());
+//
+//       a.setAttr("media:category", "?");
+//
+////       a.setAttr("upnp:storageMedium", "");
+////       a.setAttr("upnp:channelName", "");
+//
+//       s += a.toXml();
+//
+//       // String p = "\n<res protocolInfo=\"http-get:*:" + getMimeType() + ":*\" size=\"200000\">"
+//       // + "http://"
+//       // + Devices.getMyUrl() + "/mutant/stream?ref=" + getRef().toUrlEncodedString() + "</res>";
+//       String p = "\n<res protocolInfo=\"http-get:*:" + getMimeType() + ":*\" size=\"200000\">"
+//               + getUrlForStreaming().makeActionUrl() + "</res>";
+//
+//       return s + p + "\n</item>";
+//   }
+
+//    @Override 
+//    public String toJSONString () {
+//       toAA.toJson(new JSONObject()).toString();
+//    }

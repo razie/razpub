@@ -10,7 +10,7 @@ import com.razie.pub.lightsoa._
 import com.razie.pub.assets._
 //import com.razie.assets._
 import scala.collection.mutable._
-import com.razie.pub.base.data._
+import razie._
 import com.razie.pub.assets._
 import com.razie.pub.base._
 import com.razie.pub.base.data._
@@ -23,10 +23,10 @@ import razie.assets._
 object Assets {
 
    //------------------------- XP shorthands for accessing assets 
-   def xpl (path:String)  = new XP[AssetBase] (path).xpl(new XpAssetsSolver, null) 
-   def xpe (path:String)  = new XP[AssetBase] (path).xpe(new XpAssetsSolver, null) 
-   def xpa (path:String)  = new XP[AssetBase] (path).xpa(new XpAssetsSolver, null) 
-   def xpla (path:String) = new XP[AssetBase] (path).xpla(new XpAssetsSolver, null) 
+   def xpl (path:String)  = XP[AssetBase] (path).xpl(XpAssetsSolver, null) 
+   def xpe (path:String)  = XP[AssetBase] (path).xpe(XpAssetsSolver, null) 
+   def xpa (path:String)  = XP[AssetBase] (path).xpa(XpAssetsSolver, null) 
+   def xpla (path:String) = XP[AssetBase] (path).xpla(XpAssetsSolver, null) 
    
    /** add a managed asset instance. These assets do not need an inventory - will all use the proxy inventory 
     * 
@@ -50,29 +50,71 @@ object Assets {
    def managejj(ass:AssetBase):Unit = manage(ass)
    
    def manage(ass:AssetBase , m:MetaSpec*):Unit = {
-      val ms = if (m.length > 0) m(0) else ass.asInstanceOf[HasMeta].metaSpec
-      val inv = 
-         if (InventoryAssetMgr.instance().hasInventory (ass.getKey.getType)) 
-            InventoryAssetMgr.instance().findInventory(ass.getKey().getType()) 
-         else null
+//      if (! InventoryAssetMgr.instance().hasInventory (ass.getKey.getType)) {
+         val ms = if (m.length > 0) m(0) else ass.asInstanceOf[HasMeta].metaSpec
+//      val inv = 
+//         if (InventoryAssetMgr.instance().hasInventory (ass.getKey.getType)) 
+//            InventoryAssetMgr.instance().findInventory(ass.getKey().getType()) 
+//         else null
 
-      if (ass.getClass.getAnnotation(classOf[SoaAsset]) != null) 
-         ass.getClass.getAnnotation(classOf[SoaAsset]).asInstanceOf[SoaAsset].bindings.foreach ( _ match {
-            //TODO should i bind them all by default? use bindings just to restrict binding if needed?
-            case "http" => 
-               if (AgentHttpService.instance()!=null)
-                  AgentHttpService.registerSoaAsset(ass.getClass, ms.meta)
-         })
+//      if (ass.getClass.getAnnotation(classOf[SoaAsset]) != null) 
+//         ass.getClass.getAnnotation(classOf[SoaAsset]).asInstanceOf[SoaAsset].bindings.foreach ( _ match {
+//            //TODO should i bind them all by default? use bindings just to restrict binding if needed?
+//            case "http" => 
+//               if (AgentHttpService.instance()!=null)
+//                  AgentHttpService.registerSoaAsset(ass.getClass, ms.meta)
+//         })
       
-      ms.meta.inventory = classOf[ProxyInventory].getName();
+         ms.meta.inventory = classOf[ProxyInventory].getName();
 
-      if (inv == null)
-         razie.Metas.add(ms)
-
+//      razie.Metas.add(ms)
+         imanageClass (ass.getClass, ms)
+//      }
+      
       InventoryAssetMgr.instance().proxyInventory().register(ass.getKey(), ass);
    }
-  
+
+   // TODO niceify with an implicit manifest
+   def manageClass[A](implicit m:scala.reflect.Manifest[A]) :Unit = {
+      val cls = m.erasure
+      if (cls.getAnnotation(classOf[SoaAsset]) == null) 
+         throw new IllegalArgumentException ("aset classes need annotated with SoaAsset")
+      if (cls.getAnnotation(classOf[AssetMeta]) == null) 
+         throw new IllegalArgumentException ("aset classes need annotated with SoaAsset")
+         
+      val soaa = cls.getAnnotation(classOf[SoaAsset]).asInstanceOf[SoaAsset]
+      val name = soaa.meta
+     
+      // if the inventory is present, it's already registered...will skip
+      if (! InventoryAssetMgr.instance().hasInventory (name)) {
+         val m = Meta.fromAnn (cls)
+         val ms = new MetaSpec (m)
+
+         // TODO add assocs from @AssotAssoc
+         imanageClass (cls, ms)
+      }
+   }
    
+   def imanageClass(cls:Class[_], ms:MetaSpec):Unit = {
+         
+      val name = ms.meta .id .name
+
+      // if the inventory is present, it's already registered...will skip
+//      if (! InventoryAssetMgr.instance().hasInventory (name)) {
+
+         if (cls.getAnnotation(classOf[SoaAsset]) != null) 
+            cls.getAnnotation(classOf[SoaAsset]).asInstanceOf[SoaAsset].bindings.foreach ( _ match {
+               //TODO should i bind them all by default? use bindings just to restrict binding if needed?
+               case "http" => 
+                  if (AgentHttpService.instance()!=null)
+                     AgentHttpService.registerSoaAsset(cls, ms.meta)
+            })
+      
+         razie.Metas.add(ms)
+//      }
+
+   }
+  
    // ------------------------ associations
   
    /** create an instance association between the two. These instances are kept in sync with the entities 

@@ -89,9 +89,6 @@ class InvProxy (var iproxy:AssetInventory) extends AssetInventory {
     def getSupportedActions(key : AssetKey) : Array[ActionItem] =
        proxy.getSupportedActions (key)
 
-    /** get some extra details about an asset - default will just render the brief */
-    def getDetails(brief : AssetBrief) : Drawable = proxy.getDetails(brief)
-    
     /** initialize this instance for use with this Meta - note that these metas would 
      * have been registered as supported by this inventory, otherwise throw some exception */
     def init (meta : Meta) = proxy.init(meta)

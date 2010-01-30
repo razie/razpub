@@ -63,7 +63,7 @@ object PageServices {
          b = maker (service, ai, parms)
 
          b.style(NavLink.Style.ONELINE, NavLink.Size.SMALL);
-         sm.insert (0, b.render(Renderer.Technology.HTML, null))
+         sm.insert (0, b.render(Technology.HTML, null))
          sm append ") ; ";
          
          sm

@@ -14,10 +14,11 @@ package razie.assets
  */
 trait AssetBase extends Referenceable {
     def brief:AssetBrief 
+    // this is for java compatibility
     def getBrief():AssetBrief = brief
 }
 
-class AssetBaseImpl (val brief:AssetBrief) extends AssetBase {
+class AssetBaseImpl (var brief:AssetBrief) extends AssetBase {
 
    override def key = if (this.brief == null ) null else this.brief.key
 

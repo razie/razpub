@@ -37,6 +37,9 @@ object AA {
       case Some(x) => Some(x.toString)
       case _ => None 
    }
+   
+   def foreach (a:AttrAccess, f : (String, AnyRef) => Unit) = 
+      (razie.M apply (a.getPopulatedAttr)).foreach (x => f(x, a a x))
 }
 
 /** 
@@ -44,9 +47,20 @@ object AA {
  * 
  * @author razvanc
  */
-class AA  extends AttrAccessImpl {
-   def foreach (f : (String, AnyRef) => Unit) = 
-      (razie.RJS apply (this.getPopulatedAttr)).foreach (x => f(x, this a x))
-      
+class AA extends AttrAccessImpl {
    def this (xx : AnyRef*) = { this(); setAttr (xx); }
+   
+   def foreach (f : (String, AnyRef) => Unit) = 
+      this.sgetPopulatedAttr.foreach (x => f(x, this a x))
+   def filter (f : (String, AnyRef) => Boolean) = 
+      this.sgetPopulatedAttr.filter (x => f(x, this a x))
+
+   def toXmlWithChildren (me:Any, tag:String)(contents:Any=>String) = {
+      var s = "<"+tag + " "
+      s += (for (a <- this.sgetPopulatedAttr) yield a+"=\"" + this.getAttr(a) + "\"").mkString(" ")
+      s += ">\n"
+      s += contents (me)
+      s += "</>\n"
+         s
+   }
 }

@@ -5,10 +5,16 @@
 package razie.assets;
 
 import java.lang.reflect.Method;
+import org.w3c.dom._
+import com.razie.pub.agent._
+import com.razie.pub.lightsoa._
+import com.razie.pub.assets._
+import com.razie.pub.base._
+import com.razie.pub.base.data._
+import razie.assets._
+
 
 import com.razie.pub.base.ActionItem;
-//import com.razie.pub.lightsoa.SoaMethod;
-//import com.razie.pub.lightsoa.SoaMethodSink;
 
 /**
  * a meta-description of an asset type
@@ -63,35 +69,15 @@ class Meta (val id:ActionItem, val baseMeta:String, val assetCls:String, var inv
    }
    
    def toBriefXml() : String = {
-      val b = new StringBuilder();
-      b.append("<metaspec name=\"" + id.name + "\"");
-      b.append(" inventory=\"" + inventory + "\"");
-      if (baseMeta!= null && baseMeta.length() > 0)
-         b.append(" base=\"" + baseMeta + "\"");
-      b.append(">");
-
-      b.append("</metaspec>");
-
-      return b.toString();
+      toAA.toXmlWithChildren(this, "metaspec")(x=>"")
    }
 
    def toDetailedXml() : String = {
-      val b = new StringBuilder();
-      b.append("<metaspec name=\"" + id.name + "\"");
-      b.append(" inventory=\"" + inventory + "\"");
-      if (baseMeta != null && baseMeta.length() > 0)
-         b.append(" base=\"" + baseMeta + "\"");
-      b.append(">");
-
-      for (ai <- supportedActions) {
-         b.append("<action name=\"" + ai.name + "\"");
-         b.append("/>");
-      }
+      toAA.toXmlWithChildren(this, "metaspec") ( meta => {
+         meta.asInstanceOf[Meta].supportedActions.foldRight ("") (
+            (ai, prev) => prev+"<action name=\"" + ai.name + "\""+"/>\n")
       // TODO 1-1 add assocs
-
-      b.append("</metaspec>");
-
-      return b.toString();
+      })
    }
 
    override def toString() : String = toBriefXml()
@@ -107,6 +93,18 @@ class MetaAssoc (
       val card:String="0..1-0..n", val aRole:String="", val zRole:String="") { 
    // TODO i need to implement the traceback: who injected/defined this association
    val traceback:String = null
+   
+   def toXml = {
+      var s = "<metaassoc"
+      s += " name=\"" + name + "\""
+      s += " aEnd=\"" + aEnd + "\""
+      s += " zEnd=\"" + zEnd + "\""
+      s += " stereotype=\"" + stereotype + "\""
+      s += " card=\"" + card + "\""
+      s += " aRole=\"" + aRole + "\""
+      s += " zRole=\"" + zRole + "\""
+      s + "/>\n"
+   }
 }
 
 /** this is a full specification of a meta: the meta itself together with all neccessary associations. Note that the associations can be only from and to the current meta
@@ -122,4 +120,65 @@ class MetaSpec (val meta:Meta, val assocs:List[MetaAssoc]){
 /** implemented by all classes who know their metas - simplifies code Assets.manage(new MyAsset()) */
 trait HasMeta {
    def metaSpec : MetaSpec
+}
+
+object Meta extends SimpleXml {
+   def fromAnn (cls:Class[_]) = {
+      val am = cls.getAnnotation(classOf[AssetMeta])
+      new Meta (
+//         id = razie.AI.stoai(am.name), baseMeta=am.base, inventory=am.inventory.getName, namespace=am.namespace 
+         id = razie.AI.stoai(am.name), baseMeta=am.base, inventory=am.inventory.getName, 
+         namespace=am.namespace, assetCls = cls.getName
+        )
+   }
+
+   def fromXml (e:RazElement) =
+      new Meta(
+            razie.AI cmdicon (a(e, "name"), a(e, "icon")), 
+            "", a(e, "inventory"))
+}
+
+trait SimpleXml {
+   def ax (e:Element, name:String, dflt:String="") = 
+      if (e.hasAttribute (name)) e.getAttribute(name) else dflt
+
+   def a (e:RazElement, name:String, dflt:String="") = 
+      if (e.ha(name)) e.a(name) else dflt
+}
+
+object MetaAssoc  extends SimpleXml {
+   /** when defined by itself */
+   def fromXml (e:RazElement) =
+      new MetaAssoc (
+            name = a(e,"name"),
+            aEnd = a(e,"aEnd"),
+            zEnd = a(e, "zEnd"),
+            stereotype = a(e, "stereotype", "assoc"), 
+            card = a(e, "aCard", "0-n"), 
+            aRole = a(e, "aRole"), 
+            zRole = a(e, "zRole")
+            )
+   
+   /** when defined under a meta parent tag, which is the "aEnd" */
+   def fromXml (e:RazElement, m:RazElement) =
+      new MetaAssoc (
+            name = a(e, "name"),
+            aEnd = a(e,"aEnd", a(m, "name")),
+            zEnd = a(e, "zEnd"),
+            stereotype = a(e, "stereotype", "assoc"), 
+            card = a(e, "aCard", "0-n"), 
+            aRole = a(e, "aRole"), 
+            zRole = a(e, "zRole")
+            )
+   /** when defined under a meta parent tag, which is the "aEnd" */
+   def fromAnno (e:AssetAssoc) =
+      new MetaAssoc (
+            name = e.name,
+            aEnd = e.a,
+            zEnd = e.z,
+            stereotype = e.stereotype,
+            card = e.card,
+            aRole = e.aRole,
+            zRole = e.zRole
+            )
 }
