@@ -12,7 +12,7 @@ import com.razie.pub.draw.DrawList;
 import com.razie.pub.draw.DrawStream;
 import com.razie.pub.draw.Drawable;
 import com.razie.pub.draw.Renderer;
-import com.razie.pub.draw.Renderer.Technology;
+import com.razie.pub.draw.Technology;
 
 /**
  * a simple selection from a list of options

@@ -8,7 +8,7 @@ import com.razie.pub.base.ActionItem;
 import com.razie.pub.comms.ActionToInvoke;
 import com.razie.pub.draw.DrawStream;
 import com.razie.pub.draw.Renderer;
-import com.razie.pub.draw.Renderer.Technology;
+import com.razie.pub.draw.Technology;
 
 /**
  * a button with an action and image that just does it's action and no change on the screen (POST in

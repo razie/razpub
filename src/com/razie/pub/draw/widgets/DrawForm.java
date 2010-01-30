@@ -14,7 +14,7 @@ import com.razie.pub.comms.ActionToInvoke;
 import com.razie.pub.draw.DrawStream;
 import com.razie.pub.draw.Drawable;
 import com.razie.pub.draw.Renderer;
-import com.razie.pub.draw.Renderer.Technology;
+import com.razie.pub.draw.Technology;
 
 /**
  * a simple form, with an action to invoke and a set of parms to capture

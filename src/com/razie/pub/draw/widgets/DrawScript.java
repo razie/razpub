@@ -10,8 +10,8 @@ import com.razie.pub.base.ScriptFactory;
 import com.razie.pub.draw.DrawStream;
 import com.razie.pub.draw.Drawable;
 import com.razie.pub.draw.Renderer;
+import com.razie.pub.draw.Technology;
 import com.razie.pub.draw.Drawable.DrawWidget;
-import com.razie.pub.draw.Renderer.Technology;
 
 /**
  * dynamic painting - will paint the TEXT results of running the script

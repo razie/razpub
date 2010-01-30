@@ -3,14 +3,13 @@ package com.razie.pub.draw.widgets;
 import com.razie.pub.base.data.HtmlRenderUtils;
 import com.razie.pub.draw.DrawStream;
 import com.razie.pub.draw.Renderer;
+import com.razie.pub.draw.Technology;
 import com.razie.pub.draw.Drawable.DrawWidget;
-import com.razie.pub.draw.Renderer.Technology;
 
 /**
- * Draw a text with proper toHTML formatting
+ * Draw a text with proper toHTML formatting, including escaping of special html chars
  * 
  * @author razvanc99
- * 
  */
 public class DrawText extends DrawWidget {
     String o;

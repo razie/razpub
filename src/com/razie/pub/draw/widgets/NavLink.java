@@ -8,8 +8,8 @@ import com.razie.pub.base.ActionItem;
 import com.razie.pub.comms.ActionToInvoke;
 import com.razie.pub.draw.DrawStream;
 import com.razie.pub.draw.Renderer;
+import com.razie.pub.draw.Technology;
 import com.razie.pub.draw.Drawable.DrawWidget;
-import com.razie.pub.draw.Renderer.Technology;
 import com.razie.pub.resources.RazIconRes;
 
 /**

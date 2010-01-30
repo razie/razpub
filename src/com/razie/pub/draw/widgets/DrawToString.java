@@ -2,8 +2,8 @@ package com.razie.pub.draw.widgets;
 
 import com.razie.pub.draw.DrawStream;
 import com.razie.pub.draw.Renderer;
+import com.razie.pub.draw.Technology;
 import com.razie.pub.draw.Drawable.DrawWidget;
-import com.razie.pub.draw.Renderer.Technology;
 
 /**
  * just a wrapper to turn any object into a drawable string, via toString(). One use is to stream

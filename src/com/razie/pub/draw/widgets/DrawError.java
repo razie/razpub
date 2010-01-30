@@ -4,8 +4,8 @@ import com.razie.pub.base.data.HtmlRenderUtils;
 import com.razie.pub.base.log.Exceptions;
 import com.razie.pub.draw.DrawStream;
 import com.razie.pub.draw.Renderer;
+import com.razie.pub.draw.Technology;
 import com.razie.pub.draw.Drawable.DrawWidget;
-import com.razie.pub.draw.Renderer.Technology;
 
 /**
  * dedicated error object (popups, info bars etc)
