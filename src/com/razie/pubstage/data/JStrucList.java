@@ -12,10 +12,10 @@ import java.util.List;
  * @author razvanc
  * @param <T>
  */
-public interface StrucList<T> extends Structure<T> {
+public interface JStrucList<T> extends JStructure<T> {
     List<T> elements();
 
-    public static class Impl<T> extends Structure.Impl<T> implements StrucList<T> {
+    public static class Impl<T> extends JStructure.Impl<T> implements JStrucList<T> {
         protected List<T> children = new ArrayList<T>();
 
         public Impl(T contents) {

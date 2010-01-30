@@ -6,12 +6,12 @@ package com.razie.pubstage.data;
  * @author razvanc
  * @param <T>
  */
-public interface Structure<T> {
+public interface JStructure<T> {
     T getContents();
 
     void setContents(T t);
 
-    public static class Impl<T> implements Structure<T> {
+    public static class Impl<T> implements JStructure<T> {
         protected T contents;
 
         public Impl(T contents) {

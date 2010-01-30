@@ -12,20 +12,20 @@ import java.util.List;
  * @author razvanc
  * @param <T>
  */
-public interface StrucTree<T> extends Structure<T> {
-    List<StrucTree<T>> getChildren();
+public interface JStrucTree<T> extends JStructure<T> {
+    List<JStrucTree<T>> getChildren();
 
     boolean isLeaf();
 
-    public static class ImplNode<T> extends Structure.Impl<T> implements StrucTree<T> {
-        protected List<StrucTree<T>> children = new ArrayList<StrucTree<T>>();
+    public static class ImplNode<T> extends JStructure.Impl<T> implements JStrucTree<T> {
+        protected List<JStrucTree<T>> children = new ArrayList<JStrucTree<T>>();
 
         public ImplNode(T contents) {
             super(contents);
         }
 
         @Override
-        public List<StrucTree<T>> getChildren() {
+        public List<JStrucTree<T>> getChildren() {
             return children;
         }
 
@@ -35,23 +35,23 @@ public interface StrucTree<T> extends Structure<T> {
         }
 
         public void addLeaf (T t) {
-           this.children.add(new StrucTree.ImplLeaf<T>(t));
+           this.children.add(new JStrucTree.ImplLeaf<T>(t));
         }
 
-        public StrucTree<T> addNode (T t) {
-           StrucTree newT = new StrucTree.ImplNode<T>(t);
+        public JStrucTree<T> addNode (T t) {
+           JStrucTree newT = new JStrucTree.ImplNode<T>(t);
            this.children.add(newT);
            return newT;
         }
     }
     
-    public static class ImplLeaf<T> extends Structure.Impl<T> implements StrucTree<T> {
+    public static class ImplLeaf<T> extends JStructure.Impl<T> implements JStrucTree<T> {
         public ImplLeaf(T contents) {
             super(contents);
         }
 
         @Override
-        public List<StrucTree<T>> getChildren() {
+        public List<JStrucTree<T>> getChildren() {
             return null;
         }
 
