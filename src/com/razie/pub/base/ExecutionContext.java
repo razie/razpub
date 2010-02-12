@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import razie.base.AttrAccessImpl;
+
 /**
  * An execution context is used by entities (agents) that can span a few threads. You can think of
  * it as a MiniVM as well, with its own statics etc - see NoStatics.
@@ -85,9 +87,9 @@ public class ExecutionContext extends AttrAccessImpl {
    public static void resetJVM() {
       instances.clear();
       NoStatics.reset();
-      DFLT_CTX.parms=null;
-      DFLT_CTX.types=null;
-      DFLT_CTX.order=null;
+      DFLT_CTX._attrs=null;
+      DFLT_CTX._types=null;
+      DFLT_CTX._order=null;
    }
 
    /*

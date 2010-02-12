@@ -9,7 +9,7 @@ import razie.assets.AssetBase;
 import razie.assets.AssetKey;
 import razie.assets.Meta;
 
-import com.razie.pub.base.ActionItem;
+import razie.base.ActionItem;
 
 /** Java compatible hacks for asset management - if you write Java clients, this class should be of great interest to you... 
  * 

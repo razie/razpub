@@ -4,11 +4,9 @@
  */
 package com.razie.pub.agent;
 
-import com.razie.pub.base.ActionItem;
-import com.razie.pub.base.AttrAccess;
+import razie.base.AttrAccess;
+
 import com.razie.pub.comms.AgentHandle;
-import com.razie.pub.draw.Drawable;
-import com.razie.pub.draw.widgets.NavLink;
 import com.razie.pub.events.EvListener;
 
 /**
@@ -90,35 +88,6 @@ public abstract class AgentService implements EvListener {
 
 	/** main method to be notified about an event */
 	public void eatThis(String srcID, String eventId, AttrAccess info) {
-	}
-
-	/** status report */
-	public static class StatusReport {
-		public static enum Status {
-			UNKNOWN, GREEN, YELLOW, RED
-		};
-
-		public Status status = Status.UNKNOWN;
-		public Drawable details = null;
-		public Throwable lastError = null;
-
-		public StatusReport() {
-		}
-
-		public StatusReport(Status st) {
-			this.status = st;
-		}
-
-		public Drawable drawBrief() {
-			// TODO 2 PRES send to the detail pages - example of status redirect
-			return new NavLink(new ActionItem(status.toString(), "STATUS_"
-					+ status.toString()), ".");
-		}
-
-		public void ok() {
-			lastError = null;
-			status = Status.GREEN;
-		}
 	}
 
 	/** diagnostics results */

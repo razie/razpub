@@ -11,23 +11,22 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
-import razie.agent.pres.PageServices;
 import razie.assets.ABDrawable;
 import razie.assets.AssetActionToInvoke;
 import razie.assets.AssetBrief;
 import razie.assets.AssetPres;
 import razie.assets.Meta;
+import razie.base.ActionItem;
+import razie.base.ActionToInvoke;
+import razie.draw.DetailLevel;
+import razie.draw.DrawList;
+import razie.draw.DrawStream;
+import razie.draw.DrawTable;
+import razie.draw.Drawable;
+import razie.draw.widgets.NavButton;
 
 import com.razie.pub.assets.JavaAssetMgr;
-import com.razie.pub.base.ActionItem;
-import com.razie.pub.comms.ActionToInvoke;
 import com.razie.pub.comms.Agents;
-import com.razie.pub.draw.DetailLevel;
-import com.razie.pub.draw.DrawList;
-import com.razie.pub.draw.DrawStream;
-import com.razie.pub.draw.DrawTable;
-import com.razie.pub.draw.Drawable;
-import com.razie.pub.draw.widgets.NavButton;
 import com.razie.pub.lightsoa.SoaAsset;
 import com.razie.pub.lightsoa.SoaMethod;
 import com.razie.pub.resources.RazIcons;
@@ -169,7 +168,7 @@ public class TempAssetPres extends AssetPres {
                for (Method m : ac.getDeclaredMethods()) {
                   if (m.getAnnotation(SoaMethod.class) != null) {
                      SoaMethod ma = (SoaMethod) m.getAnnotation(SoaMethod.class);
-                     ActionItem mitem = new ActionItem(m.getName(), RazIcons.UNKNOWN);
+                     ActionItem mitem = new ActionItem(m.getName(), RazIcons.UNKNOWN.name());
                      mitem.tooltip = ma.descr();
 
                      NavButton ati = null;

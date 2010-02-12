@@ -8,6 +8,7 @@ import org.scalatest.junit._
 import com.razie.pub.base._
 import org.scalatest.SuperSuite
 import razie.assets._
+import razie.base._
 
 /**
  * testing the assets

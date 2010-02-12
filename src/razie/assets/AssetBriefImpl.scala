@@ -16,18 +16,13 @@ import com.razie.pub.base._
 import com.razie.pub.base.data.HtmlRenderUtils;
 import com.razie.pub.base.data.HttpUtils;
 import com.razie.pub.base.data.MimeUtils;
-import com.razie.pub.comms.ActionToInvoke;
+import com.razie.pub.comms.SimpleActionToInvoke;
 import com.razie.pub.comms.Agents;
 import com.razie.pub.comms.LightAuth;
 import com.razie.pub.comms.ServiceActionToInvoke;
-import com.razie.pub.draw.DetailLevel;
-import com.razie.pub.draw.DrawList;
-import com.razie.pub.draw.DrawStream;
-import com.razie.pub.draw.Drawable;
-import com.razie.pub.draw.Renderer;
-import com.razie.pub.draw.Technology;
-import com.razie.pub.resources.RazIconRes;
-import com.razie.pub.resources.RazIcons;
+import razie.draw._
+import com.razie.pub.resources._
+import razie.base._
 
 object NoAssetBrief extends AssetBriefImpl (new AssetKey("Unknown", "Unknown")) {}
 
@@ -128,8 +123,8 @@ class FileAssetBriefImpl extends AssetBriefImpl with FileAssetBrief {
 //      if (series != null) {
 //         new ActionToInvoke(new ActionItem(AssetBrief.STREAM.name + "/" + this.fileName,
 //               RazIcons.DOWNLOAD), "ref", getKey().toUrlEncodedString, "series", this.series.toString());
-         new ActionToInvoke(new ActionItem(AssetBrief.STREAM.name + "/" + this.fileName,
-               RazIcons.DOWNLOAD), "ref", getKey().toUrlEncodedString);
+         new SimpleActionToInvoke(new ActionItem(AssetBrief.STREAM.name + "/" + this.fileName,
+               RazIcons.DOWNLOAD.name()), "ref", getKey().toUrlEncodedString);
    }
    
    override def urlForStreaming_= (a:ActionToInvoke) = throw new UnsupportedOperationException()

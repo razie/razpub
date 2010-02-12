@@ -10,13 +10,13 @@ import java.util.Map;
 import java.util.Properties;
 
 import junit.framework.TestCase;
+import razie.base.AttrAccess;
+import razie.base.AttrAccessImpl;
+import razie.draw.DrawStream;
+import razie.draw.SimpleDrawStream;
 
-import com.razie.pub.base.AttrAccess;
-import com.razie.pub.base.AttrAccessImpl;
 import com.razie.pub.base.log.Log;
 import com.razie.pub.comms.LightAuth;
-import com.razie.pub.draw.DrawStream;
-import com.razie.pub.draw.SimpleDrawStream;
 import com.razie.pub.lightsoa.SoaBinding;
 import com.razie.pub.lightsoa.SoaResponse;
 

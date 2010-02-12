@@ -7,6 +7,7 @@ package razie
 import com.razie.pub.assets._
 import com.razie.pub.comms._
 import razie.assets._
+import razie.base._
 
 /** simplified access to agent functionality
  * 

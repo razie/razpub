@@ -11,7 +11,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.razie.pub.base.ActionItem;
+import razie.base.ActionItem;
 import com.razie.pub.comms.PermType;
 
 /**

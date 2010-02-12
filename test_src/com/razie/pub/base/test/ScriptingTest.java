@@ -6,9 +6,10 @@ package com.razie.pub.base.test;
 
 import java.util.Date;
 
+import razie.base.ScriptContext;
+
 import junit.framework.TestCase;
 
-import com.razie.pub.base.ScriptContext;
 import com.razie.pub.base.ScriptJS;
 import com.razie.pub.base.TimeOfDay;
 

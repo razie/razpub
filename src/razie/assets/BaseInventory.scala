@@ -4,11 +4,12 @@
  */
 package razie.assets;
 
-import com.razie.pub.base.ActionItem;
-import com.razie.pub.base.ScriptContext;
-import com.razie.pub.comms.ActionToInvoke;
-import com.razie.pub.draw._
-import com.razie.pub.draw.widgets.NavButton;
+import razie.base.ActionItem;
+import com.razie.pub.base.ActionItems;
+import razie.base.ScriptContext;
+import com.razie.pub.comms.SimpleActionToInvoke;
+import razie.draw._
+import razie.draw.widgets.NavButton;
 
 /**
  * just a base inventory with some defaults like delete
@@ -21,7 +22,7 @@ abstract class BaseInventory extends AssetInventory {
     override def doAction(cmd : String, key : AssetKey, ctx : ScriptContext) : AnyRef = {
       if (cmd == null || cmd.length() == 0 || cmd.equals("details")) {
             AssetMgr.getAsset(key) match {
-               case a:Drawable => a
+               case a:Drawable => return a
             }
          }
       else if (cmd.startsWith(AssetBrief.DELETE.name)) {
@@ -38,7 +39,7 @@ abstract class BaseInventory extends AssetInventory {
 
    protected def confirmDelete(ref:AssetKey ) = {
       val list = new DrawList();
-      list.write(new NavButton(ActionItem.WARN, ""));
+      list.write(new NavButton(ActionItems.WARN, ""));
       list.write("Confirm deletion below or click BACK...");
 //      val ati = new AssetActionToInvoke(ref, AssetBrief.DELETE);
 //      ati.set("confirmed", "yes");

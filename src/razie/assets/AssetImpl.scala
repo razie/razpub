@@ -4,14 +4,13 @@
  */
 package razie.assets
 
-import com.razie.pub.base.ActionItem;
+import razie.base.ActionItem;
 import com.razie.pub.base._;
-import com.razie.pub.base.ScriptContext;
+import razie.base.ScriptContext;
 import com.razie.pub.comms.Agents;
-import com.razie.pub.draw._
-import com.razie.pub.draw.Renderer;
-import com.razie.pub.draw.Technology;
-import com.razie.pub.draw.widgets.NavButton;
+import razie.draw._
+import razie.draw.widgets.NavButton;
+import razie.base._
 
 /**
  * not sure why i need this class on top of the SdkAsset...

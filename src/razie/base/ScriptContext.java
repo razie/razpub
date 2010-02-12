@@ -2,12 +2,18 @@
  * Razvan's public code. Copyright 2008 based on Apache license (share alike) see LICENSE.txt for
  * details.
  */
-package com.razie.pub.base;
+package razie.base;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.json.JSONObject;
+
+import com.razie.pub.base.ScriptFactory;
+
+import razie.base.ActionContext;
+import razie.base.AttrAccess;
+import razie.base.AttrAccessImpl;
 
 /**
  * actions execute in a context of objects available at that time in that environment.
@@ -21,8 +27,9 @@ import org.json.JSONObject;
  * You can define functions, which are evaluated every time
  * 
  * @author razvanc99
+ * deprecated move code to ActContext
  */
-public interface ScriptContext extends AttrAccess {
+public interface ScriptContext extends ActionContext {
 
    /**
     * deine a new function - these are evaluated every time they are invoked. these also overwrite
@@ -79,7 +86,7 @@ public interface ScriptContext extends AttrAccess {
 
       public Impl(ScriptContext parent, AttrAccessImpl aa) {
          super(parent);
-         this.parms = aa.parms;
+         this._attrs = aa._attrs;
       };
 
       /** supports a map as well */
@@ -204,7 +211,7 @@ public interface ScriptContext extends AttrAccess {
       }
 
       @Override
-      public AttrType getAttrType(String name) {
+      public AttrAccess.AttrType getAttrType(String name) {
          return wrapped.getAttrType(name);
       }
 
@@ -229,7 +236,7 @@ public interface ScriptContext extends AttrAccess {
       }
 
       @Override
-      public void set(String name, Object value, AttrType t) {
+      public void set(String name, Object value, AttrAccess.AttrType t) {
          throw new IllegalStateException("This context is sealed - you can't override stuff.");
       }
 
@@ -244,7 +251,7 @@ public interface ScriptContext extends AttrAccess {
       }
 
       @Override
-      public void setAttrType(String name, AttrType type) {
+      public void setAttrType(String name, AttrAccess.AttrType type) {
          throw new IllegalStateException("This context is sealed - you can't override stuff.");
       }
 

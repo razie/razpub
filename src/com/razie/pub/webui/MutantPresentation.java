@@ -5,21 +5,22 @@ import java.util.Map;
 
 import org.w3c.dom.Element;
 
-import com.razie.pub.base.ActionItem;
-import com.razie.pub.base.AttrAccess;
-import com.razie.pub.base.AttrAccessImpl;
-import com.razie.pub.base.ScriptContext;
+import razie.base.ActionItem;
+import razie.base.AttrAccess;
+import razie.base.AttrAccessImpl;
+import razie.base.ScriptContext;
+import razie.draw.DrawSequence;
+import razie.draw.DrawTable;
+import razie.draw.Drawable;
+import razie.draw.DrawableSource;
+import razie.draw.Renderer;
+import razie.draw.Technology;
+
 import com.razie.pub.base.data.RiXmlUtils;
 import com.razie.pub.base.data.XmlDoc;
 import com.razie.pub.base.data.XmlDoc.Reg;
 import com.razie.pub.base.log.Log;
 import com.razie.pub.comms.ServiceActionToInvoke;
-import com.razie.pub.draw.DrawSequence;
-import com.razie.pub.draw.DrawTable;
-import com.razie.pub.draw.Drawable;
-import com.razie.pub.draw.DrawableSource;
-import com.razie.pub.draw.Renderer;
-import com.razie.pub.draw.Technology;
 import com.razie.pub.draw.widgets.DrawScript;
 
 /**

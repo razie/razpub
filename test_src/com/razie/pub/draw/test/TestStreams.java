@@ -8,10 +8,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import junit.framework.TestCase;
+import razie.draw.HttpDrawStream;
+import razie.draw.JsonDrawStream;
 
 import com.razie.pub.base.log.Log;
-import com.razie.pub.draw.HttpDrawStream;
-import com.razie.pub.draw.JsonDrawStream;
 
 public class TestStreams extends TestCase {
 

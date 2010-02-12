@@ -4,11 +4,12 @@
  */
 package com.razie.pub.webui;
 
-import com.razie.pub.comms.ActionToInvoke;
-import com.razie.pub.draw.DrawStream;
-import com.razie.pub.draw.Drawable;
-import com.razie.pub.draw.Renderer;
-import com.razie.pub.draw.Technology;
+import razie.base.ActionToInvoke;
+import razie.draw.DrawStream;
+import razie.draw.Drawable;
+import razie.draw.Renderer;
+import razie.draw.Technology;
+import razie.draw.Drawable.DefaultRenderer;
 
 /**
  * this will insert a paint area which is drawn later with the specified url (will be invoked during

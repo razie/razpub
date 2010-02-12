@@ -1,6 +1,6 @@
 package com.razie.pubstage.life;
 
-import com.razie.pub.base.ActionItem;
+import razie.base.ActionItem;
 
 /**
  * beings live in the environment. They live  at the mercy of the Lifegiver.

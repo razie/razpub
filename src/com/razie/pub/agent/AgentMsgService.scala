@@ -1,11 +1,11 @@
 package com.razie.pub.agent
 
 import com.razie.pub.lightsoa._
-import com.razie.pub.agent.AgentService
 import com.razie.pub.assets._
 import com.razie.pub.comms._
 import com.razie.pub.base._
 import com.razie.pub.http._
+import razie.base._
 import razie._
 import razie.assets._
 import java.io._
@@ -82,7 +82,7 @@ object AgentMsg {
    
    // TODO 3-1 optimize sending to local
    def isend (to:AgentHandle, m:AgentMsg) : String = {
-      val httpArgs = new AttrAccessImpl() 
+      val httpArgs = razie.AA()
       val cmd = "POST /mutant/msg/receive HTTP/1.1"
      
       // TODO 3-1 use nicer stream support - that's why i wrote the freaking thing, right?

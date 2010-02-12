@@ -2,13 +2,16 @@
  * Razvan's public code. 
  * Copyright 2008 based on Apache license (share alike) see LICENSE.txt for details.
  */
-package com.razie.pub.draw;
+package razie.draw;
 
 import java.io.IOException;
 import java.io.OutputStream;
 
-import com.razie.pub.comms.MyServerSocket;
+import razie.draw.SimpleDrawStream;
+import razie.draw.Technology;
+
 import com.razie.pub.comms.HttpHelper;
+import com.razie.pub.comms.MyServerSocket;
 
 /**
  * a drawing stream to an http client (plain old web). Will render objects in the html and wrap in
@@ -18,7 +21,7 @@ import com.razie.pub.comms.HttpHelper;
  * @version $Id$
  * 
  */
-public class JsonDrawStream extends com.razie.pub.draw.DrawStream.DrawStreamWrapper {
+public class JsonDrawStream extends razie.draw.DrawStream.DrawStreamWrapper {
 
     public static final String MIME_APPLICATION_JSON = "application/json";
 

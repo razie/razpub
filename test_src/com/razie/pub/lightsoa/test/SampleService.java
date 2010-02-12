@@ -4,7 +4,8 @@
  */
 package com.razie.pub.lightsoa.test;
 
-import com.razie.pub.draw.DrawStream;
+import razie.draw.DrawStream;
+
 import com.razie.pub.lightsoa.SoaMethod;
 import com.razie.pub.lightsoa.SoaMethodSink;
 import com.razie.pub.lightsoa.SoaResponse;

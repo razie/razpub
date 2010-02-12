@@ -7,10 +7,10 @@ package com.razie.pub.playground
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import com.razie.pub.draw.DrawStream;
-import com.razie.pub.draw.Renderer;
-import com.razie.pub.draw.SimpleDrawStream;
-import com.razie.pub.draw.Technology;
+import razie.draw.DrawStream;
+import razie.draw.Renderer;
+import razie.draw.SimpleDrawStream;
+import razie.draw.Technology;
 
 /**
  * TODO 2-2 complete and use
@@ -53,7 +53,7 @@ val RSS_END="</rss>"
  * @version $Id$
  *
  */
-class MediaRssDrawStream (wrapped:DrawStream) extends com.razie.pub.draw.DrawStream.DrawStreamWrapper(wrapped) {
+class MediaRssDrawStream (wrapped:DrawStream) extends razie.draw.DrawStream.DrawStreamWrapper(wrapped) {
 
     var closed:Boolean = false;
 

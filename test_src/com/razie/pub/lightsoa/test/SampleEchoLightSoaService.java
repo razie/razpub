@@ -4,7 +4,8 @@
  */
 package com.razie.pub.lightsoa.test;
 
-import com.razie.pub.base.AttrAccess;
+import razie.base.AttrAccess;
+
 import com.razie.pub.base.log.Log;
 import com.razie.pub.lightsoa.SoaAllParms;
 import com.razie.pub.lightsoa.SoaMethod;

@@ -4,12 +4,14 @@
  */
 package com.razie.pubstage.actions;
 
-import com.razie.pub.base.ActionItem;
-import com.razie.pub.base.AttrAccess;
-import com.razie.pub.base.ScriptContext;
-import com.razie.pub.base.actions.BaseActionToInvoke;
+import razie.base.ActionItem;
+import razie.base.AttrAccess;
+import razie.base.ActionContext;
+import razie.base.BaseActionToInvoke;
+
+import com.razie.pub.comms.Agents;
 import com.razie.pub.comms.LightAuth;
-import com.razie.pub.draw.Drawable;
+import razie.draw.Drawable;
 
 /**
  * specifies an action that can be invoked. The list of attributes only contains name/type and
@@ -39,7 +41,7 @@ public class ActionableSpec extends BaseActionToInvoke implements AttrAccess, Dr
      * @param pairs
      */
     public ActionableSpec(ActionItem item, Object... pairs) {
-        super(item, pairs);
+        super(Agents.me().url, item, pairs);
     }
 
     public ActionableSpec clone() {
@@ -62,7 +64,7 @@ public class ActionableSpec extends BaseActionToInvoke implements AttrAccess, Dr
      * 
      * default implementation assumes i need to call an url and get the first line of response
      */
-    public Object act(ScriptContext ctx) {
+    public Object act(ActionContext ctx) {
          throw new UnsupportedOperationException("ERR_INVOKED_ACTIONABLE Cannot invoke a spec!" + this.makeActionUrl());
     }
 }

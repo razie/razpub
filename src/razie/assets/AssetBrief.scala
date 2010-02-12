@@ -11,20 +11,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONString;
 
+import razie.base._
 import com.razie.pub.base._
 import com.razie.pub.base.data.HtmlRenderUtils;
 import com.razie.pub.base.data.HttpUtils;
 import com.razie.pub.base.data.MimeUtils;
-import com.razie.pub.comms.ActionToInvoke;
+import com.razie.pub.comms.SimpleActionToInvoke;
 import com.razie.pub.comms.Agents;
 import com.razie.pub.comms.LightAuth;
 import com.razie.pub.comms.ServiceActionToInvoke;
-import com.razie.pub.draw.DetailLevel;
-import com.razie.pub.draw.DrawList;
-import com.razie.pub.draw.DrawStream;
-import com.razie.pub.draw.Drawable;
-import com.razie.pub.draw.Renderer;
-import com.razie.pub.draw.Technology;
+import razie.draw._
 import com.razie.pub.resources.RazIconRes;
 import com.razie.pub.resources.RazIcons;
 import scala.reflect._
@@ -126,9 +122,7 @@ trait AssetBrief extends Referenceable with Drawable {
       }
 
       if (img == null || img.length() <= 0) // default to the meta
-         AssetMgr.meta(getKey().getType()) match {
-            case Some(m) => img = m.id.getIconProp
-         }
+         AssetMgr.meta(getKey().getType()).foreach {x:Meta => img = x.id.getIconProp}
 
       var i = RazIconRes.getIconFile(img);
       // img = (img.startsWith("/mutant") ? img : "/mutant/getPic/" + img);
@@ -174,13 +168,13 @@ trait FileAssetBrief {
 }
 
 object AssetBrief {
-   final val DELETE      = new ActionItem("delete", RazIcons.DELETE)
+   final val DELETE      = razie.AI("delete", RazIcons.DELETE.name)
                                                     .setType(ActionItem.ActionType.D);
 
    /** standard actions on assets */
-   final val DETAILS     = new ActionItem("details", RazIcons.UNKNOWN);
-   final val PLAY        = new ActionItem("play", RazIcons.PLAY);
-   final val STREAM      = new ActionItem("stream", RazIcons.PLAY);
+   final val DETAILS     = razie.AI("details", RazIcons.UNKNOWN.name);
+   final val PLAY        = razie.AI("play", RazIcons.PLAY.name);
+   final val STREAM      = razie.AI("stream", RazIcons.PLAY.name);
 
    val upnptypes = scala.collection.immutable.Map("Movie" -> "object.item.videoItem.movie", "Music" -> "object.item.audioItem.musicTrack")
 

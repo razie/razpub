@@ -3,7 +3,8 @@ package com.razie.pub.webui;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.razie.pub.base.ScriptContext;
+import razie.base.ScriptContext;
+
 import com.razie.pub.comms.Comms;
 import com.razie.pub.comms.SedFilter;
 

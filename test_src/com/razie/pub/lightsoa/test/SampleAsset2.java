@@ -4,14 +4,16 @@
  */
 package com.razie.pub.lightsoa.test;
 
+import razie.assets.AssetBase;
 import razie.assets.AssetKey;
+import razie.assets.HasMeta;
 import razie.assets.MetaSpec;
+import razie.assets.Referenceable;
+import razie.draw.DrawStream;
 
-import com.razie.pub.draw.DrawStream;
 import com.razie.pub.lightsoa.SoaMethod;
 import com.razie.pub.lightsoa.SoaResponse;
 import com.razie.pub.lightsoa.SoaStreamable;
-import razie.assets.*;
 
 /**
  * not annotated asset class - you can add annotated methods to any class

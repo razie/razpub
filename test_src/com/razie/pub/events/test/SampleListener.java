@@ -5,8 +5,9 @@
  */
 package com.razie.pub.events.test;
 
-import com.razie.pub.base.AttrAccess;
-import com.razie.pub.base.AttrAccessImpl;
+import razie.base.AttrAccess;
+import razie.base.AttrAccessImpl;
+
 import com.razie.pub.events.EvListener;
 
 /**

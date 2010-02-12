@@ -4,7 +4,7 @@
  */
 package com.razie.pub.events;
 
-import com.razie.pub.base.AttrAccess;
+import razie.base.AttrAccess;
 
 /**
  * a listener for events - must be registered with the PostOffice

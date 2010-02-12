@@ -1,12 +1,12 @@
 package razie.assets.pres;
 
 import razie.assets.AssetBrief;
-import razie.assets.AssetBrief$;
+import razie.assets.AssetBrief$.MODULE$;
 import razie.assets.AssetCtxKey;
+import razie.draw.widgets.NavButton;
+import razie.draw.widgets.NavLink;
 
 import com.razie.pub.comms.Agents;
-import com.razie.pub.draw.widgets.NavButton;
-import com.razie.pub.draw.widgets.NavLink;
 
 /**
  * a brief description of an asset. It includes enough information to allow users to initiate

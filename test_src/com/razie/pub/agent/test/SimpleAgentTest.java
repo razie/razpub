@@ -5,12 +5,12 @@
 package com.razie.pub.agent.test;
 
 import junit.framework.TestCase;
+import razie.base.ActionItem;
+import razie.base.ActionToInvoke;
 
 import com.razie.pub.agent.Agent;
 import com.razie.pub.agent.TempUtilAgent;
-import com.razie.pub.base.ActionItem;
 import com.razie.pub.base.log.Log;
-import com.razie.pub.comms.ActionToInvoke;
 import com.razie.pub.comms.AgentCloud;
 import com.razie.pub.comms.AgentHandle;
 import com.razie.pub.comms.LightAuth;

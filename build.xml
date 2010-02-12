@@ -1,233 +1,33 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- WARNING: Eclipse auto-generated file.
-              Any modifications will be overwritten.
-              To include a user specific buildfile here, simply create one in the same
-              directory with the processing instruction <?eclipse.ant.import?>
-              as the first entry and export the buildfile again. -->
 <project basedir="." default="build" name="razpub">
-    <property environment="env"/>
-    <property name="ECLIPSE_HOME" value="../../bin/packages/eclipse35new"/>
-    <property name="razagent.location" value="../razagent"/>
-    <property name="razmedia.location" value="../razmedia"/>
-    <property name="razmutant.location" value="../razmutant"/>
-    <property name="razplay.location" value="../razplay"/>
-    <property name="razpubs.location" value="../razpubs"/>
-    <property name="junit.output.dir" value="junit"/>
-    <property name="razie.location" value="../razie"/>
-    <property name="debuglevel" value="source,lines,vars"/>
-    <property name="target" value="1.6"/>
-    <property name="source" value="1.6"/>
-	
-   <property name="scala.home" value="/host/bin/scala"/>
+    <import file="../razie/base-build.xml"/>
 
-    <path id="JUnit 3.libraryclasspath">
-        <pathelement location="${ECLIPSE_HOME}/plugins/org.junit_3.8.2.v20090203-1005/junit.jar"/>
-    </path>
-    <path id="Scala Library version 2.8.0.r20608-b20100120020239.libraryclasspath">
-        <pathelement location="${ECLIPSE_HOME}/configuration/org.eclipse.osgi/bundles/889/1/.cp/lib/scala-library.jar"/>
-        <pathelement location="${ECLIPSE_HOME}/configuration/org.eclipse.osgi/bundles/889/1/.cp/lib/scala-dbc.jar"/>
-        <pathelement location="${ECLIPSE_HOME}/configuration/org.eclipse.osgi/bundles/889/1/.cp/lib/scala-swing.jar"/>
-    </path>
-    <path id="scalacompiler.userclasspath">
+    <path id="depy.path">
+        <pathelement location="../razie/bin/"/>
+        <pathelement location="../razie/lib/json.jar"/>
+        <pathelement location="../20widgets/bin/"/>
         <pathelement location="${scala.home}/lib/scala-compiler.jar"/>
+        <pathelement location="../razpub/lib/mime-util.jar"/>
+        <pathelement location="../razpub/lib/log4j-1.2.7.jar"/>
+        <pathelement location="../razpub/lib/js.jar"/>
+        <pathelement location="../razpub/lib/bcprov-jdk16-143.jar"/>
     </path>
-    <path id="scalatest.userclasspath">
-        <pathelement location="../../../../host/bin/scala/scalatest/scalatest-1.0.1-for-scala-2.8.0.Beta1-RC1-SNAPSHOT.jar"/>
-    </path>
-    <path id="razie.classpath">
-        <pathelement location="${razie.location}/bin"/>
-        <path refid="Scala Library version 2.8.0.r20608-b20100120020239.libraryclasspath"/>
-        <path refid="scalatest.userclasspath"/>
-        <path refid="JUnit 3.libraryclasspath"/>
-    </path>
-    <path id="razpub.classpath">
-        <pathelement location="bin"/>
-        <pathelement location="lib/bcprov-jdk16-143.jar"/>
-        <pathelement location="lib/js.jar"/>
-        <pathelement location="lib/json.jar"/>
-        <pathelement location="lib/log4j-1.2.7.jar"/>
-        <pathelement location="lib/mime-util.jar"/>
-        <path refid="JUnit 3.libraryclasspath"/>
-        <path refid="Scala Library version 2.8.0.r20608-b20100120020239.libraryclasspath"/>
-        <path refid="scalacompiler.userclasspath"/>
-        <path refid="scalatest.userclasspath"/>
-        <path refid="razie.classpath"/>
-    </path>
-    <path id="run.SuitePub.classpath">
-        <path refid="Scala Library version 2.8.0.r20608-b20100120020239.libraryclasspath"/>
-        <path refid="razpub.classpath"/>
-    </path>
-    <target name="init">
-    	
-    	    <property
-    	      name="scala-library.jar"
-    	      value="${scala.home}/lib/scala-library.jar"
-    	       />
-    	    <path id="build.classpath">
-    	      <pathelement location="${scala-library.jar}"   />
-    	      <!--<pathelement location="${your.path}"   />-->
-    	      <pathelement location="${build.dir}"   />
-    	    </path>
-    	    <taskdef resource="scala/tools/ant/antlib.xml">
-    	      <classpath>
-    	      	<pathelement location="${scala.home}/lib/scala-compiler.jar"   />
-    	        <pathelement location="${scala-library.jar}"   />
-    	      </classpath>
-    	    </taskdef>
-    	
-    	
-        <mkdir dir="bin"/>
-        <copy includeemptydirs="false" todir="bin">
-            <fileset dir="src">
-                <exclude name="**/*.launch"/>
-                <exclude name="**/*.java"/>
-                <exclude name="com/razie/pubstage/actions/"/>
-                <exclude name="com/razie/pubstage/components/"/>
-                <exclude name="com/razie/pubstage/files/"/>
-                <exclude name="com/razie/pubstage/personal/"/>
-                <exclude name="razie/assetsj/"/>
-                <exclude name="com/razie/pub/base/package-info.java"/>
-                <exclude name="com/razie/pub/base/data/package-info.java"/>
-                <exclude name="com/razie/pub/comms/CommSession.java"/>
-                <exclude name="com/razie/pub/comms/POSTActionToInvoke.java"/>
-                <exclude name="razie/assets/Tagged.scala"/>
-                <exclude name="razie/RazUnit.scala"/>
-                <exclude name="com/razie/pub/assets/AssetCmdInjector.scala"/>
-                <exclude name="com/razie/pub/assets/AssetMgrScala.scala"/>
-                <exclude name="com/razie/pub/assets/AssetMgrTrait.scala"/>
-                <exclude name="com/razie/pub/assets/package-info.java"/>
-                <exclude name="razie/assets/pres/ScalaAssetPres.scala"/>
-            </fileset>
-        </copy>
-        <copy includeemptydirs="false" todir="bin">
-            <fileset dir="test_src">
-                <exclude name="**/*.launch"/>
-                <exclude name="**/*.java"/>
-            </fileset>
-        </copy>
+
+    <target name="run">
+        <echo message="Running ${ant.project.name}: ${ant.file}"/>
+
+        <java classname="razie.draw.test.TestMe">
+            <classpath refid="test.classpath" />
+        </java>
     </target>
-    <target name="clean">
-        <delete dir="bin"/>
-    </target>
-    <target depends="clean" name="cleanall">
-        <ant antfile="${razie.location}/build.xml" dir="${razie.location}" inheritAll="false" target="clean"/>
-    </target>
-    <target depends="build-subprojects,build-project" name="build"/>
-    <target name="build-subprojects">
-        <ant antfile="${razie.location}/build.xml" dir="${razie.location}" inheritAll="false" target="build-project">
-            <propertyset>
-                <propertyref name="build.compiler"/>
-            </propertyset>
-        </ant>
-    </target>
-    <target depends="init" name="build-project">
-        <echo message="${ant.project.name}: ${ant.file}"/>
-    	<!--
-        <javac debug="true" debuglevel="${debuglevel}" destdir="bin" source="${source}" target="${target}">
-            <src path="src"/>
-            <exclude name="com/razie/pubstage/actions/"/>
-            <exclude name="com/razie/pubstage/components/"/>
-            <exclude name="com/razie/pubstage/files/"/>
-            <exclude name="com/razie/pubstage/personal/"/>
-            <exclude name="razie/assetsj/"/>
-            <exclude name="com/razie/pub/base/package-info.java"/>
-            <exclude name="com/razie/pub/base/data/package-info.java"/>
-            <exclude name="com/razie/pub/comms/CommSession.java"/>
-            <exclude name="com/razie/pub/comms/POSTActionToInvoke.java"/>
-            <exclude name="razie/assets/Tagged.scala"/>
-            <exclude name="razie/RazUnit.scala"/>
-            <exclude name="com/razie/pub/assets/AssetCmdInjector.scala"/>
-            <exclude name="com/razie/pub/assets/AssetMgrScala.scala"/>
-            <exclude name="com/razie/pub/assets/AssetMgrTrait.scala"/>
-            <exclude name="com/razie/pub/assets/package-info.java"/>
-            <exclude name="razie/assets/pres/ScalaAssetPres.scala"/>
-            <classpath refid="razpub.classpath"/>
-        </javac>
-        -->
-      <scalac debug="true" debuglevel="${debuglevel}" destdir="bin" source="${source}" target="${target}">
-          <src path="src"/>
-          <exclude name="com/razie/pubstage/actions/"/>
-          <exclude name="com/razie/pubstage/components/"/>
-          <exclude name="com/razie/pubstage/files/"/>
-          <exclude name="com/razie/pubstage/personal/"/>
-          <exclude name="razie/assetsj/"/>
-          <exclude name="com/razie/pub/base/package-info.java"/>
-          <exclude name="com/razie/pub/base/data/package-info.java"/>
-          <exclude name="com/razie/pub/comms/CommSession.java"/>
-          <exclude name="com/razie/pub/comms/POSTActionToInvoke.java"/>
-          <exclude name="razie/assets/Tagged.scala"/>
-          <exclude name="razie/RazUnit.scala"/>
-          <exclude name="com/razie/pub/assets/AssetCmdInjector.scala"/>
-          <exclude name="com/razie/pub/assets/AssetMgrScala.scala"/>
-          <exclude name="com/razie/pub/assets/AssetMgrTrait.scala"/>
-          <exclude name="com/razie/pub/assets/package-info.java"/>
-          <exclude name="razie/assets/pres/ScalaAssetPres.scala"/>
-          <classpath refid="razpub.classpath"/>
-      </scalac>
-        <javac debug="true" debuglevel="${debuglevel}" destdir="bin" source="${source}" target="${target}">
-            <src path="test_src"/>
-            <classpath refid="razpub.classpath"/>
-        </javac>
-    </target>
-    <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects">
-        <ant antfile="${razagent.location}/build.xml" dir="${razagent.location}" inheritAll="false" target="clean"/>
-        <ant antfile="${razagent.location}/build.xml" dir="${razagent.location}" inheritAll="false" target="build">
-            <propertyset>
-                <propertyref name="build.compiler"/>
-            </propertyset>
-        </ant>
-        <ant antfile="${razmedia.location}/build.xml" dir="${razmedia.location}" inheritAll="false" target="clean"/>
-        <ant antfile="${razmedia.location}/build.xml" dir="${razmedia.location}" inheritAll="false" target="build">
-            <propertyset>
-                <propertyref name="build.compiler"/>
-            </propertyset>
-        </ant>
-        <ant antfile="${razmutant.location}/build.xml" dir="${razmutant.location}" inheritAll="false" target="clean"/>
-        <ant antfile="${razmutant.location}/build.xml" dir="${razmutant.location}" inheritAll="false" target="build">
-            <propertyset>
-                <propertyref name="build.compiler"/>
-            </propertyset>
-        </ant>
-        <ant antfile="${razplay.location}/build.xml" dir="${razplay.location}" inheritAll="false" target="clean"/>
-        <ant antfile="${razplay.location}/build.xml" dir="${razplay.location}" inheritAll="false" target="build">
-            <propertyset>
-                <propertyref name="build.compiler"/>
-            </propertyset>
-        </ant>
-        <ant antfile="${razpubs.location}/build.xml" dir="${razpubs.location}" inheritAll="false" target="clean"/>
-        <ant antfile="${razpubs.location}/build.xml" dir="${razpubs.location}" inheritAll="false" target="build">
-            <propertyset>
-                <propertyref name="build.compiler"/>
-            </propertyset>
-        </ant>
-    </target>
-    <target description="copy Eclipse compiler jars to ant lib directory" name="init-eclipse-compiler">
-        <copy todir="${ant.library.dir}">
-            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
-        </copy>
-        <unzip dest="${ant.library.dir}">
-            <patternset includes="jdtCompilerAdapter.jar"/>
-            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
-        </unzip>
-    </target>
-    <target description="compile project with Eclipse compiler" name="build-eclipse-compiler">
-        <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
+
+    <target name="all">
+        <ant     target="all" dir="../20widgets/"/>
+        <antcall target="clean"/>
+        <parallel>
         <antcall target="build"/>
+        <ant     target="all" dir="../20widgets-swing/"/>
+        </parallel>
     </target>
-    <target name="SuitePub">
-        <mkdir dir="${junit.output.dir}"/>
-        <junit fork="yes" printsummary="withOutAndErr">
-            <formatter type="xml"/>
-            <test name="SuitePub" todir="${junit.output.dir}"/>
-            <classpath refid="run.SuitePub.classpath"/>
-        </junit>
-    </target>
-    <target name="junitreport">
-        <junitreport todir="${junit.output.dir}">
-            <fileset dir="${junit.output.dir}">
-                <include name="TEST-*.xml"/>
-            </fileset>
-            <report format="frames" todir="${junit.output.dir}"/>
-        </junitreport>
-    </target>
+
 </project>

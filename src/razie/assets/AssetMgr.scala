@@ -4,8 +4,9 @@
  */
 package razie.assets
 
+import razie.base._
 import com.razie.pub.base._
-import com.razie.pub.draw.Drawable
+import razie.draw.Drawable
 
 
 /** the default asset mgr is the InventoryAssetMgr */

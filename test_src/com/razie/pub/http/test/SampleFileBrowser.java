@@ -10,22 +10,24 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Properties;
 
-import com.razie.pub.base.ActionItem;
+import razie.base.ActionItem;
+import razie.base.ActionToInvoke;
+import razie.draw.DrawStream;
+import razie.draw.DrawTable;
+import razie.draw.widgets.NavLink;
+
 import com.razie.pub.base.NoStatics;
 import com.razie.pub.base.data.HtmlRenderUtils;
 import com.razie.pub.base.data.HttpUtils;
 import com.razie.pub.base.data.HtmlRenderUtils.HtmlTheme;
 import com.razie.pub.base.log.Log;
-import com.razie.pub.comms.ActionToInvoke;
 import com.razie.pub.comms.AgentCloud;
 import com.razie.pub.comms.AgentHandle;
 import com.razie.pub.comms.Agents;
 import com.razie.pub.comms.AuthException;
 import com.razie.pub.comms.MyServerSocket;
 import com.razie.pub.comms.ServiceActionToInvoke;
-import com.razie.pub.draw.DrawStream;
-import com.razie.pub.draw.DrawTable;
-import com.razie.pub.draw.widgets.NavLink;
+import com.razie.pub.comms.SimpleActionToInvoke;
 import com.razie.pub.http.LightCmdGET;
 import com.razie.pub.http.LightServer;
 import com.razie.pub.lightsoa.HttpSoaBinding;
@@ -54,8 +56,8 @@ public class SampleFileBrowser {
          return;
       }
 
-      ActionItem BROWSE = new ActionItem("browse", RazIcons.FOLDER);
-      ActionItem SERVE = new ActionItem("serve", RazIcons.FILE);
+      ActionItem BROWSE = new ActionItem("browse", RazIcons.FOLDER.name());
+      ActionItem SERVE = new ActionItem("serve", RazIcons.FILE.name());
 
       DrawTable list = new DrawTable(0, 2);
       list.packed = true;
@@ -80,7 +82,7 @@ public class SampleFileBrowser {
             SERVE.name = "serve/" + f.getName();
             // the table will write stuff out only when a row is full - gotta clone the
             // changeables
-            ActionToInvoke ai = new ActionToInvoke(SERVE.clone(), "filepath", f.getAbsolutePath());
+            ActionToInvoke ai = new SimpleActionToInvoke(SERVE.clone(), "filepath", f.getAbsolutePath());
             ai.drawTiny = true;
 
             list.write(ai);

@@ -6,15 +6,17 @@ package razie.agent.pres
 
 import java.lang.reflect.Method;
 
+import razie.base._
 import com.razie.pub.base._
 import com.razie.pub.comms._
 import com.razie.pub.assets._
 import com.razie.pub.base.data._
 import com.razie.pub.lightsoa._
-import com.razie.pub.comms.ActionToInvoke;
+import com.razie.pub.comms.SimpleActionToInvoke;
 import com.razie.pub.comms.ServiceActionToInvoke;
 import com.razie.pub.draw._
-import com.razie.pub.draw.widgets._
+import razie.draw._
+import razie.draw.widgets._
 import razie.assets._
 
 object PageServices {

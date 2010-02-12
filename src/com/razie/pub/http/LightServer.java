@@ -13,12 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import com.razie.pub.base.ActionItem;
-import com.razie.pub.base.AttrAccess;
-import com.razie.pub.base.AttrAccessImpl;
+import razie.base.AttrAccess;
+import razie.base.AttrAccessImpl;
+
+import razie.base.ActionItem;
 import com.razie.pub.base.ExecutionContext;
 import com.razie.pub.base.data.HtmlRenderUtils;
-import com.razie.pub.base.log.Exceptions;
 import com.razie.pub.base.log.Log;
 import com.razie.pub.comms.MyServerSocket;
 import com.razie.pubstage.life.Worker;
@@ -258,7 +258,7 @@ public class LightServer extends Worker {
                                 reply = c.execServer(cmd, "", args, new Properties(), socket);
                             } catch (Throwable e) {
                                 logger.log("ERR_HTTP_RECEIVER_EXCEPTION: ", e);
-                                reply = HtmlRenderUtils.textToHtml(Exceptions.getStackTraceAsString(e));
+                                reply = HtmlRenderUtils.textToHtml(Log.getStackTraceAsString(e));
                             }
                             break;
                         }

@@ -4,9 +4,9 @@
  */
 package razie.assets
 
-import com.razie.pub.base.ActionItem;
-import com.razie.pub.base.ScriptContext;
-import com.razie.pub.draw.Drawable;
+import razie.base.ActionItem;
+import razie.base.ScriptContext;
+import razie.draw.Drawable;
 import razie.assets._
 
 /**

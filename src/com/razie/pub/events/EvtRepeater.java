@@ -4,7 +4,7 @@
  */
 package com.razie.pub.events;
 
-import com.razie.pub.base.AttrAccess;
+import razie.base.AttrAccess;
 
 /**
  * broadcast events to remote sources

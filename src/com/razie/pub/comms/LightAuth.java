@@ -6,7 +6,8 @@ package com.razie.pub.comms;
 
 import java.net.Socket;
 
-import com.razie.pub.base.AttrAccess;
+import razie.base.AttrAccess;
+
 import com.razie.pub.base.NoStaticSafe;
 import com.razie.pub.base.NoStatics;
 import com.razie.pub.base.log.Log;

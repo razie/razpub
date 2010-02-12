@@ -9,6 +9,7 @@ import com.razie.pub.base.data._
 import com.razie.pub.assets._
 import scala.collection._
 import com.razie.pub.base.data._
+import razie.base._
 
 /** these inject actions on some entity types: they enumerate the entity types supported and the actions injected and then can execute the actions.
  * 

@@ -8,8 +8,9 @@ import java.lang.ref.WeakReference;
 import java.util.Iterator;
 import java.util.List;
 
-import com.razie.pub.base.AttrAccess;
-import com.razie.pub.base.AttrAccessImpl;
+import razie.base.AttrAccess;
+import razie.base.AttrAccessImpl;
+
 
 /**
  * a topic sends each message to all listeners
@@ -17,7 +18,7 @@ import com.razie.pub.base.AttrAccessImpl;
  * @author razvanc
  */
 public class RazTopic extends RazDestination {
-    public RazTopic(String name, boolean distributed, QOS qos) {
+    public RazTopic(String name, boolean distributed, RazDestination.QOS qos) {
         super(name, distributed, qos);
     }
 

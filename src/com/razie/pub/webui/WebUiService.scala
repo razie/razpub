@@ -6,6 +6,7 @@ package com.razie.pub.webui
 
 import com.razie.pub.lightsoa._
 import com.razie.pub.draw._
+import razie.draw._
 import com.razie.pub.webui._
 import com.razie.pub.agent._
 

@@ -9,7 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.razie.pub.base.AttrAccessImpl;
+import razie.base.AttrAccessImpl;
+
 import com.razie.pub.base.ExecutionContext;
 import com.razie.pub.base.NoStatics;
 import com.razie.pub.base.log.Log;

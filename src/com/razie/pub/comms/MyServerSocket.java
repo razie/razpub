@@ -11,7 +11,8 @@ import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.razie.pub.base.AttrAccess;
+import razie.base.AttrAccess;
+import razie.draw.HttpDrawStream;
 
 /**
  * a wrapper for connections (from/to clients) so i can add functionality as i please and not depend
@@ -78,5 +79,14 @@ public class MyServerSocket extends CommChannel {
         level.put(LightAuth.AuthType.FRIEND, 1);
         level.put(LightAuth.AuthType.SHAREDSECRET, 2);
         level.put(LightAuth.AuthType.INHOUSE, 3);
+    }
+    
+    public HttpDrawStream mkStream () { return mkStream (true); }
+    public HttpDrawStream mkStream (boolean shouldClose) {
+       try {
+         return new HttpDrawStream (this.from, this.getOutputStream(), shouldClose);
+      } catch (IOException e) {
+         throw new RuntimeException (e);
+      }
     }
 }

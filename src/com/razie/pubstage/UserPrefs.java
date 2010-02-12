@@ -1,7 +1,7 @@
 package com.razie.pubstage;
 
-import com.razie.pub.base.AttrAccess;
-import com.razie.pub.base.AttrAccessImpl;
+import razie.base.AttrAccess;
+import razie.base.AttrAccessImpl;
 
 /**
  * store user preferences

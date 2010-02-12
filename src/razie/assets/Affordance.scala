@@ -6,8 +6,8 @@ package razie.assets;
 
 import java.util.List;
 
-import razie.assets.AssetKey;
-import com.razie.pub.comms.ActionToInvoke;
+import com.razie.pub.comms.SimpleActionToInvoke;
+import razie.base._
 
 /**
  * context-specific actions are built here. This is invoked just before those are needed for

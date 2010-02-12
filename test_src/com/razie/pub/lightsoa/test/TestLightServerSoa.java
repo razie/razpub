@@ -11,10 +11,12 @@ import java.io.PrintStream;
 import java.net.Socket;
 import java.net.URL;
 
-import com.razie.pub.base.ActionItem;
+import razie.base.ActionItem;
+import razie.base.ActionToInvoke;
+
 import com.razie.pub.base.log.Log;
-import com.razie.pub.comms.ActionToInvoke;
 import com.razie.pub.comms.HttpHelper;
+import com.razie.pub.comms.SimpleActionToInvoke;
 import com.razie.pub.http.test.TestLightBase;
 import com.razie.pub.lightsoa.HttpSoaBinding;
 
@@ -92,7 +94,7 @@ public class TestLightServerSoa extends TestLightBase {
      */
     public void testSoaEchoAction() throws IOException, InterruptedException {
         // send echo command
-        ActionToInvoke action = new ActionToInvoke("http://localhost:" + PORT + "/", new ActionItem(
+        ActionToInvoke action = new SimpleActionToInvoke("http://localhost:" + PORT + "/", new ActionItem(
                 "echoservice/echo"), "msg", "samurai");
         String result = (String) action.act(null);
 

@@ -5,11 +5,11 @@
 package com.razie.pub.draw.test;
 
 import junit.framework.TestCase;
+import razie.draw.Technology;
+import razie.draw.widgets.DrawError;
+import razie.draw.widgets.DrawToString;
 
 import com.razie.pub.base.log.Log;
-import com.razie.pub.draw.Technology;
-import com.razie.pub.draw.widgets.DrawError;
-import com.razie.pub.draw.widgets.DrawToString;
 
 public class TestDrawables extends TestCase {
 

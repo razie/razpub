@@ -7,11 +7,14 @@ package com.razie.pub.comms;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import com.razie.pub.base.ActionItem;
-import com.razie.pub.base.AttrAccess;
-import com.razie.pub.base.ScriptContext;
-import com.razie.pub.base.actions.BaseActionToInvoke;
-import com.razie.pub.draw.Drawable;
+import com.razie.pub.comms.Agents;
+
+import razie.base.ActionToInvoke;
+import razie.base.ActionItem;
+import razie.base.AttrAccess;
+import razie.base.ActionContext;
+import razie.base.BaseActionToInvoke;
+import razie.draw.Drawable;
 
 /**
  * same semantics as ActionToInvike, except it is done via POST, not GET
@@ -43,7 +46,7 @@ public class POSTActionToInvoke extends BaseActionToInvoke implements Cloneable,
      * @param pairs
      */
     public POSTActionToInvoke(ActionItem item, AttrAccess postArgs, Object... pairs) {
-        super(item, pairs);
+        super(Agents.me().url, item, pairs);
         this.postArgs = postArgs;
     }
 
@@ -75,7 +78,7 @@ public class POSTActionToInvoke extends BaseActionToInvoke implements Cloneable,
      * 
      * default implementation assumes i need to call an url and get the first line of response
      */
-    public Object act(ScriptContext ctx) {
+    public Object act(ActionContext ctx) {
         try {
             URL url = new URL(this.makeActionUrl());
             // TODO implement the POST

@@ -4,14 +4,15 @@
  */
 package com.razie.pub.draw.widgets;
 
+import razie.base.ScriptContext;
+import razie.draw.DrawStream;
+import razie.draw.Drawable;
+import razie.draw.Renderer;
+import razie.draw.Technology;
+import razie.draw.Drawable.DrawWidget;
+
 import com.razie.pub.base.RazScript;
-import com.razie.pub.base.ScriptContext;
 import com.razie.pub.base.ScriptFactory;
-import com.razie.pub.draw.DrawStream;
-import com.razie.pub.draw.Drawable;
-import com.razie.pub.draw.Renderer;
-import com.razie.pub.draw.Technology;
-import com.razie.pub.draw.Drawable.DrawWidget;
 
 /**
  * dynamic painting - will paint the TEXT results of running the script

@@ -5,10 +5,12 @@
 package com.razie.pub.draw
 
 import com.razie.pub.comms._
-import com.razie.pub.base.ActionItem
+import razie.base.ActionItem
 import com.razie.pub.base._
 //import com.razie.pub.agent._
 import com.razie.pub.base.log._
+import razie.base._
+import razie.draw._
 
 /** 
  * often you want different screens pre-built and invoked at a later time. 

@@ -1,9 +1,9 @@
 package razie.assets.pres;
 
 import razie.assets._
-import com.razie.pub.draw._
-import com.razie.pub.draw.widgets.NavButton;
-import com.razie.pub.draw.widgets.NavLink;
+import razie.draw._
+import razie.draw.widgets.NavButton;
+import razie.draw.widgets.NavLink;
 
 /** basic asset management page */
 class PageAssets extends DrawableSource {

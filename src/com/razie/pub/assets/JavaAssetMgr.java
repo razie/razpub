@@ -4,15 +4,18 @@
  */
 package com.razie.pub.assets;
 
-import razie.assets.*;
+import razie.assets.AssetBrief;
+import razie.assets.AssetKey;
+import razie.assets.AssetLocation;
+import razie.assets.AssetMap;
+import razie.assets.AssetMgr;
+import razie.assets.AssetMgr$;
+import razie.assets.AssetPres;
+import razie.assets.Meta;
+import razie.base.ActionItem;
+import razie.base.ScriptContext;
 
-import java.util.Map;
-
-import com.razie.pub.base.ActionItem;
-import com.razie.pub.base.NoStatic;
 import com.razie.pub.base.NoStaticSafe;
-import com.razie.pub.base.ScriptContext;
-import com.razie.pub.draw.Drawable;
 
 /**
  * the asset mgr concentrates all interactions will all assets. it can find, query and manage all

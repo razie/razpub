@@ -4,8 +4,8 @@
  */
 package com.razie.pub.events;
 
-import com.razie.pub.base.AttrAccess;
-import com.razie.pub.base.AttrAccessImpl;
+import razie.base.AttrAccess;
+import razie.base.AttrAccessImpl;
 
 /**
  * all event types must derive from here - easy way to find all event types in a large distributed system

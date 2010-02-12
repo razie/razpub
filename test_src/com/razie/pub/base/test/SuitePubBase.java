@@ -17,8 +17,6 @@ public class SuitePubBase extends TestSuite {
    public static Test suite() {
       TestSuite result = new TestSuite(SuitePubBase.class.getName());
 
-      result.addTestSuite(com.razie.pub.base.test.AttrAccessTest.class);
-      result.addTestSuite(com.razie.pub.base.test.ScalaAttrAccessTest.class);
       result.addTestSuite(com.razie.pub.base.test.JasonTest.class);
       result.addTestSuite(com.razie.pub.base.test.LastLogTest.class);
       result.addTestSuite(com.razie.pub.base.test.TestNoStatic.class);

@@ -10,6 +10,7 @@ import com.razie.pub.draw._
 import com.razie.pub.comms._
 import com.razie.pub.draw.widgets._
 import razie.assets._
+import razie.base._
 
 /** 
  * this is a blank asset - use it any way you see fit, to simplify testing - find its uses in our tests

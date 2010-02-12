@@ -7,6 +7,7 @@ package razie.assets
 import com.razie.pub.base._
 import com.razie.pub.assets._
 import com.razie.pub.base.data._
+import razie.base._
 
 /** complete assetmgr - allows injection of actions on assets 
  * 

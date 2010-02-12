@@ -14,7 +14,7 @@ import com.razie.pub.base.data._
 import razie.assets._
 
 
-import com.razie.pub.base.ActionItem;
+import razie.base.ActionItem;
 
 /**
  * a meta-description of an asset type

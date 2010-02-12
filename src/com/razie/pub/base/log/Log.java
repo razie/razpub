@@ -8,6 +8,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -80,7 +83,7 @@ public class Log {
    }
 
    public void log(String m, Throwable t) {
-      log(m + " Exception: " + Exceptions.getStackTraceAsString(t));
+      log(m + " Exception: " + getStackTraceAsString(t));
    }
 
    public void log(Object... o) {
@@ -109,7 +112,7 @@ public class Log {
    }
 
    public void alarm(String m, Throwable... e) {
-      log(m + (e.length <= 0 ? "" : Exceptions.getStackTraceAsString(e[0])));
+      log(m + (e.length <= 0 ? "" : getStackTraceAsString(e[0])));
    }
 
    /**
@@ -142,7 +145,7 @@ public class Log {
    public static void traceThis(String m, Throwable t) { Factory.logger.trace(1, m, t); }
 
    public static void logThis(String m, Throwable t) {
-      Factory.logger.log(m + " Exception: " + Exceptions.getStackTraceAsString(t));
+      Factory.logger.log(m + " Exception: " + getStackTraceAsString(t));
    }
 
    /** alarm this only once in this run...*/
@@ -199,4 +202,12 @@ public class Log {
          return new Log4j("?", categoryName);
       }
    }
+   
+   /** from http://www.javapractices.com/topic/TopicAction.do?Id=78 */
+   public static String getStackTraceAsString(Throwable aThrowable) {
+       final Writer result = new StringWriter();
+       final PrintWriter printWriter = new PrintWriter(result);
+       aThrowable.printStackTrace(printWriter);
+       return result.toString();
+     }
 }

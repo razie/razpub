@@ -11,7 +11,7 @@ import razie.assets.AssetBaseImpl;
 import razie.assets.AssetKey;
 import razie.assets.AssetBriefImpl;
 
-import com.razie.pub.base.ActionItem;
+import razie.base.ActionItem;
 import com.razie.pub.base.data.MemDb;
 
 /**
@@ -37,7 +37,7 @@ public abstract class RazDestination extends AssetBaseImpl implements RazResourc
         VOLANS, PERSIST
     };
 
-    protected RazDestination(String name, boolean distributed, QOS qos) {
+    protected RazDestination(String name, boolean distributed, RazDestination.QOS qos) {
         super(new AssetBriefImpl());
         this.resName = name;
         this.setKey(new AssetKey(sCLASS, resName));

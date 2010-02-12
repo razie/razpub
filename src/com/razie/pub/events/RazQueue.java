@@ -7,8 +7,9 @@ package com.razie.pub.events;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
-import com.razie.pub.base.AttrAccess;
-import com.razie.pub.base.AttrAccessImpl;
+import razie.base.AttrAccess;
+import razie.base.AttrAccessImpl;
+
 
 /**
  * like a jms queue
@@ -21,7 +22,7 @@ import com.razie.pub.base.AttrAccessImpl;
 public class RazQueue extends RazDestination {
     int lastConsumer = -1; // so that the first is index 0
 
-    public RazQueue(String name, boolean distributed, QOS qos) {
+    public RazQueue(String name, boolean distributed, RazDestination.QOS qos) {
         super(name, distributed, qos);
     }
 

@@ -7,7 +7,7 @@ package com.razie.pub.events;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.razie.pub.base.ActionItem;
+import razie.base.ActionItem;
 
 /**
  * a resource in this environment - registered in the naming system

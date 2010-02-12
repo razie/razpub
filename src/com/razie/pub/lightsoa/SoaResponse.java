@@ -4,7 +4,7 @@
  */
 package com.razie.pub.lightsoa;
 
-import com.razie.pub.base.AttrAccessImpl;
+import razie.base.AttrAccessImpl;
 
 /**
  * a service call response is a set of attributes. STRONGLY suggest that the attributes be

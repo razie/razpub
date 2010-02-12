@@ -10,10 +10,10 @@ import java.util.Map;
 
 import org.w3c.dom.Element;
 
-import com.razie.pub.base.ActionItem;
-import com.razie.pub.base.ScriptContext;
+import razie.base.ActionItem;
+import razie.base.ScriptContext;
 import com.razie.pub.base.log.Log;
-import com.razie.pub.draw.Drawable;
+import razie.draw.Drawable;
 //import com.razie.pub.lightsoa.SoaAsset;
 
 /**

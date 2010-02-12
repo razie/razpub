@@ -12,12 +12,11 @@ import java.util.Map;
 import java.util.Set;
 
 import razie.assets.AssetKey;
-import razie.assets.AssetMgr;
+import razie.base.AttrAccess;
+import razie.draw.DrawStream;
 
 import com.razie.pub.assets.JavaAssetMgr;
-import com.razie.pub.base.AttrAccess;
 import com.razie.pub.base.log.Log;
-import com.razie.pub.draw.DrawStream;
 
 /**
  * lightsoa services need binding to a certain protocol...bindings are instances of this. You can

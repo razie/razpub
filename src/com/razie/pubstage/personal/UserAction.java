@@ -4,7 +4,7 @@
  */
 package com.razie.pubstage.personal;
 
-import com.razie.pub.base.ActionItem;
+import razie.base.ActionItem;
 
 /**
  * an action to be taken by a user. I.e. "I want to check the weather" or "What do I have in my

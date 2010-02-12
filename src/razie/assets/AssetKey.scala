@@ -4,7 +4,7 @@
  */
 package razie.assets
 
-import com.razie.pub.base.AttrAccess
+import razie.base.AttrAccess
 import scala.collection._
 
 /**

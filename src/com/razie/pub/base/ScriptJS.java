@@ -9,6 +9,8 @@ import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
 import org.mozilla.javascript.Wrapper;
 
+import razie.base.ScriptContext;
+
 
 /**
  * running javascripts

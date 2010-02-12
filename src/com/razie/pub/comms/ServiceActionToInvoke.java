@@ -4,7 +4,7 @@
  */
 package com.razie.pub.comms;
 
-import com.razie.pub.base.ActionItem;
+import razie.base.ActionItem;
 
 /**
  * this action is on a service - relevant when making up the URL: PREFIX/service/action/...
@@ -13,7 +13,7 @@ import com.razie.pub.base.ActionItem;
  * @author razvanc99
  * 
  */
-public class ServiceActionToInvoke extends ActionToInvoke {
+public class ServiceActionToInvoke extends SimpleActionToInvoke {
     String service;
 
     /**

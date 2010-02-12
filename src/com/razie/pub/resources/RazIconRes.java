@@ -37,7 +37,7 @@ public class RazIconRes {
     /** the actual url to pic (on server at runtime) or empty */
     public static String getIconFile(String icon) {
         if (icon == null || icon.length() <= 0)
-            icon = RazIcons.UNKNOWN.toString();
+            icon = razie.Icons.UNKNOWN.toString();
         String f = props.getProperty(icon.toLowerCase());
         return f == null ? icon : getPictureService + f;
     }
@@ -45,7 +45,7 @@ public class RazIconRes {
     /** use this version for Swing local applications - will return classic icon URL in classpath */
     public static URL getIconRes(String icon) {
         if (icon == null || icon.length() <= 0)
-            icon = RazIcons.UNKNOWN.toString();
+            icon = razie.Icons.UNKNOWN.toString();
         String f = props.getProperty(icon.toLowerCase());
         if (f == null) {
             Log.logThis("ERR_PROG: cant find icon resource for icon code: " + icon);

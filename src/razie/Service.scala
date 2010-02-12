@@ -4,6 +4,7 @@
  */
 package razie
 
+import razie.base._
 import com.razie.pub.base._
 import com.razie.pub.agent._
 import com.razie.pub.assets._

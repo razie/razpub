@@ -8,8 +8,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import com.razie.pub.agent.AgentHttpService;
+import razie.base._
 import com.razie.pub.base._
-import com.razie.pub.comms.ActionToInvoke;
+import com.razie.pub.comms.SimpleActionToInvoke;
 import com.razie.pub.comms.Agents;
 import com.razie.pub.comms.Comms;
 import com.razie.pub.comms.LightAuth;
@@ -23,7 +24,7 @@ import com.razie.pub.comms.LightAuth;
  * 
  * @author razvanc99
  */
-class AssetActionToInvoke (target:String , protected val key:AssetKey , item:ActionItem , pairs:AnyRef*) extends ActionToInvoke (target, item, pairs:_*) {
+class AssetActionToInvoke (target:String , protected val key:AssetKey , item:ActionItem , pairs:AnyRef*) extends SimpleActionToInvoke (target, item, pairs:_*) {
 
     /**
      * in this case the target is this agent
@@ -50,7 +51,7 @@ class AssetActionToInvoke (target:String , protected val key:AssetKey , item:Act
      * 
      * default implementation assumes i need to call an url and get the first line of response
      */
-    override def act(ctx:ScriptContext ) : AnyRef = {
+    override def act(ctx:ActionContext ) : AnyRef = {
         if (this.target == null || this.target.length() <= 0) {
             return AgentHttpService.instance().assetBinding.invokeLocal(key, actionItem.name, this);
         } else {

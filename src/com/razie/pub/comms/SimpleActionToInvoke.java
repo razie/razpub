@@ -7,12 +7,12 @@ package com.razie.pub.comms;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import com.razie.pub.base.ActionItem;
-import com.razie.pub.base.AttrAccess;
-import com.razie.pub.base.ScriptContext;
-import com.razie.pub.base.actions.BaseActionToInvoke;
-import com.razie.pub.draw.Drawable;
-import com.razie.pub.resources.RazIcons;
+import razie.draw.Drawable;
+import razie.base.ActionContext;
+import razie.base.ActionItem;
+import razie.base.AttrAccess;
+
+import razie.base.BaseActionToInvoke;
 
 /**
  * this is an instance of an action, meant to be invoked. It is prepared by someone and can be
@@ -29,7 +29,7 @@ import com.razie.pub.resources.RazIcons;
  * 
  * @author razvanc99
  */
-public class ActionToInvoke extends BaseActionToInvoke implements Cloneable, AttrAccess, Drawable {
+public class SimpleActionToInvoke extends BaseActionToInvoke implements Cloneable, AttrAccess, Drawable {
    /**
     * constructor
     * 
@@ -38,7 +38,7 @@ public class ActionToInvoke extends BaseActionToInvoke implements Cloneable, Att
     * @param item this is the action, contains the actual command name and label to display
     * @param pairs
     */
-   public ActionToInvoke(String target, ActionItem item, Object... pairs) {
+   public SimpleActionToInvoke(String target, ActionItem item, Object... pairs) {
       super(target, item, pairs);
    }
 
@@ -50,12 +50,12 @@ public class ActionToInvoke extends BaseActionToInvoke implements Cloneable, Att
     * @param item this is the action, contains the actual command name and label to display
     * @param pairs
     */
-   public ActionToInvoke(ActionItem item, Object... pairs) {
-      super(item, pairs);
+   public SimpleActionToInvoke(ActionItem item, Object... pairs) {
+      super(Agents.me().url, item, pairs);
    }
 
-   public ActionToInvoke clone() {
-      return new ActionToInvoke(this.target, this.actionItem.clone(), this.toPairs());
+   public SimpleActionToInvoke clone() {
+      return new SimpleActionToInvoke(this.target, this.actionItem.clone(), this.toPairs());
    }
 
    /**
@@ -73,7 +73,7 @@ public class ActionToInvoke extends BaseActionToInvoke implements Cloneable, Att
     * this will take an URL and parse it into the same action object it created it... could be
     * useful, so we'll implement then - for now it documents the idea
     */
-   public static ActionToInvoke fromActionUrl(String url) {
+   public static SimpleActionToInvoke fromActionUrl(String url) {
       // TODO 2-2 FUTURE-implement
       return null;
    }
@@ -83,7 +83,7 @@ public class ActionToInvoke extends BaseActionToInvoke implements Cloneable, Att
     * 
     * default implementation assumes i need to call an url and get the first line of response
     */
-   public Object act(ScriptContext ctx) {
+   public Object act(ActionContext ctx) {
       try {
          URL url = new URL(this.makeActionUrl());
          return Comms.readUrl(url.toExternalForm(), LightAuth.instance().httpSecParms(url));
@@ -92,7 +92,7 @@ public class ActionToInvoke extends BaseActionToInvoke implements Cloneable, Att
       }
    }
    
-   public static ActionToInvoke TODO = new ActionToInvoke(new ActionItem("internal/todo", RazIcons.UNKNOWN));
-   public static ActionToInvoke UNKNOWN = new ActionToInvoke(new ActionItem("internal/unknown", RazIcons.UNKNOWN));
+   public static SimpleActionToInvoke TODO = new SimpleActionToInvoke(new ActionItem("internal/todo", razie.Icons.UNKNOWN.name()));
+   public static SimpleActionToInvoke UNKNOWN = new SimpleActionToInvoke(new ActionItem("internal/unknown", razie.Icons.UNKNOWN.name()));
 
 }

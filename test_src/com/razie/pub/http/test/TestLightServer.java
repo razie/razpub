@@ -8,10 +8,11 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
 
-import com.razie.pub.base.ActionItem;
-import com.razie.pub.base.log.Log;
-import com.razie.pub.comms.ActionToInvoke;
+import razie.base.ActionItem;
+import razie.base.ActionToInvoke;
+
 import com.razie.pub.comms.AgentCloud;
+import com.razie.pub.comms.SimpleActionToInvoke;
 
 /**
  * test the light server
@@ -68,13 +69,13 @@ public class TestLightServer extends TestLightBase {
       Thread.sleep(250);
 
       // send echo command
-      ActionToInvoke action = new ActionToInvoke(MEPLUS1.url, new ActionItem("service/echo"), "msg", "samurai");
+      ActionToInvoke action = new SimpleActionToInvoke(MEPLUS1.url, new ActionItem("service/echo"), "msg", "samurai");
       String result = (String) action.act(null);
       assertTrue(result.contains("samurai"));
       assertTrue(result.contains("style.css"));
 
       // send echo command
-      action = new ActionToInvoke(MEPLUS1.url, new ActionItem("service/die"));
+      action = new SimpleActionToInvoke(MEPLUS1.url, new ActionItem("service/die"));
       result = (String) action.act(null);
 
       runner.join();

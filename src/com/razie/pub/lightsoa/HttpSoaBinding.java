@@ -9,20 +9,20 @@ import java.util.Properties;
 
 import razie.assets.AssetKey;
 import razie.assets.AssetKey$;
+import razie.base.AttrAccess;
+import razie.base.AttrAccessImpl;
+import razie.base.ScriptContext;
+import razie.draw.DrawStream;
+import razie.draw.HttpDrawStream;
+import razie.draw.JsonDrawStream;
+import razie.draw.MimeDrawStream;
+import razie.draw.SimpleDrawStream;
+import razie.draw.Technology;
 
 import com.razie.pub.assets.JavaAssetMgr;
-import com.razie.pub.base.AttrAccess;
-import com.razie.pub.base.AttrAccessImpl;
-import com.razie.pub.base.ScriptContext;
 import com.razie.pub.base.data.HttpUtils;
 import com.razie.pub.base.log.Log;
 import com.razie.pub.comms.MyServerSocket;
-import com.razie.pub.draw.DrawStream;
-import com.razie.pub.draw.HttpDrawStream;
-import com.razie.pub.draw.JsonDrawStream;
-import com.razie.pub.draw.MimeDrawStream;
-import com.razie.pub.draw.SimpleDrawStream;
-import com.razie.pub.draw.Technology;
 import com.razie.pub.http.SoaNotHtml;
 import com.razie.pub.http.StreamConsumedReply;
 
@@ -150,8 +150,9 @@ public class HttpSoaBinding extends SoaBinding {
       Object response = null;
       DrawStream out = null;
 
-      if (true) response = "dudu";
-      else
+      // this section used to test performance...
+//      if (true) response = "dudu";
+//      else
       if (methods.size() <= 0) {
          // didn't find it but there's no methods for this anyhow...
          logger.trace(1, "HTTP_SOA_delegateTo_AssetMgr.doAction: " + actionName + ": ");
@@ -219,7 +220,7 @@ public class HttpSoaBinding extends SoaBinding {
       DrawStream out;
       try {
          if ("http".equals(protocol))
-            out = new HttpDrawStream(socket);
+            out = new HttpDrawStream(socket.from, socket.getOutputStream());
          else if ("json".equals(protocol))
             out = new JsonDrawStream(socket);
          else
@@ -234,7 +235,7 @@ public class HttpSoaBinding extends SoaBinding {
       DrawStream out;
       try {
          if (HttpDrawStream.MIME_TEXT_HTML.equals(mime))
-            out = new HttpDrawStream(socket);
+            out = new HttpDrawStream(socket.from, socket.getOutputStream());
          else if (JsonDrawStream.MIME_APPLICATION_JSON.equals(mime))
             out = new JsonDrawStream(socket);
          else

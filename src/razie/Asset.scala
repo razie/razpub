@@ -4,10 +4,10 @@
  */
 package razie
 
-import com.razie.pub.base.ActionItem;
-import com.razie.pub.base.AttrAccess;
-import com.razie.pub.base.AttrAccessImpl;
-import com.razie.pub.comms.ActionToInvoke;
+import razie.base.ActionItem;
+import razie.base.AttrAccess;
+import razie.base.AttrAccessImpl;
+import com.razie.pub.comms.SimpleActionToInvoke;
 import razie.assets._
 
 /** 

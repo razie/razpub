@@ -5,7 +5,7 @@
 package com.razie.pub.base.data
 
 import com.razie.pub.base.RazScript
-import com.razie.pub.base.ScriptContext
+import razie.base.ScriptContext
 import com.razie.pub.base.TimeOfDay
 import com.razie.pub.WinExec
 

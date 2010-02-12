@@ -9,6 +9,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Properties;
 
+import razie.draw.DrawStream;
+
 import com.razie.pub.base.NoStatics;
 import com.razie.pub.base.data.HtmlRenderUtils;
 import com.razie.pub.base.log.Log;
@@ -17,7 +19,6 @@ import com.razie.pub.comms.AgentHandle;
 import com.razie.pub.comms.Agents;
 import com.razie.pub.comms.AuthException;
 import com.razie.pub.comms.MyServerSocket;
-import com.razie.pub.draw.DrawStream;
 import com.razie.pub.draw.test.SampleDrawable;
 import com.razie.pub.http.LightCmdGET;
 import com.razie.pub.http.LightServer;

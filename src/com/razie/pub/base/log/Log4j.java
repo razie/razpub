@@ -123,7 +123,7 @@ public class Log4j extends Log {
     }
 
     public void alarm(String o, Throwable... e) {
-       String m = o + (e.length <= 0 ? "" : Exceptions.getStackTraceAsString(e[0]));
+       String m = o + (e.length <= 0 ? "" : Log.getStackTraceAsString(e[0]));
        log4jLogger.fatal(m);
        addLogLine(m);
     }

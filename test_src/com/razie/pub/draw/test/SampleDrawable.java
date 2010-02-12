@@ -4,23 +4,24 @@
  */
 package com.razie.pub.draw.test;
 
-import com.razie.pub.base.ActionItem;
-import com.razie.pub.base.AttrAccessImpl;
-import com.razie.pub.comms.ActionToInvoke;
-import com.razie.pub.draw.DrawSequence;
-import com.razie.pub.draw.DrawStream;
-import com.razie.pub.draw.Drawable;
-import com.razie.pub.draw.Renderer;
-import com.razie.pub.draw.Technology;
-import com.razie.pub.draw.widgets.DrawError;
-import com.razie.pub.draw.widgets.DrawForm;
-import com.razie.pub.draw.widgets.DrawSelection;
-import com.razie.pub.draw.widgets.DrawToString;
-import com.razie.pub.draw.widgets.NavButton;
-import com.razie.pub.draw.widgets.NavLink;
-import com.razie.pub.draw.widgets.SimpleButton;
-import com.razie.pub.draw.widgets.NavLink.Size;
-import com.razie.pub.draw.widgets.NavLink.Style;
+import razie.base.ActionItem;
+import razie.base.ActionToInvoke;
+import razie.base.AttrAccessImpl;
+import razie.draw.DrawSequence;
+import razie.draw.DrawStream;
+import razie.draw.Renderer;
+import razie.draw.Technology;
+import razie.draw.widgets.DrawError;
+import razie.draw.widgets.DrawForm;
+import razie.draw.widgets.DrawSelection;
+import razie.draw.widgets.DrawToString;
+import razie.draw.widgets.NavButton;
+import razie.draw.widgets.NavLink;
+import razie.draw.widgets.SimpleButton;
+import razie.draw.widgets.NavLink.Size;
+import razie.draw.widgets.NavLink.Style;
+
+import com.razie.pub.comms.SimpleActionToInvoke;
 import com.razie.pub.resources.RazIcons;
 
 /**
@@ -33,15 +34,15 @@ import com.razie.pub.resources.RazIcons;
  * @author $Author: davidx $
  * @since $Date: 2005/04/01 16:22:12 $
  */
-public class SampleDrawable extends Drawable.DrawWidget {
+public class SampleDrawable extends razie.draw.Drawable.DrawWidget {
 
     /** shortcut to render self - don't like controllers that much */
     public Object render(Technology technology, DrawStream stream) {
-        DrawSequence seq = new com.razie.pub.draw.DrawSequence();
+        DrawSequence seq = new razie.draw.DrawSequence();
 
-        ActionItem AI = new ActionItem("lightsoa/service/echo", RazIcons.FILE);
+        ActionItem AI = new ActionItem("lightsoa/service/echo", RazIcons.FILE.name());
         AI.label = "echo something...";
-        ActionToInvoke ATI = new ActionToInvoke(AI, "msg", "echo...");
+        ActionToInvoke ATI = new SimpleActionToInvoke(AI, "msg", "echo...");
 
         seq.write("\nno action label vvv\n");
         seq.write(new NavLink(AI, (String) null).style(NavLink.Style.JUST_LABEL));

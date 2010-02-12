@@ -1,14 +1,15 @@
 package com.razie.pub.webui;
 
-import com.razie.pub.base.ActionItem;
-import com.razie.pub.comms.ActionToInvoke;
-import com.razie.pub.draw.DrawStream;
-import com.razie.pub.draw.Renderer;
-import com.razie.pub.draw.Technology;
-import com.razie.pub.draw.widgets.NavButton;
-import com.razie.pub.draw.widgets.NavLink;
+import razie.base.ActionItem;
+import razie.draw.DrawStream;
+import razie.draw.Renderer;
+import razie.draw.Technology;
+import razie.draw.widgets.NavButton;
+import razie.draw.widgets.NavLink;
 
-public class BrowseToPage extends ActionToInvoke {
+import com.razie.pub.comms.SimpleActionToInvoke;
+
+public class BrowseToPage extends SimpleActionToInvoke {
 
     String pageID;
 
