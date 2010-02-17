@@ -46,6 +46,10 @@ public class ServiceActionToInvoke extends SimpleActionToInvoke {
         return new ServiceActionToInvoke(this.target, this.service, this.actionItem.clone(), this.toPairs());
     }
 
+    public ServiceActionToInvoke args(Object...pairs) {
+       return new ServiceActionToInvoke(this.target, this.service, this.actionItem.clone(), pairs);
+    }
+
     public String makeActionUrl() {
         String url = target.endsWith("/") ? target : target + "/";
         url += service + "/";

@@ -8,6 +8,7 @@ import razie.base.ActionItem;
 import razie.base.AttrAccess;
 import razie.base.ActionContext;
 import razie.base.BaseActionToInvoke;
+import razie.base.ActionToInvoke;
 
 import com.razie.pub.comms.Agents;
 import com.razie.pub.comms.LightAuth;
@@ -50,9 +51,7 @@ public class ActionableSpec extends BaseActionToInvoke implements AttrAccess, Dr
 
     /**
      * should not tie this to actual technology, but URLs are the most common form of invoking
-     * actions
-     */
-    public String makeActionUrl() {
+     * actions */ public String makeActionUrl() {
         String url = target.endsWith("/") ? target : target + "/";
         url += actionItem.name;
         url = addToUrl(url);
@@ -67,4 +66,9 @@ public class ActionableSpec extends BaseActionToInvoke implements AttrAccess, Dr
     public Object act(ActionContext ctx) {
          throw new UnsupportedOperationException("ERR_INVOKED_ACTIONABLE Cannot invoke a spec!" + this.makeActionUrl());
     }
+
+      @Override
+      public ActionToInvoke args(Object...args) {
+        return new ActionableSpec(this.target, this.actionItem.clone(), args);
+      }
 }

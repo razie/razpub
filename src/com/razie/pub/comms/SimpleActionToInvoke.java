@@ -7,12 +7,12 @@ package com.razie.pub.comms;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import razie.draw.Drawable;
 import razie.base.ActionContext;
 import razie.base.ActionItem;
+import razie.base.ActionToInvoke;
 import razie.base.AttrAccess;
-
 import razie.base.BaseActionToInvoke;
+import razie.draw.Drawable;
 
 /**
  * this is an instance of an action, meant to be invoked. It is prepared by someone and can be
@@ -30,6 +30,7 @@ import razie.base.BaseActionToInvoke;
  * @author razvanc99
  */
 public class SimpleActionToInvoke extends BaseActionToInvoke implements Cloneable, AttrAccess, Drawable {
+
    /**
     * constructor
     * 
@@ -91,7 +92,12 @@ public class SimpleActionToInvoke extends BaseActionToInvoke implements Cloneabl
          throw new RuntimeException("while getting the command url: " + this.makeActionUrl(), e);
       }
    }
-   
+  
+   @Override
+   public ActionToInvoke args(Object...pairs) {
+      return new SimpleActionToInvoke(this.target, this.actionItem.clone(), pairs);
+   }
+
    public static SimpleActionToInvoke TODO = new SimpleActionToInvoke(new ActionItem("internal/todo", razie.Icons.UNKNOWN.name()));
    public static SimpleActionToInvoke UNKNOWN = new SimpleActionToInvoke(new ActionItem("internal/unknown", razie.Icons.UNKNOWN.name()));
 

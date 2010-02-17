@@ -9,7 +9,7 @@ import razie.draw.DrawStream;
 import razie.draw.Drawable;
 import razie.draw.Renderer;
 import razie.draw.Technology;
-import razie.draw.Drawable.DrawWidget;
+import razie.draw.Drawable.Widget;
 
 import com.razie.pub.base.RazScript;
 import com.razie.pub.base.ScriptFactory;
@@ -22,7 +22,7 @@ import com.razie.pub.base.ScriptFactory;
  * @author razvanc99
  * 
  */
-public class DrawScript extends DrawWidget {
+public class DrawScript extends Widget {
     String        lang;
     String        script;
     ScriptContext ctx;
@@ -39,25 +39,15 @@ public class DrawScript extends DrawWidget {
         this.ctx = ctx;
     }
 
-    public Renderer<DrawScript> getRenderer(Technology technology) {
-        return MyRenderer.singleton;
-    }
-
-    /** my renderer, MT-safe */
-    private static class MyRenderer implements Renderer<DrawScript> {
-        // no state, MT-safe
-        static DrawScript.MyRenderer singleton = new MyRenderer();
-
-        public Object render(DrawScript o, Technology technology, DrawStream stream) {
-            RazScript js = ScriptFactory.make(o.lang, o.script);
-            Object res = js.eval(o.ctx);
+        public Object render(Technology technology, DrawStream stream) {
+            RazScript js = ScriptFactory.make(lang, script);
+            Object res = js.eval(ctx);
             if (res instanceof Drawable){
                 return Renderer.Helper.draw(res, technology, stream);
             } else {
                 return res.toString();
             }
         }
-    }
 
     public String toString() {
         return script == null ? "" : script;

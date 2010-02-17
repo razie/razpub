@@ -34,7 +34,7 @@ import com.razie.pub.resources.RazIcons;
  * @author $Author: davidx $
  * @since $Date: 2005/04/01 16:22:12 $
  */
-public class SampleDrawable extends razie.draw.Drawable.DrawWidget {
+public class SampleDrawable extends razie.draw.Drawable.Widget {
 
     /** shortcut to render self - don't like controllers that much */
     public Object render(Technology technology, DrawStream stream) {
@@ -111,10 +111,6 @@ public class SampleDrawable extends razie.draw.Drawable.DrawWidget {
 
         // for actual rendering, ask the widget
         return seq.render(technology, stream);
-    }
-
-    public Renderer getRenderer(Technology technology) {
-        return DefaultRenderer.singleton;
     }
 
     private void justThrow() {

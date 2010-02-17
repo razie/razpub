@@ -21,7 +21,7 @@ package com.razie.pub.base;
  * @author razvanc99
  * @deprecated use NoStatic instead - it's tied to the ExecutionContext instead of the local thread...more powerful
  */
-public class TLNoStatic<T> extends ThreadLocal {
+public class TLNoStatic<T> extends ThreadLocal<Object> {
 	private T initialValue;
 
 	/** initialize with initial value - inherited on all threads */

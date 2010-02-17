@@ -16,7 +16,7 @@ import razie.draw._
  * often you want different screens pre-built and invoked at a later time. 
  * This class allows you to register a pre-built screen and you get an invocable URL for that screen
  * 
- * you can either pre-build a Drawable or inject a function that will build it dynamically
+ * you can either pre-build a Drawable3 or inject a function that will build it dynamically
  */
 object DrawCallback {
    type CallbackFun = (AttrAccess) => Drawable
@@ -48,7 +48,7 @@ protected object MyCache {
      url
      }
   
-   /** the return is either a Drawable or a CallbackFun */
+   /** the return is either a Drawable3 or a CallbackFun */
    def get (url:String) : Option[AnyRef] = {
       clean
       cache.get(url) match {

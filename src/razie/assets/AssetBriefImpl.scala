@@ -130,7 +130,7 @@ class FileAssetBriefImpl extends AssetBriefImpl with FileAssetBrief {
    override def urlForStreaming_= (a:ActionToInvoke) = throw new UnsupportedOperationException()
 }
 
-class ABDrawable (val brief:AssetBrief, val detailLevel:DetailLevel) extends Drawable {
+class ABDrawable (val brief:AssetBrief, val detailLevel:DetailLevel) extends Drawable3 {
     /** shortcut to render self - don't like controllers that much */
    override def render(t:Technology , stream:DrawStream ) :AnyRef = 
         Renderer.Helper.draw(brief, t, stream);

@@ -11,7 +11,7 @@ import com.razie.pub.comms.AuthException;
 import com.razie.pub.comms.MyServerSocket;
 
 /**
- * a command handler executes commands and returns an object, normally a Drawable
+ * a command handler executes commands and returns an object, normally a Drawable3
  * that can be seen by client. This is called by the server to handle a particular command or path
  * 
  * <p>

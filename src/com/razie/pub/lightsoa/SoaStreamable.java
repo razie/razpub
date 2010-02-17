@@ -40,7 +40,7 @@ import java.lang.annotation.Target;
  * client asked for. Basically, your method can only return your mime type and that's that.
  * 
  * DO NOT abuse overwriting the stream's mime type. You're supposed to only have a handful of
- * protocols and formats and support them all, with the help of the Drawable framework. This should
+ * protocols and formats and support them all, with the help of the Drawable3 framework. This should
  * only be used in extreme cases where the data you pass back is in a format not supported by the
  * drawable framework (i.e. XML is currently not supported).
  * 

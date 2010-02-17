@@ -6,10 +6,10 @@ package com.razie.pub.webui;
 
 import razie.base.ActionToInvoke;
 import razie.draw.DrawStream;
-import razie.draw.Drawable;
+import razie.draw.Drawable3;
 import razie.draw.Renderer;
 import razie.draw.Technology;
-import razie.draw.Drawable.DefaultRenderer;
+import razie.draw.Drawable;
 
 /**
  * this will insert a paint area which is drawn later with the specified url (will be invoked during
@@ -19,7 +19,7 @@ import razie.draw.Drawable.DefaultRenderer;
  * @author $Author: davidx $
  * @since $Date: 2005/04/01 16:22:12 $
  */
-public class DrawLater extends Drawable.DrawWidget {
+public class DrawLater extends Drawable.Widget {
 
     private ActionToInvoke ai;
 
@@ -31,9 +31,4 @@ public class DrawLater extends Drawable.DrawWidget {
     public Object render(Technology technology, DrawStream stream) {
         return "<iframe frameborder=0 src=\"" + ai.makeActionUrl() + "\"/>";
     }
-
-    public Renderer<Drawable> getRenderer(Technology technology) {
-        return DefaultRenderer.singleton;
-    }
-
 }

@@ -87,6 +87,10 @@ public class POSTActionToInvoke extends BaseActionToInvoke implements Cloneable,
             throw new RuntimeException("while getting the command url: " + this.makeActionUrl(), e);
         }
     }
+      @Override
+      public ActionToInvoke args(Object...args) {
+        return new POSTActionToInvoke(this.target, this.actionItem.clone(), this.postArgs, args);
+      }
     
     public AttrAccess postArgs;
 }

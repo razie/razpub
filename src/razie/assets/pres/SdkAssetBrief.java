@@ -1,7 +1,7 @@
 package razie.assets.pres;
 
 import razie.assets.AssetBrief;
-import razie.assets.AssetBrief$.MODULE$;
+import razie.assets.AssetBrief$;
 import razie.assets.AssetCtxKey;
 import razie.draw.widgets.NavButton;
 import razie.draw.widgets.NavLink;

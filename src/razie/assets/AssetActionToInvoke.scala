@@ -74,6 +74,10 @@ class AssetActionToInvoke (target:String , protected val key:AssetKey , item:Act
         LightAuth.wrapUrl(url);
     }
 
+   override def args(pairs:AnyRef*) : AssetActionToInvoke = {
+      new AssetActionToInvoke(this.target, this.key, this.actionItem.clone(), pairs);
+   }
+
 //    public static AssetActionToInvoke fromActionUrl(String url) {
 //        return null;
 //    }

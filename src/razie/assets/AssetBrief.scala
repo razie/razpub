@@ -45,7 +45,7 @@ import scala.reflect._
  * 
  * @author razvanc99
  */
-trait AssetBrief extends Referenceable with Drawable {
+trait AssetBrief extends Referenceable with Drawable3 {
    /** nice name (or label rather */
    var name : String = null
    

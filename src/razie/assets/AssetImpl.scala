@@ -55,9 +55,6 @@ class AssetImpl (b : AssetBrief) extends AssetBaseImpl(b) with DrawAsset {
  */
 trait DrawAsset extends AssetBase with Drawable {
 
-   override def getRenderer(t:Technology ) : Renderer[Drawable] = 
-      Drawable.DefaultRenderer.singleton;
-
    override def render(t:Technology , stream:DrawStream ) : AnyRef = 
       DrawAsset_.render (this, t, stream)
 }
