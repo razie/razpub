@@ -18,29 +18,19 @@ public class BrowseToPage extends SimpleActionToInvoke {
         this.pageID = pageID;
     }
 
-    public Renderer<BrowseToPage> getRenderer(Technology technology) {
-        return new MyRenderer();
-    }
-
-    public static class MyRenderer implements Renderer<BrowseToPage> {
-
-        public boolean canRender(Object o, Technology technology) {
-            return o instanceof BrowseToPage;
-        }
-
-        public Object render(BrowseToPage ea, Technology technology, DrawStream stream) {
-            ActionItem cmd = ea.actionItem;
+    @Override
+        public Object render(Technology technology, DrawStream stream) {
+            ActionItem cmd = actionItem;
 
             String url;
-            if (ea.pageID.startsWith("http:"))
-                url = ea.pageID;
+            if (pageID.startsWith("http:"))
+                url = pageID;
             else
-                url = "/mutant/" + ea.pageID + ".html";
+                url = "/mutant/" + pageID + ".html";
 
             NavLink b1 = new NavButton(cmd, url);
-            b1.setTiny(ea.drawTiny);
+            b1.setTiny(drawTiny);
             NavLink b = b1;
             return Renderer.Helper.draw(b, technology, stream);
         }
-    }
 }

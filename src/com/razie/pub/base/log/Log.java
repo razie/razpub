@@ -82,6 +82,16 @@ public class Log {
       }
    }
 
+   // TODO 3-1 implement audit facility
+   public static void audit(String m) {
+      logThis("AUDIT : " + m);
+   }
+
+   // TODO 3-1 implement audit facility
+   public static void audit(String m, Throwable t) {
+      logThis("AUDIT : " + m + " Exception: " + getStackTraceAsString(t));
+   }
+
    public void log(String m, Throwable t) {
       log(m + " Exception: " + getStackTraceAsString(t));
    }

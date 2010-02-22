@@ -22,7 +22,7 @@ class BlankAsset (val META:String, val k:String, var myAttr:AttrAccess=null) ext
    
    def attr = myAttr
 
-   def metaSpec = new MetaSpec (new Meta (razie.AI cmdicon(META, "/mutant/pics/web.png"), null))
+   def metaSpec = new MetaSpec (new Meta (razie.AI cmdicon(META, "/public/pics/web.png"), null))
    
    /* funny initialization after redefining meta() */
    setKey (new AssetKey(META, k, null))

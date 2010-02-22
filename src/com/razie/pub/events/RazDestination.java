@@ -24,7 +24,7 @@ import com.razie.pub.base.data.MemDb;
 public abstract class RazDestination extends AssetBaseImpl implements RazResource, AssetBase {
     public static final String                sCLASS    = "MsgDestination.razie";
     public static final ActionItem            META      = new ActionItem(sCLASS,
-                                                                "/mutant/pics/IceAgeScrat.png");
+                                                                "/public/pics/IceAgeScrat.png");
     // public static Meta MMETA = new Meta(META, "", "", ResourceInventory.class.getName());
 
     static MemDb<String, WeakReference<EvListener>> listeners = new MemDb<String, WeakReference<EvListener>>();

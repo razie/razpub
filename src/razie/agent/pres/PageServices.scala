@@ -22,7 +22,7 @@ import razie.assets._
 object PageServices {
    
    // TODO share with frealking assets - got my ears caught in this and copy/paste hacked it...
-   def methodButton(k:AssetKey , m:Method ): NavButton ={
+   def methodButton(k:AssetKey, m:Method, display:ActionItem=null): NavButton ={
       val parms = new AttrAccessImpl();
 
       if (m.getAnnotation(classOf[SoaMethod]) != null) {
@@ -32,7 +32,7 @@ object PageServices {
 
          // adding link to call the method
          var b:NavButton = null;
-         val ai = new ActionItem(m.getName());
+         val ai = if (display==null) new ActionItem(m.getName()) else display
 
          b = maker2 (k, ai, parms)
 

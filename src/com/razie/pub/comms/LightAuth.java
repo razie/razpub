@@ -210,17 +210,21 @@ public class LightAuth {
             || Agents.agent(Agents.getMyHostName()) == null /* TODO what is this condition? */
             || clientip.equals(Agents.me().ip)) {
          return LightAuth.AuthType.INHOUSE;
-      } else
+      } else {
+         if (Agents.agentByIp(clientip) != null && Agents.agentByIp(clientip).isUp())
+            return LightAuth.AuthType.INCLOUD;
          return LightAuth.AuthType.ANYBODY;
+      }
    }
 
    public static LightAuth.AuthType mapAuth(PermType perm) {
       switch (perm) {
       case ADMIN:
-         return LightAuth.AuthType.INHOUSE;
-      case CONTROL:
+//         return LightAuth.AuthType.INHOUSE;
          return LightAuth.AuthType.SHAREDSECRET;
+      case CONTROL:
       case WRITE:
+         return LightAuth.AuthType.INCLOUD;
       case VIEW:
          return LightAuth.AuthType.FRIEND;
       case PUBLIC:

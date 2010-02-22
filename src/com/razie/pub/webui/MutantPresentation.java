@@ -40,9 +40,7 @@ public class MutantPresentation extends PageMaker {
     private AttrAccess                pages     = new AttrAccessImpl();
     // name,toRefresh
     private Map<String, Long>         filenames = new HashMap<String, Long>();
-
-    public static final String        XMLDOC    = "user.xml";
-
+    
     private MutantPresentation(ScriptContext parent) {
         super(parent);
     }

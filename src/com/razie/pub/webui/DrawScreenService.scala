@@ -53,14 +53,12 @@ class DrawScreenService extends AgentService {
    def list (out:DrawStream):Unit =
       // TODO nicer, use the _ number for the display...
    MyCache.keys.foreach {out write new InternalDrawCallback (_)}
-
 }
 
 object DrawScreenServiceStatic {
    val DRAW = new ActionItem ("draw")
    
    def autoRegister () = {
-      // TODO verify current agent has the service - if not, add it...
       val a = Agent.instance
       if (a.locateService("DrawScreenService") == null) {
          Log.logThis("WARN_PROG auto-registering the drawscreen service")

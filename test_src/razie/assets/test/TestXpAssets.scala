@@ -25,7 +25,7 @@ object S {
  */
 @SoaAsset(descr = "parent with reflected child", bindings=Array("http"))
 class TestParentC (key:String) extends BlankAsset ("TestParentC", key, AA("kuku", "p1c")) with HasMeta {
-   override def metaSpec = new MetaSpec (new Meta (AI cmdicon("TestParentC", "/mutant/pics/web.png"), null),
+   override def metaSpec = new MetaSpec (new Meta (AI cmdicon("TestParentC", "/public/pics/web.png"), null),
          List(new MetaAssoc("pcc", "TestParentC", "TestChildC", "composition", "1-*", "parent", "children")))
    def children = List (S.c1, S.c2)
 }

@@ -175,7 +175,7 @@ public class TempAssetPres extends AssetPres {
 
                      if (ma.args() != null && ma.args().length > 0) {
                         // prepare invocation page...
-                        ati = razie.agent.pres.PageServices$.MODULE$.methodButton(movie.getKey(), m);
+                        ati = razie.agent.pres.PageServices$.MODULE$.methodButton(movie.getKey(), m, mitem);
                      } else {
                         ati = new NavButton(new AssetActionToInvoke(Agents.me().url, movie.getKey(), mitem));
                      }

@@ -18,7 +18,7 @@ import razie.base.ActionItem;
  */
 public interface RazResource {
     public static final String     sCLASS = "Resource.razie";
-    public static final ActionItem META   = new ActionItem(sCLASS, "/mutant/pics/IceAgeScrat.png");
+    public static final ActionItem META   = new ActionItem(sCLASS, "/public/pics/IceAgeScrat.png");
 
     public String getResName();
 

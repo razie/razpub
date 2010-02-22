@@ -77,8 +77,9 @@ public class MyServerSocket extends CommChannel {
     static {
         level.put(LightAuth.AuthType.ANYBODY, 0);
         level.put(LightAuth.AuthType.FRIEND, 1);
-        level.put(LightAuth.AuthType.SHAREDSECRET, 2);
-        level.put(LightAuth.AuthType.INHOUSE, 3);
+        level.put(LightAuth.AuthType.INCLOUD, 2);
+        level.put(LightAuth.AuthType.SHAREDSECRET, 3);
+        level.put(LightAuth.AuthType.INHOUSE, 4);
     }
     
     public HttpDrawStream mkStream () { return mkStream (true); }
