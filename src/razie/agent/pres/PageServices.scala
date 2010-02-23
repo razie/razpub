@@ -104,11 +104,9 @@ class PageServices extends DrawableSource {
    override def makeDrawable = drawLeft()
 
    private def drawLeft() = {
-      val table = new DrawTable();
-      table.prefCols = 3;
-      table.horizAlign = DrawTable.HorizAlign.LEFT;
+      val table = razie.Draw.table(3)()
+      table.horizAlign = Align.LEFT;
       table.packed = true;
-      table.rowColor = "#292929";
 
       // TODO reusability - can do this with any set of objects, not just services
       for (val s <- scala.collection.JavaConversions.asBuffer(com.razie.pub.agent.Agent.instance().copyOfServices()).toList.sort(_.getClass().getSimpleName()<_.getClass().getSimpleName())) {

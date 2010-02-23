@@ -9,8 +9,7 @@ import razie.draw.widgets.NavLink;
 class PageAssets extends DrawableSource {
 
     override def makeDrawable() : Drawable = {
-        val table = new DrawTable()
-        table.prefCols = 4
+        val table = razie.Draw.table (4)()
         table.packed = true
 
         AssetMgr.metas().map(AssetMgr.meta(_)).foreach (

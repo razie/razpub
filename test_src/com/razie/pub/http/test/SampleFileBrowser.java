@@ -13,7 +13,7 @@ import java.util.Properties;
 import razie.base.ActionItem;
 import razie.base.ActionToInvoke;
 import razie.draw.DrawStream;
-import razie.draw.DrawTable;
+import razie.draw.*;
 import razie.draw.widgets.NavLink;
 
 import com.razie.pub.base.NoStatics;
@@ -61,7 +61,7 @@ public class SampleFileBrowser {
 
       DrawTable list = new DrawTable(0, 2);
       list.packed = true;
-      list.horizAlign = DrawTable.HorizAlign.LEFT;
+      list.horizAlign = Align.LEFT;
 
       out.open(list);
 
