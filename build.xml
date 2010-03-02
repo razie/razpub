@@ -7,7 +7,9 @@
         <pathelement location="../razie/lib/json.jar"/>
         <pathelement location="../20widgets/bin/"/>
         <pathelement location="${scala.home}/lib/scala-compiler.jar"/>
-        <pathelement location="../razpub/lib/mime-util.jar"/>
+        <pathelement location="../razweb/bin"/>
+        <pathelement location="../razweb/lib/mime-util.jar"/>
+        <pathelement location="../scripster/bin"/>
         <pathelement location="../razpub/lib/log4j-1.2.7.jar"/>
         <pathelement location="../razpub/lib/js.jar"/>
         <pathelement location="../razpub/lib/bcprov-jdk16-143.jar"/>
