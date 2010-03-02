@@ -5,9 +5,10 @@
 package com.razie.pub.base.data
 
 import com.razie.pub.base._
+import razie.scripting._
 
 /** add capability to support scala scripts */
-class ScriptFactoryScala (val other:ScriptFactory, val dflt:Boolean) extends ScriptFactory {
+class ScriptFactoryAll (val other:ScriptFactory, val dflt:Boolean) extends ScriptFactory {
 
    override def makeImpl (lang:String, s:String) = {
       (lang, dflt) match {

@@ -4,17 +4,17 @@
  */
 package com.razie.pub.base;
 
-import razie.base.ScriptContext;
-
-
 /**
- * minimal script interface
+ * minimal factory to decouple scripting
  * 
  * TODO use JSR 264 or whatever the thing is and ditch custom code...
  * 
  * @author razvanc
  */
-public interface RazScript {
-    public Object eval(ScriptContext c);
+public class JSScriptFactory extends ScriptFactory {
 
+    @Override
+    public RazScript makeImpl(String lang, String script) {
+        return new ScriptJS(script);
+    }
 }

@@ -4,12 +4,11 @@
  */
 package com.razie.pub.agent;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
 import com.razie.pub.base.NoStatics;
-import com.razie.pub.base.exceptions.CommRtException;
+import com.razie.pub.util.Files;
 
 /**
  * basic file services - read/write files...since agents can run all over the place, don't count on
@@ -63,16 +62,6 @@ public class AgentFileService extends AgentService {
     }
 
     public static void copyStream(InputStream is, OutputStream fos) {
-        try {
-            byte[] buf = new byte[4 * 1024 + 1];
-            int n;
-            while ((n = is.read(buf, 0, 4096)) > 0) {
-                fos.write(buf, 0, n);
-            }
-            fos.close();
-            is.close();
-        } catch (IOException e1) {
-            throw new CommRtException("Copystream failed: ", e1);
-        }
+        Files.copyStream(is, fos);
     }
 }
