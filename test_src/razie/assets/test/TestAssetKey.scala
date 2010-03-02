@@ -52,5 +52,4 @@ class TestAssetKey extends JUnit3Suite {
    def testk5() = expect (s5) { AssetKey.fromString(s5).toString }
    
    def testk6() = expect(k4){  k6.asInstanceOf[AssetCtxKey].ctx.role("k4") } 
-
 }
