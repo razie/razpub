@@ -75,5 +75,5 @@ public class TestLocalSoa extends TestCase {
                 new AttrAccessImpl("parm1", "a", "parm2", "b"));
     }
 
-    static final Log logger = Log.Factory.create(TestLocalSoa.class.getName());
+    static final Log logger = Log.factory.create(TestLocalSoa.class.getName());
 }

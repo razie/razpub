@@ -74,5 +74,5 @@ public class TestLightServerSoaAssets extends TestLightBase {
       assertTrue(result.contains(TestLocalSoaAssets.MOVIEKEY.getId()));
    }
 
-   static final Log logger = Log.Factory.create(TestLightServerSoaAssets.class.getName());
+   static final Log logger = Log.factory.create(TestLightServerSoaAssets.class.getName());
 }

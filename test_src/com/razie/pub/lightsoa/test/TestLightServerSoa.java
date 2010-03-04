@@ -119,5 +119,5 @@ public class TestLightServerSoa extends TestLightBase {
         assertTrue(echo.input.contains("samurai"));
     }
    
-    static final Log logger = Log.Factory.create(TestLightServerSoa.class.getName());
+    static final Log logger = Log.factory.create(TestLightServerSoa.class.getName());
 }
