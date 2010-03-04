@@ -7,10 +7,18 @@ package razie.assets
 import razie.base._
 import com.razie.pub.base._
 import razie.draw.Drawable
-
+import razie.g.GRef
 
 /** the default asset mgr is the InventoryAssetMgr */
-object AssetMgr extends AssetMgr (null) {
+object AssetMgr extends AssetMgr (null) with razie.g.GResolver[AnyRef] with razie.g.GAct {
+   razie.g.GAMResolver.assetMgr = this
+   override def resolve (x:GRef) : AnyRef = getAsset (AssetKey.fromRef(x))
+   razie.g.GAMAct.assetMgr = this
+   override def actions (k:GRef)             : Seq[ActionItem] = 
+      getSupportedActions(AssetKey.fromRef(k)).toList
+   override def act     (k:GRef, a:String, ctx:ScriptContext) : Any   = 
+      doAction(a, AssetKey.fromRef(k), ctx)
+   
    protected var impl = new razie.NoStatic[AssetMgr] ("NewAssetMgr", {
       new FullAssetMgr
    } );
