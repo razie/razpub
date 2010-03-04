@@ -32,7 +32,7 @@ import com.razie.pub.comms.Comms;
 class AssetLocation (o:String) {
    private val (iRemoteUrl, iLocalPath) = setURL(o)
    
-//   def gloc = new razie.GLoc (iRemoteUrl, iLocalPath)
+   lazy val gloc = new razie.g.GLoc (iRemoteUrl, localPath)
 
    def getHost() = host // TODO inine
    def getPort() = port // TODO inine
@@ -238,7 +238,6 @@ class AssetLocation (o:String) {
       }
       else 
             (Agents.getMyHostName(), Agents.me().port) // default to my port
-
    }
 
    def protocol :String = 
@@ -247,9 +246,11 @@ class AssetLocation (o:String) {
       } else
       null;
 
+   def toGLoc = new razie.g.GLoc (iRemoteUrl, localPath)
 }
 
 object AssetLocation {
+   def fromGLoc (x:razie.g.GLoc)= new AssetLocation (x.toXX)
    
    implicit def fs (s:String) : AssetLocation = new AssetLocation (s)
 
