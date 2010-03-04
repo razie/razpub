@@ -167,5 +167,5 @@ public class WinExec {
       }
    }
 
-   static Log logger = Log.Factory.create("UTILS", WinExec.class.getName());
+   static Log logger = Log.factory.create("UTILS", WinExec.class.getName());
 }
