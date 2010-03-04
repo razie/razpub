@@ -9,7 +9,7 @@ import com.razie.pub.comms.AgentCloud;
 import com.razie.pub.comms.AgentHandle;
 import com.razie.pub.comms.LightAuth;
 import com.razie.pub.http.LightCmdGET;
-import com.razie.pub.http.LightServer;
+import com.razie.pub.http.*;
 
 /** netbeans can't share unit classes forcing me to move testing code here - this is temp until i figure a workaround
  *
@@ -33,7 +33,7 @@ public class TempUtilAgent {
       // we need a server with cmdget to accept bindings for services. You
       // should do this for any
       // agent
-      LightServer server = new LightServer(Integer.parseInt(h.port), agent.getContext());
+      LightServer server = new LightServer(Integer.parseInt(h.port), 20, agent.getContext(), new LightContentServer(null));
       server.registerHandler(new LightCmdGET());
       agent.register(new AgentHttpService(agent, server));
 

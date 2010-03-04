@@ -47,7 +47,7 @@ public class Agent {
    protected AgentHandle             me          = null;
    public    AgentCloud              homeCloud;
    private ExecutionContext          mainContext;
-   private final static Log          logger      = Log.Factory.create("agent", Agent.class.getSimpleName());
+   private final static Log          logger      = Log.factory.create("agent", Agent.class.getSimpleName());
 
    /** initialize agent with given info */
    public Agent(AgentHandle me, AgentCloud homeCloud) {

@@ -451,6 +451,6 @@ public class SSFilesRazie {
     private static float    M      = K * 1024;
     private static float    G      = M * 1024;
 
-    public static final Log logger = Log.Factory.create("", SSFilesRazie.class.getName());
+    public static final Log logger = Log.factory.create("", SSFilesRazie.class.getName());
 
 }

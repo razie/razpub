@@ -63,65 +63,6 @@ public class Log4j extends Log {
         }
     }
 
-    /**
-     * helper to turn lists/arrays/maps into strings for nice logging
-     * 
-     * @param ret object to toString
-     * @return either the new String or the original object if not recognized
-     */
-    @SuppressWarnings("unchecked")
-    public static Object tryToString(String indent, Object ret) {
-        if (ret != null && ret instanceof Collection) {
-            return toString("", (Collection) ret);
-        } else if (ret != null && ret instanceof Map) {
-            return "\n" + (ret).toString();
-        } else if (ret != null && ret instanceof Object[]) {
-            return toString("", (Object[]) ret);
-        } else {
-            return ret;
-        }
-    }
-
-    /**
-     * simple helper to log collections, each element toString()
-     * 
-     * @param indent is a prefix to be added to each line, useful if this is inside a structure.
-     *        Don't send null, but "".
-     * @param col is the collection to be logged
-     */
-    public static String toString(String indent, Collection<? extends Object> col) {
-        String msg = indent + "Collection is null!";
-        if (col != null) {
-            msg = indent + "Collection: {\n";
-            for (Object k : col) {
-                msg += indent + "   " + (k == null ? "null" : k.toString()) + "\n";
-            }
-            msg += indent + "}";
-        }
-        return msg;
-    }
-
-    /**
-     * simple helper to log collections, each element toString()
-     * 
-     * @param indent is a prefix to be added to each line, useful if this is inside a structure.
-     *        Don't send null, but "".
-     * @param col is the collection to be logged
-     */
-    public static String toString(String indent, Object[] map) {
-        String msg = indent + "Object[] is null!";
-        if (map != null) {
-            msg = indent + "Object[]: {\n";
-            for (int i = 0; i < map.length; i++) {
-                Object k = map[i];
-                msg += indent + "   " + (k == null ? "null" : k.toString()) + "\n";
-            }
-
-            msg += indent + "}";
-        }
-        return msg;
-    }
-
     public void alarm(String o, Throwable... e) {
        String m = o + (e.length <= 0 ? "" : Log.getStackTraceAsString(e[0]));
        log4jLogger.fatal(m);

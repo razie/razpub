@@ -9,7 +9,6 @@ import razie.assets.AssetKey;
 import razie.assets.AssetLocation;
 import razie.assets.AssetMap;
 import razie.assets.AssetMgr;
-import razie.assets.AssetMgr$;
 import razie.assets.AssetPres;
 import razie.assets.Meta;
 import razie.base.ActionItem;
@@ -36,11 +35,11 @@ public abstract class JavaAssetMgr {
 //    protected static NoStatic<AssetMgr> impl = new NoStatic<AssetMgr> ("AssetMgr", null);
 
     public static AssetMgr instance() {
-       return AssetMgr$.MODULE$.instance();
+       return razie.assets.AssetMgr$.MODULE$.instance();
     }
 
     public static void init(AssetMgr implToUse) {
-       AssetMgr$.MODULE$.init(implToUse);
+       razie.assets.AssetMgr$.MODULE$.init(implToUse);
     }
 
     /** locator for assets by key */
