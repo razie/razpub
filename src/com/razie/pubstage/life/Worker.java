@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import razie.base.ActionItem;
+import razie.base.life.Being;
+
 import com.razie.pub.base.ExecutionContext;
 import com.razie.pub.base.log.Log;
 import com.razie.pub.events.PostOffice;
@@ -320,5 +322,5 @@ public abstract class Worker implements Runnable, Being {
      */
     /** Map<String taskname, MTWrkRq> all wrk rq in progress */
     private static Map<String, Worker> allRq  = new HashMap<String, Worker>();
-    private static final Log           logger = Log.Factory.create("", Worker.class.getName());
+    private static final Log           logger = Log.factory.create("", Worker.class.getName());
 }
