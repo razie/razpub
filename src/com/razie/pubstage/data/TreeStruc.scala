@@ -12,7 +12,7 @@ trait TreeStruc[T] extends Structure[T] {
 }
 
 class TreeImplNode[T] (c:T) extends StrucImpl[T] (c) with TreeStruc[T] {
-   val kids = razie.MList[TreeStruc[T]]()
+   val kids = razie.Listi[TreeStruc[T]]()
 
    override def children : List[TreeStruc[T]] = kids.toList
    override def isLeaf : Boolean = false

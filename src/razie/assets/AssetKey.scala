@@ -49,11 +49,15 @@ import scala.collection._
  * 
  * @author razvanc99
  */
-class AssetKey (_meta:String, _id:String, _loc:AssetLocation) {
+class AssetKey (_meta:String, _id:String, _loc:AssetLocation) 
+extends razie.g.GIDRef (_meta, _id, _loc.toGLoc) {
 // TODO optimize - don't need the internal _xxx vars above...   
-   val meta:String = _meta
-   val id:String = if (_id == null) AssetKey.uid() else _id
-   val loc:AssetLocation = if(_loc == null) AssetLocation.LOCAL else _loc
+//   val meta:String = _meta
+//   val id:String = if (_id == null) AssetKey.uid() else _id
+   
+   // TODO LOC  - search for TODO LOC
+//   override val loc:AssetLocation = if(_loc == null) AssetLocation.LOCAL else _loc
+   val aloc:AssetLocation = if(_loc == null) AssetLocation.LOCAL else _loc
    
    def this (_meta:String, _id:String) = this (_meta, _id, null)
    def this (_meta:String) = this (_meta, AssetKey.uid, null)
@@ -61,11 +65,14 @@ class AssetKey (_meta:String, _id:String, _loc:AssetLocation) {
    // these have to be functions rather than vars for existing java code...
    def getMeta() = meta
    def getId() = id
-   def getLoc() = loc
+   // TODO LOC  - search for TODO LOC
+//   def getLoc() = loc
+   def getLoc() = aloc
    
    // TODO 1-1 inline
    def getType() = meta
-   def getLocation() = loc
+   // TODO LOC  - search for TODO LOC
+   def getLocation() = aloc
 
     override def equals(o:Any):Boolean = o match {
        case r : AssetKey =>  meta.equals(r.meta) && id.equals(r.id)
@@ -146,6 +153,9 @@ class AssetKey (_meta:String, _id:String, _loc:AssetLocation) {
 //}
 
 object AssetKey {
+   def fromRef (x:razie.g.GRef) = 
+      new AssetKey (x.meta, x.asInstanceOf[razie.g.GIDRef].id, AssetLocation.fromGLoc(x.loc)) 
+   
    def PREFIX = "razie.uri"
    
     /** to allocate next UID...this should be done better */
