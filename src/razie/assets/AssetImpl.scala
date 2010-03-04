@@ -40,7 +40,7 @@ class AssetImpl (b : AssetBrief) extends AssetBaseImpl(b) with DrawAsset {
       if (k != null) brief match {
          case b:FileAssetBriefImpl => {
               brief.asInstanceOf[FileAssetBriefImpl].setFileName(k.id);
-              brief.asInstanceOf[FileAssetBriefImpl].setLocalDir(k.loc.getLocalPath());
+              brief.asInstanceOf[FileAssetBriefImpl].setLocalDir(k.loc.localPath);
          }
       }
    }
