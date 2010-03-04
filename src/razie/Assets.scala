@@ -169,7 +169,7 @@ object AssetAssocs {
       else
          assocs.filter (x => x._2.key == key && x._3 == ma).map (_._1.resolveIfLocal.asInstanceOf[AssetBase])
       
-      if (ret.isEmpty && key.loc.isLocal) {
+      if (ret.isEmpty && key.aloc.isLocal) {
          // try reflection of associations - only for local assets
          val reala = if (a!= null) { 
             if (a.isInstanceOf[AssetHandle])
