@@ -98,5 +98,5 @@ object Plugins {
    }
 
 
-   val logger = Log.Factory.create("Plugins");
+   val logger = Log.factory.create("Plugins");
 }
