@@ -43,7 +43,7 @@ class AssetHandle (val key:AssetKey) extends AssetBase {
    
    def resolve = if (actual == null) AssetMgr.getAsset(key) else actual
    def isResolved = actual != null
-   def resolveIfLocal = if (isResolved || key.loc.isLocal) resolve else this
+   def resolveIfLocal = if (isResolved || key.aloc.isLocal) resolve else this
    
    /**
     * convenience method - another form of invoke
