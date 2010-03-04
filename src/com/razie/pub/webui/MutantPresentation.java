@@ -22,6 +22,7 @@ import com.razie.pub.base.data.XmlDoc.Reg;
 import com.razie.pub.base.log.Log;
 import com.razie.pub.comms.ServiceActionToInvoke;
 import com.razie.pub.draw.widgets.DrawScript;
+import com.razie.pub.http.LightCmdGET;
 
 /**
  * loads the presentation configuration - basically each page can be customized via this helper.
@@ -40,6 +41,10 @@ public class MutantPresentation extends PageMaker {
     private AttrAccess                pages     = new AttrAccessImpl();
     // name,toRefresh
     private Map<String, Long>         filenames = new HashMap<String, Long>();
+    
+    static {
+       LightCmdGET.MPRES.add (MutantPresentation.getInstance());
+    }
     
     private MutantPresentation(ScriptContext parent) {
         super(parent);
