@@ -8,9 +8,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import razie.assets.AssetKey;
-import razie.assets.AssetKey$;
 import razie.assets.AssetLocation;
-import razie.assets.AssetLocation$;
 import razie.assets.AssetMap;
 import razie.assets.Meta;
 import razie.base.AttrAccess;
@@ -63,9 +61,9 @@ public class HttpAssetSoaBinding extends HttpSoaBinding {
       // two ways to specify an asset: /asset/TYPE/KEY/ (localassets) or /asset/razie.uri....(local
       // and remote)
       AssetKey key = null;
-      if (actionName.startsWith(AssetKey$.MODULE$.PREFIX()))
+      if (actionName.startsWith(razie.assets.AssetKey$.MODULE$.PREFIX()))
          // url is /asset/KEY/cmd
-         key = AssetKey$.MODULE$.fromString(HttpUtils.fromUrlEncodedString(actionName));
+         key = razie.assets.AssetKey$.MODULE$.fromString(HttpUtils.fromUrlEncodedString(actionName));
       else if (cmdargs.length() == 0) {
          // url is /asset/TYPE - by convention, list all of type
          listLocal (actionName, "", true, makeDrawStream(socket, protocol));
@@ -88,7 +86,7 @@ public class HttpAssetSoaBinding extends HttpSoaBinding {
 
    /** list some assets directly to the output stream */
    public static void listLocal(String ttype, String location, boolean recurse, DrawStream out) {
-      AssetLocation env = AssetLocation$.MODULE$.mutantEnv(location);
+      AssetLocation env = razie.assets.AssetLocation$.MODULE$.mutantEnv(location);
 
       AssetMap movies = JavaAssetMgr.find(ttype, env, recurse);
 
