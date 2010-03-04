@@ -77,5 +77,5 @@ public class TestEvents extends TestCase {
         PostOffice.send(PostOffice.DFLT_TOPIC, "?", TESTEVENT1T, "msg", "msg2");
     }
 
-    static final Log logger = Log.Factory.create(TestEvents.class.getName());
+    static final Log logger = Log.factory.create(TestEvents.class.getName());
 }
