@@ -45,7 +45,7 @@ class TestAssetKey extends JUnit3Suite {
    def testk4s() = expect (s4) { k4.toString }
    
    def testk4l() = expect ("c:\\Video/") { k4.loc.localPath  }
-   def testk4ll() = expect ("http://gigi.com:8080") { k4.loc.toHttp } // this is really a mutant url so...
+   def testk4ll() = expect ("http://gigi.com:8080") { k4.aloc.toHttp } // this is really a mutant url so...
 
    // TODO 3-1 complete the asset context key implementation and test
    def testk5s() = expect (s5) { k5.toString } 
