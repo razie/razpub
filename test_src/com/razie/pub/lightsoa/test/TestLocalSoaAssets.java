@@ -107,5 +107,5 @@ public class TestLocalSoaAssets extends TestCase {
       SoaResponse resp = (SoaResponse) new SoaBinding(SampleAsset.class, "").invoke(PLAYERKEY, "doNothing",
               new AttrAccessImpl("parm1", "a", "parm2", "b"));
    }
-   static final Log logger = Log.Factory.create(TestLocalSoaAssets.class.getName());
+   static final Log logger = Log.factory.create(TestLocalSoaAssets.class.getName());
 }
