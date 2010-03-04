@@ -59,5 +59,5 @@ public class SimpleAgentTest extends TestCase {
 
       Thread.sleep(500);
    }
-   static final Log logger = Log.Factory.create(SimpleAgentTest.class.getName());
+   static final Log logger = Log.factory.create(SimpleAgentTest.class.getName());
 }
