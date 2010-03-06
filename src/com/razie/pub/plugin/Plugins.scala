@@ -1,12 +1,13 @@
-/**
- * Razvan's public code. Copyright 2008 based on Apache license (share alike) see LICENSE.txt for
- * details. No warranty implied nor any liability assumed for this code.
+/**  ____    __    ____  ____  ____/___     ____  __  __  ____
+ *  (  _ \  /__\  (_   )(_  _)( ___) __)   (  _ \(  )(  )(  _ \           Read
+ *   )   / /(__)\  / /_  _)(_  )__)\__ \    )___/ )(__)(  ) _ <     README.txt
+ *  (_)\_)(__)(__)(____)(____)(____)___/   (__)  (______)(____/   LICENESE.txt
  */
 package com.razie.pub.plugin
 
 import java.net.URL
 import java.io.File
-import com.razie.pub.base.data.XmlDoc
+import razie.base.data.XmlDoc
 import com.razie.pub.base.data.RazElement
 import com.razie.pub.base._
 import com.razie.pub.assets._
@@ -47,7 +48,7 @@ object Plugins {
          razie.Metas.addAssoc (MetaAssoc.fromXml (ma));
        
       // initialize asset finders and players...
-      for (e <- razie.M (doc.listEntities("/plugin/assetfinders/assetfinder")))
+      for (e <- razie.M (doc.xpl("/plugin/assetfinders/assetfinder")))
          XmlConfigProcessors.eat (e)
 	         
       val classname = razie.RJX apply doc xpa "/plugin/@classname"

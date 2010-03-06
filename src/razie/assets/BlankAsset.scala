@@ -1,3 +1,8 @@
+/**  ____    __    ____  ____  ____/___     ____  __  __  ____
+ *  (  _ \  /__\  (_   )(_  _)( ___) __)   (  _ \(  )(  )(  _ \           Read
+ *   )   / /(__)\  / /_  _)(_  )__)\__ \    )___/ )(__)(  ) _ <     README.txt
+ *  (_)\_)(__)(__)(____)(____)(____)___/   (__)  (______)(____/   LICENESE.txt
+ */
 package razie.assets
 
 import com.razie.pub.lightsoa._
@@ -8,7 +13,7 @@ import com.razie.pub.agent._
 import com.razie.pub.assets._
 import com.razie.pub.draw._
 import com.razie.pub.comms._
-import com.razie.pub.draw.widgets._
+import razie.draw.widgets._
 import razie.assets._
 import razie.base._
 

@@ -1,6 +1,7 @@
-/**
- * Razvan's public code. Copyright 2008 based on Apache license (share alike) see LICENSE.txt for
- * details. No warranty implied nor any liability assumed for this code.
+/**  ____    __    ____  ____  ____/___     ____  __  __  ____
+ *  (  _ \  /__\  (_   )(_  _)( ___) __)   (  _ \(  )(  )(  _ \           Read
+ *   )   / /(__)\  / /_  _)(_  )__)\__ \    )___/ )(__)(  ) _ <     README.txt
+ *  (_)\_)(__)(__)(____)(____)(____)___/   (__)  (______)(____/   LICENESE.txt
  */
 package razie.assets
 
@@ -12,6 +13,7 @@ import com.razie.pub.FileUtils;
 //import com.razie.pub.comms.AgentHandle;
 import com.razie.pub.comms.Agents;
 import com.razie.pub.comms.Comms;
+import razie.g.GLoc
 
 /**
  * the location of an asset, either a remote url like below or a directory.
@@ -205,7 +207,7 @@ class AssetLocation (o:String) {
    override def equals(obj:Any):Boolean = {
       if (obj == null)
          return false;
-      val other = obj.asInstanceOf[AssetLocation]
+      val other = if (obj.isInstanceOf[GLoc]) AssetLocation.fromGLoc(obj.asInstanceOf[GLoc]) else obj.asInstanceOf[AssetLocation]
       if (iLocalPath == null) {
          if (other.iLocalPath != null)
             return false;
@@ -240,13 +242,23 @@ class AssetLocation (o:String) {
             (Agents.getMyHostName(), Agents.me().port) // default to my port
    }
 
+   def hipport = 
+      if (this.iRemoteUrl != null) {
+        if (this.iRemoteUrl.contains("::")) 
+           this.iRemoteUrl.split("::", 2)(0); // mutant://host:port::localpath
+        else 
+           this.iRemoteUrl 
+      }
+      else 
+         null
+   
    def protocol :String = 
       if (this.iRemoteUrl != null && this.iRemoteUrl.contains("://")) {
          this.iRemoteUrl.split("://")(0);
       } else
       null;
 
-   def toGLoc = new razie.g.GLoc (iRemoteUrl, localPath)
+   def toGLoc = new razie.g.GLoc (hipport, localPath)
 }
 
 object AssetLocation {

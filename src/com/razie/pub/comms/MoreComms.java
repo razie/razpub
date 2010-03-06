@@ -1,6 +1,7 @@
-/**
- * Razvan's public code. 
- * Copyright 2008 based on Apache license (share alike) see LICENSE.txt for details.
+/**  ____    __    ____  ____  ____/___     ____  __  __  ____
+ *  (  _ \  /__\  (_   )(_  _)( ___) __)   (  _ \(  )(  )(  _ \           Read
+ *   )   / /(__)\  / /_  _)(_  )__)\__ \    )___/ )(__)(  ) _ <     README.txt
+ *  (_)\_)(__)(__)(____)(____)(____)___/   (__)  (______)(____/   LICENESE.txt
  */
 package com.razie.pub.comms;
 
@@ -25,7 +26,6 @@ import razie.base.AttrAccess;
 
 import com.razie.pub.base.data.ByteArray;
 import com.razie.pub.base.log.Log;
-import com.sun.org.apache.xerces.internal.parsers.DOMParser;
 
 /**
  * communications utils
@@ -112,17 +112,17 @@ public class MoreComms extends Comms {
                     String msg = "Could not fetch data from url " + url + ", resCode=" + resCode;
                     logger.trace(3, msg);
                     RuntimeException rte = new RuntimeException(msg);
-                    if (uc.getContentType().endsWith("xml")) {
-                        DOMParser parser = new DOMParser();
-                        try {
-                            parser.parse(new InputSource(in));
-                        } catch (SAXException e) {
-                            RuntimeException iex = new RuntimeException("Error while processing document at "
-                                    + url);
-                            iex.initCause(e);
-                            throw iex;
-                        }
-                    }
+//                    if (uc.getContentType().endsWith("xml")) {
+//                        DOMParser parser = new DOMParser();
+//                        try {
+//                            parser.parse(new InputSource(in));
+//                        } catch (SAXException e) {
+//                            RuntimeException iex = new RuntimeException("Error while processing document at "
+//                                    + url);
+//                            iex.initCause(e);
+//                            throw iex;
+//                        }
+//                    }
                     throw rte;
                 }
             return in;

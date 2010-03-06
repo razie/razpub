@@ -3,6 +3,7 @@
     <import file="../razbase/base-build.xml"/>
 
     <path id="depy.path">
+        <pathelement location="../razxml/dist/razxml.jar/"/>
         <pathelement location="../razbase/bin/"/>
         <pathelement location="../razbase/lib/json.jar"/>
         <pathelement location="../20widgets/bin/"/>

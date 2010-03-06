@@ -1,6 +1,7 @@
-/**
- * Razvan's public code. Copyright 2008 based on Apache license (share alike) see LICENSE.txt for
- * details. No warranty implied nor any liability assumed for this code.
+/**  ____    __    ____  ____  ____/___     ____  __  __  ____
+ *  (  _ \  /__\  (_   )(_  _)( ___) __)   (  _ \(  )(  )(  _ \           Read
+ *   )   / /(__)\  / /_  _)(_  )__)\__ \    )___/ )(__)(  ) _ <     README.txt
+ *  (_)\_)(__)(__)(____)(____)(____)___/   (__)  (______)(____/   LICENESE.txt
  */
 package razie.assets
 
@@ -50,7 +51,7 @@ import scala.collection._
  * @author razvanc99
  */
 class AssetKey (_meta:String, _id:String, _loc:AssetLocation) 
-extends razie.g.GIDRef (_meta, _id, _loc.toGLoc) {
+extends razie.g.GIDRef (_meta, _id, if (_loc==null) null else _loc.toGLoc) {
 // TODO optimize - don't need the internal _xxx vars above...   
 //   val meta:String = _meta
 //   val id:String = if (_id == null) AssetKey.uid() else _id

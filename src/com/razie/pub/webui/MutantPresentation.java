@@ -1,3 +1,8 @@
+/**  ____    __    ____  ____  ____/___     ____  __  __  ____
+ *  (  _ \  /__\  (_   )(_  _)( ___) __)   (  _ \(  )(  )(  _ \           Read
+ *   )   / /(__)\  / /_  _)(_  )__)\__ \    )___/ )(__)(  ) _ <     README.txt
+ *  (_)\_)(__)(__)(____)(____)(____)___/   (__)  (______)(____/   LICENESE.txt
+ */
 package com.razie.pub.webui;
 
 import java.util.HashMap;
@@ -9,19 +14,19 @@ import razie.base.ActionItem;
 import razie.base.AttrAccess;
 import razie.base.AttrAccessImpl;
 import razie.base.ScriptContext;
+import razie.base.data.RiXmlUtils;
+import razie.base.data.XmlDoc;
+import razie.base.data.XmlDoc.Reg;
 import razie.draw.DrawSequence;
 import razie.draw.DrawTable;
 import razie.draw.Drawable;
 import razie.draw.DrawableSource;
 import razie.draw.Renderer;
 import razie.draw.Technology;
+import razie.draw.widgets.DrawScript;
 
-import com.razie.pub.base.data.RiXmlUtils;
-import com.razie.pub.base.data.XmlDoc;
-import com.razie.pub.base.data.XmlDoc.Reg;
 import com.razie.pub.base.log.Log;
 import com.razie.pub.comms.ServiceActionToInvoke;
-import com.razie.pub.draw.widgets.DrawScript;
 import com.razie.pub.http.LightCmdGET;
 
 /**
@@ -71,7 +76,7 @@ public class MutantPresentation extends PageMaker {
 
     protected static void refresh(String filename) {
        if (Reg.doc(filename) != null) {
-        for (Element page : XmlDoc.listEntities(Reg.doc(filename).getEntity("/config/presentation"))) {
+        for (Element page : XmlDoc.listEntities(Reg.doc(filename).xpe("/config/presentation"))) {
             Object d;
             if (page.hasAttribute("code")) {
                 d = paintPageCode (page.getAttribute("code"));

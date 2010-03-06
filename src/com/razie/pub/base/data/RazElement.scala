@@ -1,10 +1,13 @@
-/**
- * Razvan's public code. Copyright 2008 based on Apache license (share alike) see LICENSE.txt for
- * details. No warranty implied nor any liability assumed for this code.
+/**  ____    __    ____  ____  ____/___     ____  __  __  ____
+ *  (  _ \  /__\  (_   )(_  _)( ___) __)   (  _ \(  )(  )(  _ \           Read
+ *   )   / /(__)\  / /_  _)(_  )__)\__ \    )___/ )(__)(  ) _ <     README.txt
+ *  (_)\_)(__)(__)(____)(____)(____)___/   (__)  (______)(____/   LICENESE.txt
  */
 package com.razie.pub.base.data
 
 import org.w3c.dom._
+import razie.base.data.XmlDoc
+import razie.base.data.RiXmlUtils
 
 // TODO need to optimize these - i convert to RazE stuff all the time, no caching - should use a map for caching? is that useful?
 
@@ -69,10 +72,10 @@ class RazElementJava (val e:org.w3c.dom.Element) extends RazElement {
     * @name identifies the name attribute of the element - could also be part of xpath instead
     * @return never null
     */
-   def xpa (path:String) : String = XmlDoc.getAttr (e, path)
+   def xpa (path:String) : String = XmlDoc.xpa (e, path)
 
    // TODO 3-2 optimize...not sure how...
-   def xpe (path:String) : RazElement = new RazElementJava(XmlDoc.getEntity (e, path))
+   def xpe (path:String) : RazElement = new RazElementJava(XmlDoc.xpe (e, path))
     /**
      * get a specific element, by "name"
      * 
@@ -89,7 +92,7 @@ class RazElementJava (val e:org.w3c.dom.Element) extends RazElement {
 //      val l = XmlDoc.listEntities (e, path)
 //      val lre : scala.collection.mutable.Buffer[Element] = scala.collection.JavaConversions.asBuffer(l)
     
-      for (val x <- razie.RJS list XmlDoc.listEntities (e, path))
+      for (val x <- razie.RJS list XmlDoc.xpl (e, path))
          yield new RazElementJava(x)
    }
   
