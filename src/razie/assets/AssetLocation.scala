@@ -1,7 +1,7 @@
-/**  ____    __    ____  ____  ____/___     ____  __  __  ____
- *  (  _ \  /__\  (_   )(_  _)( ___) __)   (  _ \(  )(  )(  _ \           Read
- *   )   / /(__)\  / /_  _)(_  )__)\__ \    )___/ )(__)(  ) _ <     README.txt
- *  (_)\_)(__)(__)(____)(____)(____)___/   (__)  (______)(____/   LICENESE.txt
+/**  ____    __    ____  ____  ____,,___     ____  __  __  ____
+ *  (  _ \  /__\  (_   )(_  _)( ___)/ __)   (  _ \(  )(  )(  _ \           Read
+ *   )   / /(__)\  / /_  _)(_  )__) \__ \    )___/ )(__)(  ) _ <     README.txt
+ *  (_)\_)(__)(__)(____)(____)(____)(___/   (__)  (______)(____/    LICENSE.txt
  */
 package razie.assets
 
@@ -115,7 +115,13 @@ class AssetLocation (o:String) {
 
    def localPath : String = getLocalPath
    def getLocalPath () : String = {
-     val p = 
+     val p = origgetLocalPath
+     if (p != null && ! p.endsWith("/")) 
+        p+"/"
+        else p
+   }
+
+   def origgetLocalPath () : String = 
       if (this.iRemoteUrl != null) {
          if (this.iRemoteUrl.contains("::")) {
             val sp = this.iRemoteUrl.split("::");
@@ -124,11 +130,6 @@ class AssetLocation (o:String) {
          null;
       } else
          this.iLocalPath;
-     
-     if (p != null && ! p.endsWith("/")) 
-        p+"/"
-        else p
-   }
 
    /** will get canonic path unless the path is in the classpath */
    private[this] def setLocalPath(lp:String ) : String = {
@@ -258,7 +259,7 @@ class AssetLocation (o:String) {
       } else
       null;
 
-   def toGLoc = new razie.g.GLoc (hipport, localPath)
+   def toGLoc = new razie.g.GLoc (hipport, origgetLocalPath)
 }
 
 object AssetLocation {

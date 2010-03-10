@@ -1,16 +1,16 @@
-/**
- * Razvan's public code. Copyright 2008 based on Apache license (share alike) see LICENSE.txt for
- * details. No warranty implied nor any liability assumed for this code.
+/**  ____    __    ____  ____  ____,,___     ____  __  __  ____
+ *  (  _ \  /__\  (_   )(_  _)( ___)/ __)   (  _ \(  )(  )(  _ \           Read
+ *   )   / /(__)\  / /_  _)(_  )__) \__ \    )___/ )(__)(  ) _ <     README.txt
+ *  (_)\_)(__)(__)(____)(____)(____)(___/   (__)  (______)(____/    LICENSE.txt
  */
 package com.razie.pub.base.test;
 
-import java.util.Date;
-
-import razie.base.ScriptContext;
-
 import junit.framework.TestCase;
+import razie.base.scripting.ScriptContext;
+import razie.base.scripting.ScriptContextImpl;
+import razie.base.scripting.ScriptFactory;
+import razie.base.scripting.ScriptJS;
 
-import com.razie.pub.base.ScriptJS;
 import com.razie.pub.base.TimeOfDay;
 
 public class ScriptingTest extends TestCase {
@@ -22,7 +22,7 @@ public class ScriptingTest extends TestCase {
    public void testJs() {
       String script = "x = 'abc'; y = 3; function f(x){return x+1} f(7)";
          ScriptJS js = new ScriptJS(script);
-         String res = js.eval(new ScriptContext.Impl()).toString();
+         String res = js.eval(ScriptFactory.mkContext()).toString();
          assertTrue(res.equals("8"));
    }
    
@@ -30,7 +30,7 @@ public class ScriptingTest extends TestCase {
       String script = "TimeOfDay.value()";
          ScriptJS js = new ScriptJS(script);
 
-         ScriptContext ctx = new ScriptContext.Impl();
+         ScriptContext ctx = ScriptFactory.mkContext();
          ctx.setAttr("TimeOfDay", new TimeOfDay());
 
          String res = js.eval(ctx).toString();

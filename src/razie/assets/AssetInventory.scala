@@ -5,7 +5,7 @@
 package razie.assets
 
 import razie.base.ActionItem;
-import razie.base.ScriptContext;
+import razie.base.scripting.ScriptContext;
 import razie.draw.Drawable;
 import razie.assets._
 

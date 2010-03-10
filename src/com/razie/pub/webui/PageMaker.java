@@ -3,7 +3,7 @@ package com.razie.pub.webui;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import razie.base.ScriptContext;
+import razie.base.scripting.*;
 
 import com.razie.pub.comms.Comms;
 import com.razie.pub.comms.SedFilter;
@@ -15,7 +15,7 @@ import com.razie.pub.comms.SedFilter;
  * 
  * @author razvanc
  */
-public abstract class PageMaker extends ScriptContext.Impl implements SedFilter {
+public abstract class PageMaker extends ScriptContextImpl implements SedFilter {
     protected PageMaker(ScriptContext parent) {
         super(parent);
     }

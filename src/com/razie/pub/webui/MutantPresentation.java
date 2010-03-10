@@ -1,7 +1,7 @@
-/**  ____    __    ____  ____  ____/___     ____  __  __  ____
- *  (  _ \  /__\  (_   )(_  _)( ___) __)   (  _ \(  )(  )(  _ \           Read
- *   )   / /(__)\  / /_  _)(_  )__)\__ \    )___/ )(__)(  ) _ <     README.txt
- *  (_)\_)(__)(__)(____)(____)(____)___/   (__)  (______)(____/   LICENESE.txt
+/**  ____    __    ____  ____  ____,,___     ____  __  __  ____
+ *  (  _ \  /__\  (_   )(_  _)( ___)/ __)   (  _ \(  )(  )(  _ \           Read
+ *   )   / /(__)\  / /_  _)(_  )__) \__ \    )___/ )(__)(  ) _ <     README.txt
+ *  (_)\_)(__)(__)(____)(____)(____)(___/   (__)  (______)(____/    LICENSE.txt
  */
 package com.razie.pub.webui;
 
@@ -13,10 +13,11 @@ import org.w3c.dom.Element;
 import razie.base.ActionItem;
 import razie.base.AttrAccess;
 import razie.base.AttrAccessImpl;
-import razie.base.ScriptContext;
 import razie.base.data.RiXmlUtils;
 import razie.base.data.XmlDoc;
 import razie.base.data.XmlDoc.Reg;
+import razie.base.scripting.ScriptContext;
+import razie.base.scripting.ScriptContextImpl;
 import razie.draw.DrawSequence;
 import razie.draw.DrawTable;
 import razie.draw.Drawable;
@@ -36,8 +37,6 @@ import com.razie.pub.http.LightCmdGET;
  * Currently it's hardcoded in the CmdGET or something...
  * 
  * @author razvanc
- * @version $Id$
- * 
  */
 public class MutantPresentation extends PageMaker {
 
@@ -57,7 +56,7 @@ public class MutantPresentation extends PageMaker {
 
     public static void addPresentation(String filename) {
         if (singleton == null) {
-            singleton = new MutantPresentation(ScriptContext.Impl.global());
+            singleton = new MutantPresentation(ScriptContextImpl.global());
         }
 
         refresh(filename);
@@ -94,7 +93,7 @@ public class MutantPresentation extends PageMaker {
 
     public static MutantPresentation getInstance() {
         if (singleton == null) {
-            singleton = new MutantPresentation(ScriptContext.Impl.global());
+            singleton = new MutantPresentation(ScriptContextImpl.global());
         }
 
         // trigger refresh

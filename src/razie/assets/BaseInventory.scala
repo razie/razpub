@@ -6,7 +6,7 @@ package razie.assets;
 
 import razie.base.ActionItem;
 import com.razie.pub.base.ActionItems;
-import razie.base.ScriptContext;
+import razie.base.scripting.ScriptContext;
 import com.razie.pub.comms.SimpleActionToInvoke;
 import razie.draw._
 import razie.draw.widgets.NavButton;

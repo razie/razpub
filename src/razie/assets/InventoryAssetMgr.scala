@@ -11,7 +11,7 @@ import java.util.Map;
 import org.w3c.dom.Element;
 
 import razie.base.ActionItem;
-import razie.base.ScriptContext;
+import razie.base.scripting.ScriptContext;
 import com.razie.pub.base.log.Log;
 import razie.draw.Drawable;
 //import com.razie.pub.lightsoa.SoaAsset;
