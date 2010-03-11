@@ -10,10 +10,7 @@ import java.net.URL;
 import com.razie.pub.agent.AgentHttpService;
 import razie.base._
 import com.razie.pub.base._
-import com.razie.pub.comms.SimpleActionToInvoke;
-import com.razie.pub.comms.Agents;
-import com.razie.pub.comms.Comms;
-import com.razie.pub.comms.LightAuth;
+import com.razie.pub.comms._
 
 /**
  * an action to invoke on an asset. See ActionToInvoke for details.
@@ -71,7 +68,7 @@ class AssetActionToInvoke (target:String , protected val key:AssetKey , item:Act
         url += "asset/" + key.toUrlEncodedString + "/";
         url += actionItem.name;
         url = addToUrl(url);
-        LightAuth.wrapUrl(url);
+        LightAuthBase.wrapUrl(url);
     }
 
    override def args(pairs:AnyRef*) : AssetActionToInvoke = {

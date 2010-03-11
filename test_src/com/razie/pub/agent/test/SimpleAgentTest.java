@@ -13,7 +13,7 @@ import com.razie.pub.agent.TempUtilAgent;
 import com.razie.pub.base.log.Log;
 import com.razie.pub.comms.AgentCloud;
 import com.razie.pub.comms.AgentHandle;
-import com.razie.pub.comms.LightAuth;
+import com.razie.pub.comms.LightAuthBase;
 import com.razie.pub.comms.ServiceActionToInvoke;
 
 /**
@@ -28,7 +28,7 @@ public class SimpleAgentTest extends TestCase {
 
    @Override
    public void setUp() {
-      LightAuth.init(new LightAuth("lightsoa"));
+      LightAuthBase.init(new LightAuthBase("lightsoa"));
    }
 
    /** start an agent and mount basic services */

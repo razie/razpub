@@ -16,7 +16,7 @@ import razie.draw.DrawStream;
 import razie.draw.SimpleDrawStream;
 
 import com.razie.pub.base.log.Log;
-import com.razie.pub.comms.LightAuth;
+import com.razie.pub.comms.LightAuthBase;
 import com.razie.pub.lightsoa.SoaBinding;
 import com.razie.pub.lightsoa.SoaResponse;
 
@@ -25,7 +25,7 @@ public class TestLocalSoa extends TestCase {
 
     public void setUp() {
         // simple AA based on prefix - this also adds a prefix
-        LightAuth.init(new LightAuth("lightsoa"));
+        LightAuthBase.init(new LightAuthBase("lightsoa"));
     }
 
     public void testSampleService() {

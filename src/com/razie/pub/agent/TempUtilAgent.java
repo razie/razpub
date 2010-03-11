@@ -7,9 +7,10 @@ package com.razie.pub.agent;
 import com.razie.pub.base.ExecutionContext;
 import com.razie.pub.comms.AgentCloud;
 import com.razie.pub.comms.AgentHandle;
-import com.razie.pub.comms.LightAuth;
+import com.razie.pub.comms.LightAuthBase;
 import com.razie.pub.http.LightCmdGET;
-import com.razie.pub.http.*;
+import com.razie.pub.http.LightContentServer;
+import com.razie.pub.http.LightServer;
 
 /** netbeans can't share unit classes forcing me to move testing code here - this is temp until i figure a workaround
  *
@@ -28,7 +29,7 @@ public class TempUtilAgent {
       agent.getContext().enter();
       agent.onInit();
 
-      LightAuth.init(new LightAuth("lightsoa"));
+      LightAuthBase.init(new LightAuthBase("lightsoa"));
 
       // we need a server with cmdget to accept bindings for services. You
       // should do this for any

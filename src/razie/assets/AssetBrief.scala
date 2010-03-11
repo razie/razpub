@@ -16,10 +16,7 @@ import com.razie.pub.base._
 import com.razie.pub.base.data.HtmlRenderUtils;
 import com.razie.pub.base.data.HttpUtils;
 import com.razie.pub.base.data.MimeUtils;
-import com.razie.pub.comms.SimpleActionToInvoke;
-import com.razie.pub.comms.Agents;
-import com.razie.pub.comms.LightAuth;
-import com.razie.pub.comms.ServiceActionToInvoke;
+import com.razie.pub.comms._
 import razie.draw._
 import com.razie.pub.resources.RazIconRes;
 import com.razie.pub.resources.RazIcons;
@@ -128,7 +125,7 @@ trait AssetBrief extends Referenceable with Drawable3 {
       // img = (img.startsWith("/mutant") ? img : "/mutant/getPic/" + img);
       i = if(i.startsWith("/")) i else "/getPic/" + img
       i = Agents.me.url + i;
-      i = LightAuth.wrapUrl(i);
+      i = LightAuthBase.wrapUrl(i);
 
       i;
    }
