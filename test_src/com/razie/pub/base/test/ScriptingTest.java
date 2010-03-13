@@ -7,7 +7,6 @@ package com.razie.pub.base.test;
 
 import junit.framework.TestCase;
 import razie.base.scripting.ScriptContext;
-import razie.base.scripting.ScriptContextImpl;
 import razie.base.scripting.ScriptFactory;
 import razie.base.scripting.ScriptJS;
 
@@ -22,7 +21,7 @@ public class ScriptingTest extends TestCase {
    public void testJs() {
       String script = "x = 'abc'; y = 3; function f(x){return x+1} f(7)";
          ScriptJS js = new ScriptJS(script);
-         String res = js.eval(ScriptFactory.mkContext()).toString();
+         String res = js.eval(ScriptFactory.mkContext()).jgetOrElse ("").toString();
          assertTrue(res.equals("8"));
    }
    
@@ -33,7 +32,7 @@ public class ScriptingTest extends TestCase {
          ScriptContext ctx = ScriptFactory.mkContext();
          ctx.setAttr("TimeOfDay", new TimeOfDay());
 
-         String res = js.eval(ctx).toString();
+         String res = js.eval(ctx).jgetOrElse ("").toString();
          System.out.println(res);
          boolean found=false;
          for (String v : TimeOfDay.values)
