@@ -10,7 +10,7 @@ import com.razie.pub.WinExec
 /** wrapping java impotence... */
 abstract class ScriptJSBase extends RazScript {
   
-  override def eval (ctx:ScriptContext) : RazScript.RSResult = 
+  override def eval (ctx:ScriptContext) : RazScript.RSResult[AnyRef] = 
      try {
         RazScript succ ieval (ctx)
      } catch {

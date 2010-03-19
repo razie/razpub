@@ -53,7 +53,7 @@ class AssetMap {
   val m = new scala.collection.mutable.HashMap[AssetKey, AssetBrief]
   
   def put (k:AssetKey, v:AssetBrief) = this.m.put (k,v)
-  def values () : Iterable[AssetBrief] = this.m.valuesIterable
+  def values () : Iterable[AssetBrief] = this.m.values
   def jvalues () : java.lang.Iterable[AssetBrief] = razie.RSJ apply values
 
   /** when you use these methods, it will strictify this - i.e. wait for all to be collected and then transform to a map - blocking call */

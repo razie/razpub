@@ -18,7 +18,7 @@ class ScriptCmd (val script:String) extends RazScript {
      * 
      * @param c the context for the script
      */
-   override def eval(c:ScriptContext) : RazScript.RSResult = {
+   override def eval(c:ScriptContext) : RazScript.RSResult[Any] = {
       try {
     	   RazScript succ WinExec.execAndWait (script, "")
         } catch {
@@ -27,8 +27,8 @@ class ScriptCmd (val script:String) extends RazScript {
         }
     }
     
-  override def interactive (ctx:ScriptContext) : RazScript.RSResult = RazScript.RSUnsupported
-  override def compile (ctx:ScriptContext) : RazScript.RSResult = RazScript.RSUnsupported
+  override def interactive (ctx:ScriptContext) : RazScript.RSResult[Any] = RazScript.RSUnsupported
+  override def compile (ctx:ScriptContext) : RazScript.RSResult[Any] = RazScript.RSUnsupported
 }
 
 object ScriptCmdTestApp extends Application{
