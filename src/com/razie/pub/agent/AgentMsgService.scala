@@ -1,3 +1,8 @@
+/**  ____    __    ____  ____  ____,,___     ____  __  __  ____
+ *  (  _ \  /__\  (_   )(_  _)( ___)/ __)   (  _ \(  )(  )(  _ \           Read
+ *   )   / /(__)\  / /_  _)(_  )__) \__ \    )___/ )(__)(  ) _ <     README.txt
+ *  (_)\_)(__)(__)(____)(____)(____)(___/   (__)  (______)(____/    LICENSE.txt
+ */
 package com.razie.pub.agent
 
 import com.razie.pub.lightsoa._
@@ -83,6 +88,7 @@ object AgentMsg {
    // TODO 3-1 optimize sending to local
    def isend (to:AgentHandle, m:AgentMsg) : String = {
       val httpArgs = razie.AA()
+      // TODO 1-1 do not hardcode mutant - use lightauth to wrap and then extract
       val cmd = "POST /mutant/msg/receive HTTP/1.1"
      
       // TODO 3-1 use nicer stream support - that's why i wrote the freaking thing, right?
