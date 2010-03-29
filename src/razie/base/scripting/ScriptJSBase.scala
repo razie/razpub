@@ -5,8 +5,6 @@
  */
 package razie.base.scripting
 
-import com.razie.pub.WinExec
-
 /** wrapping java impotence... */
 abstract class ScriptJSBase extends RazScript {
   

@@ -5,7 +5,7 @@
  */
 package razie.base.scripting
 
-import com.razie.pub.WinExec
+import com.razie.pub.actionables.util.WinExec
 
 /** a windows cmd script */
 class ScriptCmd (val script:String) extends RazScript {

@@ -16,5 +16,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/razweb"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/scripster"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/razbase"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/razwf"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
