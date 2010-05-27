@@ -5,7 +5,8 @@
  */
 package razie.assets
 
-import razie.base.AttrAccess
+import razie.base._
+import razie.AA
 import scala.collection._
 
 /**
@@ -247,7 +248,7 @@ class AssetContext (val name:String, val attrs : AttrAccess) {
 //             x => env.put(x.replaceFirst(AssetKey.ROLE, ""), AssetKey.fromString(AssetKey.decode(attrs.sa(x))))
 //   )
       
-   def this () = this ("", AttrAccess.EMPTY) // maybe EMPTY?
+   def this () = this ("", AA.EMPTY)
    def this (a:AttrAccess) = this ({a.sa ("ctx.name")}, a) 
    
    // cleanup

@@ -5,7 +5,8 @@
  */
 package razie.base.scripting
 
-import com.razie.pub.actionables.util.WinExec
+import razie.actionables.util.WinExec
+import razie.base.{ActionContext => AC}
 
 /** a windows cmd script */
 class ScriptCmd (val script:String) extends RazScript {
@@ -18,7 +19,7 @@ class ScriptCmd (val script:String) extends RazScript {
      * 
      * @param c the context for the script
      */
-   override def eval(c:ScriptContext) : RazScript.RSResult[Any] = {
+   override def eval(c:AC) : RazScript.RSResult[Any] = {
       try {
     	   RazScript succ WinExec.execAndWait (script, "")
         } catch {
@@ -27,8 +28,8 @@ class ScriptCmd (val script:String) extends RazScript {
         }
     }
     
-  override def interactive (ctx:ScriptContext) : RazScript.RSResult[Any] = RazScript.RSUnsupported
-  override def compile (ctx:ScriptContext) : RazScript.RSResult[Any] = RazScript.RSUnsupported
+  override def interactive (ctx:AC) : RazScript.RSResult[Any] = RazScript.RSUnsupported ("todo")
+  override def compile (ctx:AC) : RazScript.RSResult[Any] = RazScript.RSUnsupported ("todo")
 }
 
 object ScriptCmdTestApp extends Application{

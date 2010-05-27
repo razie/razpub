@@ -5,19 +5,21 @@
  */
 package razie.base.scripting
 
+import razie.base.{ActionContext => AC}
+
 /** wrapping java impotence... */
 abstract class ScriptJSBase extends RazScript {
   
-  override def eval (ctx:ScriptContext) : RazScript.RSResult[AnyRef] = 
+  override def eval (ctx:AC) : RazScript.RSResult[AnyRef] = 
      try {
         RazScript succ ieval (ctx)
      } catch {
         case e : Throwable => RazScript err e.toString
      }
   
-  override def interactive (ctx:ScriptContext) = RazScript.RSUnsupported
+  override def interactive (ctx:AC) = RazScript.RSUnsupported
 
-  override def compile (ctx:ScriptContext) = RazScript.RSUnsupported
+  override def compile (ctx:AC) = RazScript.RSUnsupported
   
-  protected[this] def ieval (s:ScriptContext) : AnyRef
+  protected[this] def ieval (s:AC) : AnyRef
 }
