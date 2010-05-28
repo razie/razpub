@@ -10,7 +10,7 @@ import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
 import org.mozilla.javascript.Wrapper;
 
-import razie.base.scripting.ScriptContext;
+import razie.base.ActionContext;
 
 
 /**
@@ -51,7 +51,7 @@ public class ScriptJS extends ScriptJSBase {
      * 
      * @param c the context for the script
      */
-    public Object ieval(ScriptContext c) { // TODO how the heck can i hide this?
+    public Object ieval(ActionContext c) { // TODO how the heck can i hide this?
         Object result = "";
         Context ctx = Context.enter();
         try {

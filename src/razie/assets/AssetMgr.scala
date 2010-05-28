@@ -14,7 +14,7 @@ import razie.g.GRef
 /** the default asset mgr is the InventoryAssetMgr */
 object AssetMgr extends AssetMgr (null) with razie.g.GResolver[AnyRef] with razie.g.GAct {
    razie.g.GAMResolver.assetMgr = this
-   override def resolve (x:GRef) : AnyRef = getAsset (AssetKey.fromRef(x))
+   override def resolve (x:GRef) : Option[AnyRef] = Option(getAsset (AssetKey.fromRef(x)))
    razie.g.GAMAct.assetMgr = this
    override def actions (k:GRef)             : Seq[ActionItem] = 
       getSupportedActions(AssetKey.fromRef(k)).toList
