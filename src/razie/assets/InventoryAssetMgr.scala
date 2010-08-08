@@ -10,8 +10,7 @@ import java.util.Map;
 
 import org.w3c.dom.Element;
 
-import razie.base.ActionItem;
-import razie.base.scripting.ScriptContext;
+import razie.base.{ActionItem, ActionContext}
 import com.razie.pub.base.log.Log;
 import razie.draw.Drawable;
 //import com.razie.pub.lightsoa.SoaAsset;
@@ -60,7 +59,7 @@ class InventoryAssetMgr extends AssetMgr (null) {
       case _ => AssetMgr.NOACTIONS 
    }
 
-   override def doAction(cmd:String, ref:AssetKey, ctx:ScriptContext) = 
+   override def doAction(cmd:String, ref:AssetKey, ctx:ActionContext) = 
       findInventory(ref.meta).doAction(cmd, ref, ctx)
       
    val pres : AssetPres          = new razie.assets.pres.TempAssetPres();
@@ -161,7 +160,7 @@ class ProxyInventory extends AssetInventory {
       case _ => null
    }
    
-   override def doAction(cmd:String , ref:AssetKey , ctx:ScriptContext ) = null
+   override def doAction(cmd:String , ref:AssetKey , ctx:ActionContext ) = null
 
    override def getSupportedActions(ref:AssetKey ) : Array[ActionItem] = Array()
       // TODO Auto-generated method stub

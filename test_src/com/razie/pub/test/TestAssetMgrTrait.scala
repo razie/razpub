@@ -21,7 +21,7 @@ class SampleAJ extends AssetCmdInjection {
    val entityTypes = Array("Movie")
    val actions = Array(new ActionItem("organize"), new ActionItem("moveto"))
    
-  def doAction (entityKey:AssetKey, entity:Referenceable, action:String, ctx:ScriptContext) : AnyRef = {
+  def doAction (entityKey:AssetKey, entity:Referenceable, action:String, ctx:ActionContext) : AnyRef = {
     println(action)
     "Ok."
   }

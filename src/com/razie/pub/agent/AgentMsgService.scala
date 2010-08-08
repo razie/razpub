@@ -74,8 +74,8 @@ class AgentMsg(val msg:Any) extends Serializable {
    def sendTo (nameMatches:String) = AgentMsg.isend (nameMatches, this)
 }
 
-case class AssetMsg (key:AssetKey, override msg:Any) extends AgentMsg (msg) 
-case class ServiceMsg (service:String, override msg:Any) extends AgentMsg  (msg) 
+case class AssetMsg (key:AssetKey, override val msg:Any) extends AgentMsg (msg) 
+case class ServiceMsg (service:String, override val msg:Any) extends AgentMsg  (msg) 
 
 case class AgentMsgEnvelope (from:AgentHandle, to:AgentHandle, msg:AgentMsg)
 

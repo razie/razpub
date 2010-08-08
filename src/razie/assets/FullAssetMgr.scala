@@ -22,7 +22,7 @@ class FullAssetMgr extends InventoryAssetMgr with AssetMgrInjector {
       super.getSupportedActions(ref) ++  injections (ref.getType())
 
    /** this version takes into account possible injections first */
-   override def doAction(cmd:String, ref:AssetKey, ctx:ScriptContext) : Object = injection (ref.getType(), cmd) match {
+   override def doAction(cmd:String, ref:AssetKey, ctx:ActionContext) : Object = injection (ref.getType(), cmd) match {
       case Some(x) => x(ref, null, cmd, ctx)
       case None => super.doAction(cmd,ref,ctx);
       }

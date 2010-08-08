@@ -25,7 +25,7 @@ object DrawCallback {
    def apply (screen:CallbackFun, validSec:Int) = DrawCallback2 (screen, validSec)
 }
 
-/** TODO FIXME this is not multi-thread safe... */
+/** simple self-cleaning cache */
 protected object MyCache {
    final val MAXTIMEMSEC = 5 * 60 * 1000
    
@@ -40,7 +40,7 @@ protected object MyCache {
    def put (screen:DrawCallback.CallbackFun, validSec:Int) : String = 
       iput (screen,validSec)
    
-   private def iput (screen:AnyRef, validSec:Int) : String = {
+   private def iput (screen:AnyRef, validSec:Int) : String = synchronized {
      clean
      val url:String = counter.toString
      counter+=1
@@ -49,7 +49,7 @@ protected object MyCache {
      }
   
    /** the return is either a Drawable3 or a CallbackFun */
-   def get (url:String) : Option[AnyRef] = {
+   def get (url:String) : Option[AnyRef] = synchronized {
       clean
       cache.get(url) match {
         case Some((d, _, _)) => new Some(d)
@@ -58,15 +58,15 @@ protected object MyCache {
      }
     
    // TODO unit-test this
-   def clean () = {
+   def clean () = synchronized {
      // TODO only do this every like 1 min - or better, based on size, not more often, eh?
      val curt = System.currentTimeMillis
      cache.retain((x,y) => (curt - y._3 < MAXTIMEMSEC))
    }
    
-   def clear () = cache.clear
+   def clear () = synchronized { cache.clear }
    
-   def keys = cache.keys
+   def keys = synchronized { cache.keys.toList ::: List() } // clones it I hope ?
 }
 
 /** often you want different screens pre-built and invoked at a later time. 

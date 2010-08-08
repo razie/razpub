@@ -18,7 +18,7 @@ object AssetMgr extends AssetMgr (null) with razie.g.GResolver[AnyRef] with razi
    razie.g.GAMAct.assetMgr = this
    override def actions (k:GRef)             : Seq[ActionItem] = 
       getSupportedActions(AssetKey.fromRef(k)).toList
-   override def act     (k:GRef, a:String, ctx:ScriptContext) : Any   = 
+   override def act     (k:GRef, a:String, ctx:ActionContext) : Any   = 
       doAction(a, AssetKey.fromRef(k), ctx)
    
    protected var impl = new razie.NoStatic[AssetMgr] ("NewAssetMgr", {
@@ -94,7 +94,7 @@ class InvProxy (var iproxy:AssetInventory) extends AssetInventory {
     def getBrief(key : AssetKey) : AssetBrief = proxy.getBrief(key)
 
     /** execute command on asset. the asset can be local or remote */
-    def doAction(cmd : String, key : AssetKey, ctx : ScriptContext) : AnyRef =
+    def doAction(cmd : String, key : AssetKey, ctx : ActionContext) : AnyRef =
        proxy.doAction (cmd, key, ctx)
 
     def getSupportedActions(key : AssetKey) : Array[ActionItem] =

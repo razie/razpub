@@ -4,8 +4,7 @@
  */
 package razie.assets
 
-import razie.base.ActionItem;
-import razie.base.scripting.ScriptContext;
+import razie.base.{ActionItem, ActionContext}
 import razie.draw.Drawable;
 import razie.assets._
 
@@ -32,7 +31,7 @@ trait AssetInventory {
     def getBrief(key : AssetKey) : AssetBrief 
 
     /** execute command on asset. the asset can be local or remote */
-    def doAction(cmd : String, key : AssetKey, ctx : ScriptContext) : AnyRef
+    def doAction(cmd : String, key : AssetKey, ctx : ActionContext) : AnyRef
 
     def getSupportedActions(key : AssetKey) : Array[ActionItem]
 
@@ -69,7 +68,7 @@ trait QueryCriteria {
 class QueryBase extends QueryCriteria {} 
 case class WithMeta (meta:String) extends QueryBase
 /** this is the only mandatory query */
-case class AllOfType (override meta:String) extends WithMeta (meta) { override def isAll=true }
-case class ByAttributes (override meta:String, attrs:razie.AA) extends WithMeta (meta)
+case class AllOfType (override val meta:String) extends WithMeta (meta) { override def isAll=true }
+case class ByAttributes (override val meta:String, attrs:razie.AA) extends WithMeta (meta)
 case class ByAssoc (startFrom:AssetKey, assoc:String) extends QueryCriteria
 

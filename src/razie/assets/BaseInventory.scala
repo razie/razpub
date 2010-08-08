@@ -4,9 +4,8 @@
  */
 package razie.assets;
 
-import razie.base.ActionItem;
+import razie.base.{ActionItem, ActionContext}
 import com.razie.pub.base.ActionItems;
-import razie.base.scripting.ScriptContext;
 import com.razie.pub.comms.SimpleActionToInvoke;
 import razie.draw._
 import razie.draw.widgets.NavButton;
@@ -19,7 +18,7 @@ import razie.draw.widgets.NavButton;
 abstract class BaseInventory extends AssetInventory {
 
    /** default handles only delete... */
-    override def doAction(cmd : String, key : AssetKey, ctx : ScriptContext) : AnyRef = {
+    override def doAction(cmd : String, key : AssetKey, ctx : ActionContext) : AnyRef = {
       if (cmd == null || cmd.length() == 0 || cmd.equals("details")) {
             AssetMgr.getAsset(key) match {
                case a:Drawable => return a

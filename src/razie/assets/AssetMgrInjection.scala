@@ -21,7 +21,7 @@ trait AssetCmdInjection {
    def entityTypes : Array[String]
    def actions : Array[ActionItem]
   
-   def doAction (entityKey:AssetKey, entity:Referenceable, action:String, ctx:ScriptContext) : AnyRef
+   def doAction (entityKey:AssetKey, entity:Referenceable, action:String, ctx:ActionContext) : AnyRef
 }
 
 /** 
@@ -33,7 +33,7 @@ trait AssetMgrInjector {
 
    
    // You can inject these on-the-fly functions or AssetCmdInjector instances
-   type InjectedFun = (AssetKey, Referenceable, String, ScriptContext) => AnyRef
+   type InjectedFun = (AssetKey, Referenceable, String, ActionContext) => AnyRef
 
    // tiny little helper
    private[this] implicit def str2ActionItem (s:String) : ActionItem = new ActionItem (s)

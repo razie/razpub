@@ -11,8 +11,8 @@ import razie.assets.AssetLocation;
 import razie.assets.AssetMap;
 import razie.assets.Meta;
 import razie.assets.QueryCriteria;
+import razie.base.ActionContext;
 import razie.base.ActionItem;
-import razie.base.scripting.ScriptContext;
 
 
 /**
@@ -40,7 +40,7 @@ public interface JavaAssetInventory extends razie.assets.AssetInventory {
     public AssetBrief getBrief(AssetKey ref);
 
     /** execute command on asset. the asset can be local or remote */
-    public Object doAction(String cmd, AssetKey ref, ScriptContext ctx);
+    public Object doAction(String cmd, AssetKey ref, ActionContext ctx);
 
     public ActionItem[] getSupportedActions(AssetKey ref);
 
