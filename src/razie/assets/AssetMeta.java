@@ -30,6 +30,7 @@ public @interface AssetMeta {
    String base() default "";
 
    /** the type of the asset modelled by this class */
+   @SuppressWarnings("rawtypes")
    Class inventory() default String.class;
 
    /** the type of the asset modelled by this class */

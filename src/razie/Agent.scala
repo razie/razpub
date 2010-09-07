@@ -15,11 +15,11 @@ import razie.base._
  */
 object Agent {
 
-   implicit def instance () : com.razie.pub.agent.Agent = com.razie.pub.agent.Agent.instance()
+   implicit def instance () : com.razie.pub.agent.Agent = com.razie.pub.agent.AgentJava.instance()
 
    def me = Agents.me()
    
-   def apply () = com.razie.pub.agent.Agent.instance()
+   def apply () = com.razie.pub.agent.AgentJava.instance()
    
    def apply (url:String) = handle(url)
 

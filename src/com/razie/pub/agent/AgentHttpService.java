@@ -112,8 +112,11 @@ public class AgentHttpService extends AgentService {
       try {
          serverThread.join();
       } catch (InterruptedException e) {
-         Log.traceThis("WARN_MUTANT_INTERRUPTED", e);
+         Log.alarmThis("WARN_MUTANT_INTERRUPTED", e);
+      } catch (Throwable t) {
+         Log.alarmThis("ERROR_MUTANT_INTERRUPTED", t);
       }
+      Log.alarmThis("MUTANT_DONE");
    }
 
    @Override

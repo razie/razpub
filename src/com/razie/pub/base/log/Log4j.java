@@ -5,8 +5,6 @@
 package com.razie.pub.base.log;
 
 import java.net.URL;
-import java.util.Collection;
-import java.util.Map;
 import java.util.Properties;
 
 import org.apache.log4j.Appender;

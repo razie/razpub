@@ -34,7 +34,7 @@ public abstract class PageMaker extends ScriptContextImpl implements SedFilter {
         } else if (line.matches("<com.razie.include .*")) {
            // TODO this doesn't work - fix it using the SampleWebServer example...
             Matcher m = p1.matcher(line);
-            int i = m.groupCount();
+//            int i = m.groupCount();
             String url = m.group(1);
             return Comms.readUrl(url);
         } else

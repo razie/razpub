@@ -57,7 +57,7 @@ public class TestNoStatic extends TestCase {
 				// threadLocal created a new one for this new thread - still TRUE...
 				if (!STATICTL.get())
 					failed = "TL value DIDNT change!!!";
-				t.exit();
+				ExecutionContext.exit();
 			}
 		};
 

@@ -6,10 +6,8 @@ package com.razie.pub.webui;
 
 import razie.base.ActionToInvoke;
 import razie.draw.DrawStream;
-import razie.draw.Drawable3;
-import razie.draw.Renderer;
-import razie.draw.Technology;
 import razie.draw.Drawable;
+import razie.draw.Technology;
 
 /**
  * this will insert a paint area which is drawn later with the specified url (will be invoked during

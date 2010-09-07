@@ -95,8 +95,7 @@ public abstract class AgentService implements EvListener {
 	}
 
 	/** simple utility to locate a service given its class, from the current agent */
-	@SuppressWarnings("unchecked")
-    public static AgentService locate(Class cls) {
+    public static AgentService locate(@SuppressWarnings("rawtypes") Class cls) {
 		AgentService aus = (AgentService) Agent.instance().locateService(cls.getSimpleName());
 		return aus;
 	}

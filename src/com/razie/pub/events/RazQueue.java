@@ -41,7 +41,7 @@ public class RazQueue extends RazDestination {
         // load-balancing the consumers
         boolean repeat = true;
         while (repeat) {
-            List<WeakReference<EvListener>> list = this.listeners.get(eventId);
+            List<WeakReference<EvListener>> list = RazDestination.listeners.get(eventId);
             // TODO protect against concurrent changes
             // TODO protect against no listeners, i.e. list==null
             

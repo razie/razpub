@@ -20,7 +20,7 @@ public class JasonTest extends TestCase {
    public void setUp() {
    }
 
-   @SuppressWarnings("unchecked")
+   @SuppressWarnings({ "unchecked", "rawtypes" })
    public void testPair() throws JSONException {
       List<Pair> list = new ArrayList<Pair>();
       list.add(new Pair("a", "a"));

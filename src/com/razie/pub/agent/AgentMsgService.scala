@@ -47,7 +47,7 @@ class AgentMsgService extends AgentService {
 			         razie.Log.alarmThis ("ERR_MSGASSET could not resolve local asset for message target: " + key)
    			}
 			case ServiceMsg (service, o) =>  
-			   Agent.instance().locateService(service) match {
+			   Agent().locateService(service) match {
                case h : AgentMsgHandler => h.receive(from, o)
                case _ => 
                   razie.Log.alarmThis ("ERR_MSGSERVICE could not resolve local service for message target: " + service)

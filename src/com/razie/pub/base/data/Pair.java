@@ -26,7 +26,8 @@ public class Pair<A, B> {
     }
 
     /** convert a list of pairs to java - the Pair.a must be String */
-    public static JSONObject toJson(List<Pair> list, JSONObject obj) {
+    @SuppressWarnings("rawtypes")
+   public static JSONObject toJson(List<Pair> list, JSONObject obj) {
         try {
             if (obj == null)
                 obj = new JSONObject();
@@ -40,6 +41,7 @@ public class Pair<A, B> {
     }
 
     /** convert a list of pairs to java - the Pair.a must be String */
+   @SuppressWarnings("rawtypes")
    public static List<Pair> fromJson(List<Pair> list, JSONObject obj) {
         try {
             for (Iterator i = obj.keys();i.hasNext();) {

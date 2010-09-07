@@ -178,7 +178,7 @@ public abstract class Worker implements Runnable, Being {
             }
         } finally {
             if (this.threadCtx != null)
-                this.threadCtx.exit();
+                ExecutionContext.exit();
         }
         
         this.setIntState(IntState.STOPPED);

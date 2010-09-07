@@ -5,26 +5,17 @@
  */
 package com.razie.pub.comms;
 
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.MalformedURLException;
 import java.net.Socket;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.List;
-
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 import razie.assets.AssetLocation;
 import razie.base.AttrAccess;
 
-import com.razie.pub.base.data.ByteArray;
 import com.razie.pub.base.log.Log;
 
 /**

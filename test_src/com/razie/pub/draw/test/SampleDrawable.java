@@ -9,7 +9,6 @@ import razie.base.ActionToInvoke;
 import razie.base.AttrAccessImpl;
 import razie.draw.DrawSequence;
 import razie.draw.DrawStream;
-import razie.draw.Renderer;
 import razie.draw.Technology;
 import razie.draw.widgets.DrawError;
 import razie.draw.widgets.DrawForm;
@@ -17,9 +16,9 @@ import razie.draw.widgets.DrawSelection;
 import razie.draw.widgets.DrawToString;
 import razie.draw.widgets.NavButton;
 import razie.draw.widgets.NavLink;
-import razie.draw.widgets.SimpleButton;
 import razie.draw.widgets.NavLink.Size;
 import razie.draw.widgets.NavLink.Style;
+import razie.draw.widgets.SimpleButton;
 
 import com.razie.pub.comms.SimpleActionToInvoke;
 import com.razie.pub.resources.RazIcons;
