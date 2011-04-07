@@ -11,6 +11,7 @@ class PRazpub(info: ProjectInfo) extends DefaultProject(info) {
   val junit =     "junit"         % "junit"     % "4.5" % "test->default"
   def json =      "org.json"      % "json"      % "20090211"
 
-  val scrip   = "com.razie" %% "scripster"       % "0.6-SNAPSHOT"
+  val scrip    = "com.razie" %% "scripster"       % "0.6-SNAPSHOT"
+  val gremlins = "com.razie" %% "gremlins"       % "0.3-SNAPSHOT"
 }
 
