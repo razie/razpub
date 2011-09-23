@@ -62,7 +62,7 @@ object DrawScreenServiceStatic {
    def autoRegister () = {
       val a = Agent.instance
       if (a.locateService("DrawScreenService") == null) {
-         Log.logThis("WARN_PROG auto-registering the drawscreen service")
+         razie.Log.log("WARN_PROG auto-registering the drawscreen service")
          a.register( new DrawScreenService)
       }
    }

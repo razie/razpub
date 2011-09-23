@@ -12,8 +12,17 @@ import com.razie.pub.base.data._
 import razie.assets._
 
 /** this resolves assets with the /x/y/z format. it's stateless so it's a singleton */
-object XpAssetsSolver extends XpSolver[AssetBase,AssetBase] {
-   override def getNext[T>:AssetBase,U>:AssetBase](o:(T,U),tag:String, assoc:String) : Iterable[(T,U)]={
+object XpAssetsSolver extends XpSolver[AssetBase] {
+  type T=AssetBase
+  type CONT=AssetBase
+  type U=CONT
+
+  // TODO this won't work...
+  override def children(root: T): (T, U) = { 
+    (root, root) 
+  }
+  
+   override def getNext(o:(T,U),tag:String, assoc:String) : Iterable[(T,U)]={
       if (o._1 == AROOT || o._1 == null) {
          // starting point
          val ret = for (val b <- AssetMgr.find (tag, null, true).values) yield {
@@ -41,7 +50,7 @@ object XpAssetsSolver extends XpSolver[AssetBase,AssetBase] {
       }
    } 
   
-   override def getAttr[T>:AssetBase] (o:T,attr:String) : String = razie.AA.sa (o, attr) match {
+   override def getAttr (o:T,attr:String) : String = razie.AA.sa (o, attr) match {
       case Some("") | None => attr match {
          case "key" => o.asInstanceOf[AssetBase].getKey.id
          case _ => ""
@@ -49,8 +58,8 @@ object XpAssetsSolver extends XpSolver[AssetBase,AssetBase] {
       case Some(s) => s
    }
 
-   override def reduce[T>:AssetBase,U>:AssetBase] (o:Iterable[(T,U)],cond:XpCond) : Iterable[(T,U)] =
-      if (cond == null) o else o.filter(x => cond.passes(x._1, this))
+  override def reduce(curr: Iterable[(T, U)], xe: XpElement): Iterable[(T, U)] =
+    if (xe.cond == null) curr else curr.filter(x => xe.cond.passes(x._1, this))
 }
 
 /** root for asset queries */

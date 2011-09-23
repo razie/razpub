@@ -23,6 +23,6 @@ class RazUnitImpl {
 	   }
 
 	   def tearDown = {
-	      Log.logThis ("TEST COMPLETED - succeeded="+succeeded + ", failed=" + failed)
+	      Log.log ("TEST COMPLETED - succeeded="+succeeded + ", failed=" + failed)
 	   }
 	}

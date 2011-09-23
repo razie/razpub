@@ -3,15 +3,16 @@ package com.razie.pub.agent
 import com.razie.pub.comms._
 import com.razie.pubstage.comms._
 import razie.base._
+import razie.Logging
 
 object Agent {
-  val logger = razie.NewLog.create("agent", classOf[Agent].getSimpleName())
+//  val logger = razie.Log.factory.create("agent", classOf[Agent].getSimpleName())
 
   def instance() = AgentJava.instance
   def apply() = instance()
 }
 
-class Agent(me: AgentHandle, hc: AgentCloud) extends AgentJava(me, hc) {
+class Agent(me: AgentHandle, hc: AgentCloud) extends AgentJava(me, hc) with Logging {
    
   /**
    * notify another specific agent. Note that in order to use this, the remote agent must have the
@@ -24,7 +25,7 @@ class Agent(me: AgentHandle, hc: AgentCloud) extends AgentJava(me, hc) {
    */
   def notifyOther(device: AgentHandle, eventId: String, args: AttrAccess): (String, Boolean) = {
     try {
-      Agent.logger.trace(3, "AGENT_NOTIFIYING_OTHER: " + device + " event: " + eventId);
+      debug("AGENT_NOTIFIYING_OTHER: " + device + " event: " + eventId);
 
       // TODO if device is me call notify local directly
       // TODO 1-1 use ServiceActionItemtoinvoke with lightauth
@@ -45,7 +46,7 @@ class Agent(me: AgentHandle, hc: AgentCloud) extends AgentJava(me, hc) {
     // TODO add SLA, i.e. will backup and notify when others come online etc
     var notified = razie.Mapi[String, (String, Boolean)]()
 
-    Agent.logger.trace(3, "AGENT_NOTIFIYING_OTHERS: ");
+    debug("AGENT_NOTIFIYING_OTHERS: ");
 
     import scala.collection.JavaConversions._
 
@@ -69,7 +70,7 @@ class Agent(me: AgentHandle, hc: AgentCloud) extends AgentJava(me, hc) {
     //         }
     //      }
 
-    Agent.logger.trace(3, "AGENT_NOTIFIED_OTHERS: " + notified.filter(_._2._2) + " / NOTNOTIFIED: " + notified.filter(! _._2._2));
+    debug( "AGENT_NOTIFIED_OTHERS: " + notified.filter(_._2._2) + " / NOTNOTIFIED: " + notified.filter(! _._2._2));
     Map() ++ notified
   }
 }

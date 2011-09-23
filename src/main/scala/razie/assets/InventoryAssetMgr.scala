@@ -92,7 +92,7 @@ class InventoryAssetMgr extends AssetMgr (null) {
       metaByName.put(meta.id.name, meta);
          } catch {
             case e:Exception => {
-               razie.Log("ERR_CANT_CREATE_INV " + classnm, e);
+               razie.Log.log("ERR_CANT_CREATE_INV " + classnm, e);
             }
          }
    }

@@ -7,7 +7,6 @@ import junit.framework.TestSuite;
 
 import com.razie.pub.agent.test.SuitePubAgent;
 import com.razie.pub.base.test.SuitePubBase;
-import com.razie.pub.draw.test.SuitePubDraw;
 import com.razie.pub.events.test.SuitePubEvents;
 import com.razie.pub.lightsoa.test.SuitePubLightsoa;
 
@@ -16,20 +15,19 @@ import com.razie.pub.lightsoa.test.SuitePubLightsoa;
  * 
  * @author razvanc99
  */
-public class SuitePub extends TestSuite {
-    public static Test suite() {
-        TestSuite result = new TestSuite(SuitePub.class.getName());
-
-        result.addTest(SuitePubBase.suite());
-        result.addTest(SuitePubDraw.suite());
-        result.addTest(SuitePubEvents.suite());
-        result.addTest(SuitePubLightsoa.suite());
-        result.addTest(SuitePubAgent.suite());
-        
-        result.addTest(new razie.assets.test.SuiteAssets());
-
-        result.addTestSuite(ScalaLessonsTest.class);
-
-        return result;
-    }
+public class SuitePub /*extends TestSuite*/ {
+//   public static Test suite() {
+//      TestSuite result = new TestSuite(SuitePub.class.getName());
+//
+//      result.addTest(SuitePubBase.suite());
+//      result.addTest(SuitePubEvents.suite());
+//      result.addTest(SuitePubLightsoa.suite());
+//      result.addTest(SuitePubAgent.suite());
+//
+//      result.addTest(new razie.assets.test.SuiteAssets());
+//
+//      result.addTestSuite(ScalaLessonsTest.class);
+//
+//      return result;
+//   }
 }

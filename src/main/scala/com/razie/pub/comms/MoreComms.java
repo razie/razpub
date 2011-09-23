@@ -144,5 +144,5 @@ public class MoreComms extends Comms {
         return readStream(s);
     }
 
-    static Log logger = Log.create(Comms.class.getName());
+    static Log logger = Log.factory.create(MoreComms.class);
 }

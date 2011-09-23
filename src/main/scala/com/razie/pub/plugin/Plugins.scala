@@ -14,9 +14,10 @@ import com.razie.pub.assets._
 import com.razie.pub.base.log._
 import com.razie.pub.cfg._
 import razie.assets._
+import razie.Logging
 
 /** simple&stupid plugin management */
-object Plugins {
+object Plugins extends Logging {
    val allPlugins = scala.collection.mutable.ListBuffer[Plugin]()
 
    // TODO need plugin dependencies
@@ -30,7 +31,7 @@ object Plugins {
 	}
 	
 	def init (plugin:URL) = {
-      logger.log ("INIT_PLUGIN from " + plugin)
+      log ("INIT_PLUGIN from " + plugin)
       val doc = new XmlDoc().load ("whatever", plugin)
 	    
       // 1. class init
@@ -68,17 +69,17 @@ object Plugins {
             	val jar = new URL (plugin.toExternalForm.replaceFirst ("\\.xml$",".jar"))
             	// load the jar file in classpath
             	if (new java.io.File(jar.toURI).exists()) {
-            	Log.logThis ("loading jar file: " + jar)
+            	log("loading jar file: " + jar)
             		cloader = new java.net.URLClassLoader(Array(jar), cloader)
             	} else
-            	Log.logThis ("ERROR_PLUGIN jar file not found: " + jar)
+            	log("ERROR_PLUGIN jar file not found: " + jar)
             }
             
             val p = Class.forName (classname, true, cloader).newInstance ().asInstanceOf[Plugin];
             p.loadphase1
             allPlugins += p
          } catch {
-            case e:Exception => logger.alarm("ERR_CANT_INIT_PLUGIN: classname=" + classname, e)
+            case e:Exception => error("ERR_CANT_INIT_PLUGIN: classname=" + classname, e)
          }
       }
       
@@ -97,7 +98,4 @@ object Plugins {
       
 
    }
-
-
-   val logger = Log.factory.create("Plugins");
 }
