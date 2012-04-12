@@ -16,6 +16,7 @@ import com.razie.pub.http.LightServer;
 import com.razie.pub.http.SocketCmdHandler;
 import com.razie.pub.lightsoa.HttpAssetSoaBinding;
 import com.razie.pub.lightsoa.HttpSoaBinding;
+import com.razie.pub.lightsoa.ISoaBinding;
 
 /**
  * this is the main web server, basically - required by the Agent itself. Note that you have to
@@ -104,7 +105,7 @@ public class AgentHttpService extends AgentService {
       return instance().server.getHandlers();
    }
 
-   public static Iterable<HttpSoaBinding> getBindings() {
+   public static Iterable<ISoaBinding> getBindings() {
       return instance().cmdGET.getBindings();
    }
 
